@@ -8,6 +8,7 @@ import { HomePageList } from "app/home/components/HomePageList"
 import Layout from "app/layouts/Layout"
 import { PostsPageListFallback } from "app/posts/components/PostsPageListFallback"
 import { BlitzPage, GetServerSideProps, PublicData } from "blitz"
+import path from "path"
 import React, { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { useTranslation } from "react-i18next"
@@ -44,6 +45,10 @@ HomePage.getLayout = (page) => {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }) => {
+  // https://github.com/blitz-js/blitz/issues/794
+  path.resolve("blitz.config.js")
+  path.resolve(".next/__db.js")
+
   const session = await getSessionContext(req, res)
 
   return { props: session.publicData }
