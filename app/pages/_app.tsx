@@ -1,43 +1,37 @@
-import { AppProps, ErrorComponent, useRouter, AuthenticationError, AuthorizationError } from "blitz"
-import { ErrorBoundary, FallbackProps } from "react-error-boundary"
+import { ChakraProvider } from "@chakra-ui/react"
+import { RootErrorFallback } from "app/components/RootErrorFallback"
+import { AppProps, BlitzPage, useRouter } from "blitz"
+import React from "react"
+import { ErrorBoundary } from "react-error-boundary"
+import { I18nextProvider } from "react-i18next"
 import { queryCache } from "react-query"
-import LoginForm from "app/auth/components/LoginForm"
+import i18n from "utils/i18n"
+import { theme } from "utils/theme"
 
-export default function App({ Component, pageProps }: AppProps) {
+const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page)
+
   const router = useRouter()
 
   return (
-    <ErrorBoundary
-      FallbackComponent={RootErrorFallback}
-      resetKeys={[router.asPath]}
-      onReset={() => {
-        // This ensures the Blitz useQuery hooks will automatically refetch
-        // data any time you reset the error boundary
-        queryCache.resetErrorBoundaries()
-      }}
-    >
-      {getLayout(<Component {...pageProps} />)}
-    </ErrorBoundary>
+    <I18nextProvider i18n={i18n}>
+      <ChakraProvider theme={theme}>
+        <ErrorBoundary
+          FallbackComponent={RootErrorFallback}
+          onReset={() => queryCache.resetErrorBoundaries()}
+          resetKeys={[router.asPath]}
+        >
+          {getLayout(<Component {...pageProps} />)}
+        </ErrorBoundary>
+        <style jsx global>{`
+          #__next {
+            max-width: 80rem;
+            margin: 0 auto;
+          }
+        `}</style>
+      </ChakraProvider>
+    </I18nextProvider>
   )
 }
 
-function RootErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
-  if (error instanceof AuthenticationError) {
-    return <LoginForm onSuccess={resetErrorBoundary} />
-  } else if (error instanceof AuthorizationError) {
-    return (
-      <ErrorComponent
-        statusCode={(error as any).statusCode}
-        title="Sorry, you are not authorized to access this"
-      />
-    )
-  } else {
-    return (
-      <ErrorComponent
-        statusCode={(error as any)?.statusCode || 400}
-        title={error?.message || error?.name}
-      />
-    )
-  }
-}
+export default App
