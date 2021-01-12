@@ -41,7 +41,7 @@ const HomePage: BlitzPage<Props> = ({ userId }) => {
 }
 
 HomePage.getLayout = (page) => {
-  return <Layout title={"PostsPage"}>{page}</Layout>
+  return <Layout title={"Posts"}>{page}</Layout>
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }) => {

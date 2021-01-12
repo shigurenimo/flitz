@@ -150,7 +150,7 @@ const LoginPage: BlitzPage = () => {
 }
 
 LoginPage.getLayout = (page) => {
-  return <Layout title={"LoginPage"}>{page}</Layout>
+  return <Layout title={"Login"}>{page}</Layout>
 }
 
 export default LoginPage
