@@ -23,6 +23,7 @@ const createMessage = async (input: Input, ctx: Ctx) => {
         connectOrCreate: [
           {
             create: {
+              isRead: true,
               relatedUser: { connect: { id: input.relatedUserId } },
               user: { connect: { id: userId } },
             },
@@ -35,6 +36,7 @@ const createMessage = async (input: Input, ctx: Ctx) => {
           },
           {
             create: {
+              isRead: false,
               relatedUser: { connect: { id: userId } },
               user: { connect: { id: input.relatedUserId } },
             },

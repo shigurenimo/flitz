@@ -27,10 +27,12 @@ const createQuotation = async (input: Input, ctx: Ctx) => {
           references: {
             create: [
               {
+                isRead: true,
                 user: { connect: { id: userId } },
               },
               ...friendships.map((friendship) => {
                 return {
+                  isRead: false,
                   user: { connect: { id: friendship.followerId } },
                 }
               }),

@@ -33,10 +33,12 @@ const createReply = async (input: CreatePostInput, ctx: Ctx) => {
           references: {
             create: [
               {
+                isRead: true,
                 user: { connect: { id: userId } },
               },
               ...friendships.map((friendship) => {
                 return {
+                  isRead: false,
                   user: { connect: { id: friendship.followerId } },
                 }
               }),

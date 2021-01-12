@@ -26,10 +26,12 @@ const createPost = async ({ data }: CreatePostInput, ctx: Ctx) => {
       references: {
         create: [
           {
+            isRead: true,
             user: { connect: { id: ctx.session.userId } },
           },
           ...friendships.map((friendship) => {
             return {
+              isRead: false,
               user: { connect: { id: friendship.followerId } },
             }
           }),
