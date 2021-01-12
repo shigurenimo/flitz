@@ -1,4 +1,4 @@
-import { DefaultCtx, SessionContext, DefaultPublicData } from "blitz"
+import { DefaultCtx, DefaultPublicData, SessionContext } from "blitz"
 import { User } from "db"
 
 declare module "blitz" {
@@ -6,6 +6,8 @@ declare module "blitz" {
     session: SessionContext
   }
   export interface PublicData extends DefaultPublicData {
+    name?: User["name"]
     userId: User["id"]
+    username?: User["username"]
   }
 }

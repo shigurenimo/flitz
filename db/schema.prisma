@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -10,29 +7,193 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// --------------------------------------
+model Account {
+  createdAt      DateTime @default(now())
+  email          String   @unique
+  hashedPassword String?
+  id             String   @id @default(cuid())
+  role           Role     @default(USER)
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+}
 
 model User {
-  id             Int       @default(autoincrement()) @id
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  name           String?
-  email          String    @unique
-  hashedPassword String?
-  role           String    @default("user")
-  sessions       Session[]
+  account               Account?
+  biography             String         @default("")
+  bookmarks             Bookmark[]
+  createdAt             DateTime       @default(now())
+  exchanges             Exchange[]
+  followees             Friendship[]   @relation("Followers")
+  followeesCount        Int            @default(0)
+  followers             Friendship[]   @relation("Followees")
+  followersCount        Int            @default(0)
+  id                    String         @id @default(cuid())
+  likes                 Like[]
+  messages              Message[]
+  name                  String?
+  notifications         Notification[]
+  posts                 Post[]
+  references            Reference[]
+  relatedExchanges      Exchange[]     @relation("RelatedExchange")
+  relatedGroupExchanges Exchange[]     @relation("RelatedGroupExchange")
+  sessions              Session[]
+  updatedAt             DateTime       @default(now()) @updatedAt
+  username              String         @unique @default(cuid())
+
+  @@index([createdAt])
+}
+
+model Friendship {
+  createdAt     DateTime       @default(now())
+  followee      User           @relation("Followees", fields: [followeeId])
+  followeeId    String
+  follower      User           @relation("Followers", fields: [followerId])
+  followerId    String
+  id            String         @id @default(cuid())
+  notifications Notification[]
+
+  @@unique([followerId, followeeId])
+  @@index([followerId, createdAt])
 }
 
 model Session {
-  id                 Int       @default(autoincrement()) @id
+  antiCSRFToken      String?
   createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
   expiresAt          DateTime?
   handle             String    @unique
-  user               User?     @relation(fields: [userId], references: [id])
-  userId             Int?
   hashedSessionToken String?
-  antiCSRFToken      String?
-  publicData         String?
+  id                 String    @id @default(cuid())
   privateData        String?
+  publicData         String?
+  updatedAt          DateTime  @default(now()) @updatedAt
+  user               User?     @relation(fields: [userId])
+  userId             String?
+}
+
+model Post {
+  bookmarks       Bookmark[]
+  createdAt       DateTime       @default(now())
+  id              String         @id @default(cuid())
+  likes           Like[]
+  likesCount      Int            @default(0)
+  notifications   Notification[]
+  quotation       Post?          @relation("Quotations", fields: [quotationId])
+  quotationId     String?
+  quotations      Post[]         @relation("Quotations")
+  quotationsCount Int            @default(0)
+  references      Reference[]
+  replies         Post[]         @relation("Replies")
+  repliesCount    Int            @default(0)
+  reply           Post?          @relation("Replies", fields: [replyId])
+  replyId         String?
+  text            String?
+  updatedAt       DateTime       @default(now()) @updatedAt
+  user            User           @relation(fields: [userId])
+  userId          String
+
+  @@unique([userId, quotationId])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@index([replyId, createdAt])
+}
+
+model Reference {
+  createdAt    DateTime @default(now())
+  hasLike      Boolean  @default(false)
+  hasQuotation Boolean  @default(false)
+  hasReply     Boolean  @default(false)
+  isRead       Boolean  @default(false)
+  post         Post     @relation(fields: [postId])
+  postId       String
+  user         User     @relation(fields: [userId])
+  userId       String
+
+  @@id([userId, postId])
+  @@index([userId, createdAt])
+}
+
+model Like {
+  createdAt     DateTime       @default(now())
+  id            String         @id @default(cuid())
+  notifications Notification[]
+  post          Post           @relation(fields: [postId])
+  postId        String
+  user          User           @relation(fields: [userId])
+  userId        String
+
+  @@unique([userId, postId])
+  @@index([userId, createdAt])
+}
+
+model Bookmark {
+  createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId])
+  postId    String
+  user      User     @relation(fields: [userId])
+  userId    String
+
+  @@unique([userId, postId])
+  @@index([userId, createdAt])
+}
+
+model Notification {
+  createdAt    DateTime         @default(now())
+  friendship   Friendship?      @relation(fields: [friendshipId])
+  friendshipId String?
+  id           String           @id @default(cuid())
+  isRead       Boolean          @default(false)
+  like         Like?            @relation(fields: [likeId])
+  likeId       String?
+  post         Post?            @relation(fields: [postId])
+  postId       String?
+  type         NotificationType
+  uniqueId     String
+  user         User?            @relation(fields: [userId])
+  userId       String?
+
+  @@unique([userId, type, uniqueId])
+  @@index([userId, createdAt])
+}
+
+model Message {
+  createdAt DateTime   @default(now())
+  exchanges Exchange[]
+  id        String     @id @default(cuid())
+  isRead    Boolean    @default(false)
+  text      String
+  updatedAt DateTime   @default(now()) @updatedAt
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@index([createdAt])
+}
+
+model Exchange {
+  createdAt     DateTime  @default(now())
+  id            String    @id @default(cuid())
+  isRead        Boolean   @default(false)
+  messages      Message[]
+  relatedUser   User?     @relation("RelatedExchange", fields: [relatedUserId], references: [id])
+  relatedUserId String?
+  relatedUsers  User[]    @relation("RelatedGroupExchange")
+  updatedAt     DateTime  @default(now()) @updatedAt
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+
+  @@unique([userId, relatedUserId])
+  @@index([userId, updatedAt])
+}
+
+enum NotificationType {
+  FOLLOW
+  FRIENDSHIP
+  LIKE
+  REPLY
+  QUOTATION
+}
+
+enum Role {
+  ADMIN
+  SYSTEM
+  USER
 }
