@@ -2,9 +2,9 @@
   "name": "feed",
   "version": "1.0.0",
   "scripts": {
-    "start": "rm -rf .blitz && blitz start",
+    "start": "rm -rf .blitz && prisma generate && blitz start",
     "studio": "blitz db studio",
-    "build": "rm -rf .blitz && blitz build",
+    "build": "prisma generate && blitz build",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "test": "jest",
     "test:watch": "jest --watch"
