@@ -1,0 +1,10 @@
+{
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "files.exclude": {
+    "**/node_modules": true,
+    ".blitz": true,
+    ".tsbuildinfo": true,
+    "yarn.lock": true,
+    "yarn-error.log": true
+  }
+}
