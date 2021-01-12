@@ -1,15 +1,21 @@
+import { authenticateUser } from "app/auth/utils/authenticateUser"
+import { LoginInput, loginSchema } from "app/auth/validations/loginSchema"
 import { Ctx } from "blitz"
-import { authenticateUser } from "app/auth/auth-utils"
-import { LoginInput, LoginInputType } from "../validations"
 
-export default async function login(input: LoginInputType, { session }: Ctx) {
+const login = async (input: LoginInput, { session }: Ctx) => {
   // This throws an error if input is invalid
-  const { email, password } = LoginInput.parse(input)
+  const { email, password } = loginSchema.parse(input)
 
-  // This throws an error if credentials are invalid
   const user = await authenticateUser(email, password)
 
-  await session.create({ userId: user.id, roles: [user.role] })
+  await session.create({
+    name: user.name,
+    roles: [user.role],
+    userId: user.id,
+    username: user.username,
+  })
 
   return user
 }
+
+export default login

@@ -1,5 +1,7 @@
 import { Ctx } from "blitz"
 
-export default async function logout(_: any, { session }: Ctx) {
-  return await session.revoke()
+const logout = async (_: any, { session }: Ctx) => {
+  await session.revoke()
 }
+
+export default logout
