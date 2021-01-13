@@ -10,8 +10,6 @@ const deletePostLike = async (input: Input, ctx: Ctx) => {
     throw new NotFoundError()
   }
 
-  const userId = ctx.session.userId
-
   const updated = await db.post.update({
     data: {
       likes: {
@@ -19,17 +17,6 @@ const deletePostLike = async (input: Input, ctx: Ctx) => {
           userId_postId: {
             userId: ctx.session.userId,
             postId: input.postId,
-          },
-        },
-      },
-      references: {
-        update: {
-          data: { hasLike: false },
-          where: {
-            userId_postId: {
-              userId,
-              postId: input.postId,
-            },
           },
         },
       },

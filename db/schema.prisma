@@ -98,15 +98,12 @@ model Post {
 }
 
 model Reference {
-  createdAt    DateTime @default(now())
-  hasLike      Boolean  @default(false)
-  hasQuotation Boolean  @default(false)
-  hasReply     Boolean  @default(false)
-  isRead       Boolean  @default(false)
-  post         Post     @relation(fields: [postId])
-  postId       String
-  user         User     @relation(fields: [userId])
-  userId       String
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false)
+  post      Post     @relation(fields: [postId])
+  postId    String
+  user      User     @relation(fields: [userId])
+  userId    String
 
   @@id([userId, postId])
   @@index([userId, createdAt])

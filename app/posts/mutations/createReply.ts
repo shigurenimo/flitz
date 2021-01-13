@@ -1,15 +1,15 @@
 import { Ctx, NotFoundError } from "blitz"
 import db from "db"
 
-type CreatePostInput = {
-  text?: string
-  replyId?: string
+type CreateReplyInput = {
+  text: string
+  postId: string
 }
 
-const createReply = async (input: CreatePostInput, ctx: Ctx) => {
+const createReply = async (input: CreateReplyInput, ctx: Ctx) => {
   ctx.session.authorize()
 
-  if (!input.replyId) {
+  if (!input.postId) {
     throw new NotFoundError()
   }
 
@@ -46,17 +46,6 @@ const createReply = async (input: CreatePostInput, ctx: Ctx) => {
           },
         },
       },
-      references: {
-        update: {
-          data: { hasReply: true },
-          where: {
-            userId_postId: {
-              userId,
-              postId: input.replyId,
-            },
-          },
-        },
-      },
       repliesCount: { increment: 1 },
     },
     include: {
@@ -64,7 +53,7 @@ const createReply = async (input: CreatePostInput, ctx: Ctx) => {
         where: { userId },
       },
     },
-    where: { id: input.replyId },
+    where: { id: input.postId },
   })
 
   const [reply] = post.replies

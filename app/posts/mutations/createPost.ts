@@ -1,33 +1,31 @@
 import { Ctx } from "blitz"
 import db from "db"
 
-type CreatePostInput = {
-  data: {
-    text: string
-  }
-}
+type CreatePostInput = { text: string }
 
-const createPost = async ({ data }: CreatePostInput, ctx: Ctx) => {
+const createPost = async (input: CreatePostInput, ctx: Ctx) => {
   ctx.session.authorize()
 
-  if (data.text.trim().length === 0) {
+  if (input.text.trim().length === 0) {
     throw new Error("text.trim().length === 0")
   }
 
+  const userId = ctx.session.userId
+
   const friendships = await db.friendship.findMany({
-    where: { followeeId: ctx.session.userId },
+    where: { followeeId: userId },
     take: 20000,
   })
 
   const post = await db.post.create({
     data: {
-      text: data.text,
-      user: { connect: { id: ctx.session.userId } },
+      text: input.text,
+      user: { connect: { id: userId } },
       references: {
         create: [
           {
             isRead: true,
-            user: { connect: { id: ctx.session.userId } },
+            user: { connect: { id: userId } },
           },
           ...friendships.map((friendship) => {
             return {

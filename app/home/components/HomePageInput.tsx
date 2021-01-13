@@ -16,7 +16,7 @@ export const HomePageInput: FunctionComponent = () => {
 
   const onCreatePost = async () => {
     try {
-      await createPostMutation({ data: { text } })
+      await createPostMutation({ text })
       setText("")
       toast({ status: "success", title: "Success" })
     } catch (error) {

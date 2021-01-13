@@ -12,22 +12,11 @@ const createPostLike = async (input: Input, ctx: Ctx) => {
 
   const userId = ctx.session.userId
 
-  const updated = await db.post.update({
+  const post = await db.post.update({
     data: {
       likes: {
         create: {
           user: { connect: { id: userId } },
-        },
-      },
-      references: {
-        update: {
-          data: { hasLike: true },
-          where: {
-            userId_postId: {
-              userId,
-              postId: input.postId,
-            },
-          },
         },
       },
       likesCount: { increment: 1 },
@@ -39,28 +28,28 @@ const createPostLike = async (input: Input, ctx: Ctx) => {
     },
   })
 
-  const [like] = updated.likes
-
-  const postUserId = updated.user.id
+  const [like] = post.likes
 
   await db.notification.upsert({
     create: {
       like: { connect: { id: like.id } },
       type: "LIKE",
-      uniqueId: like.id,
-      user: { connect: { id: postUserId } },
+      uniqueId: input.postId,
+      user: { connect: { id: post.userId } },
     },
-    update: {},
+    update: {
+      like: { connect: { id: like.id } },
+    },
     where: {
       userId_type_uniqueId: {
         type: "LIKE",
-        uniqueId: like.id,
-        userId: postUserId,
+        uniqueId: input.postId,
+        userId: post.userId,
       },
     },
   })
 
-  return updated
+  return post
 }
 
 export default createPostLike

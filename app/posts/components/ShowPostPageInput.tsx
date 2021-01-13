@@ -17,8 +17,9 @@ export const ShowPostPageInput: FunctionComponent = () => {
   const toast = useToast()
 
   const onCreatePost = async () => {
+    if (!postId) return
     try {
-      await createReplyMutation({ text, replyId: postId })
+      await createReplyMutation({ text, postId })
       toast({ status: "success", title: "Success" })
       setText("")
     } catch (error) {

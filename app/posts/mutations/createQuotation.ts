@@ -41,17 +41,6 @@ const createQuotation = async (input: Input, ctx: Ctx) => {
         },
       },
       quotationsCount: { increment: 1 },
-      references: {
-        update: {
-          data: { hasQuotation: true },
-          where: {
-            userId_postId: {
-              userId,
-              postId: input.postId,
-            },
-          },
-        },
-      },
     },
     include: {
       quotations: {
@@ -63,12 +52,22 @@ const createQuotation = async (input: Input, ctx: Ctx) => {
 
   const [quotation] = post.quotations
 
-  await db.notification.create({
-    data: {
+  await db.notification.upsert({
+    create: {
       post: { connect: { id: quotation.id } },
       type: "QUOTATION",
-      uniqueId: quotation.id,
+      uniqueId: input.postId,
       user: { connect: { id: post.userId } },
+    },
+    update: {
+      post: { connect: { id: quotation.id } },
+    },
+    where: {
+      userId_type_uniqueId: {
+        type: "QUOTATION",
+        uniqueId: input.postId,
+        userId: post.userId,
+      },
     },
   })
 

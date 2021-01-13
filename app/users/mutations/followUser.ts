@@ -3,14 +3,14 @@ import db from "db"
 
 type Input = { userId?: string }
 
-const followUser = async ({ userId }: Input, ctx: Ctx) => {
+const followUser = async (input: Input, ctx: Ctx) => {
   ctx.session.authorize()
 
-  if (!userId) {
+  if (!input.userId) {
     throw new NotFoundError()
   }
 
-  if (ctx.session.userId === userId) {
+  if (ctx.session.userId === input.userId) {
     throw new Error("Unexpected error")
   }
 
@@ -27,7 +27,7 @@ const followUser = async ({ userId }: Input, ctx: Ctx) => {
       include: {
         followers: { where: { followerId: ctx.session.userId } },
       },
-      where: { id: userId },
+      where: { id: input.userId },
     }),
     db.user.update({
       data: { followeesCount: { increment: 1 } },
@@ -41,15 +41,17 @@ const followUser = async ({ userId }: Input, ctx: Ctx) => {
     create: {
       friendship: { connect: { id: friendship.id } },
       type: "FRIENDSHIP",
-      uniqueId: friendship.followeeId,
-      user: { connect: { id: userId } },
+      uniqueId: ctx.session.userId,
+      user: { connect: { id: input.userId } },
     },
-    update: {},
+    update: {
+      friendship: { connect: { id: friendship.id } },
+    },
     where: {
       userId_type_uniqueId: {
         type: "FRIENDSHIP",
-        uniqueId: friendship.followeeId,
-        userId,
+        uniqueId: ctx.session.userId,
+        userId: input.userId,
       },
     },
   })
