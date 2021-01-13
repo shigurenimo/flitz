@@ -1,9 +1,12 @@
 import { Textarea, TextareaProps } from "@chakra-ui/react"
 import React, { forwardRef } from "react"
-import ResizeTextarea from "react-textarea-autosize"
+import ResizeTextarea, { TextareaAutosizeProps } from "react-textarea-autosize"
 
 // https://chakra-ui.com/docs/features/chakra-factory#chakra-factory-function
-export const TextareaAutosize = forwardRef<HTMLTextAreaElement, TextareaProps>((props, ref) => {
+export const TextareaAutosize = forwardRef<
+  HTMLTextAreaElement,
+  TextareaProps & TextareaAutosizeProps
+>((props, ref) => {
   return (
     <Textarea
       as={ResizeTextarea}

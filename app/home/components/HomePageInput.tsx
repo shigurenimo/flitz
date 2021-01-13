@@ -1,5 +1,6 @@
-import { Button, HStack, Icon, Stack, Textarea, useToast } from "@chakra-ui/react"
+import { Button, HStack, Icon, Stack, useToast } from "@chakra-ui/react"
 import { AvatarUser } from "app/components/AvatarUser"
+import { TextareaAutosize } from "app/components/TextareaAutosize"
 import createPost from "app/posts/mutations/createPost"
 import { useMutation, useSession } from "blitz"
 import React, { FunctionComponent, useState } from "react"
@@ -30,10 +31,11 @@ export const HomePageInput: FunctionComponent = () => {
     <Stack spacing={4} px={4}>
       <HStack w={"full"} spacing={4} align={"flex-start"}>
         <AvatarUser userId={session.userId} />
-        <Textarea
+        <TextareaAutosize
           isDisabled={isLoading}
           onChange={(event) => setText(event.target.value)}
           placeholder={"Here is a sample placeholder"}
+          minRows={2}
           value={text}
           w={"full"}
         />
