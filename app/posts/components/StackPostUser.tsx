@@ -12,11 +12,11 @@ type Props = {
 export const StackPostUser: FunctionComponent<Props> = ({ user }) => {
   if (user.name) {
     return (
-      <HStack align={"center"} pt={1}>
+      <HStack align={"flex-start"} pt={1}>
         <Text fontWeight={"bold"} lineHeight={1}>
           {user.name}
         </Text>
-        <Text color={"gray.500"} fontSize={"sm"} lineHeight={1}>
+        <Text color={"gray.500"} fontSize={"sm"} lineHeight={1} wordBreak={"break-word"}>
           {`@${user.username || user.id}`}
         </Text>
       </HStack>
