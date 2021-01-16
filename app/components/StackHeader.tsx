@@ -4,7 +4,7 @@ import React, { FunctionComponent } from "react"
 export const StackHeader: FunctionComponent = ({ children }) => {
   return (
     <Stack px={4}>
-      <Heading>{children}</Heading>
+      <Heading letterSpacing={"wider"}>{children}</Heading>
     </Stack>
   )
 }

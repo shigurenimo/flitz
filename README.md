@@ -1,13 +1,12 @@
 This is a [Blitz.js](https://github.com/blitz-js/blitz) app.
 
-# **Flitz**
+# **FLITZ**
 
 ## Getting Started
 
 Make env file and run PostgreSQL by using Docker.
 
 ```
-% echo "DATABASE_URL="postgresql://postgres@localhost:5432/app"\nPOSTGRES_HOST_AUTH_METHOD=trust" > .env.local
 % docker-compose up -d
 ```
 

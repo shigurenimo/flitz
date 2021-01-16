@@ -20,7 +20,6 @@ import {
   FiBell,
   FiGithub,
   FiHome,
-  FiLogIn,
   FiMail,
   FiSettings,
   FiUser,
@@ -70,7 +69,7 @@ export const LayoutHeader: FunctionComponent = () => {
             icon={FiGithub}
             onClick={() => router.push("/about")}
           >
-            {t("About")}
+            {t("FLITZ")}
           </StackButtonRoute>
           {session.userId === null && (
             <StackButtonRoute
@@ -78,7 +77,7 @@ export const LayoutHeader: FunctionComponent = () => {
               icon={FiHome}
               onClick={() => router.push("/")}
             >
-              {"Home"}
+              {t("Home")}
             </StackButtonRoute>
           )}
           {session.userId && (
@@ -89,7 +88,7 @@ export const LayoutHeader: FunctionComponent = () => {
                   icon={FiHome}
                   onClick={() => router.push("/")}
                 >
-                  {"Home"}
+                  {t("Home")}
                 </StackButtonRoute>
               }
             >
@@ -99,18 +98,20 @@ export const LayoutHeader: FunctionComponent = () => {
               />
             </Suspense>
           )}
-          <StackButtonRoute
-            isActive={activeRoute === "posts"}
-            icon={FiZap}
-            onClick={() => router.push("/posts")}
-          >
-            {"Stream"}
-          </StackButtonRoute>
+          {session.userId && (
+            <StackButtonRoute
+              isActive={activeRoute === "posts"}
+              icon={FiZap}
+              onClick={() => router.push("/posts")}
+            >
+              {t("Stream")}
+            </StackButtonRoute>
+          )}
           {session.userId && (
             <Suspense
               fallback={
                 <StackButtonRoute disabled icon={FiBell}>
-                  {"Notifications"}
+                  {t("Notifications")}
                 </StackButtonRoute>
               }
             >
@@ -124,7 +125,7 @@ export const LayoutHeader: FunctionComponent = () => {
             <Suspense
               fallback={
                 <StackButtonRoute disabled icon={FiMail}>
-                  {"Messages"}
+                  {t("Messages")}
                 </StackButtonRoute>
               }
             >
@@ -140,16 +141,7 @@ export const LayoutHeader: FunctionComponent = () => {
               isActive={activeRoute === "users"}
               onClick={() => router.push(`/${session.username}`)}
             >
-              {"Profile"}
-            </StackButtonRoute>
-          )}
-          {session.userId === null && (
-            <StackButtonRoute
-              icon={FiLogIn}
-              isActive={activeRoute === "login"}
-              onClick={() => router.push("/login")}
-            >
-              {"Login"}
+              {t("Profile")}
             </StackButtonRoute>
           )}
           {session.userId && (
@@ -158,12 +150,12 @@ export const LayoutHeader: FunctionComponent = () => {
               isActive={activeRoute === "settings"}
               onClick={() => router.push("/settings")}
             >
-              {"Settings"}
+              {t("Settings")}
             </StackButtonRoute>
           )}
-          <StackButtonRouteDarkMode />
+          <StackButtonRouteLanguage />
           <Box pr={4}>
-            <StackButtonRouteLanguage />
+            <StackButtonRouteDarkMode />
           </Box>
         </HStack>
       </Flex>

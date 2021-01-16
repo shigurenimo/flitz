@@ -13,7 +13,6 @@ import {
   FiBell,
   FiGithub,
   FiHome,
-  FiLogIn,
   FiMail,
   FiSettings,
   FiUser,
@@ -57,7 +56,7 @@ export const LayoutAside: FunctionComponent = () => {
           icon={FiGithub}
           onClick={() => router.push("/about")}
         >
-          {t("About")}
+          {t("FLITZ")}
         </StackButtonRoute>
         {session.userId === null && (
           <StackButtonRoute
@@ -65,7 +64,7 @@ export const LayoutAside: FunctionComponent = () => {
             icon={FiHome}
             onClick={() => router.push("/")}
           >
-            {"Home"}
+            {t("Home")}
           </StackButtonRoute>
         )}
         {session.userId && (
@@ -76,7 +75,7 @@ export const LayoutAside: FunctionComponent = () => {
                 icon={FiHome}
                 onClick={() => router.push("/")}
               >
-                {"Home"}
+                {t("Home")}
               </StackButtonRoute>
             }
           >
@@ -87,22 +86,23 @@ export const LayoutAside: FunctionComponent = () => {
           </Suspense>
         )}
         <StackButtonRoute
-          isActive={activeRoute === "posts"}
           icon={FiZap}
+          isActive={activeRoute === "posts"}
+          isDisabled={session.userId === null}
           onClick={() => router.push("/posts")}
         >
-          {"Stream"}
+          {t("Stream")}
         </StackButtonRoute>
         {session.userId === null && (
           <StackButtonRoute isDisabled icon={FiBell}>
-            {"Notifications"}
+            {t("Notifications")}
           </StackButtonRoute>
         )}
         {session.userId && (
           <Suspense
             fallback={
               <StackButtonRoute disabled icon={FiBell}>
-                {"Notifications"}
+                {t("Notifications")}
               </StackButtonRoute>
             }
           >
@@ -114,14 +114,14 @@ export const LayoutAside: FunctionComponent = () => {
         )}
         {session.userId === null && (
           <StackButtonRoute isDisabled icon={FiMail}>
-            {"Messages"}
+            {t("Messages")}
           </StackButtonRoute>
         )}
         {session.userId && (
           <Suspense
             fallback={
               <StackButtonRoute disabled icon={FiMail}>
-                {"Messages"}
+                {t("Messages")}
               </StackButtonRoute>
             }
           >
@@ -131,40 +131,24 @@ export const LayoutAside: FunctionComponent = () => {
             />
           </Suspense>
         )}
-        {session.userId === null && (
-          <StackButtonRoute isDisabled icon={FiUser}>
-            {"Profile"}
-          </StackButtonRoute>
-        )}
-        {session.userId && (
-          <StackButtonRoute
-            icon={FiUser}
-            isActive={activeRoute === "users"}
-            onClick={() => router.push(`/${session.username}`)}
-          >
-            {"Profile"}
-          </StackButtonRoute>
-        )}
-        {session.userId === null && (
-          <StackButtonRoute
-            icon={FiLogIn}
-            isActive={activeRoute === "login"}
-            onClick={() => router.push("/login")}
-          >
-            {"Login"}
-          </StackButtonRoute>
-        )}
-        {session.userId && (
-          <StackButtonRoute
-            icon={FiSettings}
-            isActive={activeRoute === "settings"}
-            onClick={() => router.push("/settings")}
-          >
-            {"Settings"}
-          </StackButtonRoute>
-        )}
-        <StackButtonRouteDarkMode />
+        <StackButtonRoute
+          icon={FiUser}
+          isActive={activeRoute === "users"}
+          isDisabled={session.userId === null}
+          onClick={() => router.push(`/${session.username}`)}
+        >
+          {t("Profile")}
+        </StackButtonRoute>
+        <StackButtonRoute
+          icon={FiSettings}
+          isActive={activeRoute === "settings"}
+          isDisabled={session.userId === null}
+          onClick={() => router.push("/settings")}
+        >
+          {t("Settings")}
+        </StackButtonRoute>
         <StackButtonRouteLanguage />
+        <StackButtonRouteDarkMode />
       </Stack>
     </Stack>
   )

@@ -1,11 +1,13 @@
 import { getSessionContext } from "@blitzjs/server"
-import { StackDivider } from "@chakra-ui/react"
-import { StackFallbackLogin } from "app/components/StackFallbackLogin"
+import { Stack, StackDivider } from "@chakra-ui/react"
 import { StackHeader } from "app/components/StackHeader"
 import { StackPage } from "app/components/StackMain"
+import { HomePageHero } from "app/home/components/HomePageHero"
 import { HomePageInput } from "app/home/components/HomePageInput"
 import { HomePageList } from "app/home/components/HomePageList"
+import { HomePageLogin } from "app/home/components/HomePageLogin"
 import Layout from "app/layouts/Layout"
+import { PostsPageList } from "app/posts/components/PostsPageList"
 import { PostsPageListFallback } from "app/posts/components/PostsPageListFallback"
 import { BlitzPage, GetServerSideProps, PublicData } from "blitz"
 import path from "path"
@@ -21,8 +23,17 @@ const HomePage: BlitzPage<Props> = ({ userId }) => {
   if (!userId) {
     return (
       <StackPage divider={<StackDivider />}>
-        <StackHeader>{t("Home")}</StackHeader>
-        <StackFallbackLogin />
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          align={"start"}
+          spacing={4}
+        >
+          <HomePageHero />
+          <HomePageLogin />
+        </Stack>
+        <Suspense fallback={<PostsPageListFallback />}>
+          <PostsPageList />
+        </Suspense>
       </StackPage>
     )
   }
