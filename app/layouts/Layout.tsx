@@ -8,12 +8,19 @@ type LayoutProps = {
   title?: string
 }
 
-const Layout: FunctionComponent<LayoutProps> = ({ title = "Flitz", children }) => {
+const Layout: FunctionComponent<LayoutProps> = ({
+  title = "Flitz",
+  children,
+}) => {
   return (
     <>
       <Head>
         <title>{title || "Flitz"}</title>
-        <link rel={"icon"} href={"/favicon.ico"} />
+        <link color={"#000000"} href={"favicon.svg"} rel={"mask-icon"} />
+        <link href={"apple-touch-icon.png"} rel={"apple-touch-icon"} />
+        <link href={"favicon.svg"} rel={"icon"} />
+        <link href={"manifest.json"} rel={"manifest"} />
+        <meta name={"theme-color"} content={"#ffffff"} />
       </Head>
       <LayoutAside />
       <Stack pl={{ base: 0, md: 56 }}>

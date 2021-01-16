@@ -1,0 +1,15 @@
+{
+  "name": "Flitz",
+  "short_name": "Flitz",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "The Fullstack Microblogging Community — built on Blitz.js.",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#ffffff"
+}
