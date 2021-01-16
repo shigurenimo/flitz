@@ -1,4 +1,11 @@
-import { Avatar, AvatarGroup, HStack, Icon, Stack, Text } from "@chakra-ui/react"
+import {
+  Avatar,
+  AvatarGroup,
+  HStack,
+  Icon,
+  Stack,
+  Text,
+} from "@chakra-ui/react"
 import { AvatarUser } from "app/components/AvatarUser"
 import { StackCard } from "app/components/StackCard"
 import { StackCardQuotationEmbedded } from "app/posts/components/StackCardQuotationEmbedded"
@@ -27,7 +34,10 @@ type Props = {
   }
 }
 
-export const StackCardNotificationLike: FunctionComponent<Props> = ({ createdAt, like }) => {
+export const StackCardNotificationLike: FunctionComponent<Props> = ({
+  createdAt,
+  like,
+}) => {
   return (
     <StackCard spacing={4}>
       <HStack spacing={4}>
@@ -38,7 +48,9 @@ export const StackCardNotificationLike: FunctionComponent<Props> = ({ createdAt,
           </AvatarGroup>
         </Stack>
         <HStack spacing={2}>
-          <Text fontWeight={"bold"}>{like.user.name || like.user.username}</Text>
+          <Text fontWeight={"bold"}>
+            {like.user.name || like.user.username}
+          </Text>
           <Text>{"liked your post"}</Text>
         </HStack>
       </HStack>

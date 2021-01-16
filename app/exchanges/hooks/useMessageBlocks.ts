@@ -9,7 +9,10 @@ type MessageWithUser = Message & {
   }
 }
 
-export const useMessageBlocks = (messages: MessageWithUser[], recipientId: string) => {
+export const useMessageBlocks = (
+  messages: MessageWithUser[],
+  recipientId: string
+) => {
   let userId: null | string = null
 
   const blocks: MessageBlock[] = []
@@ -23,7 +26,8 @@ export const useMessageBlocks = (messages: MessageWithUser[], recipientId: strin
 
     const nextMesasge = isLastIndex ? null : sortedMesasges[index + 1]
 
-    const isLastMessage = nextMesasge !== null && nextMesasge.user.id !== message.user.id
+    const isLastMessage =
+      nextMesasge !== null && nextMesasge.user.id !== message.user.id
 
     blocks.push({
       ...message,

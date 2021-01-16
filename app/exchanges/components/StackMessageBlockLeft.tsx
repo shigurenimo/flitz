@@ -31,7 +31,12 @@ export const StackCardMessageLeft: FunctionComponent<Props> = ({
               {userName}
             </Text>
           )}
-          <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1} whiteSpace={"pre-wrap"}>
+          <Text
+            fontSize={"xl"}
+            fontWeight={"bold"}
+            lineHeight={1}
+            whiteSpace={"pre-wrap"}
+          >
             {text}
           </Text>
           {hasTime && <StackMessageDate createdAt={createdAt} />}

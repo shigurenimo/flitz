@@ -1,4 +1,11 @@
-import { Avatar, AvatarGroup, HStack, Icon, Stack, Text } from "@chakra-ui/react"
+import {
+  Avatar,
+  AvatarGroup,
+  HStack,
+  Icon,
+  Stack,
+  Text,
+} from "@chakra-ui/react"
 import { AvatarUser } from "app/components/AvatarUser"
 import { StackCard } from "app/components/StackCard"
 import React, { FunctionComponent } from "react"

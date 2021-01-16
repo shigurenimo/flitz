@@ -7,7 +7,10 @@ export const StackButtonRouteDarkMode: FunctionComponent = () => {
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
-    <StackButtonRoute icon={colorMode === "light" ? FiSun : FiMoon} onClick={toggleColorMode}>
+    <StackButtonRoute
+      icon={colorMode === "light" ? FiSun : FiMoon}
+      onClick={toggleColorMode}
+    >
       {colorMode === "light" ? "Light Mode" : "Dark Mode"}
     </StackButtonRoute>
   )

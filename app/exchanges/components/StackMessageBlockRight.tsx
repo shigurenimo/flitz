@@ -20,7 +20,12 @@ export const StackCardMessageRight: FunctionComponent<Props> = ({
       <HStack align={"start"} spacing={4}>
         <Stack spacing={2} w={"full"}>
           {hasAvatar && (
-            <Text align={"right"} fontSize={"lg"} fontWeight={"bold"} lineHeight={1}>
+            <Text
+              align={"right"}
+              fontSize={"lg"}
+              fontWeight={"bold"}
+              lineHeight={1}
+            >
               {userName}
             </Text>
           )}
@@ -33,7 +38,9 @@ export const StackCardMessageRight: FunctionComponent<Props> = ({
           >
             {text}
           </Text>
-          {hasTime && <StackMessageDate justify={"flex-end"} createdAt={createdAt} />}
+          {hasTime && (
+            <StackMessageDate justify={"flex-end"} createdAt={createdAt} />
+          )}
         </Stack>
         {hasAvatar ? (
           <Box minW={12}>

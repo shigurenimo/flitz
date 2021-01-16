@@ -29,14 +29,22 @@ export const StackUserAction: FunctionComponent<Props> = ({
   return (
     <HStack spacing={4}>
       <Button
-        leftIcon={<Icon display={"flex"} as={hasRelationship ? FiUserCheck : FiUserPlus} />}
+        leftIcon={
+          <Icon
+            display={"flex"}
+            as={hasRelationship ? FiUserCheck : FiUserPlus}
+          />
+        }
         isLoading={isLoading}
         loadingText={hasRelationship ? "Following" : "Follow"}
         onClick={hasRelationship ? onUnfollow : onFollow}
       >
         {hasRelationship ? "Following" : "Follow"}
       </Button>
-      <Button leftIcon={<Icon display={"flex"} as={FiMail} />} onClick={onExchange}>
+      <Button
+        leftIcon={<Icon display={"flex"} as={FiMail} />}
+        onClick={onExchange}
+      >
         {"Message"}
       </Button>
     </HStack>

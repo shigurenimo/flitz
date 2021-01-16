@@ -8,7 +8,9 @@ import {
 import React, { FunctionComponent } from "react"
 import { FallbackProps } from "react-error-boundary"
 
-export const RootErrorFallback: FunctionComponent<FallbackProps> = ({ error }) => {
+export const RootErrorFallback: FunctionComponent<FallbackProps> = ({
+  error,
+}) => {
   if (error instanceof AuthenticationError) {
     return (
       <ErrorComponent
@@ -19,7 +21,12 @@ export const RootErrorFallback: FunctionComponent<FallbackProps> = ({ error }) =
   }
 
   if (error instanceof CSRFTokenMismatchError) {
-    return <ErrorComponent statusCode={error.statusCode} title={"CSRF token mismatch"} />
+    return (
+      <ErrorComponent
+        statusCode={error.statusCode}
+        title={"CSRF token mismatch"}
+      />
+    )
   }
 
   if (error instanceof AuthorizationError) {

@@ -6,7 +6,9 @@ import React, { FunctionComponent, useState } from "react"
 
 type Props = { refetch: () => void }
 
-export const ShowExchangePageTextarea: FunctionComponent<Props> = ({ refetch }) => {
+export const ShowExchangePageTextarea: FunctionComponent<Props> = ({
+  refetch,
+}) => {
   const recipientId = useParam("recipientId", "string")
 
   const bg = useColorModeValue("white", "gray.800")
@@ -26,7 +28,14 @@ export const ShowExchangePageTextarea: FunctionComponent<Props> = ({ refetch }) 
   }
 
   return (
-    <Stack bg={bg} bottom={0} position={"sticky"} px={4} py={{ base: 4, lg: 8 }} rounded={"md"}>
+    <Stack
+      bg={bg}
+      bottom={0}
+      position={"sticky"}
+      px={4}
+      py={{ base: 4, lg: 8 }}
+      rounded={"md"}
+    >
       <HStack spacing={4}>
         <TextareaAutosize
           isDisabled={isLoading}
@@ -34,7 +43,11 @@ export const ShowExchangePageTextarea: FunctionComponent<Props> = ({ refetch }) 
           placeholder={"Message"}
           value={text}
         />
-        <Button isLoading={isLoading} loadingText={"Send"} onClick={() => onCreateIssue()}>
+        <Button
+          isLoading={isLoading}
+          loadingText={"Send"}
+          onClick={() => onCreateIssue()}
+        >
           {"Send"}
         </Button>
       </HStack>

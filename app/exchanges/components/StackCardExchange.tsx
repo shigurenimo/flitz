@@ -23,7 +23,11 @@ type Props = {
   } | null
 }
 
-export const StackCardExchange: FunctionComponent<Props> = ({ messages, onClick, relatedUser }) => {
+export const StackCardExchange: FunctionComponent<Props> = ({
+  messages,
+  onClick,
+  relatedUser,
+}) => {
   const [message] = messages
 
   if (relatedUser === null) return null

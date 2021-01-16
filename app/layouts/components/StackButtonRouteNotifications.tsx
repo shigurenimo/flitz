@@ -9,8 +9,12 @@ type Props = {
   onClick?: () => void
 }
 
-export const StackButtonRouteNotifications: FunctionComponent<Props> = ({ ...props }) => {
-  const [hasBadge] = useQuery(checkUnreadNotifications, null, { refetchInterval: 2000 })
+export const StackButtonRouteNotifications: FunctionComponent<Props> = ({
+  ...props
+}) => {
+  const [hasBadge] = useQuery(checkUnreadNotifications, null, {
+    refetchInterval: 2000,
+  })
 
   return (
     <StackButtonRoute icon={FiBell} hasBadge={hasBadge} {...props}>

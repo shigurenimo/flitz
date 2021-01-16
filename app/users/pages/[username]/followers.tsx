@@ -28,7 +28,10 @@ ShowUserFolloweesPage.getLayout = (page) => {
   return <Layout title={"Followers"}>{page}</Layout>
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
+  res,
+}) => {
   // https://github.com/blitz-js/blitz/issues/794
   path.resolve("blitz.config.js")
   path.resolve(".next/__db.js")

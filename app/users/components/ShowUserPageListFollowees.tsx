@@ -10,7 +10,9 @@ import { useTranslation } from "react-i18next"
 
 type Props = { userId?: string }
 
-export const ShowUserPageListFollowees: FunctionComponent<Props> = ({ userId }) => {
+export const ShowUserPageListFollowees: FunctionComponent<Props> = ({
+  userId,
+}) => {
   const { t } = useTranslation()
 
   const username = useParam("username", "string")
@@ -24,9 +26,14 @@ export const ShowUserPageListFollowees: FunctionComponent<Props> = ({ userId }) 
     }
   )
 
-  const [followUserMutation, { isLoading: isLoadingFollowUser }] = useMutation(followUser)
+  const [followUserMutation, { isLoading: isLoadingFollowUser }] = useMutation(
+    followUser
+  )
 
-  const [unfollowUserMutation, { isLoading: isLoadingUnfollowUser }] = useMutation(unfollowUser)
+  const [
+    unfollowUserMutation,
+    { isLoading: isLoadingUnfollowUser },
+  ] = useMutation(unfollowUser)
 
   const toast = useToast()
 

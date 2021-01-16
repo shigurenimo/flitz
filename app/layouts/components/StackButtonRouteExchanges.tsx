@@ -10,10 +10,14 @@ type Props = {
   onClick?: () => void
 }
 
-export const StackButtonRouteExchanges: FunctionComponent<Props> = ({ ...props }) => {
+export const StackButtonRouteExchanges: FunctionComponent<Props> = ({
+  ...props
+}) => {
   const { t } = useTranslation()
 
-  const [hasUnreadMessages] = useQuery(checkUnreadMessages, null, { refetchInterval: 2000 })
+  const [hasUnreadMessages] = useQuery(checkUnreadMessages, null, {
+    refetchInterval: 2000,
+  })
 
   return (
     <StackButtonRoute icon={FiMail} hasBadge={hasUnreadMessages} {...props}>

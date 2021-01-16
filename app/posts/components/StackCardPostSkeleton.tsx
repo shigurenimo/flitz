@@ -1,4 +1,12 @@
-import { Box, HStack, Icon, Skeleton, SkeletonCircle, SkeletonText, Stack } from "@chakra-ui/react"
+import {
+  Box,
+  HStack,
+  Icon,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Stack,
+} from "@chakra-ui/react"
 import { StackCard } from "app/components/StackCard"
 import { ButtonPostAction } from "app/posts/components/ButtonPostAction"
 import React, { FunctionComponent } from "react"

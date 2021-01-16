@@ -28,7 +28,11 @@ export const StackButtonRoute: FunctionComponent<Props> = ({
       <Button
         justifyContent={"start"}
         leftIcon={
-          <Avatar bg={""} size={"sm"} icon={<Icon as={icon} color={color} fontSize={"xl"} />}>
+          <Avatar
+            bg={""}
+            size={"sm"}
+            icon={<Icon as={icon} color={color} fontSize={"xl"} />}
+          >
             {hasBadge && <AvatarBadge boxSize={"1em"} bg={"primary.500"} />}
           </Avatar>
         }

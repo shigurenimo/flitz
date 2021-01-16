@@ -1,4 +1,9 @@
-import { Stack, StackProps, useBreakpointValue, useColorModeValue } from "@chakra-ui/react"
+import {
+  Stack,
+  StackProps,
+  useBreakpointValue,
+  useColorModeValue,
+} from "@chakra-ui/react"
 import React, { FunctionComponent } from "react"
 
 type Props = StackProps

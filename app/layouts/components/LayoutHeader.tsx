@@ -1,4 +1,11 @@
-import { Box, Flex, HStack, Stack, useColorModeValue, useMediaQuery } from "@chakra-ui/react"
+import {
+  Box,
+  Flex,
+  HStack,
+  Stack,
+  useColorModeValue,
+  useMediaQuery,
+} from "@chakra-ui/react"
 import { StackButtonRoute } from "app/layouts/components/StackButtonRoute"
 import { StackButtonRouteDarkMode } from "app/layouts/components/StackButtonRouteDarkMode"
 import { StackButtonRouteExchanges } from "app/layouts/components/StackButtonRouteExchanges"

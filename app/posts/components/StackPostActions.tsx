@@ -5,7 +5,13 @@ import createQuotation from "app/posts/mutations/createQuotation"
 import deletePostLike from "app/posts/mutations/deletePostLike"
 import { useMutation, useRouter } from "blitz"
 import React, { FunctionComponent } from "react"
-import { FiClipboard, FiHeart, FiMessageCircle, FiRepeat, FiShare } from "react-icons/fi"
+import {
+  FiClipboard,
+  FiHeart,
+  FiMessageCircle,
+  FiRepeat,
+  FiShare,
+} from "react-icons/fi"
 
 type Props = {
   hasLike: boolean
@@ -38,17 +44,20 @@ export const StackPostActions: FunctionComponent<Props> = ({
     typeof window !== "undefined" ? window.location.href : ""
   )
 
-  const [createPostLikeMutation, { isLoading: isLoadingCreatePostLike }] = useMutation(
-    createPostLike
-  )
+  const [
+    createPostLikeMutation,
+    { isLoading: isLoadingCreatePostLike },
+  ] = useMutation(createPostLike)
 
-  const [deletePostLikeMutation, { isLoading: isLoadingDeletePostLike }] = useMutation(
-    deletePostLike
-  )
+  const [
+    deletePostLikeMutation,
+    { isLoading: isLoadingDeletePostLike },
+  ] = useMutation(deletePostLike)
 
-  const [createQuotationMutation, { isLoading: isLoadingCreateQuotation }] = useMutation(
-    createQuotation
-  )
+  const [
+    createQuotationMutation,
+    { isLoading: isLoadingCreateQuotation },
+  ] = useMutation(createQuotation)
 
   const onCreateReply = () => {
     router.push(`/posts/${postId}`)
@@ -103,7 +112,9 @@ export const StackPostActions: FunctionComponent<Props> = ({
       <ButtonPostAction
         aria-label={"Like"}
         isActive={!isDisabled && hasLike}
-        isDisabled={isDisabled || isLoadingDeletePostLike || isLoadingCreatePostLike}
+        isDisabled={
+          isDisabled || isLoadingDeletePostLike || isLoadingCreatePostLike
+        }
         leftIcon={<Icon as={FiHeart} display={"flex"} />}
         onClick={onCreateLike}
       >
@@ -119,7 +130,9 @@ export const StackPostActions: FunctionComponent<Props> = ({
       </ButtonPostAction>
       <ButtonPostAction
         aria-label={"Share"}
-        leftIcon={<Icon as={hasShareAPI ? FiShare : FiClipboard} display={"flex"} />}
+        leftIcon={
+          <Icon as={hasShareAPI ? FiShare : FiClipboard} display={"flex"} />
+        }
         onClick={onShare}
       >
         {hasShareAPI ? "Share" : hasCopied ? "Copied" : "Copy"}
