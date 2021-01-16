@@ -11,10 +11,6 @@ export const toActiveRoute = (pathname: string) => {
     return "exchanges"
   }
 
-  if (pathname.startsWith("/login")) {
-    return "login"
-  }
-
   if (pathname.startsWith("/notifications")) {
     return "notifications"
   }

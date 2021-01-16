@@ -1,5 +1,5 @@
 import { Box, Button, Stack } from "@chakra-ui/react"
-import logout from "app/auth/mutations/logout"
+import logout from "app/home/mutations/logout"
 import { useMutation, useRouter } from "blitz"
 import React, { FunctionComponent } from "react"
 
