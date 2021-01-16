@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, StackDivider, useToast } from "@chakra-ui/react"
+import { Alert, AlertIcon, Box, StackDivider, useToast } from "@chakra-ui/react"
 import { StackList } from "app/components/StackList"
 import { StackCardUser } from "app/users/components/StackCardUser"
 import followUser from "app/users/mutations/followUser"
@@ -80,10 +80,12 @@ export const ShowUserPageListFollowees: FunctionComponent<Props> = ({
   return (
     <StackList divider={<StackDivider />}>
       {isEmpty && (
-        <Alert status={"info"}>
-          <AlertIcon />
-          {t("No Followees")}
-        </Alert>
+        <Box px={4}>
+          <Alert status={"info"}>
+            <AlertIcon />
+            {t("No Followees")}
+          </Alert>
+        </Box>
       )}
       {groupedFriendships.map((group) => {
         return group.friendships.map((friendship) => {

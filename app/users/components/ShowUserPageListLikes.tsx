@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, StackDivider } from "@chakra-ui/react"
+import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/components/StackList"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import getUserLikesInfinite from "app/users/queries/getUserLikesInfinite"
@@ -25,10 +25,12 @@ export const ShowUserPageListLikes: FunctionComponent = () => {
       {groupedLikes.map((group) => {
         if (group.isEmpty) {
           return (
-            <Alert key={"alert"} status={"info"}>
-              <AlertIcon />
-              {t("This user hasn't liked any post yet.")}
-            </Alert>
+            <Box key={"alert"} px={4}>
+              <Alert status={"info"}>
+                <AlertIcon />
+                {t("This user hasn't liked any post yet.")}
+              </Alert>
+            </Box>
           )
         }
 

@@ -1,6 +1,7 @@
 import {
   Alert,
   AlertIcon,
+  Box,
   Button,
   HStack,
   StackDivider,
@@ -49,10 +50,12 @@ export const ExchangesPageList: FunctionComponent = () => {
     <>
       <StackList divider={<StackDivider />}>
         {isEmpty && (
-          <Alert status={"info"}>
-            <AlertIcon />
-            {t("No Exchanges")}
-          </Alert>
+          <Box px={4}>
+            <Alert status={"info"}>
+              <AlertIcon />
+              {t("No Exchanges")}
+            </Alert>
+          </Box>
         )}
         {exchanges.map((exchange) => (
           <StackCardExchange

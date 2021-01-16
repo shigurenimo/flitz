@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, StackDivider } from "@chakra-ui/react"
+import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/components/StackList"
 import { StackCardNotification } from "app/notifications/components/StackCardNotification"
 import getNotificationsInfinite from "app/notifications/queries/getNotificationsInfinite"
@@ -25,10 +25,12 @@ export const NotificationsPageList: FunctionComponent = () => {
   return (
     <StackList divider={<StackDivider />}>
       {isEmpty && (
-        <Alert status={"info"}>
-          <AlertIcon />
-          {t("No Notifications")}
-        </Alert>
+        <Box px={4}>
+          <Alert status={"info"}>
+            <AlertIcon />
+            {t("No Notifications")}
+          </Alert>
+        </Box>
       )}
       {groupedNotifications.map((group) => {
         return group.notifications.map((notification) => {

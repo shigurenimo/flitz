@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, StackDivider } from "@chakra-ui/react"
+import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/components/StackList"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import getUserPostsInfinite from "app/users/queries/getUserPostsInfinite"
@@ -25,10 +25,12 @@ export const ShowUserPageListPosts: FunctionComponent = () => {
       {groupedPosts.map((group) => {
         if (group.isEmpty) {
           return (
-            <Alert key={"alert"} status={"info"}>
-              <AlertIcon />
-              {t("This user hasn't posted yet.")}
-            </Alert>
+            <Box px={4}>
+              <Alert key={"alert"} status={"info"}>
+                <AlertIcon />
+                {t("This user hasn't posted yet.")}
+              </Alert>
+            </Box>
           )
         }
         return group.posts.map((post) => {

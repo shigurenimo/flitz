@@ -50,7 +50,7 @@ const AboutPage: BlitzPage = () => {
           </Box>
         </Stack>
       </HStack>
-      <Stack spacing={8}>
+      <Stack spacing={8} px={4}>
         <Heading>{"Clone a repository"}</Heading>
         <Stack>
           <Text>{"Close a repository by using GitHub CLI"}</Text>
@@ -76,7 +76,7 @@ const AboutPage: BlitzPage = () => {
           </Box>
         </Stack>
       </Stack>
-      <Stack spacing={8}>
+      <Stack spacing={8} px={4}>
         <Heading>{"Getting Started"}</Heading>
         <Stack>
           <Text>{"Run PostgreSQL by using Docker."}</Text>

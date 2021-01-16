@@ -167,6 +167,15 @@ export class PostRepository {
     })
   }
 
+  static deletePost(input: { postId: Id; userId: Id }) {
+    return db.$transaction([
+      db.post.delete({ where: { id: input.postId.value } }),
+      db.bookmark.deleteMany({ where: { postId: input.postId.value } }),
+      db.like.deleteMany({ where: { postId: input.postId.value } }),
+      db.reference.deleteMany({ where: { postId: input.postId.value } }),
+    ])
+  }
+
   static createLikes(input: { postId: Id; userId: Id }) {
     return db.post.update({
       data: {
