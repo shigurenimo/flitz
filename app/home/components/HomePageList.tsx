@@ -10,7 +10,7 @@ export const HomePageList: FunctionComponent = () => {
 
   const [groupedReferences] = useInfiniteQuery(
     getReferencesInfinite,
-    (page = { take: 80, skip: 0 }) => page,
+    (page = { skip: 0 }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 2000,
@@ -23,7 +23,10 @@ export const HomePageList: FunctionComponent = () => {
         return group.references.map((reference) => {
           return (
             <StackCardPost
-              isDisabled={session.userId !== null && session.userId === reference.post.userId}
+              isDisabled={
+                session.userId !== null &&
+                session.userId === reference.post.userId
+              }
               {...reference.post}
             />
           )

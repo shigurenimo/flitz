@@ -1,4 +1,10 @@
-import { Alert, AlertIcon, Button, HStack, StackDivider } from "@chakra-ui/react"
+import {
+  Alert,
+  AlertIcon,
+  Button,
+  HStack,
+  StackDivider,
+} from "@chakra-ui/react"
 import { StackList } from "app/components/StackList"
 import { StackCardExchange } from "app/exchanges/components/StackCardExchange"
 import getExchanges from "app/exchanges/queries/getExchanges"
@@ -16,9 +22,7 @@ export const ExchangesPageList: FunctionComponent = () => {
   const page = Number(router.query.page) || 0
 
   const [{ exchanges, hasMore, isEmpty }] = usePaginatedQuery(getExchanges, {
-    orderBy: { id: "asc" },
     skip: ITEMS_PER_PAGE * page,
-    take: ITEMS_PER_PAGE,
   })
 
   const onPreviousPage = () => {
@@ -29,7 +33,10 @@ export const ExchangesPageList: FunctionComponent = () => {
     router.push({ query: { page: page + 1 } })
   }
 
-  const onMoveExchangePage = (exchangeId: string, relatedUserId: string | null) => {
+  const onMoveExchangePage = (
+    exchangeId: string,
+    relatedUserId: string | null
+  ) => {
     if (relatedUserId === null) {
       router.push(`/exchanges/${exchangeId}`)
       return

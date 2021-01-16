@@ -17,7 +17,9 @@ import { useForm } from "react-hook-form"
 export const StackFallbackLogin: FunctionComponent = () => {
   const [loginMutation, { isLoading: isLoadingLogin }] = useMutation(login)
 
-  const [createUserMutation, { isLoading: isLoadingCreateUser }] = useMutation(createUser)
+  const [createUserMutation, { isLoading: isLoadingCreateUser }] = useMutation(
+    createUser
+  )
 
   const onLogin = async (email: string, password: string) => {
     await loginMutation({ email, password })
@@ -36,7 +38,10 @@ export const StackFallbackLogin: FunctionComponent = () => {
 
   const toast = useToast()
 
-  const onSubmitCreateUser = async (values) => {
+  const onSubmitCreateUser = async (values: {
+    email: string
+    password: string
+  }) => {
     try {
       await onCreateUser(values.email, values.password)
     } catch (error) {
@@ -46,7 +51,7 @@ export const StackFallbackLogin: FunctionComponent = () => {
     }
   }
 
-  const onSubmitLogin = async (values) => {
+  const onSubmitLogin = async (values: { email: string; password: string }) => {
     try {
       await onLogin(values.email, values.password)
     } catch (error) {
@@ -70,7 +75,12 @@ export const StackFallbackLogin: FunctionComponent = () => {
         onSubmit={handleSubmit(() => null)}
         spacing={4}
       >
-        <Stack direction={{ base: "column", md: "row" }} justify={"flex-end"} flex={1} spacing={4}>
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          justify={"flex-end"}
+          flex={1}
+          spacing={4}
+        >
           <FormControl isInvalid={errors.email}>
             <Input
               aria-label={"Email"}
@@ -85,7 +95,9 @@ export const StackFallbackLogin: FunctionComponent = () => {
               })}
               type={"email"}
             />
-            <FormErrorMessage>{errors.email && errors.password.email}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.email && errors.password.email}
+            </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={errors.password}>
             <Input
@@ -100,12 +112,15 @@ export const StackFallbackLogin: FunctionComponent = () => {
                 },
                 minLength: {
                   value: 5,
-                  message: "Password is too short. (must be at least 5 characters)",
+                  message:
+                    "Password is too short. (must be at least 5 characters)",
                 },
               })}
               type={"password"}
             />
-            <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.password && errors.password.message}
+            </FormErrorMessage>
           </FormControl>
         </Stack>
         <HStack justify={"flex-end"}>

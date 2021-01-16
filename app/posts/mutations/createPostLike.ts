@@ -1,52 +1,28 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { NotificationRepository, PostRepository } from "app/domain/repositories"
+import { Id, idSchema } from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = { postId: string }
+export const inputSchema = z.object({ postId: idSchema })
 
-const createPostLike = async (input: Input, ctx: Ctx) => {
+const createPostLike = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  if (!input.postId) {
-    throw new NotFoundError()
-  }
+  const postId = new Id(input.postId)
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const post = await db.post.update({
-    data: {
-      likes: {
-        create: {
-          user: { connect: { id: userId } },
-        },
-      },
-      likesCount: { increment: 1 },
-    },
-    where: { id: input.postId },
-    include: {
-      likes: { where: { userId } },
-      user: true,
-    },
-  })
+  const post = await PostRepository.createLikes({ postId, userId })
 
   const [like] = post.likes
 
-  await db.notification.upsert({
-    create: {
-      like: { connect: { id: like.id } },
-      type: "LIKE",
-      uniqueId: input.postId,
-      user: { connect: { id: post.userId } },
-    },
-    update: {
-      like: { connect: { id: like.id } },
-    },
-    where: {
-      userId_type_uniqueId: {
-        type: "LIKE",
-        uniqueId: input.postId,
-        userId: post.userId,
-      },
-    },
+  await NotificationRepository.upsertPostLikeNotification({
+    likeId: new Id(like.id),
+    postId,
+    postUserId: new Id(post.user.id),
+    userId,
   })
 
   return post

@@ -37,8 +37,7 @@ export const StackCardUser: FunctionComponent<Props> = ({
     router.push(`/${user.username}`)
   }
 
-  const onRunFollow = async (event) => {
-    event.stopPropagation()
+  const onRunFollow = async () => {
     try {
       await onFollow()
       toast({ status: "success", title: "Success" })
@@ -47,8 +46,7 @@ export const StackCardUser: FunctionComponent<Props> = ({
     }
   }
 
-  const onRunUnfollow = async (event) => {
-    event.stopPropagation()
+  const onRunUnfollow = async () => {
     try {
       await onUnfollow()
       toast({ status: "success", title: "Success" })
@@ -76,7 +74,15 @@ export const StackCardUser: FunctionComponent<Props> = ({
               </Text>
             </Stack>
             {hasAction && (
-              <Button onClick={isFollowee ? onRunUnfollow : onRunFollow}>
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation()
+                  if (isFollowee) {
+                    return onRunUnfollow()
+                  }
+                  return onRunFollow()
+                }}
+              >
                 {isFollowee ? "Following" : "Follow"}
               </Button>
             )}

@@ -20,7 +20,7 @@ type Props = {
   quotation?: {
     createdAt: Date
     id: string
-    likesCount
+    likesCount: number
     likes?: {
       userId: string
     }[]
@@ -50,7 +50,7 @@ type Props = {
   reply?: {
     createdAt: Date
     id: string
-    likesCount
+    likesCount: number
     likes?: {
       userId: string
     }[]
@@ -114,7 +114,10 @@ export const StackCardPost: FunctionComponent<Props> = ({
         <HStack>
           <HStack bg={bg} px={4} py={1} rounded={"md"}>
             <Icon as={FiRepeat} />
-            <Text fontWeight={"bold"} fontSize={"sm"}>{`${user.name} Reposted`}</Text>
+            <Text
+              fontWeight={"bold"}
+              fontSize={"sm"}
+            >{`${user.name} Reposted`}</Text>
           </HStack>
         </HStack>
         <HStack align={"start"} spacing={4}>
@@ -151,7 +154,12 @@ export const StackCardPost: FunctionComponent<Props> = ({
           <AvatarUser userId={userId} />
           <Stack spacing={2} w={"full"}>
             <StackPostUser user={user} />
-            <Text color={"primary.500"} fontWeight={"bold"} fontSize={"sm"} lineHeight={1}>
+            <Text
+              color={"primary.500"}
+              fontWeight={"bold"}
+              fontSize={"sm"}
+              lineHeight={1}
+            >
               {`Replying to @${quotation.user.username}`}
             </Text>
             <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
@@ -187,7 +195,12 @@ export const StackCardPost: FunctionComponent<Props> = ({
           <AvatarUser userId={userId} />
           <Stack spacing={2} w={"full"}>
             <StackPostUser user={user} />
-            <Text color={"primary.500"} fontWeight={"bold"} fontSize={"sm"} lineHeight={1}>
+            <Text
+              color={"primary.500"}
+              fontWeight={"bold"}
+              fontSize={"sm"}
+              lineHeight={1}
+            >
               {`Replying to @${reply.user.username}`}
             </Text>
             <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>

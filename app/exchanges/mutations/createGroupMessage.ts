@@ -1,31 +1,32 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { ExchangeRepository } from "app/domain/repositories/exchangeRepository"
+import { Id, idSchema } from "app/domain/valueObjects/id"
+import { PostText, postTextSchema } from "app/domain/valueObjects/postText"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = {
-  text: string
-  exchangeId: string
-}
+const inputSchema = z.object({
+  text: postTextSchema,
+  exchangeId: idSchema,
+})
 
-const createGroupMessage = async (input: Input, ctx: Ctx) => {
+const createGroupMessage = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  if (input.text.trim().length === 0) {
-    throw new NotFoundError()
-  }
+  const userId = new Id(ctx.session.userId)
 
-  const userId = ctx.session.userId
+  const text = new PostText(input.text)
 
-  const exchange = await db.exchange.update({
-    data: {
-      messages: {
-        create: {
-          text: input.text,
-          user: { connect: { id: userId } },
-        },
-      },
-    },
-    include: { messages: true },
-    where: { id: input.exchangeId },
+  const exchangeId = new Id(input.exchangeId)
+
+  const exchange = await ExchangeRepository.update({
+    exchangeId,
+    text,
+    userId,
   })
 
   const [message] = exchange.messages

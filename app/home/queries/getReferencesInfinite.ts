@@ -1,65 +1,41 @@
+import { ReferenceRepository } from "app/domain/repositories"
+import { PageService } from "app/domain/services"
+import { ReferenceService } from "app/domain/services/referenceService"
+import { Id, Skip, skipSchema, Take } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
-import db, { Prisma } from "db"
+import * as z from "zod"
 
-type GetIssuesInput = Pick<Prisma.FindManyPostArgs, "skip" | "take">
+export const inputSchema = z.object({ skip: skipSchema })
 
-const getReferencesInfinite = async ({ skip = 0, take }: GetIssuesInput, ctx: Ctx) => {
+const getReferencesInfinite = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const references = await db.reference.findMany({
-    include: {
-      post: {
-        include: {
-          likes: { where: { userId } },
-          quotation: {
-            include: {
-              likes: { where: { userId } },
-              quotations: { where: { userId } },
-              replies: { where: { userId } },
-              user: true,
-            },
-          },
-          quotations: { where: { userId } },
-          replies: { where: { userId } },
-          reply: {
-            include: {
-              likes: { where: { userId } },
-              quotations: { where: { userId } },
-              replies: { where: { userId } },
-              user: true,
-            },
-          },
-          user: true,
-        },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-    skip,
-    take,
-    where: { userId },
+  const skip = new Skip(input.skip)
+
+  const references = await ReferenceRepository.findReferences({ skip, userId })
+
+  const hasUnreadReferences = ReferenceService.hasUnreadReferences({
+    references,
   })
 
-  const unreadReferences = references.filter((reference) => {
-    return !reference.isRead
-  })
-
-  if (unreadReferences.length > 0) {
-    await db.reference.updateMany({
-      data: { isRead: true },
-      where: {
-        userId,
-        isRead: false,
-      },
-    })
+  if (hasUnreadReferences) {
+    await ReferenceRepository.markReferencesAsRead({ userId })
   }
 
-  const count = await db.post.count({ where: { userId } })
+  const count = await ReferenceRepository.countReferences({ userId })
 
-  const hasMore = typeof take === "number" ? skip + take < count : false
+  const take = new Take()
 
-  const nextPage = hasMore ? { take, skip: skip + take! } : null
+  const hasMore = PageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
 
   return { hasMore, references, nextPage }
 }

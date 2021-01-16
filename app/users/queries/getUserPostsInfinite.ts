@@ -1,51 +1,47 @@
-import { Ctx, NotFoundError } from "blitz"
-import db, { Prisma } from "db"
+import { PostRepository } from "app/domain/repositories"
+import { PageService } from "app/domain/services"
+import {
+  Id,
+  Skip,
+  skipSchema,
+  Take,
+  Username,
+  usernameSchema,
+} from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = Pick<Prisma.FindManyPostArgs, "skip" | "take"> & {
-  username: string | null
-}
+const inputSchema = z.object({
+  skip: skipSchema,
+  username: usernameSchema,
+})
 
-const getUserPostsInfinite = async ({ username, skip = 0, take }: Input, ctx: Ctx) => {
-  if (username === null) {
-    throw new NotFoundError()
-  }
+const getUserPostsInfinite = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
+  inputSchema.parse(input)
 
-  const userId = ctx.session.userId
+  const userId = Id.nullable(ctx.session.userId)
 
-  const posts = await db.post.findMany({
-    include: {
-      likes: userId ? { where: { userId } } : false,
-      quotation: {
-        include: {
-          likes: userId ? { where: { userId } } : false,
-          quotations: userId ? { where: { userId } } : false,
-          replies: userId ? { where: { userId } } : false,
-          user: true,
-        },
-      },
-      quotations: userId ? { where: { userId } } : false,
-      replies: userId ? { where: { userId } } : false,
-      reply: {
-        include: {
-          likes: userId ? { where: { userId } } : false,
-          quotations: userId ? { where: { userId } } : false,
-          replies: userId ? { where: { userId } } : false,
-          user: true,
-        },
-      },
-      user: true,
-    },
-    orderBy: { createdAt: "desc" },
+  const skip = new Skip(input.skip)
+
+  const take = new Take()
+
+  const username = new Username(input.username)
+
+  const posts = await PostRepository.getPostsByUsername({
     skip,
     take,
-    where: { user: { username } },
+    userId,
+    username,
   })
 
-  const count = await db.post.count({ where: { user: { username } } })
+  const count = await PostRepository.countUserPosts({ username })
 
-  const hasMore = typeof take === "number" ? skip + take < count : false
+  const hasMore = PageService.hasMore({ count, skip, take })
 
-  const nextPage = hasMore ? { take, skip: skip + take! } : null
+  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
 
   const isEmpty = posts.length === 0
 

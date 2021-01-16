@@ -1,86 +1,43 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import {
+  FriendshipRepository,
+  NotificationRepository,
+  PostRepository,
+} from "app/domain/repositories"
+import { Id, idSchema } from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = {
-  postId?: string
-}
+const inputSchema = z.object({ postId: idSchema })
 
-const createQuotation = async (input: Input, ctx: Ctx) => {
+const createQuotation = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  if (!input.postId) {
-    throw new NotFoundError()
-  }
+  const postId = new Id(input.postId)
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const friendships = await db.friendship.findMany({
-    where: { followeeId: userId },
-    take: 20000,
+  const friendships = await FriendshipRepository.getFollowers({
+    followeeId: userId,
   })
 
-  const post = await db.post.update({
-    data: {
-      quotations: {
-        create: {
-          user: { connect: { id: userId } },
-          references: {
-            create: [
-              {
-                isRead: true,
-                user: { connect: { id: userId } },
-              },
-              ...friendships.map((friendship) => {
-                return {
-                  isRead: false,
-                  user: { connect: { id: friendship.followerId } },
-                }
-              }),
-            ],
-          },
-        },
-      },
-      quotationsCount: { increment: 1 },
-    },
-    include: {
-      quotations: {
-        where: { userId },
-      },
-    },
-    where: { id: input.postId },
+  const post = await PostRepository.createPostQuotation({
+    friendships,
+    postId,
+    userId,
   })
 
   const [quotation] = post.quotations
 
-  await db.notification.upsert({
-    create: {
-      post: { connect: { id: quotation.id } },
-      type: "QUOTATION",
-      uniqueId: input.postId,
-      user: { connect: { id: post.userId } },
-    },
-    update: {
-      post: { connect: { id: quotation.id } },
-    },
-    where: {
-      userId_type_uniqueId: {
-        type: "QUOTATION",
-        uniqueId: input.postId,
-        userId: post.userId,
-      },
-    },
+  await NotificationRepository.upsertQuotationNotification({
+    postUserId: new Id(post.userId),
+    quotationId: new Id(quotation.id),
+    postId,
   })
-
-  // await db.$transaction([
-  //   ...friendships.map((friendship) => {
-  //     return db.reference.create({
-  //       data: {
-  //         post: { connect: { id: post.id } },
-  //         user: { connect: { id: friendship.followeeId } },
-  //       },
-  //     })
-  //   }),
-  // ])
 
   return post
 }

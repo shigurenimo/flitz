@@ -1,53 +1,24 @@
+import { FriendshipRepository, PostRepository } from "app/domain/repositories"
+import { Id, PostText, postTextSchema } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
-import db from "db"
+import * as z from "zod"
 
-type CreatePostInput = { text: string }
+export const inputSchema = z.object({ text: postTextSchema })
 
-const createPost = async (input: CreatePostInput, ctx: Ctx) => {
+const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  if (input.text.trim().length === 0) {
-    throw new Error("text.trim().length === 0")
-  }
+  const text = new PostText(input.text)
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const friendships = await db.friendship.findMany({
-    where: { followeeId: userId },
-    take: 20000,
+  const friendships = await FriendshipRepository.getFollowers({
+    followeeId: userId,
   })
 
-  const post = await db.post.create({
-    data: {
-      text: input.text,
-      user: { connect: { id: userId } },
-      references: {
-        create: [
-          {
-            isRead: true,
-            user: { connect: { id: userId } },
-          },
-          ...friendships.map((friendship) => {
-            return {
-              isRead: false,
-              user: { connect: { id: friendship.followerId } },
-            }
-          }),
-        ],
-      },
-    },
-  })
-
-  // await db.$transaction([
-  //   ...friendships.map((friendship) => {
-  //     return db.reference.create({
-  //       data: {
-  //         post: { connect: { id: post.id } },
-  //         user: { connect: { id: friendship.followerId } },
-  //       },
-  //     })
-  //   }),
-  // ])
+  const post = await PostRepository.createPost({ friendships, text, userId })
 
   return post
 }

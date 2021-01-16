@@ -1,27 +1,29 @@
+import { ExchangeRepository, MessageRepository } from "app/domain/repositories"
+import { PageService } from "app/domain/services"
+import { Id, idSchema, Skip, skipSchema, Take } from "app/domain/valueObjects"
 import { Ctx, NotFoundError } from "blitz"
-import db, { Prisma } from "db"
+import * as z from "zod"
 
-type Input = Pick<Prisma.FindManyExchangeArgs, "skip" | "take"> & {
-  exchangeId: string
-}
+const inputSchema = z.object({
+  skip: skipSchema,
+  exchangeId: idSchema,
+})
 
-const getExchangeMessagesInfinite = async ({ skip, take, ...input }: Input, ctx: Ctx) => {
+const getExchangeMessagesInfinite = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  if (!input.exchangeId) {
-    throw new NotFoundError()
-  }
+  const skip = new Skip(input.skip)
 
-  const exchange = await db.exchange.findUnique({
-    include: {
-      user: true,
-      messages: {
-        orderBy: { createdAt: "desc" },
-        take: 20,
-        skip,
-      },
-    },
-    where: { id: input.exchangeId },
+  const exchangeId = new Id(input.exchangeId)
+
+  const exchange = await ExchangeRepository.findUniqueExchange({
+    skip,
+    exchangeId,
   })
 
   if (exchange === null) {
@@ -30,13 +32,15 @@ const getExchangeMessagesInfinite = async ({ skip, take, ...input }: Input, ctx:
 
   const messages = exchange.messages
 
-  const count = await db.message.count({
-    where: { id: input.exchangeId },
+  const count = await MessageRepository.countGroupMessages({
+    exchangeId,
   })
 
-  const hasMore = skip! + take! < count
+  const take = new Take()
 
-  const nextPage = hasMore ? { take, skip: skip! + take! } : null
+  const hasMore = PageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
 
   return { messages, nextPage }
 }

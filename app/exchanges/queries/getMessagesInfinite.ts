@@ -1,76 +1,50 @@
-import { Ctx, NotFoundError } from "blitz"
-import db, { Prisma } from "db"
+import { MessageRepository } from "app/domain/repositories"
+import { MessageService, PageService } from "app/domain/services"
+import { Id, idSchema, Skip, skipSchema, Take } from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = Pick<Prisma.FindManyExchangeArgs, "skip" | "take"> & {
-  relatedUserId?: string
-}
+const inputSchema = z.object({
+  skip: skipSchema,
+  relatedUserId: idSchema,
+})
 
-const getMessagesInfinite = async ({ skip, take, ...input }: Input, ctx: Ctx) => {
+const getMessagesInfinite = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
   ctx.session.authorize()
 
-  if (!input.relatedUserId) {
-    throw new NotFoundError()
-  }
+  inputSchema.parse(input)
 
-  const userId = ctx.session.userId
+  const relatedUserId = new Id(input.relatedUserId)
 
-  const messages = await db.message.findMany({
-    include: {
-      user: true,
-      exchanges: true,
-    },
-    orderBy: { createdAt: "desc" },
+  const userId = new Id(ctx.session.userId)
+
+  const skip = new Skip(input.skip)
+
+  const messages = await MessageRepository.findExchangeMessages({
+    relatedUserId,
     skip,
-    take: 20,
-    where: {
-      exchanges: {
-        some: {
-          userId,
-          relatedUsers: { every: { id: input.relatedUserId } },
-        },
-      },
-    },
+    userId,
   })
 
-  const unreadMessages = messages.filter((message) => {
-    if (message.userId === userId) return false
-    for (const exchange of message.exchanges) {
-      if (exchange.relatedUserId === null) continue
-      if (exchange.userId !== userId) continue
-      return !message.isRead
-    }
-    return false
+  const hasUnreadMessages = MessageService.hasUnreadMessages({
+    messages,
+    userId,
   })
 
-  if (unreadMessages.length > 0) {
-    await db.message.updateMany({
-      data: { isRead: true },
-      where: {
-        exchanges: {
-          some: {
-            userId,
-            relatedUserId: input.relatedUserId,
-            isRead: false,
-          },
-        },
-      },
-    })
+  if (hasUnreadMessages) {
+    await MessageRepository.markMesagesAsRead({ relatedUserId, userId })
   }
 
-  const count = await db.message.count({
-    where: {
-      exchanges: {
-        some: {
-          userId,
-          relatedUserId: input.relatedUserId,
-        },
-      },
-    },
-  })
+  const count = await MessageRepository.countMessages({ relatedUserId, userId })
 
-  const hasMore = skip! + take! < count
+  const take = new Take()
 
-  const nextPage = hasMore ? { take, skip: skip! + take! } : null
+  const hasMore = PageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
 
   return { messages, nextPage }
 }

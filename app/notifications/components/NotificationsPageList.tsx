@@ -11,7 +11,7 @@ export const NotificationsPageList: FunctionComponent = () => {
 
   const [groupedNotifications] = useInfiniteQuery(
     getNotificationsInfinite,
-    (page = { take: 80, skip: 0 }) => page,
+    (page = { skip: 0 }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 8000,
@@ -32,7 +32,9 @@ export const NotificationsPageList: FunctionComponent = () => {
       )}
       {groupedNotifications.map((group) => {
         return group.notifications.map((notification) => {
-          return <StackCardNotification key={notification.id} {...notification} />
+          return (
+            <StackCardNotification key={notification.id} {...notification} />
+          )
         })
       })}
     </StackList>

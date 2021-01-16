@@ -1,59 +1,38 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { NotificationRepository, UserRepository } from "app/domain/repositories"
+import { Id, idSchema } from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = { userId?: string }
+const inputSchema = z.object({ userId: idSchema })
 
-const followUser = async (input: Input, ctx: Ctx) => {
+const transformer = inputSchema.transform(
+  z.object({
+    userId: z.instanceof(Id),
+  }),
+  (input) => ({
+    userId: new Id(input.userId),
+  })
+)
+
+const followUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
   ctx.session.authorize()
 
-  if (!input.userId) {
-    throw new NotFoundError()
-  }
+  const { userId: followeeId } = transformer.parse(input)
 
-  if (ctx.session.userId === input.userId) {
+  const followerId = new Id(ctx.session.userId)
+
+  if (followerId.value === followeeId.value) {
     throw new Error("Unexpected error")
   }
 
-  const [user] = await db.$transaction([
-    db.user.update({
-      data: {
-        followers: {
-          create: {
-            follower: { connect: { id: ctx.session.userId } },
-          },
-        },
-        followersCount: { increment: 1 },
-      },
-      include: {
-        followers: { where: { followerId: ctx.session.userId } },
-      },
-      where: { id: input.userId },
-    }),
-    db.user.update({
-      data: { followeesCount: { increment: 1 } },
-      where: { id: ctx.session.userId },
-    }),
-  ])
+  const user = await UserRepository.followUser({ followeeId, followerId })
 
   const [friendship] = user.followers
 
-  await db.notification.upsert({
-    create: {
-      friendship: { connect: { id: friendship.id } },
-      type: "FRIENDSHIP",
-      uniqueId: ctx.session.userId,
-      user: { connect: { id: input.userId } },
-    },
-    update: {
-      friendship: { connect: { id: friendship.id } },
-    },
-    where: {
-      userId_type_uniqueId: {
-        type: "FRIENDSHIP",
-        uniqueId: ctx.session.userId,
-        userId: input.userId,
-      },
-    },
+  await NotificationRepository.upsertFollowNotification({
+    followeeId,
+    followerId,
+    friendshipId: new Id(friendship.id),
   })
 
   return user

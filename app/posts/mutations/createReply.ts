@@ -1,81 +1,44 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import {
+  FriendshipRepository,
+  NotificationRepository,
+  PostRepository,
+} from "app/domain/repositories"
+import { Id, idSchema, PostText, postTextSchema } from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type CreateReplyInput = {
-  text: string
-  postId: string
-}
+const inputSchema = z.object({
+  text: postTextSchema,
+  postId: idSchema,
+})
 
-const createReply = async (input: CreateReplyInput, ctx: Ctx) => {
+const createReply = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  if (!input.postId) {
-    throw new NotFoundError()
-  }
+  const text = new PostText(input.text)
 
-  if (!input.text || input.text?.trim().length === 0) {
-    throw new Error("Invalid input")
-  }
+  const postId = new Id(input.postId)
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const friendships = await db.friendship.findMany({
-    where: { followeeId: userId },
-    take: 20000,
+  const friendships = await FriendshipRepository.getFollowers({
+    followeeId: userId,
   })
 
-  const post = await db.post.update({
-    data: {
-      replies: {
-        create: {
-          text: input.text,
-          user: { connect: { id: userId } },
-          references: {
-            create: [
-              {
-                isRead: true,
-                user: { connect: { id: userId } },
-              },
-              ...friendships.map((friendship) => {
-                return {
-                  isRead: false,
-                  user: { connect: { id: friendship.followerId } },
-                }
-              }),
-            ],
-          },
-        },
-      },
-      repliesCount: { increment: 1 },
-    },
-    include: {
-      replies: {
-        where: { userId },
-      },
-    },
-    where: { id: input.postId },
+  const post = await PostRepository.createReply({
+    friendships,
+    postId,
+    text,
+    userId,
   })
 
   const [reply] = post.replies
 
-  // await db.$transaction([
-  //   ...friendships.map((friendship) => {
-  //     return db.reference.create({
-  //       data: {
-  //         post: { connect: { id: reply.id } },
-  //         user: { connect: { id: friendship.followerId } },
-  //       },
-  //     })
-  //   }),
-  // ])
-
-  await db.notification.create({
-    data: {
-      post: { connect: { id: reply.id } },
-      type: "REPLY",
-      uniqueId: reply.id,
-      user: { connect: { id: post.userId } },
-    },
+  await NotificationRepository.createReplyNotification({
+    postUserId: new Id(post.userId),
+    replyId: new Id(reply.id),
   })
 
   return post

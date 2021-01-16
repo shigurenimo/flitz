@@ -47,7 +47,7 @@ type Props = {
     reply?: {
       createdAt: Date
       id: string
-      likesCount
+      likesCount: number
       likes?: {
         userId: string
       }[]
@@ -84,7 +84,10 @@ export const StackCardNotification: FunctionComponent<Props> = ({
   if (friendship) {
     return (
       <Link href={`/${friendship.follower.username}`} passHref>
-        <StackCardNotificationFriendship createdAt={createdAt} friendship={friendship} />
+        <StackCardNotificationFriendship
+          createdAt={createdAt}
+          friendship={friendship}
+        />
       </Link>
     )
   }

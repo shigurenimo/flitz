@@ -1,44 +1,30 @@
+import { PostRepository } from "app/domain/repositories"
+import { PageService } from "app/domain/services"
+import { Id, Skip, skipSchema, Take } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
-import db, { Prisma } from "db"
+import * as z from "zod"
 
-type GetPostsInfiniteInput = Pick<Prisma.FindManyPostArgs, "skip" | "take">
+const inputSchema = z.object({ skip: skipSchema })
 
-const getPostsInfinite = async ({ skip = 0, take }: GetPostsInfiniteInput, ctx: Ctx) => {
-  const userId = ctx.session.userId
+const getPostsInfinite = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
+  inputSchema.parse(input)
 
-  const posts = await db.post.findMany({
-    include: {
-      likes: userId ? { where: { userId } } : false,
-      quotation: {
-        include: {
-          likes: userId ? { where: { userId } } : false,
-          quotations: userId ? { where: { userId } } : false,
-          replies: userId ? { where: { userId } } : false,
-          user: true,
-        },
-      },
-      quotations: userId ? { where: { userId } } : false,
-      replies: userId ? { where: { userId } } : false,
-      reply: {
-        include: {
-          likes: userId ? { where: { userId } } : false,
-          quotations: userId ? { where: { userId } } : false,
-          replies: userId ? { where: { userId } } : false,
-          user: true,
-        },
-      },
-      user: true,
-    },
-    orderBy: { createdAt: "desc" },
-    skip,
-    take,
-  })
+  const userId = ctx.session.userId === null ? null : new Id(ctx.session.userId)
 
-  const count = await db.post.count()
+  const skip = new Skip(input.skip)
 
-  const hasMore = typeof take === "number" ? skip + take < count : false
+  const posts = await PostRepository.getNewPosts({ skip, userId })
 
-  const nextPage = hasMore ? { take, skip: skip + take! } : null
+  const count = await PostRepository.countPosts()
+
+  const take = new Take()
+
+  const hasMore = PageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
 
   return { hasMore, posts, nextPage }
 }

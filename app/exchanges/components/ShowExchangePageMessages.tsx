@@ -12,7 +12,7 @@ export const ShowExchangePageMessages: FunctionComponent = () => {
 
   const [groupedMessages, { refetch }] = useInfiniteQuery(
     getMessagesInfinite,
-    (page = { take: 16, skip: 0, relatedUserId: recipientId }) => page,
+    (page = { skip: 0, relatedUserId: recipientId }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 1000,
@@ -28,7 +28,11 @@ export const ShowExchangePageMessages: FunctionComponent = () => {
   const blocks = useMessageBlocks(messages, recipientId + "")
 
   useEffect(() => {
-    window.scroll(0, document.documentElement.scrollHeight - document.documentElement.clientHeight)
+    window.scroll(
+      0,
+      document.documentElement.scrollHeight -
+        document.documentElement.clientHeight
+    )
   }, [messages.length])
 
   return (

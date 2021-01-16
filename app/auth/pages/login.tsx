@@ -20,7 +20,9 @@ const LoginPage: BlitzPage = () => {
 
   const [loginMutation, { isLoading: isLoadingLogin }] = useMutation(login)
 
-  const [createUserMutation, { isLoading: isLoadingCreateUser }] = useMutation(createUser)
+  const [createUserMutation, { isLoading: isLoadingCreateUser }] = useMutation(
+    createUser
+  )
 
   const onLogin = async (email: string, password: string) => {
     await loginMutation({ email, password })
@@ -37,7 +39,10 @@ const LoginPage: BlitzPage = () => {
     reValidateMode: "onBlur",
   })
 
-  const onSubmitCreateUser = async (values) => {
+  const onSubmitCreateUser = async (values: {
+    email: string
+    password: string
+  }) => {
     try {
       await onCreateUser(values.email, values.password)
     } catch (error) {
@@ -55,7 +60,7 @@ const LoginPage: BlitzPage = () => {
     }
   }
 
-  const onSubmitLogin = async (values) => {
+  const onSubmitLogin = async (values: { email: string; password: string }) => {
     try {
       await onLogin(values.email, values.password)
     } catch (error) {
@@ -96,7 +101,9 @@ const LoginPage: BlitzPage = () => {
               })}
               type={"email"}
             />
-            <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.email && errors.email.message}
+            </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={errors.password}>
             <Input
@@ -111,12 +118,15 @@ const LoginPage: BlitzPage = () => {
                 },
                 minLength: {
                   value: 5,
-                  message: "Password is too short. (must be at least 5 characters)",
+                  message:
+                    "Password is too short. (must be at least 5 characters)",
                 },
               })}
               type={"password"}
             />
-            <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.password && errors.password.message}
+            </FormErrorMessage>
           </FormControl>
           <HStack spacing={4}>
             <Button

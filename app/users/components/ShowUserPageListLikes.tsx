@@ -13,7 +13,7 @@ export const ShowUserPageListLikes: FunctionComponent = () => {
 
   const [groupedLikes] = useInfiniteQuery(
     getUserLikesInfinite,
-    (page = { take: 80, skip: 0, username }) => page,
+    (page = { skip: 0, username }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 16000,

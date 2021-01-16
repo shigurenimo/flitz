@@ -1,55 +1,27 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { MessageRepository } from "app/domain/repositories/messageRepository"
+import { Id, idSchema } from "app/domain/valueObjects/id"
+import { PostText, postTextSchema } from "app/domain/valueObjects/postText"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = {
-  text: string
-  relatedUserId: string
-}
+export const inputSchema = z.object({
+  text: postTextSchema,
+  relatedUserId: idSchema,
+})
 
-const createMessage = async (input: Input, ctx: Ctx) => {
+const createMessage = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  if (input.text.trim().length === 0) {
-    throw new NotFoundError()
-  }
+  const text = new PostText(input.text)
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const message = await db.message.create({
-    data: {
-      text: input.text,
-      user: { connect: { id: userId } },
-      exchanges: {
-        connectOrCreate: [
-          {
-            create: {
-              isRead: true,
-              relatedUser: { connect: { id: input.relatedUserId } },
-              user: { connect: { id: userId } },
-            },
-            where: {
-              userId_relatedUserId: {
-                relatedUserId: input.relatedUserId,
-                userId,
-              },
-            },
-          },
-          {
-            create: {
-              isRead: false,
-              relatedUser: { connect: { id: userId } },
-              user: { connect: { id: input.relatedUserId } },
-            },
-            where: {
-              userId_relatedUserId: {
-                relatedUserId: userId,
-                userId: input.relatedUserId,
-              },
-            },
-          },
-        ],
-      },
-    },
+  const message = await MessageRepository.updateMessage({
+    text,
+    userId,
+    relatedUserId: new Id(input.relatedUserId),
   })
 
   return message

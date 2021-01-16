@@ -1,12 +1,13 @@
+import { UserRepository } from "app/domain/repositories"
+import { Id } from "app/domain/valueObjects"
 import { AuthorizationError, Ctx } from "blitz"
-import db from "db"
 
 export default async function getCurrentUser(_ = null, ctx: Ctx) {
   ctx.session.authorize()
 
-  const user = await db.user.findFirst({
-    where: { id: ctx.session.userId },
-  })
+  const userId = new Id(ctx.session.userId)
+
+  const user = await UserRepository.getUser({ userId })
 
   if (user === null) {
     throw new AuthorizationError()

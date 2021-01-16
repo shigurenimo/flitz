@@ -1,4 +1,11 @@
-import { Heading, HStack, Link as LinkText, Stack, Text, useToast } from "@chakra-ui/react"
+import {
+  Heading,
+  HStack,
+  Link as LinkText,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react"
 import { AvatarUser } from "app/components/AvatarUser"
 import { StackUserAction } from "app/users/components/StackUserAction"
 import followUser from "app/users/mutations/followUser"
@@ -15,13 +22,18 @@ export const ShowUserPageDetail: FunctionComponent = () => {
 
   const [user, { setQueryData }] = useQuery(
     getUser,
-    { where: { username } },
+    { username: username + "" },
     { refetchInterval: 8000 }
   )
 
-  const [followUserMutation, { isLoading: isLoadingFollowUser }] = useMutation(followUser)
+  const [followUserMutation, { isLoading: isLoadingFollowUser }] = useMutation(
+    followUser
+  )
 
-  const [unfollowUserMutation, { isLoading: isLoadingUnfollowUser }] = useMutation(unfollowUser)
+  const [
+    unfollowUserMutation,
+    { isLoading: isLoadingUnfollowUser },
+  ] = useMutation(unfollowUser)
 
   const toast = useToast()
 

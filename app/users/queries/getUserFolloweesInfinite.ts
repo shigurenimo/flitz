@@ -1,39 +1,47 @@
-import { Ctx, NotFoundError } from "blitz"
-import db, { Prisma } from "db"
+import { FriendshipRepository } from "app/domain/repositories"
+import { PageService } from "app/domain/services"
+import {
+  Id,
+  Skip,
+  skipSchema,
+  Take,
+  Username,
+  usernameSchema,
+} from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = Pick<Prisma.FindManyPostArgs, "skip" | "take"> & {
-  username: string | null
-}
+const inputSchema = z.object({
+  skip: skipSchema,
+  username: usernameSchema,
+})
 
-const getUserFolloweesInfinite = async ({ username, skip = 0, take }: Input, ctx: Ctx) => {
-  if (username === null) {
-    throw new NotFoundError()
-  }
+const getUserFolloweesInfinite = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
+  inputSchema.parse(input)
 
-  const userId = ctx.session.userId
+  const userId = Id.nullable(ctx.session.userId)
 
-  const friendships = await db.friendship.findMany({
-    include: {
-      followee: {
-        include: {
-          followees: userId ? { where: { followeeId: userId } } : false,
-          followers: userId ? { where: { followerId: userId } } : false,
-        },
-      },
-    },
-    orderBy: { createdAt: "desc" },
+  const skip = new Skip(input.skip)
+
+  const take = new Take()
+
+  const username = new Username(input.username)
+
+  const friendships = await FriendshipRepository.getFolloweesByUsername({
     skip,
     take,
-    where: { follower: { username } },
+    userId,
+    username,
   })
 
-  const count = await db.friendship.count({
-    where: { follower: { username } },
-  })
+  const count = await FriendshipRepository.countFollowees({ username })
 
-  const hasMore = typeof take === "number" ? skip + take < count : false
+  const hasMore = PageService.hasMore({ count, skip, take })
 
-  const nextPage = hasMore ? { take, skip: skip + take! } : null
+  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
 
   return { count, hasMore, friendships, nextPage }
 }

@@ -1,31 +1,22 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { PostRepository } from "app/domain/repositories"
+import { Id, idSchema } from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = { postId: string }
+const inputSchema = z.object({ postId: idSchema })
 
-const deletePostLike = async (input: Input, ctx: Ctx) => {
+const deletePostLike = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  if (!input.postId) {
-    throw new NotFoundError()
-  }
+  const userId = new Id(ctx.session.userId)
 
-  const updated = await db.post.update({
-    data: {
-      likes: {
-        delete: {
-          userId_postId: {
-            userId: ctx.session.userId,
-            postId: input.postId,
-          },
-        },
-      },
-      likesCount: { decrement: 1 },
-    },
-    where: { id: input.postId },
-  })
+  const postId = new Id(input.postId)
 
-  return updated
+  const post = await PostRepository.deleteLikes({ postId, userId })
+
+  return post
 }
 
 export default deletePostLike

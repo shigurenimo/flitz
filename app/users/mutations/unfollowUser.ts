@@ -1,40 +1,31 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { UserRepository } from "app/domain/repositories"
+import { Id, idSchema } from "app/domain/valueObjects"
+import { Ctx } from "blitz"
+import * as z from "zod"
 
-type Input = { userId?: string }
+const inputSchema = z.object({ userId: idSchema })
 
-const unfollowUser = async ({ userId }: Input, ctx: Ctx) => {
+const transformer = inputSchema.transform(
+  z.object({
+    userId: z.instanceof(Id),
+  }),
+  (input) => ({
+    userId: new Id(input.userId),
+  })
+)
+
+const unfollowUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
   ctx.session.authorize()
 
-  if (!userId) {
-    throw new NotFoundError()
+  const { userId: followeeId } = transformer.parse(input)
+
+  const followerId = new Id(ctx.session.userId)
+
+  if (followerId.value === followeeId.value) {
+    throw new Error("Unexpected error")
   }
 
-  const [user] = await db.$transaction([
-    db.user.update({
-      data: {
-        followers: {
-          delete: {
-            followerId_followeeId: {
-              followerId: ctx.session.userId,
-              followeeId: userId,
-            },
-          },
-        },
-        followersCount: { decrement: 1 },
-      },
-      include: {
-        followers: { where: { followerId: ctx.session.userId } },
-      },
-      where: { id: userId },
-    }),
-    db.user.update({
-      data: {
-        followeesCount: { decrement: 1 },
-      },
-      where: { id: ctx.session.userId },
-    }),
-  ])
+  const user = await UserRepository.unfollowUser({ followeeId, followerId })
 
   return user
 }

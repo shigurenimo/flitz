@@ -1,19 +1,17 @@
+import { NotificationRepository } from "app/domain/repositories"
+import { Id } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
-import db from "db"
 
 const checkUnreadNotifications = async (_ = null, ctx: Ctx) => {
   ctx.session.authorize()
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const notification = await db.notification.findFirst({
-    where: {
-      isRead: false,
-      userId,
-    },
-  })
+  const hasUnreadNotifications = await NotificationRepository.hasUnreadNotifications(
+    { userId }
+  )
 
-  return notification !== null
+  return hasUnreadNotifications
 }
 
 export default checkUnreadNotifications

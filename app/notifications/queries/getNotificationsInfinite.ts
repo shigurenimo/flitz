@@ -1,99 +1,43 @@
+import { NotificationRepository } from "app/domain/repositories"
+import { NotificationService, PageService } from "app/domain/services"
+import { Id, Skip, skipSchema, Take } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
-import db, { Prisma } from "db"
+import * as z from "zod"
 
-type Input = Pick<Prisma.FindManyPostArgs, "skip" | "take">
+const inputSchema = z.object({ skip: skipSchema })
 
-const getNotificationsInfinite = async ({ skip = 0, take }: Input, ctx: Ctx) => {
+const getNotificationsInfinite = async (
+  input: z.infer<typeof inputSchema>,
+  ctx: Ctx
+) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const notifications = await db.notification.findMany({
-    include: {
-      friendship: {
-        include: {
-          follower: true,
-        },
-      },
-      like: {
-        include: {
-          post: {
-            include: {
-              likes: { where: { userId } },
-              quotation: {
-                include: {
-                  likes: { where: { userId } },
-                  quotations: { where: { userId } },
-                  replies: { where: { userId } },
-                  user: true,
-                },
-              },
-              quotations: { where: { userId } },
-              replies: { where: { userId } },
-              reply: {
-                include: {
-                  likes: { where: { userId } },
-                  quotations: { where: { userId } },
-                  replies: { where: { userId } },
-                  user: true,
-                },
-              },
-              user: true,
-            },
-          },
-          user: true,
-        },
-      },
-      post: {
-        include: {
-          likes: { where: { userId } },
-          quotation: {
-            include: {
-              likes: { where: { userId } },
-              quotations: { where: { userId } },
-              replies: { where: { userId } },
-              user: true,
-            },
-          },
-          quotations: { where: { userId } },
-          replies: { where: { userId } },
-          reply: {
-            include: {
-              likes: { where: { userId } },
-              quotations: { where: { userId } },
-              replies: { where: { userId } },
-              user: true,
-            },
-          },
-          user: true,
-        },
-      },
-    },
-    orderBy: { createdAt: "desc" },
+  const skip = new Skip(input.skip)
+
+  const notifications = await NotificationRepository.findNotifications({
     skip,
-    take,
-    where: { userId },
+    userId,
   })
 
-  const unreadNotifications = notifications.filter((notification) => {
-    return !notification.isRead
+  const hasUnreadNotifications = NotificationService.hasUnreadNotifications({
+    notifications,
   })
 
-  if (unreadNotifications.length > 0) {
-    await db.notification.updateMany({
-      data: { isRead: true },
-      where: {
-        userId,
-        isRead: false,
-      },
-    })
+  if (hasUnreadNotifications) {
+    await NotificationRepository.markNotificationsAsRead({ userId })
   }
 
-  const count = await db.notification.count({ where: { userId } })
+  const count = await NotificationRepository.countNotifications({ userId })
 
-  const hasMore = typeof take === "number" ? skip + take < count : false
+  const take = new Take()
 
-  const nextPage = hasMore ? { take, skip: skip + take! } : null
+  const hasMore = PageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
 
   return { notifications, hasMore, nextPage }
 }

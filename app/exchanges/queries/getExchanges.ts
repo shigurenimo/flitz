@@ -1,33 +1,29 @@
+import { ExchangeRepository } from "app/domain/repositories"
+import { PageService } from "app/domain/services"
+import { Id, Skip, skipSchema, Take } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
-import db, { Prisma } from "db"
+import * as z from "zod"
 
-type Input = Pick<Prisma.FindManyExchangeArgs, "orderBy" | "skip" | "take">
+const inputSchema = z.object({ skip: skipSchema })
 
-const getExchanges = async ({ orderBy, skip = 0, take }: Input, ctx: Ctx) => {
+const getExchanges = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
+  inputSchema.parse(input)
+
   ctx.session.authorize()
 
-  const userId = ctx.session.userId
+  const skip = new Skip(input.skip)
 
-  const exchanges = await db.exchange.findMany({
-    orderBy,
-    skip,
-    take,
-    where: { userId },
-    include: {
-      messages: {
-        orderBy: { createdAt: "desc" },
-        take: 1,
-        include: { user: true },
-      },
-      relatedUser: true,
-    },
-  })
+  const userId = new Id(ctx.session.userId)
 
-  const count = await db.exchange.count({ where: { userId } })
+  const exchanges = await ExchangeRepository.findUserExchanges({ userId, skip })
 
-  const hasMore = typeof take === "number" ? skip + take < count : false
+  const count = await ExchangeRepository.countUserExchanges({ userId })
 
-  const nextPage = hasMore ? { take, skip: skip + take! } : null
+  const take = new Take(16)
+
+  const hasMore = PageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
 
   const isEmpty = exchanges.length === 0
 

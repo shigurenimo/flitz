@@ -9,7 +9,7 @@ export const ShowPostPageReplyList: FunctionComponent = () => {
 
   const [groupedPosts] = useInfiniteQuery(
     getRepliesInfinite,
-    (page = { take: 80, skip: 0, where: { replyId: postId } }) => page,
+    (page = { skip: 0, replyId: postId }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 2000,

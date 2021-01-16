@@ -8,7 +8,7 @@ import React, { FunctionComponent } from "react"
 export const PostsPagePublicList: FunctionComponent = () => {
   const [groupedPosts] = useInfiniteQuery(
     getPostsInfinite,
-    (page = { take: 80, skip: 0 }) => page,
+    (page = { skip: 0 }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 2000,

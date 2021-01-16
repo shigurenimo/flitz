@@ -1,23 +1,18 @@
+import { UserRepository } from "app/domain/repositories"
+import { Id, Username, usernameSchema } from "app/domain/valueObjects"
 import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import * as z from "zod"
 
-type GetUserInput = {
-  where: { username?: string }
-}
+const inputSchema = z.object({ username: usernameSchema })
 
-const getUser = async ({ where }: GetUserInput, ctx: Ctx) => {
-  if (!where.username) {
-    throw new NotFoundError()
-  }
+const getUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
+  inputSchema.parse(input)
 
-  const userId = ctx.session.userId
+  const userId = Id.nullable(ctx.session.userId)
 
-  const user = await db.user.findUnique({
-    include: {
-      followers: userId ? { where: { followerId: userId } } : false,
-    },
-    where: { username: where.username },
-  })
+  const username = new Username(input.username)
+
+  const user = await UserRepository.getUserByUsername({ userId, username })
 
   if (!user) {
     throw new NotFoundError()

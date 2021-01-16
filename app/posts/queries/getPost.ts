@@ -1,19 +1,16 @@
+import { PostRepository } from "app/domain/repositories"
+import { Id, idSchema } from "app/domain/valueObjects"
 import { NotFoundError } from "blitz"
-import db from "db"
+import * as z from "zod"
 
-type GetIssueInput = {
-  where: { id?: string }
-}
+const inputSchema = z.object({ id: idSchema })
 
-const getPost = async ({ where }: GetIssueInput) => {
-  if (!where.id) {
-    throw new NotFoundError()
-  }
+const getPost = async (input: z.infer<typeof inputSchema>) => {
+  inputSchema.parse(input)
 
-  const post = await db.post.findUnique({
-    include: { user: true },
-    where: { id: where.id },
-  })
+  const id = new Id(input.id)
+
+  const post = await PostRepository.getPost({ id })
 
   if (!post) {
     throw new NotFoundError()

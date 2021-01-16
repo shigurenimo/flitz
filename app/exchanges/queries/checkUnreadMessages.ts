@@ -1,22 +1,13 @@
+import { ExchangeRepository } from "app/domain/repositories/exchangeRepository"
+import { Id } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
-import db from "db"
 
 const checkUnreadMessages = async (_ = null, ctx: Ctx) => {
   ctx.session.authorize()
 
-  const userId = ctx.session.userId
+  const userId = new Id(ctx.session.userId)
 
-  const messages = await db.exchange.findFirst({
-    where: {
-      messages: {
-        some: {
-          isRead: false,
-          userId: { not: userId },
-        },
-      },
-      userId,
-    },
-  })
+  const messages = await ExchangeRepository.findExchange({ userId })
 
   return messages !== null
 }

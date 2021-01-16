@@ -7,7 +7,7 @@ import React, { FunctionComponent } from "react"
 export const ShowPostPageDetail: FunctionComponent = () => {
   const postId = useParam("postId", "string")
 
-  const [post] = useQuery(getPost, { where: { id: postId } })
+  const [post] = useQuery(getPost, { id: postId + "" })
 
   return (
     <Stack spacing={4} px={4}>
