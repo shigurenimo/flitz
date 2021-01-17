@@ -1,3 +1,6 @@
+# Typedoc
+public/typedoc.json
+
 # dependencies
 node_modules
 .yarn/cache

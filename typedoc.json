@@ -1,0 +1,11 @@
+{
+  "categorizeByGroup": false,
+  "disableSources": true,
+  "entryPoints": [
+    "app/domain/services/index.ts",
+    "app/domain/valueObjects/index.ts"
+  ],
+  "excludeExternals": true,
+  "excludeNotDocumented": true,
+  "json": "public/typedoc.json"
+}
