@@ -21,7 +21,7 @@ const getExchangeMessagesInfinite = async (
 
   const exchangeId = new Id(input.exchangeId)
 
-  const exchange = await ExchangeRepository.findUniqueExchange({
+  const exchange = await ExchangeRepository.getExchange({
     skip,
     exchangeId,
   })
@@ -32,7 +32,7 @@ const getExchangeMessagesInfinite = async (
 
   const messages = exchange.messages
 
-  const count = await MessageRepository.countGroupMessages({
+  const count = await MessageRepository.countUserGroupMessages({
     exchangeId,
   })
 

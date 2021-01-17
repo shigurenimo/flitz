@@ -18,7 +18,7 @@ const createMessage = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const message = await MessageRepository.updateMessage({
+  const message = await MessageRepository.createMessage({
     text,
     userId,
     relatedUserId: new Id(input.relatedUserId),

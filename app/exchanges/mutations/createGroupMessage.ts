@@ -23,7 +23,7 @@ const createGroupMessage = async (
 
   const exchangeId = new Id(input.exchangeId)
 
-  const exchange = await ExchangeRepository.update({
+  const exchange = await ExchangeRepository.createExchangeMessage({
     exchangeId,
     text,
     userId,

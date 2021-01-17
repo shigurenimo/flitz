@@ -4,7 +4,7 @@ import { PostText } from "app/domain/valueObjects/postText"
 import db from "db"
 
 export class MessageRepository {
-  static async countGroupMessages(input: { exchangeId: Id }) {
+  static async countUserGroupMessages(input: { exchangeId: Id }) {
     const count = await db.message.count({
       where: { id: input.exchangeId.value },
     })
@@ -12,7 +12,7 @@ export class MessageRepository {
     return new Count(count)
   }
 
-  static async countMessages(input: { relatedUserId: Id; userId: Id }) {
+  static async countUserMessages(input: { relatedUserId: Id; userId: Id }) {
     const count = await db.message.count({
       where: {
         exchanges: {
@@ -42,7 +42,7 @@ export class MessageRepository {
     })
   }
 
-  static async findExchangeMessages(input: {
+  static async getUserExchangeMessages(input: {
     relatedUserId: Id
     skip: Skip
     userId: Id
@@ -66,7 +66,7 @@ export class MessageRepository {
     })
   }
 
-  static updateMessage(input: {
+  static createMessage(input: {
     text: PostText
     userId: Id
     relatedUserId: Id

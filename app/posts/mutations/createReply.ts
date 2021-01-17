@@ -23,7 +23,7 @@ const createReply = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const friendships = await FriendshipRepository.getFollowers({
+  const friendships = await FriendshipRepository.getUserFollowers({
     followeeId: userId,
   })
 

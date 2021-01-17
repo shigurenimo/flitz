@@ -15,7 +15,7 @@ const getExchanges = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const exchanges = await ExchangeRepository.findUserExchanges({ userId, skip })
+  const exchanges = await ExchangeRepository.getUserExchanges({ userId, skip })
 
   const count = await ExchangeRepository.countUserExchanges({ userId })
 

@@ -7,7 +7,7 @@ const checkUnreadMessages = async (_ = null, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const messages = await ExchangeRepository.findExchange({ userId })
+  const messages = await ExchangeRepository.getUserExchange({ userId })
 
   return messages !== null
 }

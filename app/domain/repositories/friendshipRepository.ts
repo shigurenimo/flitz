@@ -2,7 +2,7 @@ import { Count, Id, Skip, Take, Username } from "app/domain/valueObjects"
 import db from "db"
 
 export class FriendshipRepository {
-  static async countFollowees(input: { username: Username }) {
+  static async countUserFollowees(input: { username: Username }) {
     const count = await db.friendship.count({
       where: { follower: { username: input.username.value } },
     })
@@ -10,7 +10,7 @@ export class FriendshipRepository {
     return new Count(count)
   }
 
-  static async countFollowers(input: { username: Username }) {
+  static async countUserFollowers(input: { username: Username }) {
     const count = await db.friendship.count({
       where: { followee: { username: input.username.value } },
     })
@@ -18,14 +18,14 @@ export class FriendshipRepository {
     return new Count(count)
   }
 
-  static getFollowers(input: { followeeId: Id }) {
+  static getUserFollowers(input: { followeeId: Id }) {
     return db.friendship.findMany({
       where: { followeeId: input.followeeId.value },
       take: 20000,
     })
   }
 
-  static async getFolloweesByUsername(input: {
+  static async getUserFolloweesByUsername(input: {
     skip: Skip
     take: Take
     userId: Id | null
@@ -51,7 +51,7 @@ export class FriendshipRepository {
     })
   }
 
-  static async getFollowersByUsername(input: {
+  static async getUserFollowersByUsername(input: {
     skip: Skip
     take: Take
     userId: Id | null

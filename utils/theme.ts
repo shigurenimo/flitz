@@ -5,9 +5,17 @@ export const theme = extendTheme({
   colors: {
     primary: defaultTheme.colors.blue,
   },
+  components: {
+    Button: {
+      baseStyle: {
+        paddingTop: "1px",
+      },
+    },
+  },
   fonts: {
     body: "Noto Sans JP, sans-serif",
     heading: "Noto Sans JP, sans-serif",
+    mono: "Menlo, monospace",
   },
   styles: {
     global: {

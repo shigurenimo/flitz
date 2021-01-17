@@ -23,7 +23,7 @@ const getMessagesInfinite = async (
 
   const skip = new Skip(input.skip)
 
-  const messages = await MessageRepository.findExchangeMessages({
+  const messages = await MessageRepository.getUserExchangeMessages({
     relatedUserId,
     skip,
     userId,
@@ -38,7 +38,10 @@ const getMessagesInfinite = async (
     await MessageRepository.markMesagesAsRead({ relatedUserId, userId })
   }
 
-  const count = await MessageRepository.countMessages({ relatedUserId, userId })
+  const count = await MessageRepository.countUserMessages({
+    relatedUserId,
+    userId,
+  })
 
   const take = new Take()
 

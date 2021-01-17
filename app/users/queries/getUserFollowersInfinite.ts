@@ -30,14 +30,14 @@ const getUserFollowersInfinite = async (
 
   const username = new Username(input.username)
 
-  const friendships = await FriendshipRepository.getFollowersByUsername({
+  const friendships = await FriendshipRepository.getUserFollowersByUsername({
     skip,
     take,
     userId,
     username,
   })
 
-  const count = await FriendshipRepository.countFollowers({ username })
+  const count = await FriendshipRepository.countUserFollowers({ username })
 
   const hasMore = PageService.hasMore({ count, skip, take })
 
