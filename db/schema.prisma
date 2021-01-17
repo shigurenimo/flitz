@@ -8,177 +8,191 @@ generator client {
 }
 
 model Account {
-  createdAt      DateTime @default(now())
+  createdAt      DateTime @default(now()) @map("created_at")
   email          String   @unique
-  hashedPassword String?
+  hashedPassword String?  @map("hashed_password")
   id             String   @id @default(cuid())
-  role           Role     @default(USER)
-  user           User     @relation(fields: [userId], references: [id])
-  userId         String
+  role           UserRole @default(USER)
+  user           User     @relation("user_account", fields: [userId], references: [id])
+  userId         String   @map("user_id")
+
+  @@map("accounts")
 }
 
 model User {
-  account               Account?
+  account               Account?       @relation("user_account")
   biography             String         @default("")
-  bookmarks             Bookmark[]
-  createdAt             DateTime       @default(now())
-  exchanges             Exchange[]
-  followees             Friendship[]   @relation("Followers")
-  followeesCount        Int            @default(0)
-  followers             Friendship[]   @relation("Followees")
-  followersCount        Int            @default(0)
+  bookmarks             Bookmark[]     @relation("user_bookmarks")
+  createdAt             DateTime       @default(now()) @map("created_at")
+  exchanges             Exchange[]     @relation("user_exchanges")
+  followees             Friendship[]   @relation("user_followers")
+  followeesCount        Int            @default(0) @map("followees_count")
+  followers             Friendship[]   @relation("user_followees")
+  followersCount        Int            @default(0) @map("followers_count")
   id                    String         @id @default(cuid())
-  likes                 Like[]
-  messages              Message[]
+  likes                 Like[]         @relation("user_likes")
+  messages              Message[]      @relation("user_messages")
   name                  String?
-  notifications         Notification[]
-  posts                 Post[]
-  references            Reference[]
-  relatedExchanges      Exchange[]     @relation("RelatedExchange")
-  relatedGroupExchanges Exchange[]     @relation("RelatedGroupExchange")
-  sessions              Session[]
-  updatedAt             DateTime       @default(now()) @updatedAt
+  notifications         Notification[] @relation("user_notifications")
+  posts                 Post[]         @relation("user_posts")
+  references            Reference[]    @relation("user_references")
+  relatedExchanges      Exchange[]     @relation("user_related_exchanges")
+  relatedGroupExchanges Exchange[]     @relation("users_related_exchanges")
+  sessions              Session[]      @relation("user_sessions")
+  updatedAt             DateTime       @default(now()) @updatedAt @map("updated_at")
   username              String         @unique @default(cuid())
 
+
   @@index([createdAt])
+  @@map("users")
 }
 
 model Friendship {
-  createdAt     DateTime       @default(now())
-  followee      User           @relation("Followees", fields: [followeeId])
-  followeeId    String
-  follower      User           @relation("Followers", fields: [followerId])
-  followerId    String
-  id            String         @id @default(cuid())
-  notifications Notification[]
+  createdAt    DateTime       @default(now()) @map("created_at")
+  followee     User           @relation("user_followees", fields: [followeeId])
+  followeeId   String         @map("followee_id")
+  follower     User           @relation("user_followers", fields: [followerId])
+  followerId   String         @map("follower_id")
+  id           String         @id @default(cuid())
+  notification Notification[] @relation("notifications_friendship")
 
   @@unique([followerId, followeeId])
   @@index([followerId, createdAt])
+  @@map("friendships")
 }
 
 model Session {
-  antiCSRFToken      String?
-  createdAt          DateTime  @default(now())
-  expiresAt          DateTime?
+  antiCSRFToken      String?   @map("anti_csrf_token")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  expiresAt          DateTime? @map("expires_at")
   handle             String    @unique
-  hashedSessionToken String?
+  hashedSessionToken String?   @map("hashed_session_token")
   id                 String    @id @default(cuid())
-  privateData        String?
-  publicData         String?
-  updatedAt          DateTime  @default(now()) @updatedAt
-  user               User?     @relation(fields: [userId])
-  userId             String?
+  privateData        String?   @map("private_data")
+  publicData         String?   @map("public_data")
+  updatedAt          DateTime  @default(now()) @updatedAt @map("updated_at")
+  user               User?     @relation("user_sessions", fields: [userId])
+  userId             String?   @map("user_id")
+
+  @@map("sessions")
 }
 
 model Post {
-  bookmarks       Bookmark[]
-  createdAt       DateTime       @default(now())
+  bookmarks       Bookmark[]     @relation("post_bookmarks")
+  createdAt       DateTime       @default(now()) @map("created_at")
   id              String         @id @default(cuid())
-  likes           Like[]
-  likesCount      Int            @default(0)
-  notifications   Notification[]
-  quotation       Post?          @relation("Quotations", fields: [quotationId])
-  quotationId     String?
-  quotations      Post[]         @relation("Quotations")
-  quotationsCount Int            @default(0)
-  references      Reference[]
-  replies         Post[]         @relation("Replies")
-  repliesCount    Int            @default(0)
-  reply           Post?          @relation("Replies", fields: [replyId])
-  replyId         String?
+  likes           Like[]         @relation("post_likes")
+  likesCount      Int            @default(0) @map("likes_count")
+  notifications   Notification[] @relation("notifications_post")
+  quotation       Post?          @relation("post_quotations", fields: [quotationId])
+  quotationId     String?        @map("quotation_id")
+  quotations      Post[]         @relation("post_quotations")
+  quotationsCount Int            @default(0) @map("quotations_count")
+  references      Reference[]    @relation("post_references")
+  replies         Post[]         @relation("post_replies")
+  repliesCount    Int            @default(0) @map("replies_count")
+  reply           Post?          @relation("post_replies", fields: [replyId])
+  replyId         String?        @map("reply_id")
   text            String?
-  updatedAt       DateTime       @default(now()) @updatedAt
-  user            User           @relation(fields: [userId])
-  userId          String
+  updatedAt       DateTime       @default(now()) @updatedAt @map("updated_at")
+  user            User           @relation("user_posts", fields: [userId])
+  userId          String         @map("user_id")
 
   @@unique([userId, quotationId])
   @@index([createdAt])
   @@index([userId, createdAt])
   @@index([replyId, createdAt])
+  @@map("posts")
 }
 
 model Reference {
-  createdAt DateTime @default(now())
-  isRead    Boolean  @default(false)
-  post      Post     @relation(fields: [postId])
-  postId    String
-  user      User     @relation(fields: [userId])
-  userId    String
+  createdAt DateTime @default(now()) @map("created_at")
+  isRead    Boolean  @default(false) @map("is_read")
+  post      Post     @relation("post_references", fields: [postId])
+  postId    String   @map("post_id")
+  user      User     @relation("user_references", fields: [userId])
+  userId    String   @map("user_id")
 
   @@id([userId, postId])
   @@index([userId, createdAt])
+  @@map("references")
 }
 
 model Like {
-  createdAt     DateTime       @default(now())
+  createdAt     DateTime       @default(now()) @map("created_at")
   id            String         @id @default(cuid())
-  notifications Notification[]
-  post          Post           @relation(fields: [postId])
-  postId        String
-  user          User           @relation(fields: [userId])
-  userId        String
+  notifications Notification[] @relation("notifications_like")
+  post          Post           @relation("post_likes", fields: [postId])
+  postId        String         @map("post_id")
+  user          User           @relation("user_likes", fields: [userId])
+  userId        String         @map("user_id")
 
   @@unique([userId, postId])
   @@index([userId, createdAt])
+  @@map("likes")
 }
 
 model Bookmark {
-  createdAt DateTime @default(now())
-  post      Post     @relation(fields: [postId])
-  postId    String
-  user      User     @relation(fields: [userId])
-  userId    String
+  createdAt DateTime @default(now()) @map("created_at")
+  post      Post     @relation("post_bookmarks", fields: [postId])
+  postId    String   @map("post_id")
+  user      User     @relation("user_bookmarks", fields: [userId])
+  userId    String   @map("user_id")
 
   @@unique([userId, postId])
   @@index([userId, createdAt])
+  @@map("bookmarks")
 }
 
 model Notification {
-  createdAt    DateTime         @default(now())
-  friendship   Friendship?      @relation(fields: [friendshipId])
-  friendshipId String?
+  createdAt    DateTime         @default(now()) @map("created_at")
+  friendship   Friendship?      @relation("notifications_friendship", fields: [friendshipId])
+  friendshipId String?          @map("friendship_id")
   id           String           @id @default(cuid())
-  isRead       Boolean          @default(false)
-  like         Like?            @relation(fields: [likeId])
-  likeId       String?
-  post         Post?            @relation(fields: [postId])
-  postId       String?
+  isRead       Boolean          @default(false) @map("is_read")
+  like         Like?            @relation("notifications_like", fields: [likeId])
+  likeId       String?          @map("like_id")
+  post         Post?            @relation("notifications_post", fields: [postId])
+  postId       String?          @map("post_id")
   type         NotificationType
-  uniqueId     String
-  user         User?            @relation(fields: [userId])
-  userId       String?
+  uniqueId     String           @map("unique_id")
+  user         User?            @relation("user_notifications", fields: [userId])
+  userId       String?          @map("user_id")
 
   @@unique([userId, type, uniqueId])
   @@index([userId, createdAt])
+  @@map("notifications")
 }
 
 model Message {
-  createdAt DateTime   @default(now())
-  exchanges Exchange[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  exchanges Exchange[] @relation("exchanges_messages")
   id        String     @id @default(cuid())
-  isRead    Boolean    @default(false)
+  isRead    Boolean    @default(false) @map("is_read")
   text      String
-  updatedAt DateTime   @default(now()) @updatedAt
-  user      User       @relation(fields: [userId], references: [id])
-  userId    String
+  updatedAt DateTime   @default(now()) @updatedAt @map("updated_at")
+  user      User       @relation("user_messages", fields: [userId], references: [id])
+  userId    String     @map("user_id")
 
   @@index([createdAt])
+  @@map("messages")
 }
 
 model Exchange {
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime  @default(now()) @map("created_at")
   id            String    @id @default(cuid())
-  isRead        Boolean   @default(false)
-  messages      Message[]
-  relatedUser   User?     @relation("RelatedExchange", fields: [relatedUserId], references: [id])
-  relatedUserId String?
-  relatedUsers  User[]    @relation("RelatedGroupExchange")
-  updatedAt     DateTime  @default(now()) @updatedAt
-  user          User      @relation(fields: [userId], references: [id])
-  userId        String
+  isRead        Boolean   @default(false) @map("is_read")
+  messages      Message[] @relation("exchanges_messages")
+  relatedUser   User?     @relation("user_related_exchanges", fields: [relatedUserId], references: [id])
+  relatedUserId String?   @map("related_user_id")
+  relatedUsers  User[]    @relation("users_related_exchanges")
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at")
+  user          User      @relation("user_exchanges", fields: [userId], references: [id])
+  userId        String    @map("user_id")
 
   @@unique([userId, relatedUserId])
   @@index([userId, updatedAt])
+  @@map("exchanges")
 }
 
 enum NotificationType {
@@ -187,10 +201,14 @@ enum NotificationType {
   LIKE
   REPLY
   QUOTATION
+
+  @@map("notification_type")
 }
 
-enum Role {
+enum UserRole {
   ADMIN
   SYSTEM
   USER
+
+  @@map("user_role")
 }
