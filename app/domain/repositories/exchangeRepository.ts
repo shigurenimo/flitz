@@ -1,7 +1,15 @@
 import { Count, Id, PostText, Skip } from "app/domain/valueObjects"
 import db from "db"
 
+/**
+ * ## メッセージスレッド
+ */
 export class ExchangeRepository {
+  /**
+   * ユーザーのスレッドを集計する
+   * @param input
+   * @returns
+   */
   static async countUserExchanges(input: { userId: Id }) {
     const count = await db.exchange.count({
       where: { userId: input.userId.value },
@@ -10,6 +18,11 @@ export class ExchangeRepository {
     return new Count(count)
   }
 
+  /**
+   * スレッドを取得する
+   * @param input
+   * @returns
+   */
   static getExchange(input: { exchangeId: Id; skip: Skip }) {
     return db.exchange.findUnique({
       include: {
@@ -24,6 +37,11 @@ export class ExchangeRepository {
     })
   }
 
+  /**
+   * ユーザーのスレッドを取得する
+   * @param input
+   * @returns
+   */
   static getUserExchange(input: { userId: Id }) {
     return db.exchange.findFirst({
       where: {
@@ -38,6 +56,11 @@ export class ExchangeRepository {
     })
   }
 
+  /**
+   * ユーザーの複数のスレッドを取得する
+   * @param input
+   * @returns
+   */
   static getUserExchanges(input: { skip: Skip; userId: Id }) {
     return db.exchange.findMany({
       orderBy: { updatedAt: "desc" },
@@ -55,6 +78,11 @@ export class ExchangeRepository {
     })
   }
 
+  /**
+   * スレッドのメッセージを作成する
+   * @param input
+   * @returns
+   */
   static createExchangeMessage(input: {
     text: PostText
     userId: Id

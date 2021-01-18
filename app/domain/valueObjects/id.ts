@@ -5,8 +5,7 @@ export const idSchema = z.string().min(8).max(40)
 export type IdValue = z.infer<typeof idSchema>
 
 /**
- * Record ID
- * @category Value Objects
+ * ## ID
  */
 export class Id {
   constructor(public value: IdValue) {

@@ -8,6 +8,9 @@ import {
 } from "app/domain/valueObjects"
 import db, { Friendship } from "db"
 
+/**
+ * ## 投稿
+ */
 export class PostRepository {
   static async countReplies(input: { replyId: Id }) {
     const count = await db.post.count({

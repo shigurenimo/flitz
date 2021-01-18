@@ -1,12 +1,20 @@
 import { Id, Username } from "app/domain/valueObjects"
-import { Biography } from "app/domain/valueObjects/descriptionText"
+import { Biography } from "app/domain/valueObjects/biography"
 import { Email } from "app/domain/valueObjects/email"
 import { HashedPassword } from "app/domain/valueObjects/hashedPassword"
 import { Name } from "app/domain/valueObjects/name"
 import { UserRole } from "app/domain/valueObjects/userRole"
 import db from "db"
 
+/**
+ * ## ユーザー
+ */
 export class UserRepository {
+  /**
+   * 新しいユーザーを作成する
+   * @param input
+   * @returns
+   */
   static createUser(input: {
     biography: Biography
     email: Email
@@ -31,12 +39,22 @@ export class UserRepository {
     // return UserEntity.fromData(user)
   }
 
+  /**
+   * ユーザーを取得する
+   * @param input
+   * @returns
+   */
   static getUser(input: { userId: Id }) {
     return db.user.findFirst({
       where: { id: input.userId.value },
     })
   }
 
+  /**
+   * ユーザーネームからユーザーを探す
+   * @param input
+   * @returns
+   */
   static getUserByUsername(input: { userId: Id | null; username: Username }) {
     return db.user.findUnique({
       include: {
@@ -48,6 +66,11 @@ export class UserRepository {
     })
   }
 
+  /**
+   * ユーザーをフォローする
+   * @param input
+   * @returns
+   */
   static async followUser(input: { followerId: Id; followeeId: Id }) {
     const [user] = await db.$transaction([
       db.user.update({
@@ -73,6 +96,11 @@ export class UserRepository {
     return user
   }
 
+  /**
+   * ユーザーのフォローを外す
+   * @param input
+   * @returns
+   */
   static async unfollowUser(input: { followerId: Id; followeeId: Id }) {
     const [user] = await db.$transaction([
       db.user.update({

@@ -1,6 +1,9 @@
 import { Id } from "app/domain/valueObjects"
 import { Exchange, Message } from "db"
 
+/**
+ * ## メッセージ
+ */
 export class MessageService {
   static hasUnreadMessages(input: {
     messages: (Message & { exchanges: Exchange[] })[]

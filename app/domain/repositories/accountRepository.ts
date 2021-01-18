@@ -3,8 +3,16 @@ import { HashedPassword } from "app/domain/valueObjects/hashedPassword"
 import { Id } from "app/domain/valueObjects/id"
 import db from "db"
 
+/**
+ * ## アカウント
+ */
 export class AccountRepository {
-  static async findAccountByEmail(email: Email) {
+  /**
+   * メールアドレスで指定しアカウントを取得する
+   * @param email
+   * @returns
+   */
+  static async getAccountByEmail(email: Email) {
     return await db.account.findUnique({
       where: { email: email.value },
       include: { user: true },
@@ -17,6 +25,10 @@ export class AccountRepository {
     */
   }
 
+  /**
+   * アカウントを更新する
+   * @param input
+   */
   static async updateAccount(input: {
     id: Id
     hashedPassword: HashedPassword

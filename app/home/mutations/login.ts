@@ -26,7 +26,7 @@ const login = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const password = new Password(input.password)
 
-  const account = await AccountRepository.findAccountByEmail(email)
+  const account = await AccountRepository.getAccountByEmail(email)
 
   if (!account || account.hashedPassword === null) {
     throw new NotFoundError()

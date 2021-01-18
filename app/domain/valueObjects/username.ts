@@ -7,6 +7,9 @@ export const usernameSchema = z
 
 type UsernameValue = z.infer<typeof usernameSchema>
 
+/**
+ * ## ユーザーネーム
+ */
 export class Username {
   constructor(public value: UsernameValue) {
     usernameSchema.parse(value)

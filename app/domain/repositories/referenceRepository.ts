@@ -1,6 +1,9 @@
 import { Count, Id, Skip } from "app/domain/valueObjects"
 import db from "db"
 
+/**
+ * ## タイムライン
+ */
 export class ReferenceRepository {
   static async countReferences(input: { userId: Id }) {
     const count = await db.post.count({ where: { userId: input.userId.value } })

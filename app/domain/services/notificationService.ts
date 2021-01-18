@@ -1,7 +1,7 @@
 import { Notification } from "db"
 
 /**
- * Notification - 通知
+ * ## 通知
  * @category Services
  */
 export class NotificationService {

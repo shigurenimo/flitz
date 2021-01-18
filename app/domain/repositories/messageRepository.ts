@@ -3,6 +3,9 @@ import { Id } from "app/domain/valueObjects/id"
 import { PostText } from "app/domain/valueObjects/postText"
 import db from "db"
 
+/**
+ * ## メッセージ
+ */
 export class MessageRepository {
   static async countUserGroupMessages(input: { exchangeId: Id }) {
     const count = await db.message.count({

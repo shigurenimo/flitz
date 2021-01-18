@@ -2,6 +2,9 @@ import { Count, Skip } from "app/domain/valueObjects"
 import { Id } from "app/domain/valueObjects/id"
 import db from "db"
 
+/**
+ * ## 通知
+ */
 export class NotificationRepository {
   static async countNotifications(input: { userId: Id }) {
     const count = await db.notification.count({

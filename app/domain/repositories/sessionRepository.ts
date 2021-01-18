@@ -4,7 +4,16 @@ import { Username } from "app/domain/valueObjects/username"
 import { UserRole } from "app/domain/valueObjects/userRole"
 import { SessionContext } from "blitz"
 
+/**
+ * ## セッション
+ */
 export class SessionRepository {
+  /**
+   * 新しいセッションを作成する
+   * @param session
+   * @param input
+   * @returns
+   */
   static createSession(
     session: SessionContext,
     input: {
@@ -21,6 +30,11 @@ export class SessionRepository {
       username: input.username.value,
     })
   }
+
+  /**
+   * セッションを無効にする
+   * @param session
+   */
   static async revokeSession(session: SessionContext) {
     await session.revoke()
   }

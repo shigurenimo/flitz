@@ -1,5 +1,5 @@
+export * from "app/domain/valueObjects/biography"
 export * from "app/domain/valueObjects/count"
-export * from "app/domain/valueObjects/descriptionText"
 export * from "app/domain/valueObjects/email"
 export * from "app/domain/valueObjects/hashedPassword"
 export * from "app/domain/valueObjects/id"

@@ -1,6 +1,9 @@
 import { Count, Id, Skip, Take, Username } from "app/domain/valueObjects"
 import db from "db"
 
+/**
+ * ## フォローフォロワー関係
+ */
 export class FriendshipRepository {
   static async countUserFollowees(input: { username: Username }) {
     const count = await db.friendship.count({

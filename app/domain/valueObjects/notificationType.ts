@@ -10,6 +10,9 @@ export const notificationTypeSchema = z.union([
 
 export type NotificationTypeValue = z.infer<typeof notificationTypeSchema>
 
+/**
+ * ## 通知の種類
+ */
 export class notificationType {
   constructor(public value: NotificationTypeValue) {
     notificationTypeSchema.parse(value)

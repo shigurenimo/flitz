@@ -2,6 +2,9 @@ import { Count, Skip, Take, Username } from "app/domain/valueObjects"
 import { Id } from "app/domain/valueObjects/id"
 import db from "db"
 
+/**
+ * ## いいね評価
+ */
 export class LikeRepository {
   static async countLikes(input: { username: Username }) {
     const count = await db.like.count({

@@ -4,6 +4,9 @@ export const nameSchema = z.string().max(32)
 
 export type NameValue = z.infer<typeof nameSchema>
 
+/**
+ * ## ユーザー名
+ */
 export class Name {
   constructor(public value: NameValue) {
     nameSchema.parse(value)
