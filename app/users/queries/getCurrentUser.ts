@@ -1,6 +1,6 @@
-import { UserRepository } from "domain/repositories"
-import { Id } from "domain/valueObjects"
 import { AuthorizationError, Ctx } from "blitz"
+import { Id } from "domain/valueObjects"
+import { UserRepository } from "integrations"
 
 export default async function getCurrentUser(_ = null, ctx: Ctx) {
   ctx.session.authorize()

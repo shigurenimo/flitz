@@ -1,23 +1,18 @@
-import { NotificationRepository, UserRepository } from "app/domain/repositories"
-import { Id, idSchema } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
+import { Id, idSchema } from "domain/valueObjects"
+import { NotificationRepository, UserRepository } from "integrations"
 import * as z from "zod"
 
 const inputSchema = z.object({ userId: idSchema })
 
-const transformer = inputSchema.transform(
-  z.object({
-    userId: z.instanceof(Id),
-  }),
-  (input) => ({
-    userId: new Id(input.userId),
-  })
-)
-
 const followUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
   ctx.session.authorize()
 
-  const { userId: followeeId } = transformer.parse(input)
+  const { userId: followeeId } = inputSchema
+    .transform((input) => ({
+      userId: new Id(input.userId),
+    }))
+    .parse(input)
 
   const followerId = new Id(ctx.session.userId)
 

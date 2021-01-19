@@ -1,6 +1,6 @@
-import { NotificationRepository } from "domain/repositories"
-import { Id } from "domain/valueObjects"
 import { Ctx } from "blitz"
+import { Id } from "domain/valueObjects"
+import { NotificationRepository } from "integrations"
 
 const checkUnreadNotifications = async (_ = null, ctx: Ctx) => {
   ctx.session.authorize()

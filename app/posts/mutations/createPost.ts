@@ -1,6 +1,6 @@
-import { FriendshipRepository, PostRepository } from "domain/repositories"
-import { Id, PostText, postTextSchema } from "domain/valueObjects"
 import { Ctx } from "blitz"
+import { Id, PostText, postTextSchema } from "domain/valueObjects"
+import { FriendshipRepository, PostRepository } from "integrations"
 import * as z from "zod"
 
 export const inputSchema = z.object({ text: postTextSchema })

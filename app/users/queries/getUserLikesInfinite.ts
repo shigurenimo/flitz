@@ -1,4 +1,4 @@
-import { LikeRepository } from "domain/repositories/likeRepository"
+import { Ctx } from "blitz"
 import { PageService } from "domain/services"
 import {
   Id,
@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "domain/valueObjects"
-import { Ctx } from "blitz"
+import { LikeRepository } from "integrations/likeRepository"
 import * as z from "zod"
 
 const inputSchema = z.object({

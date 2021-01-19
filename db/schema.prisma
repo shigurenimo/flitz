@@ -25,6 +25,7 @@ model User {
   bookmarks             Bookmark[]     @relation("user_bookmarks")
   createdAt             DateTime       @default(now()) @map("created_at")
   exchanges             Exchange[]     @relation("user_exchanges")
+  files                 File[]         @relation("user_files")
   followees             Friendship[]   @relation("user_followers")
   followeesCount        Int            @default(0) @map("followees_count")
   followers             Friendship[]   @relation("user_followees")
@@ -41,7 +42,6 @@ model User {
   sessions              Session[]      @relation("user_sessions")
   updatedAt             DateTime       @default(now()) @updatedAt @map("updated_at")
   username              String         @unique @default(cuid())
-
 
   @@index([createdAt])
   @@map("users")
@@ -80,6 +80,7 @@ model Session {
 model Post {
   bookmarks       Bookmark[]     @relation("post_bookmarks")
   createdAt       DateTime       @default(now()) @map("created_at")
+  files           File[]         @relation("post_files")
   id              String         @id @default(cuid())
   likes           Like[]         @relation("post_likes")
   likesCount      Int            @default(0) @map("likes_count")
@@ -193,6 +194,30 @@ model Exchange {
   @@unique([userId, relatedUserId])
   @@index([userId, updatedAt])
   @@map("exchanges")
+}
+
+model File {
+  createdAt DateTime @default(now()) @map("created_at")
+  id        String   @id @default(cuid())
+  path      String
+  post      Post?    @relation("post_files", fields: [postId], references: [id])
+  postId    String?  @map("post_id")
+  service   Service?
+  type      FileType
+  user      User     @relation("user_files", fields: [userId], references: [id])
+  userId    String   @map("user_id")
+}
+
+enum FileType {
+  IMAGE_GIF
+  IMAGE_JPEG
+  IMAGE_PNG
+  IMAGE_WEBP
+}
+
+enum Service {
+  CLOUD_STORAGE
+  AMAZON_S3
 }
 
 enum NotificationType {

@@ -1,4 +1,4 @@
-import { AccountRepository, SessionRepository } from "domain/repositories"
+import { AuthenticationError, Ctx, NotFoundError } from "blitz"
 import { PasswordService } from "domain/services"
 import {
   Email,
@@ -11,7 +11,7 @@ import {
   Username,
   UserRole,
 } from "domain/valueObjects"
-import { AuthenticationError, Ctx, NotFoundError } from "blitz"
+import { AccountRepository, SessionRepository } from "integrations"
 import * as z from "zod"
 
 const inputSchema = z.object({

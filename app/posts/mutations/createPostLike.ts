@@ -1,6 +1,6 @@
-import { NotificationRepository, PostRepository } from "domain/repositories"
-import { Id, idSchema } from "domain/valueObjects"
 import { Ctx } from "blitz"
+import { Id, idSchema } from "domain/valueObjects"
+import { NotificationRepository, PostRepository } from "integrations"
 import * as z from "zod"
 
 export const inputSchema = z.object({ postId: idSchema })

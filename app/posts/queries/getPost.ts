@@ -1,6 +1,6 @@
-import { PostRepository } from "domain/repositories"
-import { Id, idSchema } from "domain/valueObjects"
 import { NotFoundError } from "blitz"
+import { Id, idSchema } from "domain/valueObjects"
+import { PostRepository } from "integrations"
 import * as z from "zod"
 
 const inputSchema = z.object({ id: idSchema })

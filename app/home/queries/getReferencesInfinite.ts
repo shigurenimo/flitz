@@ -1,8 +1,8 @@
-import { ReferenceRepository } from "domain/repositories"
+import { Ctx } from "blitz"
 import { PageService } from "domain/services"
 import { ReferenceService } from "domain/services/referenceService"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
-import { Ctx } from "blitz"
+import { ReferenceRepository } from "integrations"
 import * as z from "zod"
 
 export const inputSchema = z.object({ skip: skipSchema })

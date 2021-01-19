@@ -1,7 +1,7 @@
-import { ExchangeRepository } from "domain/repositories/exchangeRepository"
+import { Ctx } from "blitz"
 import { Id, idSchema } from "domain/valueObjects/id"
 import { PostText, postTextSchema } from "domain/valueObjects/postText"
-import { Ctx } from "blitz"
+import { ExchangeRepository } from "integrations/exchangeRepository"
 import * as z from "zod"
 
 const inputSchema = z.object({

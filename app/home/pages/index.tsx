@@ -40,6 +40,15 @@ const HomePage: BlitzPage<Props> = ({ userId }) => {
 
   return (
     <StackMain divider={<StackDivider />}>
+      <form action="/api/upload" encType="multipart/form-data" method="post">
+        <div>
+          Text field title: <input type="text" name="title" />
+        </div>
+        <div>
+          File: <input type="file" name="file" />
+        </div>
+        <input type="submit" value="Upload" />
+      </form>
       <StackHeader>{t("Home")}</StackHeader>
       <HomePageInput />
       <ErrorBoundary FallbackComponent={() => null}>
