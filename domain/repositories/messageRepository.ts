@@ -1,6 +1,6 @@
-import { Count, Skip } from "app/domain/valueObjects"
-import { Id } from "app/domain/valueObjects/id"
-import { PostText } from "app/domain/valueObjects/postText"
+import { Count, Skip } from "domain/valueObjects"
+import { Id } from "domain/valueObjects/id"
+import { PostText } from "domain/valueObjects/postText"
 import db from "db"
 
 /**

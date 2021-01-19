@@ -1,5 +1,0 @@
-export * from "app/domain/services/messageService"
-export * from "app/domain/services/notificationService"
-export * from "app/domain/services/pageService"
-export * from "app/domain/services/passwordService"
-export * from "app/domain/services/referenceService"

@@ -1,5 +1,5 @@
-import { UserRepository } from "app/domain/repositories"
-import { Id, Username, usernameSchema } from "app/domain/valueObjects"
+import { UserRepository } from "domain/repositories"
+import { Id, Username, usernameSchema } from "domain/valueObjects"
 import { Ctx, NotFoundError } from "blitz"
 import * as z from "zod"
 

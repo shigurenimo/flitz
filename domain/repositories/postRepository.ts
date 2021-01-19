@@ -1,11 +1,4 @@
-import {
-  Count,
-  Id,
-  PostText,
-  Skip,
-  Take,
-  Username,
-} from "app/domain/valueObjects"
+import { Count, Id, PostText, Skip, Take, Username } from "domain/valueObjects"
 import db, { Friendship } from "db"
 
 /**

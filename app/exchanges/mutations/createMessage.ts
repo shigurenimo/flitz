@@ -1,6 +1,6 @@
-import { MessageRepository } from "app/domain/repositories/messageRepository"
-import { Id, idSchema } from "app/domain/valueObjects/id"
-import { PostText, postTextSchema } from "app/domain/valueObjects/postText"
+import { MessageRepository } from "domain/repositories/messageRepository"
+import { Id, idSchema } from "domain/valueObjects/id"
+import { PostText, postTextSchema } from "domain/valueObjects/postText"
 import { Ctx } from "blitz"
 import * as z from "zod"
 

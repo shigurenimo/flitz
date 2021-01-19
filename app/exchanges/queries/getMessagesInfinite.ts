@@ -1,6 +1,6 @@
-import { MessageRepository } from "app/domain/repositories"
-import { MessageService, PageService } from "app/domain/services"
-import { Id, idSchema, Skip, skipSchema, Take } from "app/domain/valueObjects"
+import { MessageRepository } from "domain/repositories"
+import { MessageService, PageService } from "domain/services"
+import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
 import { Ctx } from "blitz"
 import * as z from "zod"
 

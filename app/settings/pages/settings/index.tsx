@@ -1,6 +1,6 @@
 import { StackDivider } from "@chakra-ui/react"
 import { StackHeader } from "app/components/StackHeader"
-import { StackPage } from "app/components/StackMain"
+import { StackMain } from "app/components/StackMain"
 import Layout from "app/layouts/Layout"
 import { SettingsPageLogout } from "app/settings/components/SettingsPageLogout"
 import { BlitzPage } from "blitz"
@@ -11,10 +11,10 @@ const SettingsPage: BlitzPage = () => {
   const { t } = useTranslation()
 
   return (
-    <StackPage divider={<StackDivider />}>
+    <StackMain divider={<StackDivider />}>
       <StackHeader>{t("Settings")}</StackHeader>
       <SettingsPageLogout />
-    </StackPage>
+    </StackMain>
   )
 }
 

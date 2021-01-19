@@ -1,4 +1,4 @@
-import { Count, Id, Skip, Take, Username } from "app/domain/valueObjects"
+import { Count, Id, Skip, Take, Username } from "domain/valueObjects"
 import db from "db"
 
 /**

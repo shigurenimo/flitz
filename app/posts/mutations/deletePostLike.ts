@@ -1,5 +1,5 @@
-import { PostRepository } from "app/domain/repositories"
-import { Id, idSchema } from "app/domain/valueObjects"
+import { PostRepository } from "domain/repositories"
+import { Id, idSchema } from "domain/valueObjects"
 import { Ctx } from "blitz"
 import * as z from "zod"
 

@@ -1,5 +1,5 @@
-import { AccountRepository, SessionRepository } from "app/domain/repositories"
-import { PasswordService } from "app/domain/services"
+import { AccountRepository, SessionRepository } from "domain/repositories"
+import { PasswordService } from "domain/services"
 import {
   Email,
   emailSchema,
@@ -10,7 +10,7 @@ import {
   passwordSchema,
   Username,
   UserRole,
-} from "app/domain/valueObjects"
+} from "domain/valueObjects"
 import { AuthenticationError, Ctx, NotFoundError } from "blitz"
 import * as z from "zod"
 

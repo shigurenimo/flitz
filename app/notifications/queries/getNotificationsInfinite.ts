@@ -1,6 +1,6 @@
-import { NotificationRepository } from "app/domain/repositories"
-import { NotificationService, PageService } from "app/domain/services"
-import { Id, Skip, skipSchema, Take } from "app/domain/valueObjects"
+import { NotificationRepository } from "domain/repositories"
+import { NotificationService, PageService } from "domain/services"
+import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
 import { Ctx } from "blitz"
 import * as z from "zod"
 

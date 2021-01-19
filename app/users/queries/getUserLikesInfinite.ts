@@ -1,5 +1,5 @@
-import { LikeRepository } from "app/domain/repositories/likeRepository"
-import { PageService } from "app/domain/services"
+import { LikeRepository } from "domain/repositories/likeRepository"
+import { PageService } from "domain/services"
 import {
   Id,
   Skip,
@@ -7,7 +7,7 @@ import {
   Take,
   Username,
   usernameSchema,
-} from "app/domain/valueObjects"
+} from "domain/valueObjects"
 import { Ctx } from "blitz"
 import * as z from "zod"
 

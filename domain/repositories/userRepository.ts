@@ -1,9 +1,9 @@
-import { Id, Username } from "app/domain/valueObjects"
-import { Biography } from "app/domain/valueObjects/biography"
-import { Email } from "app/domain/valueObjects/email"
-import { HashedPassword } from "app/domain/valueObjects/hashedPassword"
-import { Name } from "app/domain/valueObjects/name"
-import { UserRole } from "app/domain/valueObjects/userRole"
+import { Id, Username } from "domain/valueObjects"
+import { Biography } from "domain/valueObjects/biography"
+import { Email } from "domain/valueObjects/email"
+import { HashedPassword } from "domain/valueObjects/hashedPassword"
+import { Name } from "domain/valueObjects/name"
+import { UserRole } from "domain/valueObjects/userRole"
 import db from "db"
 
 /**

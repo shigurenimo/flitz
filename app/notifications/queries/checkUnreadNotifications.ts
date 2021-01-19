@@ -1,5 +1,5 @@
-import { NotificationRepository } from "app/domain/repositories"
-import { Id } from "app/domain/valueObjects"
+import { NotificationRepository } from "domain/repositories"
+import { Id } from "domain/valueObjects"
 import { Ctx } from "blitz"
 
 const checkUnreadNotifications = async (_ = null, ctx: Ctx) => {

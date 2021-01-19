@@ -1,4 +1,4 @@
-import { Id } from "app/domain/valueObjects"
+import { Id } from "domain/valueObjects"
 import { Exchange, Message } from "db"
 
 /**

@@ -1,4 +1,4 @@
-import { SessionRepository } from "app/domain/repositories"
+import { SessionRepository } from "domain/repositories"
 import { Ctx } from "blitz"
 
 const logout = async (_: any, ctx: Ctx) => {

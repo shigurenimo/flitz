@@ -1,5 +1,5 @@
-import { UserRepository } from "app/domain/repositories"
-import { Id } from "app/domain/valueObjects"
+import { UserRepository } from "domain/repositories"
+import { Id } from "domain/valueObjects"
 import { AuthorizationError, Ctx } from "blitz"
 
 export default async function getCurrentUser(_ = null, ctx: Ctx) {

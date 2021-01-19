@@ -1,4 +1,4 @@
-import { Password } from "app/domain/valueObjects/password"
+import { Password } from "domain/valueObjects/password"
 import SecurePassword from "secure-password"
 import * as z from "zod"
 

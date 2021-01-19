@@ -1,6 +1,6 @@
-import { ExchangeRepository, MessageRepository } from "app/domain/repositories"
-import { PageService } from "app/domain/services"
-import { Id, idSchema, Skip, skipSchema, Take } from "app/domain/valueObjects"
+import { ExchangeRepository, MessageRepository } from "domain/repositories"
+import { PageService } from "domain/services"
+import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
 import { Ctx, NotFoundError } from "blitz"
 import * as z from "zod"
 

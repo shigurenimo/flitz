@@ -1,5 +1,5 @@
-import { ExchangeRepository } from "app/domain/repositories/exchangeRepository"
-import { Id } from "app/domain/valueObjects"
+import { ExchangeRepository } from "domain/repositories/exchangeRepository"
+import { Id } from "domain/valueObjects"
 import { Ctx } from "blitz"
 
 const checkUnreadMessages = async (_ = null, ctx: Ctx) => {

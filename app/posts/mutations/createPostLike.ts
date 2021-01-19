@@ -1,5 +1,5 @@
-import { NotificationRepository, PostRepository } from "app/domain/repositories"
-import { Id, idSchema } from "app/domain/valueObjects"
+import { NotificationRepository, PostRepository } from "domain/repositories"
+import { Id, idSchema } from "domain/valueObjects"
 import { Ctx } from "blitz"
 import * as z from "zod"
 

@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { StackHeader } from "app/components/StackHeader"
-import { StackPage } from "app/components/StackMain"
+import { StackMain } from "app/components/StackMain"
 import Layout from "app/layouts/Layout"
 import { BlitzPage, Link } from "blitz"
 import React from "react"
@@ -21,7 +21,7 @@ const AboutPage: BlitzPage = () => {
   const { t } = useTranslation()
 
   return (
-    <StackPage divider={<StackDivider />}>
+    <StackMain divider={<StackDivider />}>
       <StackHeader>{"FLITZ"}</StackHeader>
       <HStack>
         <Box minW={32}>
@@ -117,7 +117,7 @@ const AboutPage: BlitzPage = () => {
           <Text>{"That's a wrap."}</Text>
         </Stack>
       </Stack>
-    </StackPage>
+    </StackMain>
   )
 }
 

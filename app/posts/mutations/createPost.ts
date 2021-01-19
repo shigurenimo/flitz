@@ -1,5 +1,5 @@
-import { FriendshipRepository, PostRepository } from "app/domain/repositories"
-import { Id, PostText, postTextSchema } from "app/domain/valueObjects"
+import { FriendshipRepository, PostRepository } from "domain/repositories"
+import { Id, PostText, postTextSchema } from "domain/valueObjects"
 import { Ctx } from "blitz"
 import * as z from "zod"
 

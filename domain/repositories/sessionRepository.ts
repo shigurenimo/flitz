@@ -1,7 +1,7 @@
-import { Id } from "app/domain/valueObjects/id"
-import { Name } from "app/domain/valueObjects/name"
-import { Username } from "app/domain/valueObjects/username"
-import { UserRole } from "app/domain/valueObjects/userRole"
+import { Id } from "domain/valueObjects/id"
+import { Name } from "domain/valueObjects/name"
+import { Username } from "domain/valueObjects/username"
+import { UserRole } from "domain/valueObjects/userRole"
 import { SessionContext } from "blitz"
 
 /**

@@ -1,7 +1,7 @@
-import { ReferenceRepository } from "app/domain/repositories"
-import { PageService } from "app/domain/services"
-import { ReferenceService } from "app/domain/services/referenceService"
-import { Id, Skip, skipSchema, Take } from "app/domain/valueObjects"
+import { ReferenceRepository } from "domain/repositories"
+import { PageService } from "domain/services"
+import { ReferenceService } from "domain/services/referenceService"
+import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
 import { Ctx } from "blitz"
 import * as z from "zod"
 

@@ -1,7 +1,7 @@
 import { getSessionContext } from "@blitzjs/server"
 import { Stack, StackDivider } from "@chakra-ui/react"
 import { StackHeader } from "app/components/StackHeader"
-import { StackPage } from "app/components/StackMain"
+import { StackMain } from "app/components/StackMain"
 import { HomePageHero } from "app/home/components/HomePageHero"
 import { HomePageInput } from "app/home/components/HomePageInput"
 import { HomePageList } from "app/home/components/HomePageList"
@@ -22,7 +22,7 @@ const HomePage: BlitzPage<Props> = ({ userId }) => {
 
   if (!userId) {
     return (
-      <StackPage divider={<StackDivider />}>
+      <StackMain divider={<StackDivider />}>
         <Stack
           direction={{ base: "column", md: "row" }}
           align={"start"}
@@ -34,12 +34,12 @@ const HomePage: BlitzPage<Props> = ({ userId }) => {
         <Suspense fallback={<PostsPageListFallback />}>
           <PostsPageList />
         </Suspense>
-      </StackPage>
+      </StackMain>
     )
   }
 
   return (
-    <StackPage divider={<StackDivider />}>
+    <StackMain divider={<StackDivider />}>
       <StackHeader>{t("Home")}</StackHeader>
       <HomePageInput />
       <ErrorBoundary FallbackComponent={() => null}>
@@ -47,7 +47,7 @@ const HomePage: BlitzPage<Props> = ({ userId }) => {
           <HomePageList />
         </Suspense>
       </ErrorBoundary>
-    </StackPage>
+    </StackMain>
   )
 }
 

@@ -1,6 +1,6 @@
 import { StackDivider } from "@chakra-ui/react"
 import { StackHeader } from "app/components/StackHeader"
-import { StackPage } from "app/components/StackMain"
+import { StackMain } from "app/components/StackMain"
 import Layout from "app/layouts/Layout"
 import { PostsPageList } from "app/posts/components/PostsPageList"
 import { PostsPageListFallback } from "app/posts/components/PostsPageListFallback"
@@ -12,12 +12,12 @@ const PostsPage: BlitzPage = () => {
   const { t } = useTranslation()
 
   return (
-    <StackPage divider={<StackDivider />}>
+    <StackMain divider={<StackDivider />}>
       <StackHeader>{t("Stream")}</StackHeader>
       <Suspense fallback={<PostsPageListFallback />}>
         <PostsPageList />
       </Suspense>
-    </StackPage>
+    </StackMain>
   )
 }
 

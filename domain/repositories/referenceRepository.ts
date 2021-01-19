@@ -1,4 +1,4 @@
-import { Count, Id, Skip } from "app/domain/valueObjects"
+import { Count, Id, Skip } from "domain/valueObjects"
 import db from "db"
 
 /**

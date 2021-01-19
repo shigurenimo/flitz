@@ -1,4 +1,4 @@
-import { Count, Skip, Take } from "app/domain/valueObjects"
+import { Count, Skip, Take } from "domain/valueObjects"
 
 /**
  * ## ページング

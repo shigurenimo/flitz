@@ -1,6 +1,6 @@
 import { StackDivider } from "@chakra-ui/react"
 import { StackHeader } from "app/components/StackHeader"
-import { StackPage } from "app/components/StackMain"
+import { StackMain } from "app/components/StackMain"
 import Layout from "app/layouts/Layout"
 import { ShowPostPageDetail } from "app/posts/components/ShowPostPageDetail"
 import { ShowPostPageInput } from "app/posts/components/ShowPostPageInput"
@@ -13,7 +13,7 @@ const ShowPostPage: BlitzPage = () => {
   const { t } = useTranslation()
 
   return (
-    <StackPage divider={<StackDivider />}>
+    <StackMain divider={<StackDivider />}>
       <StackHeader>{t("Post")}</StackHeader>
       <Suspense fallback={<div>{"loading..."}</div>}>
         <ShowPostPageDetail />
@@ -24,7 +24,7 @@ const ShowPostPage: BlitzPage = () => {
       <Suspense fallback={<div>{"loading..."}</div>}>
         <ShowPostPageReplyList />
       </Suspense>
-    </StackPage>
+    </StackMain>
   )
 }
 

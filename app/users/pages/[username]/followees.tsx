@@ -1,7 +1,7 @@
 import { getSessionContext } from "@blitzjs/server"
 import { StackDivider } from "@chakra-ui/react"
 import { StackHeader } from "app/components/StackHeader"
-import { StackPage } from "app/components/StackMain"
+import { StackMain } from "app/components/StackMain"
 import Layout from "app/layouts/Layout"
 import { ShowUserPageListFollowees } from "app/users/components/ShowUserPageListFollowees"
 import { BlitzPage, GetServerSideProps, PublicData } from "blitz"
@@ -15,12 +15,12 @@ const ShowUserFolloweesPage: BlitzPage<Props> = ({ userId }) => {
   const { t } = useTranslation()
 
   return (
-    <StackPage divider={<StackDivider />}>
+    <StackMain divider={<StackDivider />}>
       <StackHeader>{t("Followees")}</StackHeader>
       <Suspense fallback={<div>{"loading..."}</div>}>
         <ShowUserPageListFollowees userId={userId} />
       </Suspense>
-    </StackPage>
+    </StackMain>
   )
 }
 

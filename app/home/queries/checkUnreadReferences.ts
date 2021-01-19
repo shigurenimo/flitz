@@ -1,5 +1,5 @@
-import { ReferenceRepository } from "app/domain/repositories"
-import { Id } from "app/domain/valueObjects"
+import { ReferenceRepository } from "domain/repositories"
+import { Id } from "domain/valueObjects"
 import { Ctx } from "blitz"
 
 const checkUnreadReferences = async (_ = null, ctx: Ctx) => {

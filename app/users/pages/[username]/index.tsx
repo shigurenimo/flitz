@@ -1,5 +1,5 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
-import { StackPage } from "app/components/StackMain"
+import { StackMain } from "app/components/StackMain"
 import Layout from "app/layouts/Layout"
 import { ShowUserPageDetail } from "app/users/components/ShowUserPageDetail"
 import { ShowUserPageListLikes } from "app/users/components/ShowUserPageListLikes"
@@ -10,7 +10,7 @@ import React, { Suspense } from "react"
 
 const ShowUserPage: BlitzPage = () => {
   return (
-    <StackPage>
+    <StackMain>
       <Suspense fallback={<div>{"loading..."}</div>}>
         <ShowUserPageDetail />
       </Suspense>
@@ -38,7 +38,7 @@ const ShowUserPage: BlitzPage = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </StackPage>
+    </StackMain>
   )
 }
 

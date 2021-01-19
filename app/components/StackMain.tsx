@@ -3,7 +3,7 @@ import React, { FunctionComponent } from "react"
 
 type Props = StackProps
 
-export const StackPage: FunctionComponent<Props> = ({ children, ...props }) => {
+export const StackMain: FunctionComponent<Props> = ({ children, ...props }) => {
   return (
     <Stack
       as={"main"}

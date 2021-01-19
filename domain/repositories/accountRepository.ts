@@ -1,6 +1,6 @@
-import { Email } from "app/domain/valueObjects/email"
-import { HashedPassword } from "app/domain/valueObjects/hashedPassword"
-import { Id } from "app/domain/valueObjects/id"
+import { Email } from "domain/valueObjects/email"
+import { HashedPassword } from "domain/valueObjects/hashedPassword"
+import { Id } from "domain/valueObjects/id"
 import db from "db"
 
 /**

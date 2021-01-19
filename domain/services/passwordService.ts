@@ -1,5 +1,5 @@
-import { HashedPassword } from "app/domain/valueObjects/hashedPassword"
-import { Password } from "app/domain/valueObjects/password"
+import { HashedPassword } from "domain/valueObjects/hashedPassword"
+import { Password } from "domain/valueObjects/password"
 import SecurePassword from "secure-password"
 
 /**
