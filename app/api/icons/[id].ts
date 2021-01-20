@@ -1,7 +1,7 @@
 import jdenticon from "jdenticon"
 import { NextApiRequest, NextApiResponse } from "next"
 
-const card = async (req: NextApiRequest, resp: NextApiResponse) => {
+const icon = async (req: NextApiRequest, resp: NextApiResponse) => {
   const id = req.query.id + ""
 
   const buffer = jdenticon.toPng(id, 160)
@@ -13,4 +13,4 @@ const card = async (req: NextApiRequest, resp: NextApiResponse) => {
   resp.send(buffer)
 }
 
-export default card
+export default icon
