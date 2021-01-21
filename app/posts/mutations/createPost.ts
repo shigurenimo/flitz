@@ -1,9 +1,12 @@
 import { FriendshipRepository, PostRepository } from "app/domain/repositories"
-import { Id, PostText, postTextSchema } from "app/domain/valueObjects"
+import { Id, PostText, postTextSchema, Image } from "app/domain/valueObjects"
 import { Ctx } from "blitz"
 import * as z from "zod"
 
-export const inputSchema = z.object({ text: postTextSchema })
+export const inputSchema = z.object({
+  text: postTextSchema,
+  image: z.string().nullable(), // base64 workaround. see onCreatePost in HomePageInput
+})
 
 const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
   inputSchema.parse(input)
@@ -17,6 +20,8 @@ const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
   const friendships = await FriendshipRepository.getUserFollowers({
     followeeId: userId,
   })
+
+  const image = Image.fromDataURL(input.image)
 
   const post = await PostRepository.createPost({ friendships, text, userId })
 

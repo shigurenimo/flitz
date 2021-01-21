@@ -39,15 +39,19 @@ export const HomePageInput: FunctionComponent = () => {
 
   const onCreatePost = async () => {
     try {
-      await createPostMutation({ text })
+      // Upload images by base64 because blitz mutations does not accept Files
+      // See https://github.com/blitz-js/blitz/issues/843
+      const encodedImage = image && (await convertFileToBase64(image))
+      await createPostMutation({ text, image: encodedImage })
       setText("")
+      setImage(null)
       toast({ status: "success", title: "Success" })
     } catch (error) {
       toast({ status: "error", title: error.message })
     }
   }
 
-  const isDisabled = text.trim().length === 0
+  const isDisabled = text.trim().length === 0 || !image
 
   return (
     <Stack spacing={4} px={4}>
@@ -167,4 +171,14 @@ const useUnmount = (callback: () => void) => {
   callbackRef.current = callback
 
   useEffect(() => () => callbackRef.current!(), [])
+}
+
+const convertFileToBase64 = (file: File): Promise<string> => {
+  const reader = new FileReader()
+  return new Promise((resolve) => {
+    reader.addEventListener("loadend", () => resolve(reader.result as string), {
+      once: true,
+    })
+    reader.readAsDataURL(file)
+  })
 }
