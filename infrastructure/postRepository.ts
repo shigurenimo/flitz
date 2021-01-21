@@ -1,5 +1,5 @@
-import { Count, Id, PostText, Skip, Take, Username } from "domain/valueObjects"
 import db, { Friendship } from "db"
+import { Count, Id, PostText, Skip, Take, Username } from "domain/valueObjects"
 
 /**
  * ## 投稿
@@ -39,12 +39,18 @@ export class PostRepository {
   }
 
   static createPost(input: {
+    fileIds: Id[]
+    friendships: Friendship[]
     text: PostText
     userId: Id
-    friendships: Friendship[]
   }) {
     return db.post.create({
       data: {
+        files: {
+          connect: input.fileIds.map((id) => {
+            return { id: id.value }
+          }),
+        },
         text: input.text.value,
         user: { connect: { id: input.userId.value } },
         references: {
@@ -215,6 +221,7 @@ export class PostRepository {
   }) {
     return db.post.findMany({
       include: {
+        files: true,
         likes: input.userId ? { where: { userId: input.userId.value } } : false,
         quotations: input.userId
           ? { where: { userId: input.userId.value } }
@@ -239,9 +246,11 @@ export class PostRepository {
   }) {
     return db.post.findMany({
       include: {
+        files: true,
         likes: input.userId ? { where: { userId: input.userId.value } } : false,
         quotation: {
           include: {
+            files: true,
             likes: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
@@ -262,6 +271,7 @@ export class PostRepository {
           : false,
         reply: {
           include: {
+            files: true,
             likes: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
@@ -294,9 +304,11 @@ export class PostRepository {
   }) {
     return db.post.findMany({
       include: {
+        files: true,
         likes: input.userId ? { where: { userId: input.userId.value } } : false,
         quotation: {
           include: {
+            files: true,
             likes: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
@@ -317,6 +329,7 @@ export class PostRepository {
           : false,
         reply: {
           include: {
+            files: true,
             likes: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
@@ -341,9 +354,11 @@ export class PostRepository {
   static getNewPosts(input: { skip: Skip; userId: Id | null }) {
     return db.post.findMany({
       include: {
+        files: true,
         likes: input.userId ? { where: { userId: input.userId.value } } : false,
         quotation: {
           include: {
+            files: true,
             likes: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
@@ -386,7 +401,10 @@ export class PostRepository {
 
   static getPost(input: { id: Id }) {
     return db.post.findUnique({
-      include: { user: true },
+      include: {
+        files: true,
+        user: true,
+      },
       where: { id: input.id.value },
     })
   }

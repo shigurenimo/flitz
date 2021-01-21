@@ -16,4 +16,8 @@ export class EnvRepository {
 
     return success
   }
+
+  static isLocalProject() {
+    return !this.isFirebaseProject()
+  }
 }

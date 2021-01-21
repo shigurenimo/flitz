@@ -1,9 +1,17 @@
-import { Image } from "domain/valueObjects"
+import { Id, Image } from "domain/valueObjects"
+import { tmpdir } from "os"
+import { join } from "path"
 import sharp from "sharp"
 
 export class ImageService {
-  static async writeFile(image: Image, fileOut: string) {
-    await sharp(image.value).resize({ width: 1024 }).png().toFile(fileOut)
+  static getFilePath(fileName: Id) {
+    return join(tmpdir(), fileName.value)
+  }
+
+  static async writeFile(image: Image, fileId: Id) {
+    const filePath = this.getFilePath(fileId)
+
+    await sharp(image.value).resize({ width: 1024 }).png().toFile(filePath)
   }
 
   static isInvalidContentType(fileType: string) {

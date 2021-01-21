@@ -11,6 +11,7 @@ import { FiRepeat } from "react-icons/fi"
 
 type Props = {
   createdAt: Date
+  files?: { id: string }[]
   id: string
   isDisabled?: boolean
   likesCount: number
@@ -19,6 +20,7 @@ type Props = {
   }[]
   quotation?: {
     createdAt: Date
+    file?: { id: string }
     id: string
     likesCount: number
     likes?: {
@@ -49,6 +51,7 @@ type Props = {
   }[]
   reply?: {
     createdAt: Date
+    file?: { id: string }
     id: string
     likesCount: number
     likes?: {
@@ -114,10 +117,9 @@ export const StackCardPost: FunctionComponent<Props> = ({
         <HStack>
           <HStack bg={bg} px={4} py={1} rounded={"md"}>
             <Icon as={FiRepeat} />
-            <Text
-              fontWeight={"bold"}
-              fontSize={"sm"}
-            >{`${user.name} Reposted`}</Text>
+            <Text fontWeight={"bold"} fontSize={"sm"}>
+              {`${user.name} Reposted`}
+            </Text>
           </HStack>
         </HStack>
         <HStack align={"start"} spacing={4}>

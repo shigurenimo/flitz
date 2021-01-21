@@ -1,4 +1,3 @@
-import { Id } from "domain/valueObjects"
 import admin from "firebase-admin"
 import * as z from "zod"
 
@@ -31,9 +30,5 @@ export class FirebaseRepository {
       databaseURL: `https://${projectId}.firebaseio.com`,
       storageBucket: `${projectId}.appspot.com`,
     })
-  }
-
-  static createId() {
-    return new Id(admin.firestore().collection("collectionPath").doc().id)
   }
 }

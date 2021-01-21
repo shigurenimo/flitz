@@ -1,6 +1,20 @@
 import { Ctx } from "blitz"
-import { FriendshipRepository, PostRepository } from "domain/repositories"
-import { Id, Image, PostText, postTextSchema } from "domain/valueObjects"
+import { ImageService } from "domain/services"
+import {
+  FileType,
+  Id,
+  Image,
+  PostText,
+  postTextSchema,
+  Service,
+} from "domain/valueObjects"
+import {
+  EnvRepository,
+  FileRepository,
+  FriendshipRepository,
+  PostRepository,
+  StorageRepository,
+} from "infrastructure"
 import * as z from "zod"
 
 export const inputSchema = z.object({
@@ -9,11 +23,14 @@ export const inputSchema = z.object({
 })
 
 const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
-  inputSchema.parse(input)
-
   ctx.session.authorize()
 
-  const text = new PostText(input.text)
+  const { text, image } = inputSchema
+    .transform((input) => ({
+      text: new PostText(input.text),
+      image: Image.fromDataURL(input.image),
+    }))
+    .parse(input)
 
   const userId = new Id(ctx.session.userId)
 
@@ -21,9 +38,38 @@ const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     followeeId: userId,
   })
 
-  const image = Image.fromDataURL(input.image)
+  if (image === null) {
+    const post = await PostRepository.createPost({
+      friendships,
+      text,
+      userId,
+      fileIds: [],
+    })
 
-  const post = await PostRepository.createPost({ friendships, text, userId })
+    return post
+  }
+
+  const filePath = StorageRepository.createPath()
+
+  await ImageService.writeFile(image, filePath)
+
+  if (EnvRepository.isFirebaseProject()) {
+    await StorageRepository.uploadToCloudStorage(filePath)
+  }
+
+  const file = await FileRepository.createFile({
+    userId,
+    fileType: new FileType("IMAGE_PNG"),
+    service: new Service("CLOUD_STORAGE"),
+    path: filePath,
+  })
+
+  const post = await PostRepository.createPost({
+    friendships,
+    text,
+    userId,
+    fileIds: [new Id(file.id)],
+  })
 
   return post
 }

@@ -1,5 +1,5 @@
-import { Count, Id, Skip } from "domain/valueObjects"
 import db from "db"
+import { Count, Id, Skip } from "domain/valueObjects"
 
 /**
  * ## タイムライン
@@ -27,9 +27,11 @@ export class ReferenceRepository {
       include: {
         post: {
           include: {
+            files: true,
             likes: { where: { userId: input.userId.value } },
             quotation: {
               include: {
+                files: true,
                 likes: { where: { userId: input.userId.value } },
                 quotations: { where: { userId: input.userId.value } },
                 replies: { where: { userId: input.userId.value } },
@@ -40,6 +42,7 @@ export class ReferenceRepository {
             replies: { where: { userId: input.userId.value } },
             reply: {
               include: {
+                files: true,
                 likes: { where: { userId: input.userId.value } },
                 quotations: { where: { userId: input.userId.value } },
                 replies: { where: { userId: input.userId.value } },
