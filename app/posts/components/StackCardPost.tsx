@@ -7,7 +7,7 @@ import { StackPostDate } from "app/posts/components/StackPostDate"
 import { StackPostImage } from "app/posts/components/StackPostImage"
 import { StackPostMenu } from "app/posts/components/StackPostMenu"
 import { StackPostUser } from "app/posts/components/StackPostUser"
-import { useRouter } from "blitz"
+import { useRouter, useSession } from "blitz"
 import React, { FunctionComponent } from "react"
 import { FiRepeat } from "react-icons/fi"
 
@@ -102,6 +102,8 @@ export const StackCardPost: FunctionComponent<Props> = ({
   user,
   userId,
 }) => {
+  const session = useSession()
+
   const bg = useColorModeValue("purple.50", "gray.600")
 
   const router = useRouter()
@@ -130,7 +132,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
           <Stack spacing={2} w={"full"}>
             <HStack>
               <StackPostUser user={user} />
-              <StackPostMenu />
+              <StackPostMenu isOwnPost={session.userId === user.id} />
             </HStack>
             {quotation.text && (
               <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
@@ -166,7 +168,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
           <Stack spacing={2} w={"full"}>
             <HStack>
               <StackPostUser user={user} />
-              <StackPostMenu />
+              <StackPostMenu isOwnPost={session.userId === user.id} />
             </HStack>
             <Text
               color={"primary.500"}
@@ -213,7 +215,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
           <Stack spacing={2} w={"full"}>
             <HStack>
               <StackPostUser user={user} />
-              <StackPostMenu />
+              <StackPostMenu isOwnPost={session.userId === user.id} />
             </HStack>
             <Text
               color={"primary.500"}
@@ -254,7 +256,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
         <Stack spacing={2} w={"full"}>
           <HStack>
             <StackPostUser user={user} />
-            <StackPostMenu />
+            <StackPostMenu isOwnPost={session.userId === user.id} />
           </HStack>
 
           {text && (

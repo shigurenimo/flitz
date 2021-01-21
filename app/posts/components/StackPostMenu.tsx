@@ -25,7 +25,11 @@ import {
   FiTrash2,
 } from "react-icons/fi"
 
-export const StackPostMenu: FunctionComponent = () => {
+type Props = {
+  isOwnPost: boolean
+}
+
+export const StackPostMenu: FunctionComponent<Props> = (props) => {
   const deleteDialogDisclosure = useDisclosure()
 
   const hasShareAPI = typeof navigator.share !== "undefined"
@@ -58,13 +62,15 @@ export const StackPostMenu: FunctionComponent = () => {
           Actions
         </MenuButton>
         <MenuList>
-          <MenuItem
-            aria-label={"Delete"}
-            icon={<FiTrash2 />}
-            onClick={deleteDialogDisclosure.onOpen}
-          >
-            Delete
-          </MenuItem>
+          {props.isOwnPost && (
+            <MenuItem
+              aria-label={"Delete"}
+              icon={<FiTrash2 />}
+              onClick={deleteDialogDisclosure.onOpen}
+            >
+              Delete
+            </MenuItem>
+          )}
           {hasShareAPI && (
             <MenuItem aria-label={"Share"} icon={<FiShare />} onClick={onShare}>
               Share

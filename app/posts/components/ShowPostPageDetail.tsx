@@ -3,13 +3,15 @@ import { AvatarUser } from "app/components/AvatarUser"
 import { StackPostImage } from "app/posts/components/StackPostImage"
 import { StackPostMenu } from "app/posts/components/StackPostMenu"
 import getPost from "app/posts/queries/getPost"
-import { useParam, useQuery } from "blitz"
+import { useParam, useQuery, useSession } from "blitz"
 import React, { FunctionComponent } from "react"
 
 export const ShowPostPageDetail: FunctionComponent = () => {
   const postId = useParam("postId", "string")
 
   const [post] = useQuery(getPost, { id: postId + "" })
+
+  const session = useSession()
 
   return (
     <Stack spacing={4} px={4}>
@@ -20,7 +22,7 @@ export const ShowPostPageDetail: FunctionComponent = () => {
             <Text fontWeight={"bold"}>{post.user.name}</Text>
             <Text color={"gray.500"}>{`@${post.user.username}`}</Text>
           </Stack>
-          <StackPostMenu />
+          <StackPostMenu isOwnPost={session.userId === post.user.id} />
         </HStack>
       </HStack>
       <Stack>
