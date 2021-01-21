@@ -24,7 +24,7 @@ const HomePage: BlitzPage<Props> = ({ userId }) => {
     return (
       <StackMain divider={<StackDivider />}>
         <Stack
-          direction={{ base: "column", md: "row" }}
+          direction={{ base: "column", lg: "row" }}
           align={"start"}
           spacing={4}
         >

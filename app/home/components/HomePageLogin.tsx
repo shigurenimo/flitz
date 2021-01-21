@@ -81,7 +81,7 @@ export const HomePageLogin: FunctionComponent = () => {
   const isLoading = isLoadingCreateUser || isLoadingLogin
 
   return (
-    <Stack maxW={{ base: "none", md: 80 }} spacing={8} w={"full"} px={4}>
+    <Stack maxW={{ base: "none", lg: 80 }} spacing={8} w={"full"} px={4}>
       <Stack as={"form"} onSubmit={handleSubmit(() => null)} spacing={4}>
         <FormControl isInvalid={errors.email}>
           <Input
