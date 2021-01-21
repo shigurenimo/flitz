@@ -1,7 +1,7 @@
 import { Ctx } from "blitz"
 import { MessageService, PageService } from "domain/services"
 import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
-import { MessageRepository } from "integrations"
+import { MessageRepository } from "infrastructure"
 import * as z from "zod"
 
 const inputSchema = z.object({

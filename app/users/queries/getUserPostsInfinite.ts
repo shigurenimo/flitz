@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "domain/valueObjects"
-import { PostRepository } from "integrations"
+import { PostRepository } from "infrastructure"
 import * as z from "zod"
 
 const inputSchema = z.object({

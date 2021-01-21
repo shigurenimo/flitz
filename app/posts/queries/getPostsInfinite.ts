@@ -1,7 +1,7 @@
 import { Ctx } from "blitz"
 import { PageService } from "domain/services"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
-import { PostRepository } from "integrations"
+import { PostRepository } from "infrastructure"
 import * as z from "zod"
 
 const inputSchema = z.object({ skip: skipSchema })

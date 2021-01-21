@@ -9,7 +9,7 @@ import {
   Username,
   UserRole,
 } from "domain/valueObjects"
-import { SessionRepository, UserRepository } from "integrations"
+import { SessionRepository, UserRepository } from "infrastructure"
 import * as z from "zod"
 
 export const inputSchema = z.object({

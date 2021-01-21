@@ -1,6 +1,5 @@
-import { Count, Skip, Take, Username } from "domain/valueObjects"
-import { Id } from "domain/valueObjects/id"
 import db from "db"
+import { Count, Id, Skip, Take, Username } from "domain/valueObjects"
 
 /**
  * ## いいね評価

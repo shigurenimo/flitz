@@ -4,7 +4,7 @@ import {
   FriendshipRepository,
   NotificationRepository,
   PostRepository,
-} from "integrations"
+} from "infrastructure"
 import * as z from "zod"
 
 const inputSchema = z.object({ postId: idSchema })

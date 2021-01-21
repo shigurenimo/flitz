@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { Id } from "domain/valueObjects"
-import { ExchangeRepository } from "integrations/exchangeRepository"
+import { ExchangeRepository } from "infrastructure/exchangeRepository"
 
 const checkUnreadMessages = async (_ = null, ctx: Ctx) => {
   ctx.session.authorize()

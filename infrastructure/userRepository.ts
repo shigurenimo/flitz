@@ -1,10 +1,13 @@
-import { Id, Username } from "domain/valueObjects"
-import { Biography } from "domain/valueObjects/biography"
-import { Email } from "domain/valueObjects/email"
-import { HashedPassword } from "domain/valueObjects/hashedPassword"
-import { Name } from "domain/valueObjects/name"
-import { UserRole } from "domain/valueObjects/userRole"
 import db from "db"
+import {
+  Biography,
+  Email,
+  HashedPassword,
+  Id,
+  Name,
+  Username,
+  UserRole,
+} from "domain/valueObjects"
 
 /**
  * ## ユーザー

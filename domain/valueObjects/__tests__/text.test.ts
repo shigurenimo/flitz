@@ -1,4 +1,4 @@
-import { PostText } from "domain/valueObjects/postText"
+import { PostText } from "domain/valueObjects"
 import faker from "faker"
 
 describe("text", () => {

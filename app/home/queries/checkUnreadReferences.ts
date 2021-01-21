@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { Id } from "domain/valueObjects"
-import { ReferenceRepository } from "integrations"
+import { ReferenceRepository } from "infrastructure"
 
 const checkUnreadReferences = async (_ = null, ctx: Ctx) => {
   ctx.session.authorize()

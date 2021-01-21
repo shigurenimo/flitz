@@ -11,7 +11,7 @@ import {
   Username,
   UserRole,
 } from "domain/valueObjects"
-import { AccountRepository, SessionRepository } from "integrations"
+import { AccountRepository, SessionRepository } from "infrastructure"
 import * as z from "zod"
 
 const inputSchema = z.object({

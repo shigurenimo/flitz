@@ -1,6 +1,6 @@
 import { Ctx, NotFoundError } from "blitz"
 import { Id, Username, usernameSchema } from "domain/valueObjects"
-import { UserRepository } from "integrations"
+import { UserRepository } from "infrastructure"
 import * as z from "zod"
 
 const inputSchema = z.object({ username: usernameSchema })

@@ -1,20 +1,21 @@
+import { Id } from "domain/valueObjects"
 import admin from "firebase-admin"
-import { FirebaseRepository } from "integrations/firebaseRepository"
+import { FirebaseRepository } from "infrastructure/firebaseRepository"
 import { tmpdir } from "os"
 import { join } from "path"
 
 export class StorageRepository {
-  static toTmpPath(fileName: string) {
-    return join(tmpdir(), fileName)
+  static toTmpPath(fileName: Id) {
+    return join(tmpdir(), fileName.value)
   }
 
-  static async upload(filePath: string) {
+  static async uploadToCloudStorage(filePath: string) {
     const destination = FirebaseRepository.createId()
 
     const bucket = admin.storage().bucket()
 
     await bucket.upload(filePath, {
-      destination,
+      destination: destination.value,
       metadata: { contentType: "image/png" },
     })
   }

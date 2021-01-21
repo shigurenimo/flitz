@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "domain/valueObjects"
-import { LikeRepository } from "integrations/likeRepository"
+import { LikeRepository } from "infrastructure/likeRepository"
 import * as z from "zod"
 
 const inputSchema = z.object({

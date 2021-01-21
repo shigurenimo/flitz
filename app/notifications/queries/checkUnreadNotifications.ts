@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { Id } from "domain/valueObjects"
-import { NotificationRepository } from "integrations"
+import { NotificationRepository } from "infrastructure"
 
 const checkUnreadNotifications = async (_ = null, ctx: Ctx) => {
   ctx.session.authorize()

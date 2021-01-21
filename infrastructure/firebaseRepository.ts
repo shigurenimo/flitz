@@ -1,3 +1,4 @@
+import { Id } from "domain/valueObjects"
 import admin from "firebase-admin"
 import * as z from "zod"
 
@@ -33,6 +34,6 @@ export class FirebaseRepository {
   }
 
   static createId() {
-    return admin.firestore().collection("collectionPath").doc().id
+    return new Id(admin.firestore().collection("collectionPath").doc().id)
   }
 }

@@ -1,7 +1,7 @@
 import { Ctx, NotFoundError } from "blitz"
 import { PageService } from "domain/services"
 import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
-import { ExchangeRepository, MessageRepository } from "integrations"
+import { ExchangeRepository, MessageRepository } from "infrastructure"
 import * as z from "zod"
 
 const inputSchema = z.object({

@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { Id, idSchema } from "domain/valueObjects"
-import { PostRepository } from "integrations"
+import { PostRepository } from "infrastructure"
 import * as z from "zod"
 
 const inputSchema = z.object({ postId: idSchema })
