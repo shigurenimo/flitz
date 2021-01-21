@@ -1,17 +1,11 @@
-import { HStack, Icon, useClipboard, useToast } from "@chakra-ui/react"
+import { HStack, Icon, useToast } from "@chakra-ui/react"
 import { ButtonPostAction } from "app/posts/components/ButtonPostAction"
 import createPostLike from "app/posts/mutations/createPostLike"
 import createQuotation from "app/posts/mutations/createQuotation"
 import deletePostLike from "app/posts/mutations/deletePostLike"
 import { useMutation, useRouter } from "blitz"
 import React, { FunctionComponent } from "react"
-import {
-  FiClipboard,
-  FiHeart,
-  FiMessageCircle,
-  FiRepeat,
-  FiShare,
-} from "react-icons/fi"
+import { FiHeart, FiMessageCircle, FiRepeat } from "react-icons/fi"
 
 type Props = {
   hasLike: boolean
@@ -39,10 +33,6 @@ export const StackPostActions: FunctionComponent<Props> = ({
   const router = useRouter()
 
   const toast = useToast()
-
-  const { hasCopied, onCopy } = useClipboard(
-    typeof window !== "undefined" ? window.location.href : ""
-  )
 
   const [
     createPostLikeMutation,
@@ -84,20 +74,6 @@ export const StackPostActions: FunctionComponent<Props> = ({
     }
   }
 
-  const onShare = () => {
-    if (hasShareAPI) {
-      navigator.share({
-        title: "Feed",
-        text: text || "null",
-        url: window.location.href,
-      })
-      return
-    }
-    onCopy()
-  }
-
-  const hasShareAPI = typeof navigator.share !== "undefined"
-
   return (
     <HStack spacing={2}>
       <ButtonPostAction
@@ -127,15 +103,6 @@ export const StackPostActions: FunctionComponent<Props> = ({
         onClick={onCreateReply}
       >
         {repliesCount}
-      </ButtonPostAction>
-      <ButtonPostAction
-        aria-label={"Share"}
-        leftIcon={
-          <Icon as={hasShareAPI ? FiShare : FiClipboard} display={"flex"} />
-        }
-        onClick={onShare}
-      >
-        {hasShareAPI ? "Share" : hasCopied ? "Copied" : "Copy"}
       </ButtonPostAction>
     </HStack>
   )

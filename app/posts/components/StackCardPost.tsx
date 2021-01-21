@@ -5,6 +5,7 @@ import { StackCardQuotationEmbedded } from "app/posts/components/StackCardQuotat
 import { StackPostActions } from "app/posts/components/StackPostActions"
 import { StackPostDate } from "app/posts/components/StackPostDate"
 import { StackPostImage } from "app/posts/components/StackPostImage"
+import { StackPostMenu } from "app/posts/components/StackPostMenu"
 import { StackPostUser } from "app/posts/components/StackPostUser"
 import { useRouter } from "blitz"
 import React, { FunctionComponent } from "react"
@@ -106,11 +107,11 @@ export const StackCardPost: FunctionComponent<Props> = ({
   const router = useRouter()
 
   const onPushRouter = () => {
-    router.push(`/posts/${id}`)
+    // router.push(`/posts/${id}`)
   }
 
   const onClickQuotation = () => {
-    router.push(`/posts/${quotation?.id}`)
+    // router.push(`/posts/${quotation?.id}`)
   }
 
   if (quotation && text === null) {
@@ -127,7 +128,10 @@ export const StackCardPost: FunctionComponent<Props> = ({
         <HStack align={"start"} spacing={4}>
           <AvatarUser userId={quotation.userId} />
           <Stack spacing={2} w={"full"}>
-            <StackPostUser user={quotation.user} />
+            <HStack>
+              <StackPostUser user={user} />
+              <StackPostMenu />
+            </HStack>
             {quotation.text && (
               <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
                 {quotation.text}
@@ -160,7 +164,10 @@ export const StackCardPost: FunctionComponent<Props> = ({
         <HStack align={"start"} spacing={4}>
           <AvatarUser userId={userId} />
           <Stack spacing={2} w={"full"}>
-            <StackPostUser user={user} />
+            <HStack>
+              <StackPostUser user={user} />
+              <StackPostMenu />
+            </HStack>
             <Text
               color={"primary.500"}
               fontWeight={"bold"}
@@ -198,13 +205,16 @@ export const StackCardPost: FunctionComponent<Props> = ({
     return (
       <StackCard
         onClick={() => {
-          router.push(`/posts/${reply.id}`)
+          // router.push(`/posts/${reply.id}`)
         }}
       >
         <HStack align={"start"} spacing={4}>
           <AvatarUser userId={userId} />
           <Stack spacing={2} w={"full"}>
-            <StackPostUser user={user} />
+            <HStack>
+              <StackPostUser user={user} />
+              <StackPostMenu />
+            </HStack>
             <Text
               color={"primary.500"}
               fontWeight={"bold"}
@@ -242,7 +252,11 @@ export const StackCardPost: FunctionComponent<Props> = ({
       <HStack align={"start"} spacing={4}>
         <AvatarUser userId={userId} />
         <Stack spacing={2} w={"full"}>
-          <StackPostUser user={user} />
+          <HStack>
+            <StackPostUser user={user} />
+            <StackPostMenu />
+          </HStack>
+
           {text && (
             <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
               {text}

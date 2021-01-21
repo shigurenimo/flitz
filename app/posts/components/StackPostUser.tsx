@@ -12,7 +12,7 @@ type Props = {
 export const StackPostUser: FunctionComponent<Props> = ({ user }) => {
   if (user.name) {
     return (
-      <Wrap align={["flex-start", "center"]} pt={1}>
+      <Wrap align={["flex-start", "center"]}>
         <WrapItem>
           <Text fontWeight={"bold"} lineHeight={1}>
             {user.name}
