@@ -1,5 +1,6 @@
 import { HStack, Stack, Text } from "@chakra-ui/react"
 import { AvatarUser } from "app/components/AvatarUser"
+import { StackPostImage } from "app/posts/components/StackPostImage"
 import getPost from "app/posts/queries/getPost"
 import { useParam, useQuery } from "blitz"
 import React, { FunctionComponent } from "react"
@@ -23,6 +24,7 @@ export const ShowPostPageDetail: FunctionComponent = () => {
           {post.text}
         </Text>
       </Stack>
+      {post.files?.length && <StackPostImage files={post.files} />}
       <HStack>
         <Text color={"gray.500"} fontSize={"lg"}>
           {post.createdAt.toLocaleTimeString()}

@@ -17,4 +17,10 @@ export class FileRepository {
       },
     })
   }
+
+  static getFile = (input: { id: Id }) => {
+    return db.file.findUnique({
+      where: { id: input.id.value },
+    })
+  }
 }

@@ -3,7 +3,6 @@ import {
   Button,
   Code,
   Heading,
-  HStack,
   Image,
   Link as LinkText,
   Stack,
@@ -23,20 +22,27 @@ const AboutPage: BlitzPage = () => {
   return (
     <StackMain divider={<StackDivider />}>
       <StackHeader>{"FLITZ"}</StackHeader>
-      <HStack>
-        <Box minW={32}>
-          <Image alt={"FLITZ"} mx={"auto"} w={40} src={"/icon.png"} />
+      <Stack direction={{ base: "column", md: "row" }} spacing={8} px={4}>
+        <Box
+          minW={32}
+          borderWidth={1}
+          overflow={"hidden"}
+          rounded={"md"}
+          bg={"white"}
+        >
+          <Image
+            alt={"FLITZ"}
+            mx={"auto"}
+            w={40}
+            src={"/apple-touch-icon.png"}
+          />
         </Box>
         <Stack spacing={4}>
           <Stack>
-            <Heading>{t("The Fullstack Miniblog system")}</Heading>
-            <Heading size={"lg"}>
+            <Heading size={"lg"}>{t("The Fullstack Miniblog System")}</Heading>
+            <Heading size={"md"}>
               {t("built on ")}
-              <LinkText
-                color={"rgb(103, 0, 235)"}
-                href={"https://blitzjs.com/"}
-                isExternal
-              >
+              <LinkText href={"https://blitzjs.com/"} isExternal>
                 {t("Blitz.js.")}
               </LinkText>
             </Heading>
@@ -49,7 +55,7 @@ const AboutPage: BlitzPage = () => {
             </Link>
           </Box>
         </Stack>
-      </HStack>
+      </Stack>
       <Stack spacing={8} px={4}>
         <Heading>{"Clone a repository"}</Heading>
         <Stack>

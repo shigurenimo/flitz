@@ -4,6 +4,7 @@ import { StackCard } from "app/components/StackCard"
 import { StackCardQuotationEmbedded } from "app/posts/components/StackCardQuotationEmbedded"
 import { StackPostActions } from "app/posts/components/StackPostActions"
 import { StackPostDate } from "app/posts/components/StackPostDate"
+import { StackPostImage } from "app/posts/components/StackPostImage"
 import { StackPostUser } from "app/posts/components/StackPostUser"
 import { useRouter } from "blitz"
 import React, { FunctionComponent } from "react"
@@ -20,7 +21,7 @@ type Props = {
   }[]
   quotation?: {
     createdAt: Date
-    file?: { id: string }
+    files?: { id: string }[]
     id: string
     likesCount: number
     likes?: {
@@ -51,7 +52,7 @@ type Props = {
   }[]
   reply?: {
     createdAt: Date
-    file?: { id: string }
+    files?: { id: string }[]
     id: string
     likesCount: number
     likes?: {
@@ -85,6 +86,7 @@ type Props = {
 
 export const StackCardPost: FunctionComponent<Props> = ({
   createdAt,
+  files,
   id,
   isDisabled = false,
   likes,
@@ -131,6 +133,9 @@ export const StackCardPost: FunctionComponent<Props> = ({
                 {quotation.text}
               </Text>
             )}
+            {quotation.files?.length && (
+              <StackPostImage files={quotation.files} />
+            )}
             <StackPostDate createdAt={quotation.createdAt} />
             <StackPostActions
               hasLike={!!quotation.likes && 0 < quotation.likes.length}
@@ -164,9 +169,12 @@ export const StackCardPost: FunctionComponent<Props> = ({
             >
               {`Replying to @${quotation.user.username}`}
             </Text>
-            <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
-              {text}
-            </Text>
+            {text && (
+              <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
+                {text}
+              </Text>
+            )}
+            {files?.length && <StackPostImage files={files} />}
             <StackCardQuotationEmbedded {...quotation} />
             <StackPostDate createdAt={createdAt} />
             <StackPostActions
@@ -205,9 +213,12 @@ export const StackCardPost: FunctionComponent<Props> = ({
             >
               {`Replying to @${reply.user.username}`}
             </Text>
-            <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
-              {text}
-            </Text>
+            {text && (
+              <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
+                {text}
+              </Text>
+            )}
+            {files?.length && <StackPostImage files={files} />}
             <StackPostDate createdAt={createdAt} />
             <StackPostActions
               hasLike={!!likes && 0 < likes.length}
@@ -237,6 +248,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
               {text}
             </Text>
           )}
+          {files?.length && <StackPostImage files={files} />}
           <StackPostDate createdAt={createdAt} />
           <StackPostActions
             hasLike={!!likes && 0 < likes.length}

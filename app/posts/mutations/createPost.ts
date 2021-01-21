@@ -1,5 +1,4 @@
 import { Ctx } from "blitz"
-import { ImageService } from "domain/services"
 import {
   FileType,
   Id,
@@ -15,6 +14,7 @@ import {
   PostRepository,
   StorageRepository,
 } from "infrastructure"
+import { ImageRepository } from "infrastructure/imageRepository"
 import * as z from "zod"
 
 export const inputSchema = z.object({
@@ -51,7 +51,7 @@ const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const filePath = StorageRepository.createPath()
 
-  await ImageService.writeFile(image, filePath)
+  await ImageRepository.writeImage(image, filePath)
 
   if (EnvRepository.isFirebaseProject()) {
     await StorageRepository.uploadToCloudStorage(filePath)

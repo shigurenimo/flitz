@@ -4,7 +4,7 @@
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
-  "description": "The Fullstack Miniblog system OSS — built on Blitz.js.",
+  "description": "The Miniblog System OSS — built on Blitz.js.",
   "icons": [
     {
       "src": "icon.png",

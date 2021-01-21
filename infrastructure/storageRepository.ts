@@ -1,25 +1,37 @@
-import { Id } from "domain/valueObjects"
+import { Id, Path } from "domain/valueObjects"
 import admin from "firebase-admin"
 import { FirebaseRepository } from "infrastructure/firebaseRepository"
 import { tmpdir } from "os"
 import { join } from "path"
 
 export class StorageRepository {
-  static getFilePath(fileName: Id) {
-    return join(tmpdir(), fileName.value)
+  static getFilePath(fileId: Id) {
+    return new Path(join(tmpdir(), fileId.value))
   }
 
   static async uploadToCloudStorage(filePath: Id) {
     FirebaseRepository.initialize()
 
-    const tmpFilePath = this.getFilePath(filePath)
+    const tmpPath = this.getFilePath(filePath)
 
     const bucket = admin.storage().bucket()
 
-    await bucket.upload(tmpFilePath, {
+    await bucket.upload(tmpPath.value, {
       destination: filePath.value,
       metadata: { contentType: "image/png" },
     })
+  }
+
+  static async downloadFileFromCloudStorage(filePath: Id) {
+    FirebaseRepository.initialize()
+
+    const tmpPath = this.getFilePath(filePath)
+
+    const bucket = admin.storage().bucket()
+
+    console.log("tmpFilePath", tmpPath.value)
+
+    return bucket.file(filePath.value).download({ destination: tmpPath.value })
   }
 
   static createPath() {

@@ -1,8 +1,8 @@
 import * as z from "zod"
 
 export class EnvRepository {
-  static isFirebaseProject() {
-    const { success } = z
+  static getFirebaseEnv() {
+    const result = z
       .object({
         projectId: z.string(),
         clientEmail: z.string().email(),
@@ -14,7 +14,17 @@ export class EnvRepository {
         privateKey: process.env.FIREBASE_PRIVATE_KEY,
       })
 
-    return success
+    if (!result.success) {
+      return null
+    }
+
+    return result.data
+  }
+
+  static isFirebaseProject() {
+    const config = this.getFirebaseEnv()
+
+    return config !== null
   }
 
   static isLocalProject() {
