@@ -148,7 +148,7 @@ const useFileSelect = (options?: { accept?: string; multiple?: boolean }) => {
       )
       input.click()
     })
-  }, [inputRef.current])
+  }, [])
 
   return select
 }
