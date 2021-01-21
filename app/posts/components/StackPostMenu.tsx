@@ -53,6 +53,7 @@ export const StackPostMenu: FunctionComponent = () => {
           size={"sm"}
           colorScheme={"gray"}
           variant={"ghost"}
+          onClick={(event) => event.stopPropagation()}
         >
           Actions
         </MenuButton>
@@ -127,7 +128,7 @@ const useCopy = (text: string) => {
 
   useEffect(() => {
     if (hasCopied) toast({ description: "Copied to clipboard" })
-  }, [hasCopied])
+  }, [hasCopied, toast])
 
   return onCopy
 }

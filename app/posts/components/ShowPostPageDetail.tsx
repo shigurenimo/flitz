@@ -1,6 +1,7 @@
 import { HStack, Stack, Text } from "@chakra-ui/react"
 import { AvatarUser } from "app/components/AvatarUser"
 import { StackPostImage } from "app/posts/components/StackPostImage"
+import { StackPostMenu } from "app/posts/components/StackPostMenu"
 import getPost from "app/posts/queries/getPost"
 import { useParam, useQuery } from "blitz"
 import React, { FunctionComponent } from "react"
@@ -14,10 +15,13 @@ export const ShowPostPageDetail: FunctionComponent = () => {
     <Stack spacing={4} px={4}>
       <HStack spacing={4}>
         <AvatarUser userId={post.userId} />
-        <Stack spacing={0}>
-          <Text fontWeight={"bold"}>{post.user.name}</Text>
-          <Text color={"gray.500"}>{`@${post.user.username}`}</Text>
-        </Stack>
+        <HStack>
+          <Stack spacing={0}>
+            <Text fontWeight={"bold"}>{post.user.name}</Text>
+            <Text color={"gray.500"}>{`@${post.user.username}`}</Text>
+          </Stack>
+          <StackPostMenu />
+        </HStack>
       </HStack>
       <Stack>
         <Text fontSize={"xl"} fontWeight={"bold"}>

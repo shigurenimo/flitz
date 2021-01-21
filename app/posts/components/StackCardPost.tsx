@@ -107,11 +107,11 @@ export const StackCardPost: FunctionComponent<Props> = ({
   const router = useRouter()
 
   const onPushRouter = () => {
-    // router.push(`/posts/${id}`)
+    router.push(`/posts/${id}`)
   }
 
   const onClickQuotation = () => {
-    // router.push(`/posts/${quotation?.id}`)
+    router.push(`/posts/${quotation?.id}`)
   }
 
   if (quotation && text === null) {
@@ -205,7 +205,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
     return (
       <StackCard
         onClick={() => {
-          // router.push(`/posts/${reply.id}`)
+          router.push(`/posts/${reply.id}`)
         }}
       >
         <HStack align={"start"} spacing={4}>
