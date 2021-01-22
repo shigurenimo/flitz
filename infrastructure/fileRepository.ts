@@ -1,5 +1,5 @@
 import db from "db"
-// import { FileEntityFactory } from "domain/factories/fileEntityFactory"
+// import { FileEntityFactory } from "domain/factories"
 import { FileType, Id, Service } from "domain/valueObjects"
 
 export class FileRepository {

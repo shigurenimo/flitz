@@ -1,8 +1,8 @@
 import { Ctx } from "blitz"
+import { HashedPasswordFactory, NameFactory } from "domain/factories"
 import {
   Biography,
   Email,
-  HashedPassword,
   Id,
   Name,
   Password,
@@ -25,11 +25,11 @@ const createUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     }))
     .parse(input)
 
-  const hashedPassword = await HashedPassword.fromPassword(password)
+  const hashedPassword = await HashedPasswordFactory.fromPassword(password)
 
   const role = new UserRole("USER")
 
-  const name = Name.fromEmail(input.email)
+  const name = NameFactory.fromEmail(email)
 
   const user = await UserRepository.createUser({
     biography: new Biography(""),

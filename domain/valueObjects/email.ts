@@ -20,15 +20,4 @@ export class Email {
     this.value = value.toLowerCase()
     Object.freeze(this)
   }
-
-  /**
-   * Generate username by using email
-   *
-   * メールアドレスからユーザーネームを生成する
-   *
-   * @returns
-   */
-  username() {
-    return this.value.substring(0, this.value.lastIndexOf("@"))
-  }
 }

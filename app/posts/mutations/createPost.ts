@@ -1,8 +1,8 @@
 import { Ctx } from "blitz"
+import { ImageFactory } from "domain/factories"
 import {
   FileType,
   Id,
-  Image,
   PostText,
   postTextSchema,
   Service,
@@ -11,10 +11,10 @@ import {
   EnvRepository,
   FileRepository,
   FriendshipRepository,
+  ImageRepository,
   PostRepository,
   StorageRepository,
 } from "infrastructure"
-import { ImageRepository } from "infrastructure/imageRepository"
 import * as z from "zod"
 
 export const inputSchema = z.object({
@@ -28,7 +28,7 @@ const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
   const { text, image } = inputSchema
     .transform((input) => ({
       text: new PostText(input.text),
-      image: Image.fromDataURL(input.image),
+      image: ImageFactory.fromDataURL(input.image),
     }))
     .parse(input)
 

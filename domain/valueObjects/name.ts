@@ -16,8 +16,4 @@ export class Name {
   static nullable(value: NameValue | null) {
     return value === null ? null : new Name(value)
   }
-
-  static fromEmail(value: NameValue) {
-    return new Name(value.substring(0, value.lastIndexOf("@")))
-  }
 }
