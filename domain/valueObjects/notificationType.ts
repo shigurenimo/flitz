@@ -13,7 +13,7 @@ export type NotificationTypeValue = z.infer<typeof notificationTypeSchema>
 /**
  * ## 通知の種類
  */
-export class notificationType {
+export class NotificationType {
   constructor(public value: NotificationTypeValue) {
     notificationTypeSchema.parse(value)
     Object.freeze(this)

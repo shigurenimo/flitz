@@ -1,13 +1,14 @@
 import db from "db"
+// import { FileEntityFactory } from "domain/factories/fileEntityFactory"
 import { FileType, Id, Service } from "domain/valueObjects"
 
 export class FileRepository {
-  static createFile = (input: {
+  static createFile(input: {
     fileType: FileType
     path: Id
     service: Service
     userId: Id
-  }) => {
+  }) {
     return db.file.create({
       data: {
         path: input.path.value,
@@ -18,7 +19,13 @@ export class FileRepository {
     })
   }
 
-  static getFile = (input: { id: Id }) => {
+  static async getFile(input: { id: Id }) {
+    // const file = await db.file.findUnique({
+    //   where: { id: input.id.value },
+    // })
+
+    // return FileEntityFactory.fromFile(file)
+
     return db.file.findUnique({
       where: { id: input.id.value },
     })
