@@ -20,7 +20,7 @@ const resources = {
       Profile: "プロフィール",
       Settings: "設定",
       Stream: "ストリーム",
-      Update: "更新する",
+      Update: "更新",
       "Please enter an email address.": "メールアドレスを入力してください",
       Name: "名前",
       Biography: "自己紹介",

@@ -55,6 +55,9 @@ const login = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     role: new UserRole(account.role),
     userId: new Id(account.user.id),
     username: new Username(account.user.username),
+    iconImageId: account.user.iconImage
+      ? new Id(account.user.iconImage.id)
+      : null,
   })
 
   return account.user

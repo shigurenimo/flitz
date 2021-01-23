@@ -13,7 +13,9 @@ export class AccountRepository {
   static async getAccountByEmail(email: Email) {
     return await db.account.findUnique({
       where: { email: email.value },
-      include: { user: true },
+      include: {
+        user: { include: { iconImage: true } },
+      },
     })
 
     /*

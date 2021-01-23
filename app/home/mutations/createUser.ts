@@ -44,6 +44,7 @@ const createUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     role,
     userId: new Id(user.id),
     username: new Username(user.username),
+    iconImageId: null,
   })
 
   return user

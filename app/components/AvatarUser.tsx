@@ -2,7 +2,7 @@ import { Avatar, AvatarProps } from "@chakra-ui/react"
 import React, { FunctionComponent } from "react"
 
 type Props = AvatarProps & {
-  fileId?: string
+  fileId?: string | null
   src?: string
   userId: string
 }

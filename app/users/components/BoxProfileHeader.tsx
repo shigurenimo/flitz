@@ -8,7 +8,12 @@ type Props = {
 
 export const BoxProfileHeader: FunctionComponent<Props> = ({ fileId, src }) => {
   return (
-    <Box w={"full"} bg={"white"} rounded={"md"} overflow={"hidden"}>
+    <Box
+      w={"full"}
+      bg={"white"}
+      rounded={{ base: "none", md: "md" }}
+      overflow={"hidden"}
+    >
       <AspectRatio w={"full"} ratio={1 / 0.4}>
         <Image
           src={fileId ? `/api/images/${fileId}` : src}

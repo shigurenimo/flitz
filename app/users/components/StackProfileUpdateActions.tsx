@@ -36,7 +36,7 @@ export const StackProfileUpdateActions: FunctionComponent<Props> = ({
           />
         )}
       </HStack>
-      <HStack spacing={4} align={"center"} mt={-12} px={4}>
+      <HStack spacing={4} align={"center"} mt={-10} px={4}>
         {iconImageFile && (
           <RenderFileLoader
             key={`${iconImageFile.name}-${iconImageFile.lastModified}`}

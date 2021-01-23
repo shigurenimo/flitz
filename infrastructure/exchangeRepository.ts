@@ -1,5 +1,5 @@
-import { Count, Id, PostText, Skip } from "domain/valueObjects"
 import db from "db"
+import { Count, Id, PostText, Skip } from "domain/valueObjects"
 
 /**
  * ## メッセージスレッド
@@ -26,7 +26,7 @@ export class ExchangeRepository {
   static getExchange(input: { exchangeId: Id; skip: Skip }) {
     return db.exchange.findUnique({
       include: {
-        user: true,
+        user: { include: { iconImage: true } },
         messages: {
           orderBy: { createdAt: "desc" },
           take: 20,

@@ -37,7 +37,7 @@ export class LikeRepository {
                 replies: input.userId
                   ? { where: { userId: input.userId.value } }
                   : false,
-                user: true,
+                user: { include: { iconImage: true } },
               },
             },
             quotations: input.userId
@@ -57,10 +57,10 @@ export class LikeRepository {
                 replies: input.userId
                   ? { where: { userId: input.userId.value } }
                   : false,
-                user: true,
+                user: { include: { iconImage: true } },
               },
             },
-            user: true,
+            user: { include: { iconImage: true } },
           },
         },
       },

@@ -18,10 +18,12 @@ export class SessionRepository {
       role: UserRole
       userId: Id
       username: Username
+      iconImageId: Id | null
     }
   ) {
     return session.create({
-      name: input.name?.value || "",
+      iconImageId: input.iconImageId?.value || null,
+      name: input.name?.value || null,
       roles: [input.role.value],
       userId: input.userId.value,
       username: input.username.value,
@@ -34,5 +36,25 @@ export class SessionRepository {
    */
   static async revokeSession(session: SessionContext) {
     await session.revoke()
+  }
+
+  /**
+   * セッションを更新する
+   * @param session
+   * @param input
+   */
+  static updatePublicData(
+    session: SessionContext,
+    input: {
+      name: Name | null
+      username: Username
+      iconImageId: Id | null
+    }
+  ) {
+    return session.setPublicData({
+      iconImageId: input.iconImageId?.value || null,
+      name: input.name?.value || null,
+      username: input.username.value,
+    })
   }
 }

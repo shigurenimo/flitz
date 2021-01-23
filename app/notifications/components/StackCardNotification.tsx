@@ -12,6 +12,7 @@ type Props = {
       id: string
       name: string | null
       username: string
+      iconImage: { id: string } | null
     }
   } | null
   like: {
@@ -30,6 +31,7 @@ type Props = {
       id: string
       name: string | null
       username: string
+      iconImage: { id: string } | null
     }
   } | null
   post: {
@@ -61,6 +63,7 @@ type Props = {
         id: string
         name: string | null
         username: string
+        iconImage: { id: string } | null
       }
       userId: string
     } | null
@@ -70,6 +73,7 @@ type Props = {
       id: string
       name: string | null
       username: string
+      iconImage: { id: string } | null
     }
     userId: string
   } | null

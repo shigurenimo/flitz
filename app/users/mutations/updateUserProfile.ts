@@ -6,8 +6,9 @@ import {
   Id,
   Name,
   nameSchema,
+  Username,
 } from "domain/valueObjects"
-import { UserRepository } from "infrastructure"
+import { SessionRepository, UserRepository } from "infrastructure"
 import { FileService } from "services"
 import * as z from "zod"
 
@@ -45,7 +46,7 @@ const updateUserProfile = async (
     image: iconImage,
   })
 
-  await UserRepository.updateUser({
+  const user = await UserRepository.updateUser({
     biography,
     headerImageId: headerImageFile ? new Id(headerImageFile.id) : null,
     iconImageId: iconImageFile ? new Id(iconImageFile.id) : null,
@@ -53,7 +54,13 @@ const updateUserProfile = async (
     name,
   })
 
-  return null
+  await SessionRepository.updatePublicData(ctx.session, {
+    name: Name.nullable(user.name),
+    username: new Username(user.username),
+    iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
+  })
+
+  return user
 }
 
 export default updateUserProfile

@@ -10,7 +10,7 @@ import React, { Suspense } from "react"
 
 const ShowUserPage: BlitzPage = () => {
   return (
-    <StackMain>
+    <StackMain pt={{ base: 0, md: 8 }}>
       <Suspense fallback={<div>{"loading..."}</div>}>
         <ShowUserPageDetail />
       </Suspense>

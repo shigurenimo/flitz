@@ -54,7 +54,7 @@ export const HomePageInput: FunctionComponent = () => {
   return (
     <Stack spacing={4} px={4}>
       <HStack w={"full"} spacing={4} align={"flex-start"}>
-        <AvatarUser userId={session.userId} />
+        <AvatarUser userId={session.userId} fileId={session.iconImageId} />
         <Stack w={"full"} spacing={4} align={"flex-start"}>
           <TextareaAutosize
             isDisabled={isLoading}

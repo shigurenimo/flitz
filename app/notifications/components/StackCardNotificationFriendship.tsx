@@ -19,6 +19,7 @@ type Props = {
       id: string
       name: string | null
       username: string
+      iconImage: { id: string } | null
     }
   }
 }
@@ -32,7 +33,10 @@ export const StackCardNotificationFriendship: FunctionComponent<Props> = ({
       <HStack spacing={4}>
         <Stack>
           <AvatarGroup size={"md"}>
-            <AvatarUser userId={friendship.follower.id} />
+            <AvatarUser
+              userId={friendship.follower.id}
+              fileId={friendship.follower.iconImage?.id}
+            />
             <Avatar bg={"gray.100"} icon={<Icon as={FiUserPlus} />} />
           </AvatarGroup>
         </Stack>

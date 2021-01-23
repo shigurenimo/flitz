@@ -27,7 +27,7 @@ export const StackUserAction: FunctionComponent<Props> = ({
   }
 
   return (
-    <HStack spacing={4}>
+    <HStack spacing={4} px={4}>
       <Button
         leftIcon={
           <Icon

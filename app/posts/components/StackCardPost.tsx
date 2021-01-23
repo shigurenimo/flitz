@@ -39,6 +39,7 @@ type Props = {
     repliesCount: number
     text: string | null
     user: {
+      iconImage: { id: string } | null
       id: string
       name: string | null
       username: string
@@ -70,6 +71,7 @@ type Props = {
     repliesCount: number
     text: string | null
     user: {
+      iconImage: { id: string } | null
       id: string
       name: string | null
       username: string
@@ -79,6 +81,7 @@ type Props = {
   repliesCount: number
   text: string | null
   user: {
+    iconImage: { id: string } | null
     id: string
     name: string | null
     username: string
@@ -118,7 +121,10 @@ export const StackCardPost: FunctionComponent<Props> = ({
       <StackCard onClick={() => onClickQuotation()}>
         <StackHeaderRepost name={user.name || user.username} />
         <HStack align={"start"} spacing={4}>
-          <AvatarUser userId={quotation.userId} />
+          <AvatarUser
+            userId={quotation.userId}
+            fileId={quotation.user.iconImage?.id}
+          />
           <Stack spacing={2} w={"full"}>
             <StackHeaderUserAction {...user} />
             <StackPostText text={quotation.text} />
@@ -145,7 +151,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
     return (
       <StackCard onClick={() => onPushRouter()}>
         <HStack align={"start"} spacing={4}>
-          <AvatarUser userId={userId} />
+          <AvatarUser userId={userId} fileId={user.iconImage?.id} />
           <Stack spacing={2} w={"full"}>
             <StackHeaderUserAction {...user} />
             <StackPostReply {...quotation.user} />
@@ -174,7 +180,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
     return (
       <StackCard onClick={() => router.push(`/posts/${reply.id}`)}>
         <HStack align={"start"} spacing={4}>
-          <AvatarUser userId={userId} />
+          <AvatarUser userId={userId} fileId={user.iconImage?.id} />
           <Stack spacing={2} w={"full"}>
             <StackHeaderUserAction {...user} />
             <StackPostReply {...reply.user} />
@@ -201,7 +207,7 @@ export const StackCardPost: FunctionComponent<Props> = ({
   return (
     <StackCard onClick={() => onPushRouter()}>
       <HStack align={"start"} spacing={4}>
-        <AvatarUser userId={userId} />
+        <AvatarUser userId={userId} fileId={user.iconImage?.id} />
         <Stack spacing={2} w={"full"}>
           <StackHeaderUserAction {...user} />
           <StackPostText text={text} />

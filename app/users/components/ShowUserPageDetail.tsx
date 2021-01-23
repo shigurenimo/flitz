@@ -1,7 +1,7 @@
 import { Stack, useToast } from "@chakra-ui/react"
+import { StackProfileActions } from "app/users/components/StackProfileActions"
 import { StackUserAction } from "app/users/components/StackUserAction"
-import { StackUserProfile } from "app/users/components/StackUserProfile"
-import { StackUserProfileActions } from "app/users/components/StackUserProfileActions"
+import { StackUserFriendship } from "app/users/components/StackUserFriendship"
 import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUser from "app/users/queries/getUser"
@@ -56,9 +56,9 @@ export const ShowUserPageDetail: FunctionComponent = () => {
   }
 
   return (
-    <Stack px={4} spacing={4}>
-      <StackUserProfileActions {...user} />
-      <StackUserProfile {...user} />
+    <Stack spacing={4}>
+      <StackProfileActions {...user} />
+      <StackUserFriendship {...user} />
       <ErrorBoundary FallbackComponent={() => null}>
         <Suspense fallback={null}>
           <StackUserAction

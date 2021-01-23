@@ -87,93 +87,95 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
   }
 
   return (
-    <Stack px={4} spacing={4}>
+    <Stack spacing={4}>
       <StackProfileUpdateActions
         iconImageFile={iconImageFile}
         headerImageFile={headerImageFile}
         {...user}
       />
-      <FormControl isInvalid={!!errors.name}>
-        <FormLabel>{t`Images`}</FormLabel>
-        <HStack spacing={4}>
-          <Button
-            aria-label={"Icon Image"}
+      <Stack spacing={4} px={4}>
+        <FormControl isInvalid={!!errors.name}>
+          <FormLabel>{t`Images`}</FormLabel>
+          <HStack spacing={4}>
+            <Button
+              aria-label={"Icon Image"}
+              isDisabled={isLoading}
+              leftIcon={<Icon as={FiImage} fontSize={"xl"} />}
+              onClick={() => onSelectIconImage()}
+              variant={"outline"}
+            >
+              {t("Icon Image")}
+            </Button>
+            <Button
+              aria-label={"Header Image"}
+              isDisabled={isLoading}
+              leftIcon={<Icon as={FiImage} fontSize={"xl"} />}
+              onClick={() => onSelectHeaderImage()}
+              variant={"outline"}
+            >
+              {t("Header Image")}
+            </Button>
+          </HStack>
+        </FormControl>
+        <FormControl isInvalid={!!errors.name}>
+          <FormLabel>{t`Name`}</FormLabel>
+          <Input
+            aria-label={"Name"}
             isDisabled={isLoading}
-            leftIcon={<Icon as={FiImage} fontSize={"xl"} />}
-            onClick={() => onSelectIconImage()}
-            variant={"outline"}
-          >
-            {t("Icon Image")}
-          </Button>
-          <Button
-            aria-label={"Header Image"}
+            name={"name"}
+            placeholder={t`Name`}
+            ref={register({
+              required: {
+                value: true,
+                message: t`Please enter an email address`,
+              },
+            })}
+          />
+          <FormErrorMessage>
+            {errors.name && errors.name.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={!!errors.biography}>
+          <FormLabel>{t`Biography`}</FormLabel>
+          <Textarea
+            aria-label={"Biography"}
             isDisabled={isLoading}
-            leftIcon={<Icon as={FiImage} fontSize={"xl"} />}
-            onClick={() => onSelectHeaderImage()}
+            name={"biography"}
+            placeholder={t`Biography`}
+            resize={"none"}
+            ref={register({})}
+          />
+          <FormErrorMessage>
+            {errors.name && errors.name.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl>
+          <FormLabel>{t`Web site`}</FormLabel>
+          <Input
+            aria-label={"SiteURL"}
+            isDisabled={isLoading}
+            name={"siteURL"}
+            placeholder={"https://"}
+            ref={register({})}
+            type={"url"}
+          />
+          <FormErrorMessage>
+            {errors.name && errors.name.message}
+          </FormErrorMessage>
+        </FormControl>
+        <Box pt={4}>
+          <Button
+            colorScheme={"primary"}
+            isLoading={isLoading}
+            loadingText={t`Update`}
+            onClick={handleSubmit(onSubmit)}
             variant={"outline"}
+            w={"full"}
           >
-            {t("Header Image")}
+            {t`Update`}
           </Button>
-        </HStack>
-      </FormControl>
-      <FormControl isInvalid={!!errors.name}>
-        <FormLabel>{t`Name`}</FormLabel>
-        <Input
-          aria-label={"Name"}
-          isDisabled={isLoading}
-          name={"name"}
-          placeholder={t`Name`}
-          ref={register({
-            required: {
-              value: true,
-              message: t`Please enter an email address`,
-            },
-          })}
-        />
-        <FormErrorMessage>
-          {errors.name && errors.name.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl isInvalid={!!errors.biography}>
-        <FormLabel>{t`Biography`}</FormLabel>
-        <Textarea
-          aria-label={"Biography"}
-          isDisabled={isLoading}
-          name={"biography"}
-          placeholder={t`Biography`}
-          resize={"none"}
-          ref={register({})}
-        />
-        <FormErrorMessage>
-          {errors.name && errors.name.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl>
-        <FormLabel>{t`Web site`}</FormLabel>
-        <Input
-          aria-label={"SiteURL"}
-          isDisabled={isLoading}
-          name={"siteURL"}
-          placeholder={"https://"}
-          ref={register({})}
-          type={"url"}
-        />
-        <FormErrorMessage>
-          {errors.name && errors.name.message}
-        </FormErrorMessage>
-      </FormControl>
-      <Box pt={4}>
-        <Button
-          colorScheme={"primary"}
-          isLoading={isLoading}
-          loadingText={t`Update`}
-          onClick={handleSubmit(onSubmit)}
-          variant={"outline"}
-          w={"full"}
-        >
-          {t`Update`}
-        </Button>
-      </Box>
+        </Box>
+      </Stack>
     </Stack>
   )
 }

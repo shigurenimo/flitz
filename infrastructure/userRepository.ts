@@ -159,6 +159,9 @@ export class UserRepository {
           : undefined,
       },
       where: { id: input.id.value },
+      include: {
+        iconImage: true,
+      },
     })
   }
 }

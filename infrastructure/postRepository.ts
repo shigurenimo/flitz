@@ -191,7 +191,7 @@ export class PostRepository {
       where: { id: input.postId.value },
       include: {
         likes: { where: { userId: input.userId.value } },
-        user: true,
+        user: { include: { iconImage: true } },
       },
     })
   }
@@ -229,11 +229,7 @@ export class PostRepository {
         replies: input.userId
           ? { where: { userId: input.userId.value } }
           : false,
-        user: {
-          include: {
-            iconImage: true,
-          },
-        },
+        user: { include: { iconImage: true } },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
@@ -264,11 +260,7 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: {
-              include: {
-                iconImage: true,
-              },
-            },
+            user: { include: { iconImage: true } },
           },
         },
         quotations: input.userId
@@ -289,18 +281,10 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: {
-              include: {
-                iconImage: true,
-              },
-            },
+            user: { include: { iconImage: true } },
           },
         },
-        user: {
-          include: {
-            iconImage: true,
-          },
-        },
+        user: { include: { iconImage: true } },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
@@ -334,11 +318,7 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: {
-              include: {
-                iconImage: true,
-              },
-            },
+            user: { include: { iconImage: true } },
           },
         },
         quotations: input.userId
@@ -359,18 +339,10 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: {
-              include: {
-                iconImage: true,
-              },
-            },
+            user: { include: { iconImage: true } },
           },
         },
-        user: {
-          include: {
-            iconImage: true,
-          },
-        },
+        user: { include: { iconImage: true } },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
@@ -396,11 +368,7 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: {
-              include: {
-                iconImage: true,
-              },
-            },
+            user: { include: { iconImage: true } },
           },
         },
         quotations: input.userId
@@ -420,18 +388,10 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: {
-              include: {
-                iconImage: true,
-              },
-            },
+            user: { include: { iconImage: true } },
           },
         },
-        user: {
-          include: {
-            iconImage: true,
-          },
-        },
+        user: { include: { iconImage: true } },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
@@ -443,11 +403,7 @@ export class PostRepository {
     return db.post.findUnique({
       include: {
         files: true,
-        user: {
-          include: {
-            iconImage: true,
-          },
-        },
+        user: { include: { iconImage: true } },
       },
       where: { id: input.id.value },
     })

@@ -10,7 +10,7 @@ type Props = {
   username: string
 }
 
-export const StackUserProfile: FunctionComponent<Props> = ({
+export const StackUserFriendship: FunctionComponent<Props> = ({
   biography,
   createdAt,
   followeesCount,
@@ -18,7 +18,7 @@ export const StackUserProfile: FunctionComponent<Props> = ({
   username,
 }) => {
   return (
-    <Stack pacing={2}>
+    <Stack pacing={2} px={4}>
       <Stack>
         <Text fontWeight={"bold"}>{biography}</Text>
       </Stack>
