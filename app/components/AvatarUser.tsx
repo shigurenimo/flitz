@@ -1,16 +1,27 @@
 import { Avatar, AvatarProps } from "@chakra-ui/react"
 import React, { FunctionComponent } from "react"
 
-type Props = AvatarProps & { userId: string }
+type Props = AvatarProps & {
+  fileId?: string
+  src?: string
+  userId: string
+}
 
-export const AvatarUser: FunctionComponent<Props> = ({ userId, ...props }) => {
+export const AvatarUser: FunctionComponent<Props> = ({
+  fileId,
+  src,
+  userId,
+  ...props
+}) => {
   return (
     <Avatar
       bg={"white"}
       borderColor={"gray.100"}
       borderWidth={"1px"}
       p={1}
-      src={`/api/icons/${userId}`}
+      src={
+        src ? src : fileId ? `/api/images/${fileId}` : `/api/icons/${userId}`
+      }
       {...props}
     />
   )

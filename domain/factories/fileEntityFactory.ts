@@ -1,4 +1,4 @@
-import { File } from "db"
+import { File as PrismaFile } from "db"
 import { FileEntity, PostEntity, UserEntity } from "domain/entities"
 import { FileType, Id, Path, Service } from "domain/valueObjects"
 
@@ -8,7 +8,7 @@ type FileRelation = {
 }
 
 export class FileEntityFactory {
-  static fromFile(data: File & FileRelation) {
+  static fromFile(data: PrismaFile & FileRelation) {
     return new FileEntity({
       createdAt: data.createdAt,
       id: new Id(data.id),

@@ -35,7 +35,11 @@ export class ReferenceRepository {
                 likes: { where: { userId: input.userId.value } },
                 quotations: { where: { userId: input.userId.value } },
                 replies: { where: { userId: input.userId.value } },
-                user: true,
+                user: {
+                  include: {
+                    iconImage: true,
+                  },
+                },
               },
             },
             quotations: { where: { userId: input.userId.value } },
@@ -46,10 +50,18 @@ export class ReferenceRepository {
                 likes: { where: { userId: input.userId.value } },
                 quotations: { where: { userId: input.userId.value } },
                 replies: { where: { userId: input.userId.value } },
-                user: true,
+                user: {
+                  include: {
+                    iconImage: true,
+                  },
+                },
               },
             },
-            user: true,
+            user: {
+              include: {
+                iconImage: true,
+              },
+            },
           },
         },
       },

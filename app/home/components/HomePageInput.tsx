@@ -1,29 +1,27 @@
 import {
+  AspectRatio,
   Button,
   HStack,
   Icon,
   Image,
   Stack,
-  AspectRatio,
   useToast,
 } from "@chakra-ui/react"
 import { AvatarUser } from "app/components/AvatarUser"
+import { RenderFileLoader } from "app/components/RenderFileLoader"
 import { TextareaAutosize } from "app/components/TextareaAutosize"
+import { useFileSelect } from "app/hooks/useFileSelect"
 import createPost from "app/posts/mutations/createPost"
 import { useMutation, useSession } from "blitz"
-import React, {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import React, { FunctionComponent, useState } from "react"
 import { FiImage, FiSend } from "react-icons/fi"
+import { ClientFileService } from "services/clientFileService"
 
 export const HomePageInput: FunctionComponent = () => {
   const session = useSession()
 
   const [text, setText] = useState("")
+
   const [image, setImage] = useState<File | null>(null)
 
   const [createPostMutation, { isLoading }] = useMutation(createPost)
@@ -33,15 +31,15 @@ export const HomePageInput: FunctionComponent = () => {
   const selectFile = useFileSelect({ accept: "image/*" })
 
   const onSelectImage = async () => {
-    const files = await selectFile()
-    setImage(files[0])
+    const [file] = await selectFile()
+    setImage(file)
   }
 
   const onCreatePost = async () => {
     try {
       // Upload images by base64 because blitz mutations does not accept Files
       // See https://github.com/blitz-js/blitz/issues/843
-      const encodedImage = image && (await convertFileToBase64(image))
+      const encodedImage = await ClientFileService.convertFileToBase64(image)
       await createPostMutation({ text, image: encodedImage })
       setText("")
       setImage(null)
@@ -69,16 +67,14 @@ export const HomePageInput: FunctionComponent = () => {
           {image && (
             <HStack w={"full"}>
               <AspectRatio w={"full"} ratio={1 / 0.5625}>
-                <FileLoader
+                <RenderFileLoader
                   key={`${image.name}-${image.lastModified}`}
                   file={image}
                   render={(url) => (
                     <Image
                       src={url}
                       borderRadius={"md"}
-                      style={{
-                        filter: "brightness(0.5)",
-                      }}
+                      style={{ filter: "brightness(0.5)" }}
                     />
                   )}
                 />
@@ -111,74 +107,4 @@ export const HomePageInput: FunctionComponent = () => {
       </HStack>
     </Stack>
   )
-}
-
-const FileLoader: FunctionComponent<{
-  file: File
-  render(url: string): React.ReactElement
-}> = (props) => {
-  const url = useObjectURL(props.file)
-
-  return props.render(url)
-}
-
-const useFileSelect = (options?: { accept?: string; multiple?: boolean }) => {
-  const inputRef = useRef<HTMLInputElement>()
-
-  useEffect(() => {
-    const input = document.createElement("input")
-    input.type = "file"
-    inputRef.current = input
-  }, [])
-
-  useEffect(() => {
-    const input = inputRef.current
-    if (!input) return
-
-    input.accept = options?.accept || ""
-    input.multiple = options?.multiple || false
-  }, [options?.accept, options?.multiple])
-
-  const select = useCallback(() => {
-    const input = inputRef.current!
-
-    input.value = ""
-
-    return new Promise<File[]>((resolve) => {
-      input.addEventListener(
-        "change",
-        () => resolve(Array.from(input.files || [])),
-        { once: true }
-      )
-      input.click()
-    })
-  }, [])
-
-  return select
-}
-
-const useObjectURL = (object: Blob) => {
-  const [url] = useState(() => URL.createObjectURL(object))
-
-  useUnmount(() => URL.revokeObjectURL(url))
-
-  return url
-}
-
-const useUnmount = (callback: () => void) => {
-  const callbackRef = useRef<() => void>()
-
-  callbackRef.current = callback
-
-  useEffect(() => () => callbackRef.current!(), [])
-}
-
-const convertFileToBase64 = (file: File): Promise<string> => {
-  const reader = new FileReader()
-  return new Promise((resolve) => {
-    reader.addEventListener("loadend", () => resolve(reader.result as string), {
-      once: true,
-    })
-    reader.readAsDataURL(file)
-  })
 }

@@ -1,20 +1,8 @@
 import { Ctx } from "blitz"
 import { ImageFactory } from "domain/factories"
-import {
-  FileType,
-  Id,
-  PostText,
-  postTextSchema,
-  Service,
-} from "domain/valueObjects"
-import {
-  EnvRepository,
-  FileRepository,
-  FriendshipRepository,
-  ImageRepository,
-  PostRepository,
-  StorageRepository,
-} from "infrastructure"
+import { Id, PostText, postTextSchema } from "domain/valueObjects"
+import { FriendshipRepository, PostRepository } from "infrastructure"
+import { FileService } from "services"
 import * as z from "zod"
 
 export const inputSchema = z.object({
@@ -38,37 +26,13 @@ const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     followeeId: userId,
   })
 
-  if (image === null) {
-    const post = await PostRepository.createPost({
-      friendships,
-      text,
-      userId,
-      fileIds: [],
-    })
-
-    return post
-  }
-
-  const filePath = StorageRepository.createPath()
-
-  await ImageRepository.writeImage(image, filePath)
-
-  if (EnvRepository.isFirebaseProject()) {
-    await StorageRepository.uploadToCloudStorage(filePath)
-  }
-
-  const file = await FileRepository.createFile({
-    userId,
-    fileType: new FileType("IMAGE_PNG"),
-    service: new Service("CLOUD_STORAGE"),
-    path: filePath,
-  })
+  const file = image ? await FileService.uploadFile({ userId, image }) : null
 
   const post = await PostRepository.createPost({
     friendships,
     text,
     userId,
-    fileIds: [new Id(file.id)],
+    fileIds: file ? [new Id(file.id)] : [],
   })
 
   return post

@@ -64,6 +64,8 @@ export class UserRepository {
         followers: input.userId
           ? { where: { followerId: input.userId.value } }
           : false,
+        headerImage: true,
+        iconImage: true,
       },
       where: { username: input.username.value },
     })
@@ -87,6 +89,8 @@ export class UserRepository {
         },
         include: {
           followers: { where: { followerId: input.followerId.value } },
+          iconImage: true,
+          headerImage: true,
         },
         where: { id: input.followeeId.value },
       }),
@@ -120,6 +124,8 @@ export class UserRepository {
         },
         include: {
           followers: { where: { followerId: input.followerId.value } },
+          iconImage: true,
+          headerImage: true,
         },
         where: { id: input.followeeId.value },
       }),
@@ -132,5 +138,27 @@ export class UserRepository {
     ])
 
     return user
+  }
+
+  static async updateUser(input: {
+    id: Id
+    biography: Id
+    headerImageId: Id | null
+    iconImageId: Id | null
+    name: Name
+  }) {
+    return db.user.update({
+      data: {
+        name: input.name.value,
+        biography: input.biography.value,
+        headerImage: input.headerImageId
+          ? { connect: { id: input.headerImageId.value } }
+          : undefined,
+        iconImage: input.iconImageId
+          ? { connect: { id: input.iconImageId.value } }
+          : undefined,
+      },
+      where: { id: input.id.value },
+    })
   }
 }

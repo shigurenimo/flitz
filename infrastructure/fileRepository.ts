@@ -6,13 +6,13 @@ export class FileRepository {
   static createFile(input: {
     fileType: FileType
     path: Id
-    service: Service
+    service: Service | null
     userId: Id
   }) {
     return db.file.create({
       data: {
         path: input.path.value,
-        service: input.service.value,
+        service: input.service ? input.service.value : undefined,
         type: input.fileType.value,
         user: { connect: { id: input.userId.value } },
       },

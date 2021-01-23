@@ -229,7 +229,11 @@ export class PostRepository {
         replies: input.userId
           ? { where: { userId: input.userId.value } }
           : false,
-        user: true,
+        user: {
+          include: {
+            iconImage: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
@@ -260,7 +264,11 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: true,
+            user: {
+              include: {
+                iconImage: true,
+              },
+            },
           },
         },
         quotations: input.userId
@@ -281,10 +289,18 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: true,
+            user: {
+              include: {
+                iconImage: true,
+              },
+            },
           },
         },
-        user: true,
+        user: {
+          include: {
+            iconImage: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
@@ -318,7 +334,11 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: true,
+            user: {
+              include: {
+                iconImage: true,
+              },
+            },
           },
         },
         quotations: input.userId
@@ -339,10 +359,18 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: true,
+            user: {
+              include: {
+                iconImage: true,
+              },
+            },
           },
         },
-        user: true,
+        user: {
+          include: {
+            iconImage: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
@@ -368,7 +396,11 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: true,
+            user: {
+              include: {
+                iconImage: true,
+              },
+            },
           },
         },
         quotations: input.userId
@@ -388,10 +420,18 @@ export class PostRepository {
             replies: input.userId
               ? { where: { userId: input.userId.value } }
               : false,
-            user: true,
+            user: {
+              include: {
+                iconImage: true,
+              },
+            },
           },
         },
-        user: true,
+        user: {
+          include: {
+            iconImage: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
@@ -403,7 +443,11 @@ export class PostRepository {
     return db.post.findUnique({
       include: {
         files: true,
-        user: true,
+        user: {
+          include: {
+            iconImage: true,
+          },
+        },
       },
       where: { id: input.id.value },
     })

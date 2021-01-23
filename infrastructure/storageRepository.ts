@@ -29,8 +29,6 @@ export class StorageRepository {
 
     const bucket = admin.storage().bucket()
 
-    console.log("tmpFilePath", tmpPath.value)
-
     return bucket.file(filePath.value).download({ destination: tmpPath.value })
   }
 
