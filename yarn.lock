@@ -4106,7 +4106,7 @@ bl@^4.0.3:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-blitz@0.28.0:
+blitz@0.28:
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/blitz/-/blitz-0.28.0.tgz#562526a110413a20d16cf78286109f98cf52822a"
   integrity sha512-Y/HCvYDN3HLUZEkXQoI1YyYqkKpeegTGLDegECgtgxB4fBeq+UeCVCzdCKcVwB80J3q6JbmLW7QuJVDYnTzG+A==
@@ -12765,9 +12765,9 @@ tslib@^2.0.0, tslib@^2.0.1:
   integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
 
 tslog@^3.0.3:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/tslog/-/tslog-3.0.5.tgz#ea4243cde2bd64e5fbfedbec0a78d298b9504c46"
-  integrity sha512-WyI2zFa6rVzXja6bKIZ9VeRKwHceqlUzCCo2IMsi6X5oswij95s3GJKve1Pr5bdlVIUMTsWaT/wtBiL7MT4PLQ==
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/tslog/-/tslog-3.1.0.tgz#e169c974c297bdec160a17a4dc19acd86f65b4e8"
+  integrity sha512-q3Itu9GGBd9ijZ3HF+lUB6E4N+qlGxVpGxBTIIMuMSQbYDE3gg/TOCsywtKFxVtqvmS9aCyKw/xeUxfvrx+oMQ==
   dependencies:
     source-map-support "^0.5.19"
 

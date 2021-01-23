@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-export const takeSchema = z.number().min(0).max(10)
+export const takeSchema = z.number().min(0).max(20)
 
 export type TakeValue = z.infer<typeof takeSchema>
 

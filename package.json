@@ -37,7 +37,7 @@
     "@prisma/cli": "~2.12",
     "@prisma/client": "~2.12",
     "@types/formidable": "1.0.32",
-    "blitz": "0.28.0",
+    "blitz": "0.28",
     "faker": "5.1.0",
     "firebase-admin": "9.4.2",
     "formidable": "1.2.2",
