@@ -120,7 +120,6 @@ const AboutPage: BlitzPage = () => {
               {"% yarn start"}
             </Code>
           </Box>
-          <Text>{"That's a wrap."}</Text>
         </Stack>
       </Stack>
     </StackMain>

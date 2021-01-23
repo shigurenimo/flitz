@@ -6,7 +6,7 @@ import React, { Suspense } from "react"
 
 const UpdateUserPage: BlitzPage = () => {
   return (
-    <StackMain>
+    <StackMain pt={{ base: 0, md: 8 }}>
       <Suspense fallback={null}>
         <UpdateUserPageDetail />
       </Suspense>

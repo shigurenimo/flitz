@@ -5,13 +5,12 @@ import {
   FormErrorMessage,
   FormLabel,
   HStack,
-  Icon,
   Input,
   Stack,
   Textarea,
   useToast,
 } from "@chakra-ui/react"
-import { useFileSelect } from "app/hooks/useFileSelect"
+import { ButtonFile } from "app/components/ButtonFile"
 import { StackProfileUpdateActions } from "app/users/components/StackProfileUpdateActions"
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
@@ -19,7 +18,6 @@ import { useMutation, useParam, useQuery } from "blitz"
 import React, { FunctionComponent, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { FiImage } from "react-icons/fi"
 import { ClientFileService } from "services/clientFileService"
 
 export const UpdateUserPageDetail: FunctionComponent = () => {
@@ -49,20 +47,6 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
       biography: user.biography,
     },
   })
-
-  const selectIconFile = useFileSelect({ accept: "image/*" })
-
-  const onSelectIconImage = async () => {
-    const [file] = await selectIconFile()
-    setIconImage(file)
-  }
-
-  const selectHeaderFile = useFileSelect({ accept: "image/*" })
-
-  const onSelectHeaderImage = async () => {
-    const [file] = await selectHeaderFile()
-    setHeaderImage(file)
-  }
 
   const toast = useToast()
 
@@ -97,24 +81,20 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
         <FormControl isInvalid={!!errors.name}>
           <FormLabel>{t`Images`}</FormLabel>
           <HStack spacing={4}>
-            <Button
+            <ButtonFile
               aria-label={"Icon Image"}
               isDisabled={isLoading}
-              leftIcon={<Icon as={FiImage} fontSize={"xl"} />}
-              onClick={() => onSelectIconImage()}
-              variant={"outline"}
+              onChange={(file) => setIconImage(file)}
             >
-              {t("Icon Image")}
-            </Button>
-            <Button
+              {t`Icon Image`}
+            </ButtonFile>
+            <ButtonFile
               aria-label={"Header Image"}
               isDisabled={isLoading}
-              leftIcon={<Icon as={FiImage} fontSize={"xl"} />}
-              onClick={() => onSelectHeaderImage()}
-              variant={"outline"}
+              onChange={(file) => setHeaderImage(file)}
             >
-              {t("Header Image")}
-            </Button>
+              {t`Header Image`}
+            </ButtonFile>
           </HStack>
         </FormControl>
         <FormControl isInvalid={!!errors.name}>

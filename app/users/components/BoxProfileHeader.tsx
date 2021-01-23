@@ -17,7 +17,6 @@ export const BoxProfileHeader: FunctionComponent<Props> = ({ fileId, src }) => {
       <AspectRatio w={"full"} ratio={1 / 0.4}>
         <Image
           src={fileId ? `/api/images/${fileId}` : src}
-          borderRadius={"md"}
           style={{ filter: "brightness(0.5)" }}
           fallbackSrc={"https://via.placeholder.com/400?text=FLITZ"}
         />
