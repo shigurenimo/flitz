@@ -2,10 +2,14 @@ import { AspectRatio, HStack, Image } from "@chakra-ui/react"
 import React, { FunctionComponent } from "react"
 
 type Props = {
-  files: { id: string }[]
+  files?: { id: string }[]
 }
 
 export const StackPostImage: FunctionComponent<Props> = ({ files }) => {
+  if (!files || files.length === 0) {
+    return null
+  }
+
   const [file] = files
 
   return (

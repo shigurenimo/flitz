@@ -1,15 +1,16 @@
-import { HStack, Icon, Stack, Text, useColorModeValue } from "@chakra-ui/react"
+import { HStack, Stack } from "@chakra-ui/react"
 import { AvatarUser } from "app/components/AvatarUser"
 import { StackCard } from "app/components/StackCard"
 import { StackCardQuotationEmbedded } from "app/posts/components/StackCardQuotationEmbedded"
+import { StackHeaderRepost } from "app/posts/components/StackHeaderRepost"
+import { StackHeaderUserAction } from "app/posts/components/StackHeaderUserAction"
 import { StackPostActions } from "app/posts/components/StackPostActions"
 import { StackPostDate } from "app/posts/components/StackPostDate"
 import { StackPostImage } from "app/posts/components/StackPostImage"
-import { StackPostMenu } from "app/posts/components/StackPostMenu"
-import { StackPostUser } from "app/posts/components/StackPostUser"
-import { useRouter, useSession } from "blitz"
+import { StackPostReply } from "app/posts/components/StackPostReply"
+import { StackPostText } from "app/posts/components/StackPostText"
+import { useRouter } from "blitz"
 import React, { FunctionComponent } from "react"
-import { FiRepeat } from "react-icons/fi"
 
 type Props = {
   createdAt: Date
@@ -40,7 +41,7 @@ type Props = {
     user: {
       id: string
       name: string | null
-      username: string | null
+      username: string
     }
     userId: string
   } | null
@@ -71,7 +72,7 @@ type Props = {
     user: {
       id: string
       name: string | null
-      username: string | null
+      username: string
     }
     userId: string
   } | null
@@ -80,7 +81,7 @@ type Props = {
   user: {
     id: string
     name: string | null
-    username: string | null
+    username: string
   }
   userId: string
 }
@@ -102,10 +103,6 @@ export const StackCardPost: FunctionComponent<Props> = ({
   user,
   userId,
 }) => {
-  const session = useSession()
-
-  const bg = useColorModeValue("purple.50", "gray.600")
-
   const router = useRouter()
 
   const onPushRouter = () => {
@@ -119,29 +116,13 @@ export const StackCardPost: FunctionComponent<Props> = ({
   if (quotation && text === null) {
     return (
       <StackCard onClick={() => onClickQuotation()}>
-        <HStack>
-          <HStack bg={bg} px={4} py={1} rounded={"md"}>
-            <Icon as={FiRepeat} />
-            <Text fontWeight={"bold"} fontSize={"sm"}>
-              {`${user.name} Reposted`}
-            </Text>
-          </HStack>
-        </HStack>
+        <StackHeaderRepost name={user.name || user.username} />
         <HStack align={"start"} spacing={4}>
           <AvatarUser userId={quotation.userId} />
           <Stack spacing={2} w={"full"}>
-            <HStack>
-              <StackPostUser user={user} />
-              <StackPostMenu isOwnPost={session.userId === user.id} />
-            </HStack>
-            {quotation.text && (
-              <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
-                {quotation.text}
-              </Text>
-            )}
-            {quotation.files?.length && (
-              <StackPostImage files={quotation.files} />
-            )}
+            <StackHeaderUserAction {...user} />
+            <StackPostText text={quotation.text} />
+            <StackPostImage files={quotation.files} />
             <StackPostDate createdAt={quotation.createdAt} />
             <StackPostActions
               hasLike={!!quotation.likes && 0 < quotation.likes.length}
@@ -166,24 +147,10 @@ export const StackCardPost: FunctionComponent<Props> = ({
         <HStack align={"start"} spacing={4}>
           <AvatarUser userId={userId} />
           <Stack spacing={2} w={"full"}>
-            <HStack>
-              <StackPostUser user={user} />
-              <StackPostMenu isOwnPost={session.userId === user.id} />
-            </HStack>
-            <Text
-              color={"primary.500"}
-              fontWeight={"bold"}
-              fontSize={"sm"}
-              lineHeight={1}
-            >
-              {`Replying to @${quotation.user.username}`}
-            </Text>
-            {text && (
-              <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
-                {text}
-              </Text>
-            )}
-            {files?.length && <StackPostImage files={files} />}
+            <StackHeaderUserAction {...user} />
+            <StackPostReply {...quotation.user} />
+            <StackPostText text={text} />
+            <StackPostImage files={files} />
             <StackCardQuotationEmbedded {...quotation} />
             <StackPostDate createdAt={createdAt} />
             <StackPostActions
@@ -205,32 +172,14 @@ export const StackCardPost: FunctionComponent<Props> = ({
 
   if (reply) {
     return (
-      <StackCard
-        onClick={() => {
-          router.push(`/posts/${reply.id}`)
-        }}
-      >
+      <StackCard onClick={() => router.push(`/posts/${reply.id}`)}>
         <HStack align={"start"} spacing={4}>
           <AvatarUser userId={userId} />
           <Stack spacing={2} w={"full"}>
-            <HStack>
-              <StackPostUser user={user} />
-              <StackPostMenu isOwnPost={session.userId === user.id} />
-            </HStack>
-            <Text
-              color={"primary.500"}
-              fontWeight={"bold"}
-              fontSize={"sm"}
-              lineHeight={1}
-            >
-              {`Replying to @${reply.user.username}`}
-            </Text>
-            {text && (
-              <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
-                {text}
-              </Text>
-            )}
-            {files?.length && <StackPostImage files={files} />}
+            <StackHeaderUserAction {...user} />
+            <StackPostReply {...reply.user} />
+            <StackPostText text={text} />
+            <StackPostImage files={files} />
             <StackPostDate createdAt={createdAt} />
             <StackPostActions
               hasLike={!!likes && 0 < likes.length}
@@ -254,17 +203,9 @@ export const StackCardPost: FunctionComponent<Props> = ({
       <HStack align={"start"} spacing={4}>
         <AvatarUser userId={userId} />
         <Stack spacing={2} w={"full"}>
-          <HStack>
-            <StackPostUser user={user} />
-            <StackPostMenu isOwnPost={session.userId === user.id} />
-          </HStack>
-
-          {text && (
-            <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
-              {text}
-            </Text>
-          )}
-          {files?.length && <StackPostImage files={files} />}
+          <StackHeaderUserAction {...user} />
+          <StackPostText text={text} />
+          <StackPostImage files={files} />
           <StackPostDate createdAt={createdAt} />
           <StackPostActions
             hasLike={!!likes && 0 < likes.length}

@@ -22,7 +22,7 @@ type Props = {
       userId: string
       user: {
         name: string | null
-        username: string | null
+        username: string
       }
     }
     user: {
@@ -60,7 +60,7 @@ type Props = {
       user: {
         id: string
         name: string | null
-        username: string | null
+        username: string
       }
       userId: string
     } | null
@@ -69,7 +69,7 @@ type Props = {
     user: {
       id: string
       name: string | null
-      username: string | null
+      username: string
     }
     userId: string
   } | null

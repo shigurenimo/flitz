@@ -2,22 +2,14 @@ import {
   IconButton,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
+  MenuList,
   Stack,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogCloseButton,
-  AlertDialogFooter,
-  Button,
   useDisclosure,
-  UseDisclosureReturn,
-  useClipboard,
-  useToast,
 } from "@chakra-ui/react"
-import React, { useRef, FunctionComponent, useEffect } from "react"
+import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
+import { useClipboardAndToast } from "app/posts/hooks/useClipboardAndToast"
+import React, { FunctionComponent } from "react"
 import {
   FiClipboard,
   FiMoreHorizontal,
@@ -43,7 +35,7 @@ export const StackPostMenu: FunctionComponent<Props> = (props) => {
     }
   }
 
-  const onCopy = useCopy(
+  const onCopy = useClipboardAndToast(
     typeof window !== "undefined" ? window.location.href : ""
   )
 
@@ -59,7 +51,7 @@ export const StackPostMenu: FunctionComponent<Props> = (props) => {
           variant={"ghost"}
           onClick={(event) => event.stopPropagation()}
         >
-          Actions
+          {"Actions"}
         </MenuButton>
         <MenuList>
           {props.isOwnPost && (
@@ -68,24 +60,24 @@ export const StackPostMenu: FunctionComponent<Props> = (props) => {
               icon={<FiTrash2 />}
               onClick={deleteDialogDisclosure.onOpen}
             >
-              Delete
+              {"Delete"}
             </MenuItem>
           )}
           {hasShareAPI && (
             <MenuItem aria-label={"Share"} icon={<FiShare />} onClick={onShare}>
-              Share
+              {"Share"}
             </MenuItem>
           )}
           <MenuItem
-            aria-label={"Copy link to Post"}
+            aria-label={"Copy link to clipboard"}
             icon={<FiClipboard />}
             onClick={onCopy}
           >
-            Copy link to Post
+            {"Copy link to clipboard"}
           </MenuItem>
         </MenuList>
       </Menu>
-      <DeleteDialog
+      <AlertDialogDelete
         disclosure={deleteDialogDisclosure}
         onDelete={() => {
           deleteDialogDisclosure.onClose()
@@ -93,48 +85,4 @@ export const StackPostMenu: FunctionComponent<Props> = (props) => {
       />
     </Stack>
   )
-}
-
-const DeleteDialog: FunctionComponent<{
-  disclosure: UseDisclosureReturn
-  onDelete(): void
-}> = (props) => {
-  const cancelRef = useRef<HTMLButtonElement>(null)
-
-  return (
-    <AlertDialog
-      motionPreset="slideInBottom"
-      leastDestructiveRef={cancelRef}
-      onClose={props.disclosure.onClose}
-      isOpen={props.disclosure.isOpen}
-      isCentered
-    >
-      <AlertDialogOverlay />
-
-      <AlertDialogContent>
-        <AlertDialogHeader>Delete Post?</AlertDialogHeader>
-        <AlertDialogCloseButton />
-        <AlertDialogFooter>
-          <Button ref={cancelRef} onClick={props.disclosure.onClose}>
-            Cancel
-          </Button>
-          <Button colorScheme="red" ml={3} onClick={props.onDelete}>
-            Delete
-          </Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  )
-}
-
-const useCopy = (text: string) => {
-  const toast = useToast()
-
-  const { hasCopied, onCopy } = useClipboard(text)
-
-  useEffect(() => {
-    if (hasCopied) toast({ description: "Copied to clipboard" })
-  }, [hasCopied, toast])
-
-  return onCopy
 }
