@@ -11,7 +11,7 @@ export const BoxProfileHeader: FunctionComponent<Props> = ({ fileId, src }) => {
     <Box
       w={"full"}
       bg={"white"}
-      rounded={{ base: "none", md: "md" }}
+      rounded={{ base: 0, md: "md" }}
       overflow={"hidden"}
     >
       <AspectRatio w={"full"} ratio={1 / 0.4}>
