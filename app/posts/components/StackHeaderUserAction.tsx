@@ -21,7 +21,7 @@ export const StackHeaderUserAction: FunctionComponent<Props> = ({
   const deleteDialogDisclosure = useDisclosure()
 
   return (
-    <HStack justify={"space-between"} spacing={4}>
+    <HStack justify={"space-between"} spacing={4} align={"center"}>
       <StackPostUser id={id} name={name} username={username} />
       <Stack>
         <MenuPost
