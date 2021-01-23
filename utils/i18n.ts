@@ -30,6 +30,7 @@ const resources = {
       Upload: "タップしてアップロード",
       Images: "画像",
       "Succeeded in updating": "更新しました",
+      Logout: "ログアウト",
     },
   },
 }
