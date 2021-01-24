@@ -1,4 +1,5 @@
 import { Container, Stack } from "@chakra-ui/react"
+import { useFirebaseCloudMessaging } from "app/hooks/useFirebaseCloudMessaging"
 import { LayoutAside } from "app/layouts/components/LayoutAside"
 import { LayoutHeader } from "app/layouts/components/LayoutHeader"
 import { Head } from "blitz"
@@ -12,6 +13,8 @@ const Layout: FunctionComponent<LayoutProps> = ({
   title = "FLITZ",
   children,
 }) => {
+  useFirebaseCloudMessaging()
+
   return (
     <>
       <Head>

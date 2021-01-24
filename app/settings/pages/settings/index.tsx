@@ -2,9 +2,12 @@ import { StackDivider } from "@chakra-ui/react"
 import { StackHeader } from "app/components/StackHeader"
 import { StackMain } from "app/components/StackMain"
 import Layout from "app/layouts/Layout"
+import { SettingsPageAccount } from "app/settings/components/SettingsPageAccount"
+import { SettingsPageDetail } from "app/settings/components/SettingsPageDetail"
 import { SettingsPageLogout } from "app/settings/components/SettingsPageLogout"
+import { SettingsPagePassword } from "app/settings/components/SettingsPagePassword"
 import { BlitzPage } from "blitz"
-import React from "react"
+import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
 
 const SettingsPage: BlitzPage = () => {
@@ -13,6 +16,13 @@ const SettingsPage: BlitzPage = () => {
   return (
     <StackMain divider={<StackDivider />}>
       <StackHeader>{t("Settings")}</StackHeader>
+      <Suspense fallback={<div>{"Loading..."}</div>}>
+        <SettingsPageDetail />
+      </Suspense>
+      <Suspense fallback={<div>{"Loading..."}</div>}>
+        <SettingsPageAccount />
+      </Suspense>
+      <SettingsPagePassword />
       <SettingsPageLogout />
     </StackMain>
   )

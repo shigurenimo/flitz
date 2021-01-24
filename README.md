@@ -45,6 +45,12 @@ Ensure the `.env.test.local` file has required environment variables:
 DATABASE_URL="postgresql://postgres@localhost:5432/test"
 ```
 
+## Ngrok
+
+```
+$ ngrok http -hostname=flitz.ngrok.io 3000
+```
+
 ## Tests
 
 Runs your tests using Jest.

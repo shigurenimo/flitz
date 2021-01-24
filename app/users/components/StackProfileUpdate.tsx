@@ -2,17 +2,13 @@ import { Heading, HStack, Stack, Text } from "@chakra-ui/react"
 import React, { FunctionComponent } from "react"
 
 type Props = {
-  id: string
   name: string | null
   username: string
-  nextImage: File | null
 }
 
 export const StackProfileUpdate: FunctionComponent<Props> = ({
-  id,
   name,
   username,
-  nextImage,
 }) => {
   return (
     <Stack>

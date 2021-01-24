@@ -6,6 +6,23 @@ import { Email, HashedPassword, Id } from "domain/valueObjects"
  */
 export class AccountRepository {
   /**
+   * ユーザーIDでアカウントを探す
+   * @param email
+   * @returns
+   */
+  static async findByUserId(userId: Id) {
+    return await db.account.findUnique({
+      where: { userId: userId.value },
+    })
+
+    /*
+    if (account === null) return null
+
+    return AccountEntity.fromData(account)
+    */
+  }
+
+  /**
    * メールアドレスで指定しアカウントを取得する
    * @param email
    * @returns
@@ -29,7 +46,20 @@ export class AccountRepository {
    * アカウントを更新する
    * @param input
    */
-  static async updateAccount(input: {
+  static async updateByUserId(userId: Id, input: { email: Email }) {
+    await db.account.update({
+      where: { userId: userId.value },
+      data: {
+        email: input.email.value,
+      },
+    })
+  }
+
+  /**
+   * アカウントのパスワードを更新する
+   * @param input
+   */
+  static async updateHashedPassword(input: {
     id: Id
     hashedPassword: HashedPassword
   }) {

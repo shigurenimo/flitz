@@ -164,4 +164,16 @@ export class UserRepository {
       },
     })
   }
+
+  static async updateUsername(input: { id: Id; username: Name }) {
+    return db.user.update({
+      data: {
+        username: input.username.value,
+      },
+      where: { id: input.id.value },
+      include: {
+        iconImage: true,
+      },
+    })
+  }
 }

@@ -16,7 +16,26 @@ model Account {
   user           User     @relation("user_account", fields: [userId], references: [id])
   userId         String   @map("user_id")
 
+  @@unique([email])
+  @@unique([userId])
   @@map("accounts")
+}
+
+model Setting {
+  fcmToken               String? @map("fcm_token")
+  fcmTokenForMobile      String? @map("fcm_token_for_mobile")
+  discoverableByEmail    Boolean @default(true) @map("discoverable_by_email")
+  id                     String  @id @default(cuid())
+  notificationEmail      String? @map("notification_email")
+  protected              Boolean @default(false)
+  subscribeMessage       Boolean @default(false) @map("subscribe_message")
+  subscribePostLike      Boolean @default(false) @map("subscribe_post_like")
+  subscribePostQuotation Boolean @default(false) @map("subscribe_post_quotation")
+  user                   User    @relation("user_setting", fields: [userId], references: [id])
+  userId                 String  @map("user_id")
+
+  @@unique([userId])
+  @@map("settings")
 }
 
 model User {
@@ -42,6 +61,7 @@ model User {
   relatedExchanges      Exchange[]     @relation("user_related_exchanges")
   relatedGroupExchanges Exchange[]     @relation("users_related_exchanges")
   sessions              Session[]      @relation("user_sessions")
+  setting               Setting?       @relation("user_setting")
   siteURL               String         @default("") @map("site_url")
   updatedAt             DateTime       @default(now()) @updatedAt @map("updated_at")
   username              String         @unique @default(cuid())

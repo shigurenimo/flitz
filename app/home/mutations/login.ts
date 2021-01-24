@@ -44,7 +44,7 @@ const login = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
   if (PasswordService.needsRehash(result)) {
     const newHashedPassword = await PasswordService.hashPassword(password)
 
-    await AccountRepository.updateAccount({
+    await AccountRepository.updateHashedPassword({
       id: new Id(account.id),
       hashedPassword: newHashedPassword,
     })

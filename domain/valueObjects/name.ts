@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-export const nameSchema = z.string().max(32)
+export const nameSchema = z.string().max(12)
 
 export type NameValue = z.infer<typeof nameSchema>
 

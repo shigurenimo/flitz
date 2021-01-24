@@ -57,4 +57,8 @@ export class SessionRepository {
       username: input.username.value,
     })
   }
+
+  static getUserId(session: { userId: string }) {
+    return new Id(session.userId)
+  }
 }

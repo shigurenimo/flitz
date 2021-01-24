@@ -22,10 +22,7 @@ export const ButtonFile: FunctionComponent<Props> = ({
     <Button
       aria-label={"Image"}
       leftIcon={<Icon as={FiImage} fontSize={"xl"} />}
-      onClick={() => {
-        console.log(ref?.current)
-        ref?.current?.click?.()
-      }}
+      onClick={() => ref?.current?.click?.()}
       variant={"outline"}
       {...props}
     >
