@@ -233,6 +233,8 @@ model File {
   headerUserId String?  @map("header_user_id")
   iconUser     User?    @relation("user_icon_image", fields: [iconUserId], references: [id])
   iconUserId   String?  @map("icon_user_id")
+
+  @@map("files")
 }
 
 enum FileType {
