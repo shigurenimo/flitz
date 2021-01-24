@@ -43,7 +43,7 @@ export const HomePageInput: FunctionComponent = () => {
     }
   }
 
-  const isDisabled = text.trim().length === 0 || !file
+  const isDisabled = text.trim().length === 0 && !file
 
   return (
     <Stack spacing={4} px={4}>
@@ -90,7 +90,7 @@ export const HomePageInput: FunctionComponent = () => {
           isDisabled={isDisabled}
           isLoading={isLoading}
           leftIcon={<Icon as={FiSend} />}
-          loadingText={"Post"}
+          loadingText={t`Submit`}
           onClick={() => onCreatePost()}
           variant={"outline"}
         >
