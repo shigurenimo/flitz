@@ -3,8 +3,9 @@
   "files.exclude": {
     "**/node_modules": true,
     ".blitz": true,
+    ".idea": true,
     ".tsbuildinfo": true,
-    "yarn.lock": true,
-    "yarn-error.log": true
+    "yarn-error.log": true,
+    "yarn.lock": true
   }
 }
