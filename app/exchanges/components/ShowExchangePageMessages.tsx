@@ -15,7 +15,7 @@ export const ShowExchangePageMessages: FunctionComponent = () => {
     (page = { skip: 0, relatedUserId: recipientId }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
-      refetchInterval: 1000,
+      refetchInterval: 1000 * 2 ** 4,
     }
   )
 

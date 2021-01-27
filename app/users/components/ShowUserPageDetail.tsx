@@ -17,7 +17,7 @@ export const ShowUserPageDetail: FunctionComponent = () => {
   const [user, { setQueryData }] = useQuery(
     getUser,
     { username: username + "" },
-    { refetchInterval: 8000 }
+    { refetchInterval: 1000 * 2 ** 5 }
   )
 
   const [followUserMutation, { isLoading: isLoadingFollowUser }] = useMutation(

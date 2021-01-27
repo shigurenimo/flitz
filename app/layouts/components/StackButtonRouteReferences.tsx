@@ -16,7 +16,7 @@ export const StackButtonRouteReferences: FunctionComponent<Props> = ({
   const { t } = useTranslation()
 
   const [hasBadge] = useQuery(checkUnreadReferences, null, {
-    refetchInterval: 2000,
+    refetchInterval: 1000 * 2 ** 4,
   })
 
   return (

@@ -16,7 +16,7 @@ export const ShowUserPageListReplies: FunctionComponent = () => {
     (page = { skip: 0, username }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
-      refetchInterval: 16000,
+      refetchInterval: 1000 * 2 ** 5,
     }
   )
 

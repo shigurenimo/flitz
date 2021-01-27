@@ -12,7 +12,7 @@ export const ShowPostPageReplyList: FunctionComponent = () => {
     (page = { skip: 0, replyId: postId }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
-      refetchInterval: 2000,
+      refetchInterval: 1000 * 2 ** 4,
     }
   )
 

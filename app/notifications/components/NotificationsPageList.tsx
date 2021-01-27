@@ -14,7 +14,7 @@ export const NotificationsPageList: FunctionComponent = () => {
     (page = { skip: 0 }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
-      refetchInterval: 8000,
+      refetchInterval: 1000 * 2 ** 4,
     }
   )
 

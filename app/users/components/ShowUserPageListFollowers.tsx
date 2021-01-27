@@ -22,18 +22,13 @@ export const ShowUserPageListFollowers: FunctionComponent<Props> = ({
     (page = { take: 80, skip: 0, username }) => page,
     {
       getFetchMore: (lastGroup) => lastGroup.nextPage,
-      refetchInterval: 16000,
+      refetchInterval: 1000 * 2 ** 5,
     }
   )
 
-  const [followUserMutation, { isLoading: isLoadingFollowUser }] = useMutation(
-    followUser
-  )
+  const [followUserMutation] = useMutation(followUser)
 
-  const [
-    unfollowUserMutation,
-    { isLoading: isLoadingUnfollowUser },
-  ] = useMutation(unfollowUser)
+  const [unfollowUserMutation] = useMutation(unfollowUser)
 
   const toast = useToast()
 
