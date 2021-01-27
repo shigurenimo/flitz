@@ -33,9 +33,10 @@ export class MessageRepository {
       data: { isRead: true },
       where: {
         exchanges: {
+          // 相手のメッセージを既読にする
           some: {
-            userId: input.userId.value,
-            relatedUserId: input.relatedUserId.value,
+            userId: input.relatedUserId.value,
+            relatedUserId: input.userId.value,
             isRead: false,
           },
         },
