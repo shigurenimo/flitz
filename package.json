@@ -47,7 +47,7 @@
     "i18next-browser-languagedetector": "6.0.1",
     "jdenticon": "3.1.0",
     "next-pwa": "5.0.2",
-    "react": "0.0.0-experimental-4ead6b530",
+    "react": "17.0.1",
     "react-dom": "0.0.0-experimental-4ead6b530",
     "react-error-boundary": "2.3.2",
     "react-hook-form": "^6.14.0",
