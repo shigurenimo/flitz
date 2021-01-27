@@ -39,9 +39,9 @@ const resources = {
       "What's happening?": "いまどうしてる？",
       "The Push API is supported": "このデバイスはPush通知に対応していません。",
       "Failed to send a test notificaiton.": "テスト通知の送信に失敗しました",
-      "Send a test notificaiton": "テスト通知を送信する",
-      "Turn off push notifications": "通知機能をオフにする",
-      "Turn on push notifications": "通知機能をオンにする",
+      "Test notificaiton": "テスト",
+      "Turn off push notifications": "通知をオフにする",
+      "Turn on push notifications": "通知をオンにする",
       "Changes have bee saved": "変更が保存されました",
       "This feature does not support iOS devices.":
         "この機能はiOS端末をサポートしていません。",

@@ -7,12 +7,13 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  HStack,
   Icon,
   Stack,
   StackDivider,
   Switch,
   Text,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react"
 import React, { FunctionComponent } from "react"
 import { useTranslation } from "react-i18next"
@@ -55,26 +56,30 @@ export const SettingsPageNotification: FunctionComponent<Props> = ({
       <Heading size={"lg"}>{"通知"}</Heading>
       {setting.fcmToken && (
         <Stack spacing={4}>
-          <HStack spacing={4}>
-            <Button
-              isDisabled={isLoading}
-              isLoading={isLoadingUpdateSettingMutation}
-              leftIcon={<Icon as={FiZapOff} fontSize={"xl"} />}
-              loadingText={t`Turn off push notifications`}
-              onClick={onTurnOffNotification}
-            >
-              {t`Turn off push notifications`}
-            </Button>
-            <Button
-              isDisabled={isLoading}
-              isLoading={isLoadingTestNotificationMutation}
-              leftIcon={<Icon as={FiSend} fontSize={"xl"} />}
-              loadingText={t`Send a test notificaiton`}
-              onClick={onSendTestNotification}
-            >
-              {t`Send a test notificaiton`}
-            </Button>
-          </HStack>
+          <Wrap spacing={4}>
+            <WrapItem>
+              <Button
+                isDisabled={isLoading}
+                isLoading={isLoadingUpdateSettingMutation}
+                leftIcon={<Icon as={FiZapOff} fontSize={"xl"} />}
+                loadingText={t`Turn off push notifications`}
+                onClick={onTurnOffNotification}
+              >
+                {t`Turn off push notifications`}
+              </Button>
+            </WrapItem>
+            <WrapItem>
+              <Button
+                isDisabled={isLoading}
+                isLoading={isLoadingTestNotificationMutation}
+                leftIcon={<Icon as={FiSend} fontSize={"xl"} />}
+                loadingText={t`Test notificaiton`}
+                onClick={onSendTestNotification}
+              >
+                {t`Test notificaiton`}
+              </Button>
+            </WrapItem>
+          </Wrap>
           <Alert status="warning">
             <AlertIcon />
             <AlertTitle>{t`Only one device can use this feature. If you have already set it on another device, turn it off once.`}</AlertTitle>
