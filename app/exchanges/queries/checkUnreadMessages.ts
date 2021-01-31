@@ -9,9 +9,9 @@ const checkUnreadMessages = async (_ = null, ctx: Ctx) => {
 
   const exchangeRepository = new ExchangeRepository()
 
-  const messages = await exchangeRepository.getUserExchange({ userId })
+  const { exchange } = await exchangeRepository.getUserExchange({ userId })
 
-  return messages !== null
+  return exchange !== null
 }
 
 export default checkUnreadMessages
