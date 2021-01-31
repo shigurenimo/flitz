@@ -229,8 +229,8 @@ model File {
   path         String
   post         Post?    @relation("post_files", fields: [postId], references: [id])
   postId       String?  @map("post_id")
-  service      Service?
-  type         FileType
+  service      Service? @default(CLOUD_STORAGE)
+  type         FileType @default(IMAGE_PNG)
   user         User     @relation("user_files", fields: [userId], references: [id])
   userId       String   @map("user_id")
 
@@ -242,11 +242,15 @@ enum FileType {
   IMAGE_JPEG
   IMAGE_PNG
   IMAGE_WEBP
+
+  @@map("file_type")
 }
 
 enum Service {
   CLOUD_STORAGE
   AMAZON_S3
+
+  @@map("service")
 }
 
 enum NotificationType {
