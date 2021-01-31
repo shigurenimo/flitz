@@ -1,3 +1,4 @@
+import { FileService } from "app/services"
 import { Ctx } from "blitz"
 import { ImageFactory } from "domain/factories"
 import { Id, PostText, postTextSchema } from "domain/valueObjects"
@@ -5,7 +6,6 @@ import {
   FriendshipRepository,
   PostRepository,
 } from "infrastructure/repositories"
-import { FileService } from "app/services"
 import * as z from "zod"
 
 export const inputSchema = z.object({
@@ -37,7 +37,7 @@ const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const postRepository = new PostRepository()
 
-  const post = await postRepository.createPost({
+  const { post } = await postRepository.createPost({
     friendships,
     text,
     userId,

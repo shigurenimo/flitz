@@ -39,7 +39,7 @@ const AboutPage: BlitzPage = () => {
         </Box>
         <Stack spacing={4}>
           <Stack>
-            <Heading size={"lg"}>{t("The Fullstack Miniblog System")}</Heading>
+            <Heading size={"lg"}>{t("The Feed App Boilerplate")}</Heading>
             <Heading size={"md"}>
               {t("built on ")}
               <LinkText href={"https://blitzjs.com/"} isExternal>

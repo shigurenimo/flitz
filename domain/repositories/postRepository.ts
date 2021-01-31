@@ -27,7 +27,10 @@ export interface IPostRepository {
     friendships: Friendship[]
     text: PostText
     userId: Id
-  }): Promise<null>
+  }): Promise<{
+    post: Post
+    postEntity: PostEntity
+  }>
 
   createReply(input: {
     friendships: Friendship[]

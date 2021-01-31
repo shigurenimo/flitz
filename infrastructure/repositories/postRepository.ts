@@ -50,7 +50,7 @@ export class PostRepository implements IPostRepository {
     text: PostText
     userId: Id
   }) {
-    await db.post.create({
+    const post = await db.post.create({
       data: {
         files: {
           connect: input.fileIds.map((id) => {
@@ -87,7 +87,9 @@ export class PostRepository implements IPostRepository {
     //   }),
     // ])
 
-    return null
+    const postEntity = new PrismaAdapter().toPostEntity(post)
+
+    return { post, postEntity }
   }
 
   async createReply(input: {

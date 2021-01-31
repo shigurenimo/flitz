@@ -12,11 +12,11 @@ import { ButtonFile } from "app/components/ButtonFile"
 import { RenderFileLoader } from "app/components/RenderFileLoader"
 import { TextareaAutosize } from "app/components/TextareaAutosize"
 import createPost from "app/posts/mutations/createPost"
+import { ClientFileService } from "app/services/clientFileService"
 import { useMutation, useSession } from "blitz"
 import React, { FunctionComponent, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend } from "react-icons/fi"
-import { ClientFileService } from "app/services/clientFileService"
 
 export const HomePageInput: FunctionComponent = () => {
   const session = useSession()
