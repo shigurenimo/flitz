@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, StackDivider, useToast } from "@chakra-ui/react"
+import { Alert, AlertIcon, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/components/StackList"
 import { StackCardUser } from "app/users/components/StackCardUser"
 import followUser from "app/users/mutations/followUser"
@@ -29,8 +29,6 @@ export const ShowUserPageListFollowers: FunctionComponent<Props> = ({
   const [followUserMutation] = useMutation(followUser)
 
   const [unfollowUserMutation] = useMutation(unfollowUser)
-
-  const toast = useToast()
 
   const onFollow = async (userId: string) => {
     const updated = await followUserMutation({ userId })

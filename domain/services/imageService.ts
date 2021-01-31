@@ -1,5 +1,5 @@
 export class ImageService {
-  static isInvalidContentType(fileType: string) {
+  isInvalidContentType(fileType: string) {
     return (
       fileType !== "image/webp" &&
       fileType !== "image/png" &&

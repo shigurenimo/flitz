@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "domain/valueObjects"
-import { LikeRepository } from "infrastructure/likeRepository"
+import { LikeRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -30,18 +30,22 @@ const getUserLikesInfinite = async (
 
   const take = new Take()
 
-  const likes = await LikeRepository.getLikes({
+  const likeRepository = new LikeRepository()
+
+  const { likes } = await likeRepository.getLikes({
     skip,
     take,
     userId,
     username,
   })
 
-  const count = await LikeRepository.countLikes({ username })
+  const count = await likeRepository.countLikes({ username })
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const pageService = new PageService()
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   const isEmpty = likes.length === 0
 

@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "domain/valueObjects"
-import { PostRepository } from "infrastructure"
+import { PostRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -30,18 +30,22 @@ const getUserRepliesInfinite = async (
 
   const username = new Username(input.username)
 
-  const posts = await PostRepository.getRepliesByUsername({
+  const postRepository = new PostRepository()
+
+  const { posts } = await postRepository.getRepliesByUsername({
     skip,
     take,
     userId,
     username,
   })
 
-  const count = await PostRepository.countUserReplies({ username })
+  const count = await postRepository.countUserReplies({ username })
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const pageService = new PageService()
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   const isEmpty = posts.length === 0
 

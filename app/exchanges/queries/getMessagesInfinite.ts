@@ -1,7 +1,7 @@
 import { Ctx } from "blitz"
 import { MessageService, PageService } from "domain/services"
 import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
-import { MessageRepository } from "infrastructure"
+import { MessageRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -23,31 +23,40 @@ const getMessagesInfinite = async (
 
   const skip = new Skip(input.skip)
 
-  const messages = await MessageRepository.getUserExchangeMessages({
+  const messageRepository = new MessageRepository()
+
+  const {
+    messages,
+    messageEntities,
+  } = await messageRepository.getUserExchangeMessages({
     relatedUserId,
     skip,
     userId,
   })
 
-  const hasUnreadMessages = MessageService.hasUnreadMessages({
-    messages,
+  const messageService = new MessageService()
+
+  const hasUnreadMessages = messageService.hasUnreadMessages({
+    messageEntities,
     userId,
   })
 
   if (hasUnreadMessages) {
-    await MessageRepository.markMesagesAsRead({ relatedUserId, userId })
+    await messageRepository.markMesagesAsRead({ relatedUserId, userId })
   }
 
-  const count = await MessageRepository.countUserMessages({
+  const count = await messageRepository.countUserMessages({
     relatedUserId,
     userId,
   })
 
   const take = new Take()
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const pageService = new PageService()
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   return { messages, nextPage }
 }

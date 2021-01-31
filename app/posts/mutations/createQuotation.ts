@@ -4,7 +4,7 @@ import {
   FriendshipRepository,
   NotificationRepository,
   PostRepository,
-} from "infrastructure"
+} from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({ postId: idSchema })
@@ -21,21 +21,27 @@ const createQuotation = async (
 
   const userId = new Id(ctx.session.userId)
 
-  const friendships = await FriendshipRepository.getUserFollowers({
+  const friendshipRepository = new FriendshipRepository()
+
+  const { friendships } = await friendshipRepository.getUserFollowers({
     followeeId: userId,
   })
 
-  const post = await PostRepository.createPostQuotation({
+  const postRepository = new PostRepository()
+
+  const { post, postEntity } = await postRepository.createPostQuotation({
     friendships,
     postId,
     userId,
   })
 
-  const [quotation] = post.quotations
+  const [quotationEntity] = postEntity.quotations
 
-  await NotificationRepository.upsertQuotationNotification({
-    postUserId: new Id(post.userId),
-    quotationId: new Id(quotation.id),
+  const notificationRepository = new NotificationRepository()
+
+  await notificationRepository.upsertQuotationNotification({
+    postUserId: postEntity.userId,
+    quotationId: quotationEntity.id,
     postId,
   })
 

@@ -1,4 +1,5 @@
 import db from "db"
+import { IUserRepository } from "domain/repositories"
 import {
   Biography,
   Email,
@@ -8,24 +9,17 @@ import {
   Username,
   UserRole,
 } from "domain/valueObjects"
+import { PrismaAdapter } from "infrastructure/adapters"
 
-/**
- * ## ユーザー
- */
-export class UserRepository {
-  /**
-   * 新しいユーザーを作成する
-   * @param input
-   * @returns
-   */
-  static createUser(input: {
+export class UserRepository implements IUserRepository {
+  async createUser(input: {
     biography: Biography
     email: Email
     hashedPassword: HashedPassword
     name: Name
     role: UserRole
   }) {
-    return db.user.create({
+    const user = await db.user.create({
       data: {
         account: {
           create: {
@@ -39,27 +33,23 @@ export class UserRepository {
       },
     })
 
-    // return UserEntity.fromData(user)
+    const userEntity = new PrismaAdapter().toUserEntity(user)
+
+    return { user, userEntity }
   }
 
-  /**
-   * ユーザーを取得する
-   * @param input
-   * @returns
-   */
-  static getUser(input: { userId: Id }) {
-    return db.user.findFirst({
+  async getUser(input: { userId: Id }) {
+    const user = await db.user.findFirst({
       where: { id: input.userId.value },
     })
+
+    const userEntity = new PrismaAdapter().toUserEntity(user)
+
+    return { user, userEntity }
   }
 
-  /**
-   * ユーザーネームからユーザーを探す
-   * @param input
-   * @returns
-   */
-  static getUserByUsername(input: { userId: Id | null; username: Username }) {
-    return db.user.findUnique({
+  async getUserByUsername(input: { userId: Id | null; username: Username }) {
+    const user = await db.user.findUnique({
       include: {
         followers: input.userId
           ? { where: { followerId: input.userId.value } }
@@ -69,21 +59,18 @@ export class UserRepository {
       },
       where: { username: input.username.value },
     })
+
+    const userEntity = new PrismaAdapter().toUserEntity(user)
+
+    return { user, userEntity }
   }
 
-  /**
-   * ユーザーをフォローする
-   * @param input
-   * @returns
-   */
-  static async followUser(input: { followerId: Id; followeeId: Id }) {
+  async followUser(input: { followerId: Id; followeeId: Id }) {
     const [user] = await db.$transaction([
       db.user.update({
         data: {
           followers: {
-            create: {
-              follower: { connect: { id: input.followerId.value } },
-            },
+            create: { follower: { connect: { id: input.followerId.value } } },
           },
           followersCount: { increment: 1 },
         },
@@ -100,15 +87,12 @@ export class UserRepository {
       }),
     ])
 
-    return user
+    const userEntity = new PrismaAdapter().toUserEntity(user)
+
+    return { user, userEntity }
   }
 
-  /**
-   * ユーザーのフォローを外す
-   * @param input
-   * @returns
-   */
-  static async unfollowUser(input: { followerId: Id; followeeId: Id }) {
+  async unfollowUser(input: { followerId: Id; followeeId: Id }) {
     const [user] = await db.$transaction([
       db.user.update({
         data: {
@@ -130,24 +114,24 @@ export class UserRepository {
         where: { id: input.followeeId.value },
       }),
       db.user.update({
-        data: {
-          followeesCount: { decrement: 1 },
-        },
+        data: { followeesCount: { decrement: 1 } },
         where: { id: input.followerId.value },
       }),
     ])
 
-    return user
+    const userEntity = new PrismaAdapter().toUserEntity(user)
+
+    return { user, userEntity }
   }
 
-  static async updateUser(input: {
+  async updateUser(input: {
     id: Id
     biography: Id
     headerImageId: Id | null
     iconImageId: Id | null
     name: Name
   }) {
-    return db.user.update({
+    const user = await db.user.update({
       data: {
         name: input.name.value,
         biography: input.biography.value,
@@ -159,21 +143,25 @@ export class UserRepository {
           : undefined,
       },
       where: { id: input.id.value },
-      include: {
-        iconImage: true,
-      },
+      include: { iconImage: true },
     })
+
+    const userEntity = new PrismaAdapter().toUserEntity(user)
+
+    return { user, userEntity }
   }
 
-  static async updateUsername(input: { id: Id; username: Name }) {
-    return db.user.update({
+  async updateUsername(input: { id: Id; username: Name }) {
+    const user = await db.user.update({
       data: {
         username: input.username.value,
       },
       where: { id: input.id.value },
-      include: {
-        iconImage: true,
-      },
+      include: { iconImage: true },
     })
+
+    const userEntity = new PrismaAdapter().toUserEntity(user)
+
+    return { user, userEntity }
   }
 }

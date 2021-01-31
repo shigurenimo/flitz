@@ -1,20 +1,16 @@
-import {
-  IFriendshipEntity,
-  INotificationEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { Id } from "domain/valueObjects"
+import type { NotificationEntity, UserEntity } from "domain/entities"
+import type { Id } from "domain/valueObjects"
 
-export class FriendshipEntity implements IFriendshipEntity {
+export class FriendshipEntity {
   createdAt!: Date
-  followee!: IUserEntity
+  followee!: UserEntity | null
   followeeId!: Id
-  follower!: IUserEntity
+  follower!: UserEntity | null
   followerId!: Id
   id!: Id
-  notification!: INotificationEntity[]
+  notifications!: NotificationEntity[]
 
-  constructor(public props: IFriendshipEntity) {
+  constructor(public props: Omit<FriendshipEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

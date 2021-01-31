@@ -1,7 +1,7 @@
 import { Ctx } from "blitz"
 import { PageService } from "domain/services"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
-import { PostRepository } from "infrastructure"
+import { PostRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({ skip: skipSchema })
@@ -16,15 +16,19 @@ const getPostsInfinite = async (
 
   const skip = new Skip(input.skip)
 
-  const posts = await PostRepository.getNewPosts({ skip, userId })
+  const postRepository = new PostRepository()
 
-  const count = await PostRepository.countPosts()
+  const { posts } = await postRepository.getNewPosts({ skip, userId })
+
+  const count = await postRepository.countPosts()
 
   const take = new Take()
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const pageService = new PageService()
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   return { hasMore, posts, nextPage }
 }

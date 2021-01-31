@@ -1,12 +1,10 @@
 import { AuthenticationError, Ctx, NotFoundError } from "blitz"
 import { PasswordService } from "domain/services"
+import { Password, passwordSchema } from "domain/valueObjects"
 import {
-  HashedPassword,
-  Id,
-  Password,
-  passwordSchema,
-} from "domain/valueObjects"
-import { AccountRepository, SessionRepository } from "infrastructure"
+  AccountRepository,
+  SessionRepository,
+} from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -27,29 +25,35 @@ const updateAccountPassword = async (
     }))
     .parse(input)
 
-  const userId = SessionRepository.getUserId(ctx.session)
+  const sessionRepository = new SessionRepository()
 
-  const account = await AccountRepository.findByUserId(userId)
+  const userId = sessionRepository.getUserId(ctx.session)
 
-  if (!account || account.hashedPassword === null) {
+  const accountRepository = new AccountRepository()
+
+  const { accountEntity } = await accountRepository.findByUserId(userId)
+
+  if (!accountEntity || accountEntity.hashedPassword === null) {
     throw new NotFoundError()
   }
 
+  const passwordService = new PasswordService()
+
   // 現在のパスワードを確認する
-  const result = await PasswordService.verifyPassword(
-    new HashedPassword(account.hashedPassword),
+  const result = await passwordService.verifyPassword(
+    accountEntity.hashedPassword,
     currentPassword
   )
 
-  if (PasswordService.isInvalid(result)) {
+  if (passwordService.isInvalid(result)) {
     throw new AuthenticationError()
   }
 
-  const hashedPassword = await PasswordService.hashPassword(password)
+  const hashedPassword = await passwordService.hashPassword(password)
 
   // 新しいパスワードを保存する
-  await AccountRepository.updateHashedPassword({
-    id: new Id(account.id),
+  await accountRepository.updateHashedPassword({
+    id: accountEntity.id,
     hashedPassword,
   })
 

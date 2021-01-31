@@ -56,11 +56,13 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
     siteURL: string
   }) => {
     try {
+      const clientFileService = new ClientFileService()
+
       await updateUserProfileMutation({
-        headerImage: await ClientFileService.convertFileToBase64(
+        headerImage: await clientFileService.convertFileToBase64(
           headerImageFile
         ),
-        iconImage: await ClientFileService.convertFileToBase64(iconImageFile),
+        iconImage: await clientFileService.convertFileToBase64(iconImageFile),
         biography: values.biography,
         name: values.name,
       })

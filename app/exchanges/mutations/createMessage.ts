@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { Id, idSchema, PostText, postTextSchema } from "domain/valueObjects"
-import { MessageRepository } from "infrastructure"
+import { MessageRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 export const inputSchema = z.object({
@@ -17,7 +17,9 @@ const createMessage = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const message = await MessageRepository.createMessage({
+  const messageRepository = new MessageRepository()
+
+  const message = await messageRepository.createMessage({
     text,
     userId,
     relatedUserId: new Id(input.relatedUserId),

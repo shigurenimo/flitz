@@ -1,5 +1,3 @@
-export * from "./ImageFactory"
-export * from "./accountEntityFactory"
-export * from "./fileEntityFactory"
 export * from "./hashedPasswordFactory"
+export * from "./ImageFactory"
 export * from "./nameFactory"

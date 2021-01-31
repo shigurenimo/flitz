@@ -1,10 +1,10 @@
-import { IPostEntity, IUserEntity } from "domain/entities/interfaces"
+import type { PostEntity, UserEntity } from "domain/entities"
 import { Id } from "domain/valueObjects"
 
 export interface IBookmarkEntity {
   createdAt: Date
-  post: IPostEntity
+  post: PostEntity
   postId: Id
-  user: IUserEntity
+  user: UserEntity
   userId: Id
 }

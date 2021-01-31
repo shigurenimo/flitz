@@ -1,6 +1,9 @@
 import { Ctx } from "blitz"
 import { Id, idSchema } from "domain/valueObjects"
-import { NotificationRepository, PostRepository } from "infrastructure"
+import {
+  NotificationRepository,
+  PostRepository,
+} from "infrastructure/repositories"
 import * as z from "zod"
 
 export const inputSchema = z.object({ postId: idSchema })
@@ -14,14 +17,25 @@ const createPostLike = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const post = await PostRepository.createLikes({ postId, userId })
+  const postRepository = new PostRepository()
 
-  const [like] = post.likes
-
-  await NotificationRepository.upsertPostLikeNotification({
-    likeId: new Id(like.id),
+  const { post, postEntity } = await postRepository.createLikes({
     postId,
-    postUserId: new Id(post.user.id),
+    userId,
+  })
+
+  const [likeEntity] = postEntity.likes
+
+  const notificationRepository = new NotificationRepository()
+
+  if (postEntity.user === null) {
+    return null
+  }
+
+  await notificationRepository.upsertPostLikeNotification({
+    likeId: likeEntity.id,
+    postId,
+    postUserId: postEntity.user.id,
     userId,
   })
 

@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "domain/valueObjects"
-import { FriendshipRepository } from "infrastructure"
+import { FriendshipRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -30,18 +30,24 @@ const getUserFolloweesInfinite = async (
 
   const username = new Username(input.username)
 
-  const friendships = await FriendshipRepository.getUserFolloweesByUsername({
-    skip,
-    take,
-    userId,
-    username,
-  })
+  const friendshipRepository = new FriendshipRepository()
 
-  const count = await FriendshipRepository.countUserFollowees({ username })
+  const { friendships } = await friendshipRepository.getUserFolloweesByUsername(
+    {
+      skip,
+      take,
+      userId,
+      username,
+    }
+  )
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const count = await friendshipRepository.countUserFollowees({ username })
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const pageService = new PageService()
+
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   return { count, hasMore, friendships, nextPage }
 }

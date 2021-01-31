@@ -3,10 +3,10 @@ import { Id } from "domain/valueObjects"
 
 export interface IFriendshipEntity {
   createdAt: Date
-  followee: IUserEntity
+  followee: IUserEntity | null
   followeeId: Id
-  follower: IUserEntity
+  follower: IUserEntity | null
   followerId: Id
   id: Id
-  notification: INotificationEntity[]
+  notifications: INotificationEntity[]
 }

@@ -1,5 +1,8 @@
 import { Ctx } from "blitz"
-import { SessionRepository, SettingRepository } from "infrastructure"
+import {
+  SessionRepository,
+  SettingRepository,
+} from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -23,9 +26,13 @@ const updateSetting = async (input: Input, ctx: Ctx) => {
     subscribePostQuotation,
   } = inputSchema.parse(input)
 
-  const userId = SessionRepository.getUserId(ctx.session)
+  const sessionRepository = new SessionRepository()
 
-  const setting = await SettingRepository.updateSetting({
+  const userId = sessionRepository.getUserId(ctx.session)
+
+  const settingRepository = new SettingRepository()
+
+  const { setting } = await settingRepository.updateSetting({
     fcmToken,
     fcmTokenForMobile,
     subscribeMessage,

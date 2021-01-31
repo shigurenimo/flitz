@@ -1,11 +1,11 @@
 import db from "db"
+import { INotificationRepository } from "domain/repositories"
 import { Count, Id, Skip } from "domain/valueObjects"
+import { PrismaAdapter } from "infrastructure/adapters"
+import { includeEmbededPost } from "infrastructure/repositories/utils"
 
-/**
- * ## 通知
- */
-export class NotificationRepository {
-  static async countNotifications(input: { userId: Id }) {
+export class NotificationRepository implements INotificationRepository {
+  async countNotifications(input: { userId: Id }) {
     const count = await db.notification.count({
       where: { userId: input.userId.value },
     })
@@ -13,7 +13,7 @@ export class NotificationRepository {
     return new Count(count)
   }
 
-  static async hasUnreadNotifications(input: { userId: Id }) {
+  async hasUnreadNotifications(input: { userId: Id }) {
     const notification = await db.notification.findFirst({
       where: {
         isRead: false,
@@ -24,37 +24,21 @@ export class NotificationRepository {
     return notification !== null
   }
 
-  static async findNotifications(input: { skip: Skip; userId: Id }) {
-    return db.notification.findMany({
+  async findNotifications(input: { skip: Skip; userId: Id }) {
+    const notifications = await db.notification.findMany({
       include: {
         friendship: {
-          include: {
-            follower: { include: { iconImage: true } },
-          },
+          include: { follower: { include: { iconImage: true } } },
         },
         like: {
           include: {
             post: {
               include: {
                 likes: { where: { userId: input.userId.value } },
-                quotation: {
-                  include: {
-                    likes: { where: { userId: input.userId.value } },
-                    quotations: { where: { userId: input.userId.value } },
-                    replies: { where: { userId: input.userId.value } },
-                    user: { include: { iconImage: true } },
-                  },
-                },
+                quotation: { include: includeEmbededPost(input.userId) },
                 quotations: { where: { userId: input.userId.value } },
                 replies: { where: { userId: input.userId.value } },
-                reply: {
-                  include: {
-                    likes: { where: { userId: input.userId.value } },
-                    quotations: { where: { userId: input.userId.value } },
-                    replies: { where: { userId: input.userId.value } },
-                    user: { include: { iconImage: true } },
-                  },
-                },
+                reply: { include: includeEmbededPost(input.userId) },
                 user: { include: { iconImage: true } },
               },
             },
@@ -64,24 +48,10 @@ export class NotificationRepository {
         post: {
           include: {
             likes: { where: { userId: input.userId.value } },
-            quotation: {
-              include: {
-                likes: { where: { userId: input.userId.value } },
-                quotations: { where: { userId: input.userId.value } },
-                replies: { where: { userId: input.userId.value } },
-                user: { include: { iconImage: true } },
-              },
-            },
+            quotation: { include: includeEmbededPost(input.userId) },
             quotations: { where: { userId: input.userId.value } },
             replies: { where: { userId: input.userId.value } },
-            reply: {
-              include: {
-                likes: { where: { userId: input.userId.value } },
-                quotations: { where: { userId: input.userId.value } },
-                replies: { where: { userId: input.userId.value } },
-                user: { include: { iconImage: true } },
-              },
-            },
+            reply: { include: includeEmbededPost(input.userId) },
             user: { include: { iconImage: true } },
           },
         },
@@ -91,9 +61,15 @@ export class NotificationRepository {
       take: 16,
       where: { userId: input.userId.value },
     })
+
+    const notificationEntities = notifications.map((notification) => {
+      return new PrismaAdapter().toNotificationEntity(notification)
+    })
+
+    return { notifications, notificationEntities }
   }
 
-  static async upsertQuotationNotification(input: {
+  async upsertQuotationNotification(input: {
     quotationId: Id
     postUserId: Id
     postId: Id
@@ -127,9 +103,11 @@ export class NotificationRepository {
     //     })
     //   }),
     // ])
+
+    return null
   }
 
-  static async upsertPostLikeNotification(input: {
+  async upsertPostLikeNotification(input: {
     likeId: Id
     postId: Id
     postUserId: Id
@@ -153,9 +131,11 @@ export class NotificationRepository {
         },
       },
     })
+
+    return null
   }
 
-  static async upsertFollowNotification(input: {
+  async upsertFollowNotification(input: {
     followeeId: Id
     followerId: Id
     friendshipId: Id
@@ -178,9 +158,11 @@ export class NotificationRepository {
         },
       },
     })
+
+    return null
   }
 
-  static async createReplyNotification(input: { replyId: Id; postUserId: Id }) {
+  async createReplyNotification(input: { replyId: Id; postUserId: Id }) {
     await db.notification.create({
       data: {
         post: { connect: { id: input.replyId.value } },
@@ -189,15 +171,19 @@ export class NotificationRepository {
         user: { connect: { id: input.postUserId.value } },
       },
     })
+
+    return null
   }
 
-  static markNotificationsAsRead(input: { userId: Id }) {
-    return db.notification.updateMany({
+  async markNotificationsAsRead(input: { userId: Id }) {
+    await db.notification.updateMany({
       data: { isRead: true },
       where: {
         userId: input.userId.value,
         isRead: false,
       },
     })
+
+    return null
   }
 }

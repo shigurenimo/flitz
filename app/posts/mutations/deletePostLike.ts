@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { Id, idSchema } from "domain/valueObjects"
-import { PostRepository } from "infrastructure"
+import { PostRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({ postId: idSchema })
@@ -14,7 +14,9 @@ const deletePostLike = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const postId = new Id(input.postId)
 
-  const post = await PostRepository.deleteLikes({ postId, userId })
+  const postRepository = new PostRepository()
+
+  const post = await postRepository.deleteLikes({ postId, userId })
 
   return post
 }

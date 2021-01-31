@@ -2,9 +2,9 @@ import { Id } from "domain/valueObjects"
 import {
   EnvRepository,
   FileRepository,
+  ImageRepository,
   StorageRepository,
-} from "infrastructure"
-import { ImageRepository } from "infrastructure/imageRepository"
+} from "infrastructure/repositories"
 import { NextApiRequest, NextApiResponse } from "next"
 
 const icon = async (req: NextApiRequest, resp: NextApiResponse) => {
@@ -12,27 +12,37 @@ const icon = async (req: NextApiRequest, resp: NextApiResponse) => {
     return resp.status(500).end()
   }
 
-  const file = await FileRepository.getFile({ id: new Id(req.query.id) })
+  const envRepository = new EnvRepository()
 
-  if (file === null) {
+  const fileRepository = new FileRepository()
+
+  const imageRepository = new ImageRepository()
+
+  const storageRepository = new StorageRepository()
+
+  const { fileEntity } = await fileRepository.getFile({
+    id: new Id(req.query.id),
+  })
+
+  if (fileEntity === null) {
     return resp.status(400).end()
   }
 
-  const filePath = new Id(file.path)
+  const filePath = fileEntity.path
 
-  if (EnvRepository.isLocalProject()) {
-    const hasImage = ImageRepository.hasImage(filePath)
+  if (envRepository.isLocalProject()) {
+    const hasImage = imageRepository.hasImage(filePath)
 
     if (!hasImage) {
       return resp.status(400).end()
     }
   }
 
-  if (EnvRepository.isFirebaseProject()) {
-    await StorageRepository.downloadFileFromCloudStorage(filePath)
+  if (envRepository.isFirebaseProject()) {
+    await storageRepository.downloadFileFromCloudStorage(filePath)
   }
 
-  const buffer = await ImageRepository.readImage(filePath)
+  const buffer = await imageRepository.readImage(filePath)
 
   resp.setHeader("Content-Type", "image/png")
 

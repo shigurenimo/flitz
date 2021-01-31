@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { Id, idSchema, PostText, postTextSchema } from "domain/valueObjects"
-import { ExchangeRepository } from "infrastructure/exchangeRepository"
+import { ExchangeRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -22,7 +22,9 @@ const createGroupMessage = async (
 
   const exchangeId = new Id(input.exchangeId)
 
-  const exchange = await ExchangeRepository.createExchangeMessage({
+  const exchangeRepository = new ExchangeRepository()
+
+  const { exchange } = await exchangeRepository.createExchangeMessage({
     exchangeId,
     text,
     userId,

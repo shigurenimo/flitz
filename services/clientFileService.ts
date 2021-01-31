@@ -6,7 +6,7 @@ export class ClientFileService {
    * See https://github.com/blitz-js/blitz/issues/843
    * @param file
    */
-  static convertFileToBase64 = (file?: File | null): Promise<string | null> => {
+  convertFileToBase64 = (file?: File | null): Promise<string | null> => {
     if (!file) {
       return Promise.resolve(null)
     }

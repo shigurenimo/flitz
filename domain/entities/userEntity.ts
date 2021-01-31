@@ -1,41 +1,45 @@
-import {
-  IBookmarkEntity,
-  IExchangeEntity,
-  IFriendshipEntity,
-  ILikeEntity,
-  IMessageEntity,
-  IPostEntity,
-  IReferenceEntity,
-  ISessionEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { Biography, Count, Id, Name, Username } from "domain/valueObjects"
+import type {
+  AccountEntity,
+  BookmarkEntity,
+  ExchangeEntity,
+  FileEntity,
+  FriendshipEntity,
+  LikeEntity,
+  MessageEntity,
+  NotificationEntity,
+  PostEntity,
+  ReferenceEntity,
+  SessionEntity,
+} from "domain/entities"
+import type { Biography, Count, Id, Name, Username } from "domain/valueObjects"
 
-export class UserEntity implements IUserEntity {
-  account!: Account | null
+export class UserEntity {
+  account!: AccountEntity | null
   biography!: Biography
-  bookmarks!: IBookmarkEntity[]
+  bookmarks!: BookmarkEntity[]
   createdAt!: Date
-  exchanges!: IExchangeEntity[]
-  files!: File[]
-  followees!: IFriendshipEntity[]
+  exchanges!: ExchangeEntity[]
+  files!: FileEntity[]
+  followees!: FriendshipEntity[]
   followeesCount!: Count
-  followers!: IFriendshipEntity[]
+  followers!: FriendshipEntity[]
   followersCount!: Count
+  headerImage!: FileEntity | null
+  iconImage!: FileEntity | null
   id!: Id
-  likes!: ILikeEntity[]
-  messages!: IMessageEntity[]
+  likes!: LikeEntity[]
+  messages!: MessageEntity[]
   name!: Name | null
-  notifications!: Notification[]
-  posts!: IPostEntity[]
-  references!: IReferenceEntity[]
-  relatedExchanges!: IExchangeEntity[]
-  relatedGroupExchanges!: IExchangeEntity[]
-  sessions!: ISessionEntity[]
+  notifications!: NotificationEntity[]
+  posts!: PostEntity[]
+  references!: ReferenceEntity[]
+  relatedExchanges!: ExchangeEntity[]
+  relatedGroupExchanges!: ExchangeEntity[]
+  sessions!: SessionEntity[]
   updatedAt!: Date
   username!: Username
 
-  constructor(public props: IUserEntity) {
+  constructor(public props: Omit<UserEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

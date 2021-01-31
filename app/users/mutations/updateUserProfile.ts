@@ -6,9 +6,8 @@ import {
   Id,
   Name,
   nameSchema,
-  Username,
 } from "domain/valueObjects"
-import { SessionRepository, UserRepository } from "infrastructure"
+import { SessionRepository, UserRepository } from "infrastructure/repositories"
 import { FileService } from "services"
 import * as z from "zod"
 
@@ -36,28 +35,34 @@ const updateUserProfile = async (
 
   const userId = new Id(ctx.session.userId)
 
-  const headerImageFile = await FileService.uploadFile({
+  const fileService = new FileService()
+
+  const { fileEntity: headerImageFileEntry } = await fileService.uploadFile({
     userId,
     image: headerImage,
   })
 
-  const iconImageFile = await FileService.uploadFile({
+  const { fileEntity: iconImageFileEntity } = await fileService.uploadFile({
     userId,
     image: iconImage,
   })
 
-  const user = await UserRepository.updateUser({
+  const userRepository = new UserRepository()
+
+  const { user, userEntity } = await userRepository.updateUser({
     biography,
-    headerImageId: headerImageFile ? new Id(headerImageFile.id) : null,
-    iconImageId: iconImageFile ? new Id(iconImageFile.id) : null,
+    headerImageId: headerImageFileEntry ? headerImageFileEntry.id : null,
+    iconImageId: iconImageFileEntity ? iconImageFileEntity.id : null,
     id: userId,
     name,
   })
 
-  await SessionRepository.updatePublicData(ctx.session, {
-    name: Name.nullable(user.name),
-    username: new Username(user.username),
-    iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
+  const sessionRepository = new SessionRepository()
+
+  await sessionRepository.updatePublicData(ctx.session, {
+    name: userEntity.name,
+    username: userEntity.username,
+    iconImageId: userEntity.iconImage?.id || null,
   })
 
   return user

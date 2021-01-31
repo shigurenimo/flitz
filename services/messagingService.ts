@@ -1,18 +1,32 @@
 import { Id } from "domain/valueObjects"
 import admin from "firebase-admin"
-import { FirebaseRepository, SettingRepository } from "infrastructure"
+import {
+  FirebaseRepository,
+  SettingRepository,
+} from "infrastructure/repositories"
 
 export class MessagingService {
-  static async sendTestMesasge(input: { userId: Id }) {
-    FirebaseRepository.initialize()
+  firebaseRepository: FirebaseRepository
 
-    const setting = await SettingRepository.getSetting({ userId: input.userId })
+  settingRepository: SettingRepository
 
-    if (setting === null || setting.fcmToken === null) {
+  constructor() {
+    this.firebaseRepository = new FirebaseRepository()
+    this.settingRepository = new SettingRepository()
+  }
+
+  async sendTestMesasge(input: { userId: Id }) {
+    this.firebaseRepository.initialize()
+
+    const { settingEntity } = await this.settingRepository.getSetting({
+      userId: input.userId,
+    })
+
+    if (settingEntity === null || settingEntity.fcmToken === null) {
       throw new Error("")
     }
 
-    return admin.messaging().sendToDevice(setting.fcmToken, {
+    return admin.messaging().sendToDevice(settingEntity.fcmToken, {
       notification: {
         title: "TEST Notification",
         body: "This is a test Notification.",

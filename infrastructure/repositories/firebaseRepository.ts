@@ -1,13 +1,10 @@
+import { IFirebaseRepository } from "domain/repositories"
 import admin from "firebase-admin"
 import * as z from "zod"
 
-export class FirebaseRepository {
-  /**
-   * SDKを初期化する
-   * https://firebase.google.com/docs/admin/setup?hl=ja#initialize-sdk
-   */
-  static initialize() {
-    if (admin.apps.length > 0) return
+export class FirebaseRepository implements IFirebaseRepository {
+  initialize() {
+    if (admin.apps.length > 0) return null
 
     const { projectId, clientEmail, privateKey } = z
       .object({
@@ -30,5 +27,7 @@ export class FirebaseRepository {
       databaseURL: `https://${projectId}.firebaseio.com`,
       storageBucket: `${projectId}.appspot.com`,
     })
+
+    return null
   }
 }

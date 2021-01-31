@@ -4,8 +4,8 @@ import { Id } from "domain/valueObjects"
 export interface IReferenceEntity {
   createdAt: Date
   isRead: boolean
-  post: IPostEntity
+  post: IPostEntity | null
   postId: Id
-  user: IUserEntity
+  user: IUserEntity | null
   userId: Id
 }

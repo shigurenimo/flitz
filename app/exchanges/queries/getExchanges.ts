@@ -1,7 +1,7 @@
 import { Ctx } from "blitz"
 import { PageService } from "domain/services"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
-import { ExchangeRepository } from "infrastructure"
+import { ExchangeRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({ skip: skipSchema })
@@ -15,15 +15,22 @@ const getExchanges = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const exchanges = await ExchangeRepository.getUserExchanges({ userId, skip })
+  const exchangeRepository = new ExchangeRepository()
 
-  const count = await ExchangeRepository.countUserExchanges({ userId })
+  const { exchanges } = await exchangeRepository.getUserExchanges({
+    userId,
+    skip,
+  })
+
+  const count = await exchangeRepository.countUserExchanges({ userId })
 
   const take = new Take(16)
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const pageService = new PageService()
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   const isEmpty = exchanges.length === 0
 

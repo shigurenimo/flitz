@@ -1,11 +1,10 @@
-import { Count, Id, Skip, Take, Username } from "domain/valueObjects"
 import db from "db"
+import { IFriendshipRepository } from "domain/repositories"
+import { Count, Id, Skip, Take, Username } from "domain/valueObjects"
+import { PrismaAdapter } from "infrastructure/adapters/prismaAdapter"
 
-/**
- * ## フォローフォロワー関係
- */
-export class FriendshipRepository {
-  static async countUserFollowees(input: { username: Username }) {
+export class FriendshipRepository implements IFriendshipRepository {
+  async countUserFollowees(input: { username: Username }) {
     const count = await db.friendship.count({
       where: { follower: { username: input.username.value } },
     })
@@ -13,7 +12,7 @@ export class FriendshipRepository {
     return new Count(count)
   }
 
-  static async countUserFollowers(input: { username: Username }) {
+  async countUserFollowers(input: { username: Username }) {
     const count = await db.friendship.count({
       where: { followee: { username: input.username.value } },
     })
@@ -21,20 +20,26 @@ export class FriendshipRepository {
     return new Count(count)
   }
 
-  static getUserFollowers(input: { followeeId: Id }) {
-    return db.friendship.findMany({
+  async getUserFollowers(input: { followeeId: Id }) {
+    const friendships = await db.friendship.findMany({
       where: { followeeId: input.followeeId.value },
       take: 20000,
     })
+
+    const friendshipEntities = friendships.map((friendship) => {
+      return new PrismaAdapter().toFriendshipEntity(friendship)
+    })
+
+    return { friendships, friendshipEntities }
   }
 
-  static async getUserFolloweesByUsername(input: {
+  async getUserFolloweesByUsername(input: {
     skip: Skip
     take: Take
     userId: Id | null
     username: Username
   }) {
-    return db.friendship.findMany({
+    const friendships = await db.friendship.findMany({
       include: {
         followee: {
           include: {
@@ -52,15 +57,21 @@ export class FriendshipRepository {
       take: input.take.value,
       where: { follower: { username: input.username.value } },
     })
+
+    const friendshipEntities = friendships.map((friendship) => {
+      return new PrismaAdapter().toFriendshipEntity(friendship)
+    })
+
+    return { friendships, friendshipEntities }
   }
 
-  static async getUserFollowersByUsername(input: {
+  async getUserFollowersByUsername(input: {
     skip: Skip
     take: Take
     userId: Id | null
     username: Username
   }) {
-    return db.friendship.findMany({
+    const friendships = await db.friendship.findMany({
       include: {
         follower: {
           include: {
@@ -78,5 +89,11 @@ export class FriendshipRepository {
       take: input.take.value,
       where: { followee: { username: input.username.value } },
     })
+
+    const friendshipEntities = friendships.map((friendship) => {
+      return new PrismaAdapter().toFriendshipEntity(friendship)
+    })
+
+    return { friendships, friendshipEntities }
   }
 }

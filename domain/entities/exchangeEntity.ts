@@ -1,23 +1,19 @@
-import {
-  IExchangeEntity,
-  IMessageEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { Id } from "domain/valueObjects"
+import type { MessageEntity, UserEntity } from "domain/entities"
+import type { Id } from "domain/valueObjects"
 
-export class ExchangeEntity implements IExchangeEntity {
+export class ExchangeEntity {
   createdAt!: Date
   id!: Id
   isRead!: boolean
-  messages!: IMessageEntity[]
-  relatedUser!: IUserEntity | null
+  messages!: MessageEntity[]
+  relatedUser!: UserEntity | null
   relatedUserId!: Id | null
-  relatedUsers!: IUserEntity[]
+  relatedUsers!: UserEntity[]
   updatedAt!: Date
-  user!: IUserEntity
+  user!: UserEntity | null
   userId!: Id
 
-  constructor(public props: IExchangeEntity) {
+  constructor(public props: Omit<ExchangeEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

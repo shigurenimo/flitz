@@ -1,11 +1,10 @@
 import db from "db"
+import { IMessageRepository } from "domain/repositories"
 import { Count, Id, PostText, Skip } from "domain/valueObjects"
+import { PrismaAdapter } from "infrastructure/adapters"
 
-/**
- * ## メッセージ
- */
-export class MessageRepository {
-  static async countUserGroupMessages(input: { exchangeId: Id }) {
+export class MessageRepository implements IMessageRepository {
+  async countUserGroupMessages(input: { exchangeId: Id }) {
     const count = await db.message.count({
       where: { id: input.exchangeId.value },
     })
@@ -13,7 +12,7 @@ export class MessageRepository {
     return new Count(count)
   }
 
-  static async countUserMessages(input: { relatedUserId: Id; userId: Id }) {
+  async countUserMessages(input: { relatedUserId: Id; userId: Id }) {
     const count = await db.message.count({
       where: {
         exchanges: {
@@ -28,8 +27,8 @@ export class MessageRepository {
     return new Count(count)
   }
 
-  static async markMesagesAsRead(input: { relatedUserId: Id; userId: Id }) {
-    return db.message.updateMany({
+  async markMesagesAsRead(input: { relatedUserId: Id; userId: Id }) {
+    await db.message.updateMany({
       data: { isRead: true },
       where: {
         exchanges: {
@@ -42,14 +41,16 @@ export class MessageRepository {
         },
       },
     })
+
+    return null
   }
 
-  static async getUserExchangeMessages(input: {
+  async getUserExchangeMessages(input: {
     relatedUserId: Id
     skip: Skip
     userId: Id
   }) {
-    return db.message.findMany({
+    const messages = await db.message.findMany({
       include: {
         user: true,
         exchanges: true,
@@ -66,14 +67,20 @@ export class MessageRepository {
         },
       },
     })
+
+    const messageEntities = messages.map((message) => {
+      return new PrismaAdapter().toMessageEntity(message)
+    })
+
+    return { messages, messageEntities }
   }
 
-  static createMessage(input: {
+  async createMessage(input: {
     text: PostText
     userId: Id
     relatedUserId: Id
   }) {
-    return db.message.create({
+    await db.message.create({
       data: {
         text: input.text.value,
         user: { connect: { id: input.userId.value } },
@@ -109,5 +116,7 @@ export class MessageRepository {
         },
       },
     })
+
+    return null
   }
 }

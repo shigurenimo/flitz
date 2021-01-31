@@ -1,12 +1,16 @@
-import { IPostEntity, IUserEntity } from "domain/entities/interfaces"
+import {
+  INotificationEntity,
+  IPostEntity,
+  IUserEntity,
+} from "domain/entities/interfaces"
 import { Id } from "domain/valueObjects"
 
 export interface ILikeEntity {
   createdAt: Date
   id: Id
-  notifications: Notification[]
-  post: IPostEntity
+  notifications: INotificationEntity[]
+  post: IPostEntity | null
   postId: Id
-  user: IUserEntity
+  user: IUserEntity | null
   userId: Id
 }

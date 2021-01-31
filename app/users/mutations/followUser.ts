@@ -1,6 +1,9 @@
 import { Ctx } from "blitz"
 import { Id, idSchema } from "domain/valueObjects"
-import { NotificationRepository, UserRepository } from "infrastructure"
+import {
+  NotificationRepository,
+  UserRepository,
+} from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({ userId: idSchema })
@@ -20,14 +23,21 @@ const followUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     throw new Error("Unexpected error")
   }
 
-  const user = await UserRepository.followUser({ followeeId, followerId })
+  const userRepository = new UserRepository()
 
-  const [friendship] = user.followers
-
-  await NotificationRepository.upsertFollowNotification({
+  const { user, userEntity } = await userRepository.followUser({
     followeeId,
     followerId,
-    friendshipId: new Id(friendship.id),
+  })
+
+  const [friendship] = userEntity.followers
+
+  const notificationRepository = new NotificationRepository()
+
+  await notificationRepository.upsertFollowNotification({
+    followeeId,
+    followerId,
+    friendshipId: friendship.id,
   })
 
   return user

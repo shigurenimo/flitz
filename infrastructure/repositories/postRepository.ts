@@ -1,11 +1,17 @@
 import db, { Friendship } from "db"
+import { IPostRepository } from "domain/repositories"
 import { Count, Id, PostText, Skip, Take, Username } from "domain/valueObjects"
+import { PrismaAdapter } from "infrastructure/adapters"
+import { includeReplyPost } from "infrastructure/repositories/utils"
 
-/**
- * ## 投稿
- */
-export class PostRepository {
-  static async countReplies(input: { replyId: Id }) {
+export class PostRepository implements IPostRepository {
+  prismaAdapter: PrismaAdapter
+
+  constructor() {
+    this.prismaAdapter = new PrismaAdapter()
+  }
+
+  async countReplies(input: { replyId: Id }) {
     const count = await db.post.count({
       where: { replyId: input.replyId.value },
     })
@@ -13,13 +19,13 @@ export class PostRepository {
     return new Count(count)
   }
 
-  static async countPosts() {
+  async countPosts() {
     const count = await db.post.count()
 
     return new Count(count)
   }
 
-  static async countUserPosts(input: { username: Username }) {
+  async countUserPosts(input: { username: Username }) {
     const count = await db.post.count({
       where: { user: { username: input.username.value } },
     })
@@ -27,7 +33,7 @@ export class PostRepository {
     return new Count(count)
   }
 
-  static async countUserReplies(input: { username: Username }) {
+  async countUserReplies(input: { username: Username }) {
     const count = await db.post.count({
       where: {
         user: { username: input.username.value },
@@ -38,13 +44,13 @@ export class PostRepository {
     return new Count(count)
   }
 
-  static createPost(input: {
+  async createPost(input: {
     fileIds: Id[]
     friendships: Friendship[]
     text: PostText
     userId: Id
   }) {
-    return db.post.create({
+    await db.post.create({
       data: {
         files: {
           connect: input.fileIds.map((id) => {
@@ -80,15 +86,17 @@ export class PostRepository {
     //     })
     //   }),
     // ])
+
+    return null
   }
 
-  static createReply(input: {
+  async createReply(input: {
     friendships: Friendship[]
     postId: Id
     text: PostText
     userId: Id
   }) {
-    return db.post.update({
+    const post = await db.post.update({
       data: {
         replies: {
           create: {
@@ -112,11 +120,7 @@ export class PostRepository {
         },
         repliesCount: { increment: 1 },
       },
-      include: {
-        replies: {
-          where: { userId: input.userId.value },
-        },
-      },
+      include: { replies: { where: { userId: input.userId.value } } },
       where: { id: input.postId.value },
     })
 
@@ -130,14 +134,18 @@ export class PostRepository {
     //     })
     //   }),
     // ])
+
+    const postEntity = new PrismaAdapter().toPostEntity(post)
+
+    return { post, postEntity }
   }
 
-  static createPostQuotation(input: {
+  async createPostQuotation(input: {
     friendships: Friendship[]
     postId: Id
     userId: Id
   }) {
-    return db.post.update({
+    const post = await db.post.update({
       data: {
         quotations: {
           create: {
@@ -160,26 +168,28 @@ export class PostRepository {
         },
         quotationsCount: { increment: 1 },
       },
-      include: {
-        quotations: {
-          where: { userId: input.userId.value },
-        },
-      },
+      include: { quotations: { where: { userId: input.userId.value } } },
       where: { id: input.postId.value },
     })
+
+    const postEntity = this.prismaAdapter.toPostEntity(post)
+
+    return { post, postEntity }
   }
 
-  static deletePost(input: { postId: Id; userId: Id }) {
-    return db.$transaction([
+  async deletePost(input: { postId: Id; userId: Id }) {
+    await db.$transaction([
       db.post.delete({ where: { id: input.postId.value } }),
       db.bookmark.deleteMany({ where: { postId: input.postId.value } }),
       db.like.deleteMany({ where: { postId: input.postId.value } }),
       db.reference.deleteMany({ where: { postId: input.postId.value } }),
     ])
+
+    return null
   }
 
-  static createLikes(input: { postId: Id; userId: Id }) {
-    return db.post.update({
+  async createLikes(input: { postId: Id; userId: Id }) {
+    const post = await db.post.update({
       data: {
         likes: {
           create: {
@@ -194,10 +204,14 @@ export class PostRepository {
         user: { include: { iconImage: true } },
       },
     })
+
+    const postEntity = new PrismaAdapter().toPostEntity(post)
+
+    return { post, postEntity }
   }
 
-  static deleteLikes(input: { postId: Id; userId: Id }) {
-    return db.post.update({
+  async deleteLikes(input: { postId: Id; userId: Id }) {
+    await db.post.update({
       data: {
         likes: {
           delete: {
@@ -211,79 +225,49 @@ export class PostRepository {
       },
       where: { id: input.postId.value },
     })
+
+    return null
   }
 
-  static getReplies(input: {
+  async getReplies(input: {
     skip: Skip
     take: Take
     replyId: Id
     userId: Id | null
   }) {
-    return db.post.findMany({
-      include: {
-        files: true,
-        likes: input.userId ? { where: { userId: input.userId.value } } : false,
-        quotations: input.userId
-          ? { where: { userId: input.userId.value } }
-          : false,
-        replies: input.userId
-          ? { where: { userId: input.userId.value } }
-          : false,
-        user: { include: { iconImage: true } },
-      },
+    const posts = await db.post.findMany({
+      include: includeReplyPost(input.userId),
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
       take: input.take.value,
       where: { replyId: input.replyId.value },
     })
+
+    const postEntities = posts.map((post) => {
+      return new PrismaAdapter().toPostEntity(post)
+    })
+
+    return { posts, postEntities }
   }
 
-  static getRepliesByUsername(input: {
+  async getRepliesByUsername(input: {
     skip: Skip
     take: Take
     userId: Id | null
     username: Username
   }) {
-    return db.post.findMany({
+    const posts = await db.post.findMany({
       include: {
         files: true,
         likes: input.userId ? { where: { userId: input.userId.value } } : false,
-        quotation: {
-          include: {
-            files: true,
-            likes: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            quotations: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            replies: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            user: { include: { iconImage: true } },
-          },
-        },
+        quotation: { include: includeReplyPost(input.userId) },
         quotations: input.userId
           ? { where: { userId: input.userId.value } }
           : false,
         replies: input.userId
           ? { where: { userId: input.userId.value } }
           : false,
-        reply: {
-          include: {
-            files: true,
-            likes: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            quotations: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            replies: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            user: { include: { iconImage: true } },
-          },
-        },
+        reply: { include: includeReplyPost(input.userId) },
         user: { include: { iconImage: true } },
       },
       orderBy: { createdAt: "desc" },
@@ -294,54 +278,32 @@ export class PostRepository {
         replyId: { not: null },
       },
     })
+
+    const postEntities = posts.map((post) => {
+      return new PrismaAdapter().toPostEntity(post)
+    })
+
+    return { posts, postEntities }
   }
 
-  static getPostsByUsername(input: {
+  async getPostsByUsername(input: {
     skip: Skip
     take: Take
     userId: Id | null
     username: Username
   }) {
-    return db.post.findMany({
+    const posts = await db.post.findMany({
       include: {
         files: true,
         likes: input.userId ? { where: { userId: input.userId.value } } : false,
-        quotation: {
-          include: {
-            files: true,
-            likes: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            quotations: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            replies: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            user: { include: { iconImage: true } },
-          },
-        },
+        quotation: { include: includeReplyPost(input.userId) },
         quotations: input.userId
           ? { where: { userId: input.userId.value } }
           : false,
         replies: input.userId
           ? { where: { userId: input.userId.value } }
           : false,
-        reply: {
-          include: {
-            files: true,
-            likes: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            quotations: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            replies: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            user: { include: { iconImage: true } },
-          },
-        },
+        reply: { include: includeReplyPost(input.userId) },
         user: { include: { iconImage: true } },
       },
       orderBy: { createdAt: "desc" },
@@ -349,63 +311,52 @@ export class PostRepository {
       take: input.take.value,
       where: { user: { username: input.username.value } },
     })
+
+    const postEntities = posts.map((post) => {
+      return new PrismaAdapter().toPostEntity(post)
+    })
+
+    return { posts, postEntities }
   }
 
-  static getNewPosts(input: { skip: Skip; userId: Id | null }) {
-    return db.post.findMany({
+  async getNewPosts(input: { skip: Skip; userId: Id | null }) {
+    const posts = await db.post.findMany({
       include: {
         files: true,
         likes: input.userId ? { where: { userId: input.userId.value } } : false,
-        quotation: {
-          include: {
-            files: true,
-            likes: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            quotations: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            replies: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            user: { include: { iconImage: true } },
-          },
-        },
+        quotation: { include: includeReplyPost(input.userId) },
         quotations: input.userId
           ? { where: { userId: input.userId.value } }
           : false,
         replies: input.userId
           ? { where: { userId: input.userId.value } }
           : false,
-        reply: {
-          include: {
-            likes: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            quotations: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            replies: input.userId
-              ? { where: { userId: input.userId.value } }
-              : false,
-            user: { include: { iconImage: true } },
-          },
-        },
+        reply: { include: includeReplyPost(input.userId) },
         user: { include: { iconImage: true } },
       },
       orderBy: { createdAt: "desc" },
       skip: input.skip.value,
       take: 16,
     })
+
+    const postEntities = posts.map((post) => {
+      return new PrismaAdapter().toPostEntity(post)
+    })
+
+    return { posts, postEntities }
   }
 
-  static getPost(input: { id: Id }) {
-    return db.post.findUnique({
+  async getPost(input: { id: Id }) {
+    const post = await db.post.findUnique({
       include: {
         files: true,
         user: { include: { iconImage: true } },
       },
       where: { id: input.id.value },
     })
+
+    const postEntity = new PrismaAdapter().toPostEntity(post)
+
+    return { post, postEntity }
   }
 }

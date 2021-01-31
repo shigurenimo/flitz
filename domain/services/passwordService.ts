@@ -10,7 +10,7 @@ export class PasswordService {
    * @param password
    * @returns
    */
-  static async hashPassword(password: Password) {
+  async hashPassword(password: Password) {
     const passwordBuffer = Buffer.from(password.value)
 
     const securePassword = new SecurePassword()
@@ -28,7 +28,7 @@ export class PasswordService {
    * @param password
    * @returns
    */
-  static verifyPassword(hashedPassword: HashedPassword, password: Password) {
+  verifyPassword(hashedPassword: HashedPassword, password: Password) {
     try {
       const passwordBuffer = Buffer.from(password.value)
 
@@ -47,7 +47,7 @@ export class PasswordService {
    * @param result
    * @returns
    */
-  static needsRehash(result: symbol) {
+  needsRehash(result: symbol) {
     return result === SecurePassword.VALID_NEEDS_REHASH
   }
 
@@ -56,7 +56,7 @@ export class PasswordService {
    * @param result
    * @returns
    */
-  static isInvalid(result: symbol) {
+  isInvalid(result: symbol) {
     return (
       result !== SecurePassword.VALID &&
       result !== SecurePassword.VALID_NEEDS_REHASH

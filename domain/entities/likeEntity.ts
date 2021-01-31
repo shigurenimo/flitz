@@ -1,20 +1,20 @@
-import {
-  ILikeEntity,
-  IPostEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { Id } from "domain/valueObjects"
+import type {
+  NotificationEntity,
+  PostEntity,
+  UserEntity,
+} from "domain/entities"
+import type { Id } from "domain/valueObjects"
 
-export class LikeEntity implements ILikeEntity {
+export class LikeEntity {
   createdAt!: Date
   id!: Id
-  notifications!: Notification[]
-  post!: IPostEntity
+  notifications!: NotificationEntity[]
+  post!: PostEntity | null
   postId!: Id
-  user!: IUserEntity
+  user!: UserEntity | null
   userId!: Id
 
-  constructor(public props: ILikeEntity) {
+  constructor(public props: Omit<LikeEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

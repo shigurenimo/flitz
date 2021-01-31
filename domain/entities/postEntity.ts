@@ -1,50 +1,36 @@
-import {
-  IBookmarkEntity,
-  ILikeEntity,
-  IPostEntity,
-  IReferenceEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { Count, PostText } from "domain/valueObjects"
+import type {
+  BookmarkEntity,
+  FileEntity,
+  LikeEntity,
+  NotificationEntity,
+  ReferenceEntity,
+  UserEntity,
+} from "domain/entities"
+import type { Count, Id, PostText } from "domain/valueObjects"
 
-export type PostEntityProps = IPostEntity & {
-  bookmarks?: IPostEntity["quotation"]
-  files?: IPostEntity["files"]
-  likes?: IPostEntity["likes"]
-  notifications?: IPostEntity["notifications"]
-  quotation?: IPostEntity["quotation"]
-  quotationId?: IPostEntity["quotationId"]
-  quotations?: IPostEntity["quotations"]
-  references?: IPostEntity["references"]
-  replies?: IPostEntity["replies"]
-  reply?: IPostEntity["reply"]
-  replyId?: IPostEntity["replyId"]
-  text?: IPostEntity["text"]
-}
-
-export class PostEntity implements IPostEntity {
-  bookmarks!: IBookmarkEntity[]
+export class PostEntity {
+  bookmarks!: BookmarkEntity[]
   createdAt!: Date
-  files!: File[]
-  id!: string
-  likes!: ILikeEntity[]
+  files!: FileEntity[]
+  id!: Id
+  likes!: LikeEntity[]
   likesCount!: Count
-  notifications!: Notification[]
-  quotation!: IPostEntity | null
-  quotationId!: string | null
-  quotations!: IPostEntity[]
+  notifications!: NotificationEntity[]
+  quotation!: PostEntity | null
+  quotationId!: Id | null
+  quotations!: PostEntity[]
   quotationsCount!: Count
-  references!: IReferenceEntity[]
-  replies!: IPostEntity[]
+  references!: ReferenceEntity[]
+  replies!: PostEntity[]
   repliesCount!: Count
-  reply!: IPostEntity | null
-  replyId!: string | null
+  reply!: PostEntity | null
+  replyId!: Id | null
   text!: PostText | null
   updatedAt!: Date
-  user!: IUserEntity
-  userId!: string
+  user!: UserEntity | null
+  userId!: Id
 
-  constructor(public props: PostEntityProps) {
+  constructor(public props: Omit<PostEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

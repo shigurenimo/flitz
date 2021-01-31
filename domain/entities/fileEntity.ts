@@ -1,22 +1,22 @@
-import {
-  IFileEntity,
-  IPostEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { FileType, Id, Path, Service } from "domain/valueObjects"
+import type { PostEntity, UserEntity } from "domain/entities"
+import type { FileType, Id, Path, Service } from "domain/valueObjects"
 
-export class FileEntity implements IFileEntity {
+export class FileEntity {
   createdAt!: Date
+  headerUser!: UserEntity | null
+  headerUserId!: Id | null
+  iconUser!: UserEntity | null
+  iconUserId!: Id | null
   id!: Id
   path!: Path
-  post!: IPostEntity | null
+  post!: PostEntity | null
   postId!: Id | null
   service!: Service | null
   type!: FileType
-  user!: IUserEntity | null
+  user!: UserEntity | null
   userId!: Id
 
-  constructor(public props: IFileEntity) {
+  constructor(public props: Omit<FileEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

@@ -1,13 +1,17 @@
 import { Ctx } from "blitz"
-import { SessionRepository } from "infrastructure"
+import { SessionRepository } from "infrastructure/repositories"
 import { MessagingService } from "services"
 
 const testNotification = async (_: void, ctx: Ctx) => {
   ctx.session.authorize()
 
-  const userId = SessionRepository.getUserId(ctx.session)
+  const sessionRepository = new SessionRepository()
 
-  return MessagingService.sendTestMesasge({ userId })
+  const userId = sessionRepository.getUserId(ctx.session)
+
+  const messagingService = new MessagingService()
+
+  return messagingService.sendTestMesasge({ userId })
 }
 
 export default testNotification

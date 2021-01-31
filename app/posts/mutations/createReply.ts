@@ -4,7 +4,7 @@ import {
   FriendshipRepository,
   NotificationRepository,
   PostRepository,
-} from "infrastructure"
+} from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -23,22 +23,28 @@ const createReply = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const friendships = await FriendshipRepository.getUserFollowers({
+  const friendshipRepository = new FriendshipRepository()
+
+  const { friendships } = await friendshipRepository.getUserFollowers({
     followeeId: userId,
   })
 
-  const post = await PostRepository.createReply({
+  const postRepository = new PostRepository()
+
+  const { post, postEntity } = await postRepository.createReply({
     friendships,
     postId,
     text,
     userId,
   })
 
-  const [reply] = post.replies
+  const [replyEntity] = postEntity.replies
 
-  await NotificationRepository.createReplyNotification({
-    postUserId: new Id(post.userId),
-    replyId: new Id(reply.id),
+  const notificationRepository = new NotificationRepository()
+
+  await notificationRepository.createReplyNotification({
+    postUserId: postEntity.userId,
+    replyId: replyEntity.id,
   })
 
   return post

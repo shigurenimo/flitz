@@ -1,25 +1,41 @@
+import { File } from "db"
+import { FileEntity } from "domain/entities"
 import { FileType, Id, Image, Service } from "domain/valueObjects"
 import {
   EnvRepository,
   FileRepository,
   ImageRepository,
   StorageRepository,
-} from "infrastructure"
+} from "infrastructure/repositories"
 
 export class FileService {
-  static async uploadFile(input: { userId: Id; image: Image | null }) {
+  async uploadFile(input: {
+    userId: Id
+    image: Image | null
+  }): Promise<{
+    file: File | null
+    fileEntity: FileEntity | null
+  }> {
     if (input.image === null) {
-      return null
+      return { file: null, fileEntity: null }
     }
 
-    const filePath = StorageRepository.createPath()
+    const storageRepository = new StorageRepository()
 
-    await ImageRepository.writeImage(input.image, filePath)
+    const filePath = storageRepository.createPath()
 
-    if (EnvRepository.isFirebaseProject()) {
-      await StorageRepository.uploadToCloudStorage(filePath)
+    const imageRepository = new ImageRepository()
 
-      return FileRepository.createFile({
+    await imageRepository.writeImage(input.image, filePath)
+
+    const envRepository = new EnvRepository()
+
+    const fileRepository = new FileRepository()
+
+    if (envRepository.isFirebaseProject()) {
+      await storageRepository.uploadToCloudStorage(filePath)
+
+      return fileRepository.createFile({
         userId: input.userId,
         fileType: new FileType("IMAGE_PNG"),
         service: new Service("CLOUD_STORAGE"),
@@ -27,7 +43,7 @@ export class FileService {
       })
     }
 
-    return FileRepository.createFile({
+    return fileRepository.createFile({
       userId: input.userId,
       fileType: new FileType("IMAGE_PNG"),
       service: null,

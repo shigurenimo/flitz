@@ -9,6 +9,6 @@ export interface IMessageEntity {
   isRead: boolean
   text: string
   updatedAt: Date
-  user: IUserEntity
+  user: IUserEntity | null
   userId: Id
 }

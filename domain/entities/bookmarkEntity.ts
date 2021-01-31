@@ -1,18 +1,14 @@
-import {
-  IBookmarkEntity,
-  IPostEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { Id } from "domain/valueObjects"
+import type { PostEntity, UserEntity } from "domain/entities"
+import type { Id } from "domain/valueObjects"
 
-export class BookmarkEntity implements IBookmarkEntity {
+export class BookmarkEntity {
   createdAt!: Date
-  post!: IPostEntity
+  post!: PostEntity | null
   postId!: Id
-  user!: IUserEntity
+  user!: UserEntity | null
   userId!: Id
 
-  constructor(public props: IBookmarkEntity) {
+  constructor(public props: Omit<BookmarkEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

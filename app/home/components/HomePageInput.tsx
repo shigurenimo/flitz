@@ -32,8 +32,10 @@ export const HomePageInput: FunctionComponent = () => {
   const toast = useToast()
 
   const onCreatePost = async () => {
+    const clientFileService = new ClientFileService()
+
     try {
-      const encodedImage = await ClientFileService.convertFileToBase64(file)
+      const encodedImage = await clientFileService.convertFileToBase64(file)
       await createPostMutation({ text, image: encodedImage })
       setText("")
       setFile(null)

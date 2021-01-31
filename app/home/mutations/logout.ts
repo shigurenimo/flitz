@@ -1,8 +1,10 @@
 import { Ctx } from "blitz"
-import { SessionRepository } from "infrastructure"
+import { SessionRepository } from "infrastructure/repositories"
 
 const logout = async (_: any, ctx: Ctx) => {
-  await SessionRepository.revokeSession(ctx.session)
+  const sessionRepository = new SessionRepository()
+
+  await sessionRepository.revokeSession(ctx.session)
 }
 
 export default logout

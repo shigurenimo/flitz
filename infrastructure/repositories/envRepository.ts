@@ -1,7 +1,8 @@
+import { IEnvRepository } from "domain/repositories"
 import * as z from "zod"
 
-export class EnvRepository {
-  static getFirebaseEnv() {
+export class EnvRepository implements IEnvRepository {
+  getFirebaseEnv() {
     const result = z
       .object({
         projectId: z.string(),
@@ -21,13 +22,13 @@ export class EnvRepository {
     return result.data
   }
 
-  static isFirebaseProject() {
+  isFirebaseProject() {
     const config = this.getFirebaseEnv()
 
     return config !== null
   }
 
-  static isLocalProject() {
+  isLocalProject() {
     return !this.isFirebaseProject()
   }
 }

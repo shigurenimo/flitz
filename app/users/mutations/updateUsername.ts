@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
-import { Id, Name, nameSchema, Username } from "domain/valueObjects"
-import { SessionRepository, UserRepository } from "infrastructure"
+import { Name, nameSchema } from "domain/valueObjects"
+import { SessionRepository, UserRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({ username: nameSchema })
@@ -12,14 +12,21 @@ const updateUsername = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     .transform((input) => ({ username: new Name(input.username) }))
     .parse(input)
 
-  const userId = SessionRepository.getUserId(ctx.session)
+  const sessionRepository = new SessionRepository()
 
-  const user = await UserRepository.updateUsername({ username, id: userId })
+  const userId = sessionRepository.getUserId(ctx.session)
 
-  await SessionRepository.updatePublicData(ctx.session, {
-    name: Name.nullable(user.name),
-    username: new Username(user.username),
-    iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
+  const userRepository = new UserRepository()
+
+  const { user, userEntity } = await userRepository.updateUsername({
+    username,
+    id: userId,
+  })
+
+  await sessionRepository.updatePublicData(ctx.session, {
+    name: userEntity.name,
+    username: userEntity.username,
+    iconImageId: userEntity.iconImage?.id || null,
   })
 
   return user

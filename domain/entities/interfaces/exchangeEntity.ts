@@ -1,15 +1,15 @@
-import { IMessageEntity, IUserEntity } from "domain/entities/interfaces"
+import type { MessageEntity, UserEntity } from "domain/entities"
 import { Id } from "domain/valueObjects"
 
 export interface IExchangeEntity {
   createdAt: Date
   id: Id
   isRead: boolean
-  messages: IMessageEntity[]
-  relatedUser: IUserEntity | null
+  messages: MessageEntity[]
+  relatedUser: UserEntity | null
   relatedUserId: Id | null
-  relatedUsers: IUserEntity[]
+  relatedUsers: UserEntity[]
   updatedAt: Date
-  user: IUserEntity
+  user: UserEntity
   userId: Id
 }

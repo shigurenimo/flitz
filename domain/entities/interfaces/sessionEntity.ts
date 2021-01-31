@@ -12,5 +12,5 @@ export interface ISessionEntity {
   publicData: string | null
   updatedAt: Date
   user: IUserEntity | null
-  userId: string
+  userId: Id | null
 }

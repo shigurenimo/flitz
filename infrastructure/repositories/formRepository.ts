@@ -1,9 +1,10 @@
+import { IFormRepository } from "domain/repositories"
 import { File, IncomingForm } from "formidable"
 import { NextApiRequest } from "next"
 import { tmpdir } from "os"
 
-export class FormRepository {
-  static getFiles(req: NextApiRequest) {
+export class FormRepository implements IFormRepository {
+  getFiles(req: NextApiRequest) {
     return new Promise<File[]>((resolve, reject) => {
       const form = new IncomingForm()
       form.uploadDir = tmpdir()

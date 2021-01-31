@@ -1,5 +1,5 @@
-import { IUserEntity } from "domain/entities/interfaces"
-import { Email, HashedPassword, Id, UserRole } from "domain/valueObjects"
+import type { UserEntity } from "domain/entities"
+import type { Email, HashedPassword, Id, UserRole } from "domain/valueObjects"
 
 export interface IAccountEntity {
   createdAt: Date
@@ -7,6 +7,6 @@ export interface IAccountEntity {
   hashedPassword: HashedPassword | null
   id: Id
   role: UserRole
-  user: IUserEntity | null
+  user: UserEntity | null
   userId: Id
 }

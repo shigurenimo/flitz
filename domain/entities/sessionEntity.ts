@@ -1,7 +1,7 @@
-import { ISessionEntity, IUserEntity } from "domain/entities/interfaces"
-import { Id } from "domain/valueObjects"
+import type { UserEntity } from "domain/entities"
+import type { Id } from "domain/valueObjects"
 
-export class SessionEntity implements ISessionEntity {
+export class SessionEntity {
   antiCSRFToken!: string | null
   createdAt!: Date
   expiresAt!: Date | null
@@ -11,10 +11,10 @@ export class SessionEntity implements ISessionEntity {
   privateData!: string | null
   publicData!: string | null
   updatedAt!: Date
-  user!: IUserEntity | null
-  userId!: string
+  user!: UserEntity | null
+  userId!: Id | null
 
-  constructor(public props: ISessionEntity) {
+  constructor(public props: Omit<SessionEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

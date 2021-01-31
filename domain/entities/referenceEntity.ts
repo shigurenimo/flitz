@@ -1,19 +1,15 @@
-import {
-  IPostEntity,
-  IReferenceEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { Id } from "domain/valueObjects"
+import type { PostEntity, UserEntity } from "domain/entities"
+import type { Id } from "domain/valueObjects"
 
-export class ReferenceEntity implements IReferenceEntity {
+export class ReferenceEntity {
   createdAt!: Date
   isRead!: boolean
-  post!: IPostEntity
+  post!: PostEntity | null
   postId!: Id
-  user!: IUserEntity
+  user!: UserEntity | null
   userId!: Id
 
-  constructor(public props: IReferenceEntity) {
+  constructor(public props: Omit<ReferenceEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

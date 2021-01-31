@@ -1,30 +1,31 @@
 import {
-  IBookmarkEntity,
-  ILikeEntity,
-  IReferenceEntity,
-  IUserEntity,
-} from "domain/entities/interfaces"
-import { Count, PostText } from "domain/valueObjects"
+  BookmarkEntity,
+  FileEntity,
+  LikeEntity,
+  ReferenceEntity,
+  UserEntity,
+} from "domain/entities"
+import { Count, Id, PostText } from "domain/valueObjects"
 
 export interface IPostEntity {
-  bookmarks: IBookmarkEntity[]
+  bookmarks: BookmarkEntity[]
   createdAt: Date
-  files: File[]
-  id: string
-  likes: ILikeEntity[]
+  files: FileEntity[]
+  id: Id
+  likes: LikeEntity[]
   likesCount: Count
   notifications: Notification[]
   quotation: IPostEntity | null
-  quotationId: string | null
+  quotationId: Id | null
   quotations: IPostEntity[]
   quotationsCount: Count
-  references: IReferenceEntity[]
+  references: ReferenceEntity[]
   replies: IPostEntity[]
   repliesCount: Count
   reply: IPostEntity | null
-  replyId: string | null
+  replyId: Id | null
   text: PostText | null
   updatedAt: Date
-  user: IUserEntity
-  userId: string
+  user: UserEntity | null
+  userId: Id
 }

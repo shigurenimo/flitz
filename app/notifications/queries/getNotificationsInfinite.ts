@@ -1,7 +1,7 @@
 import { Ctx } from "blitz"
 import { NotificationService, PageService } from "domain/services"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
-import { NotificationRepository } from "infrastructure"
+import { NotificationRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({ skip: skipSchema })
@@ -18,26 +18,35 @@ const getNotificationsInfinite = async (
 
   const skip = new Skip(input.skip)
 
-  const notifications = await NotificationRepository.findNotifications({
+  const notificationRepository = new NotificationRepository()
+
+  const {
+    notifications,
+    notificationEntities,
+  } = await notificationRepository.findNotifications({
     skip,
     userId,
   })
 
-  const hasUnreadNotifications = NotificationService.hasUnreadNotifications({
-    notifications,
+  const notificationService = new NotificationService()
+
+  const hasUnreadNotifications = notificationService.hasUnreadNotifications({
+    notificationEntities,
   })
 
   if (hasUnreadNotifications) {
-    await NotificationRepository.markNotificationsAsRead({ userId })
+    await notificationRepository.markNotificationsAsRead({ userId })
   }
 
-  const count = await NotificationRepository.countNotifications({ userId })
+  const count = await notificationRepository.countNotifications({ userId })
 
   const take = new Take()
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const pageService = new PageService()
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   return { notifications, hasMore, nextPage }
 }

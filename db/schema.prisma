@@ -22,9 +22,9 @@ model Account {
 }
 
 model Setting {
+  discoverableByEmail    Boolean @default(true) @map("discoverable_by_email")
   fcmToken               String? @map("fcm_token")
   fcmTokenForMobile      String? @map("fcm_token_for_mobile")
-  discoverableByEmail    Boolean @default(true) @map("discoverable_by_email")
   id                     String  @id @default(cuid())
   notificationEmail      String? @map("notification_email")
   protected              Boolean @default(false)
@@ -71,13 +71,13 @@ model User {
 }
 
 model Friendship {
-  createdAt    DateTime       @default(now()) @map("created_at")
-  followee     User           @relation("user_followees", fields: [followeeId])
-  followeeId   String         @map("followee_id")
-  follower     User           @relation("user_followers", fields: [followerId])
-  followerId   String         @map("follower_id")
-  id           String         @id @default(cuid())
-  notification Notification[] @relation("notifications_friendship")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  followee      User           @relation("user_followees", fields: [followeeId])
+  followeeId    String         @map("followee_id")
+  follower      User           @relation("user_followers", fields: [followerId])
+  followerId    String         @map("follower_id")
+  id            String         @id @default(cuid())
+  notifications Notification[] @relation("notifications_friendship")
 
   @@unique([followerId, followeeId])
   @@index([followerId, createdAt])
@@ -221,6 +221,10 @@ model Exchange {
 
 model File {
   createdAt    DateTime @default(now()) @map("created_at")
+  headerUser   User?    @relation("user_header_image", fields: [headerUserId], references: [id])
+  headerUserId String?  @map("header_user_id")
+  iconUser     User?    @relation("user_icon_image", fields: [iconUserId], references: [id])
+  iconUserId   String?  @map("icon_user_id")
   id           String   @id @default(cuid())
   path         String
   post         Post?    @relation("post_files", fields: [postId], references: [id])
@@ -229,10 +233,6 @@ model File {
   type         FileType
   user         User     @relation("user_files", fields: [userId], references: [id])
   userId       String   @map("user_id")
-  headerUser   User?    @relation("user_header_image", fields: [headerUserId], references: [id])
-  headerUserId String?  @map("header_user_id")
-  iconUser     User?    @relation("user_icon_image", fields: [iconUserId], references: [id])
-  iconUserId   String?  @map("icon_user_id")
 
   @@map("files")
 }

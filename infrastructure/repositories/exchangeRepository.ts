@@ -1,16 +1,16 @@
 import db from "db"
+import { IExchangeRepository } from "domain/repositories"
 import { Count, Id, PostText, Skip } from "domain/valueObjects"
+import { PrismaAdapter } from "infrastructure/adapters"
 
-/**
- * ## メッセージスレッド
- */
-export class ExchangeRepository {
-  /**
-   * ユーザーのスレッドを集計する
-   * @param input
-   * @returns
-   */
-  static async countUserExchanges(input: { userId: Id }) {
+export class ExchangeRepository implements IExchangeRepository {
+  prismaAdapter: PrismaAdapter
+
+  constructor() {
+    this.prismaAdapter = new PrismaAdapter()
+  }
+
+  async countUserExchanges(input: { userId: Id }) {
     const count = await db.exchange.count({
       where: { userId: input.userId.value },
     })
@@ -18,13 +18,8 @@ export class ExchangeRepository {
     return new Count(count)
   }
 
-  /**
-   * スレッドを取得する
-   * @param input
-   * @returns
-   */
-  static getExchange(input: { exchangeId: Id; skip: Skip }) {
-    return db.exchange.findUnique({
+  async getExchange(input: { exchangeId: Id; skip: Skip }) {
+    const exchange = await db.exchange.findUnique({
       include: {
         user: { include: { iconImage: true } },
         messages: {
@@ -35,15 +30,14 @@ export class ExchangeRepository {
       },
       where: { id: input.exchangeId.value },
     })
+
+    const exchangeEntity = this.prismaAdapter.toExchangeEntity(exchange)
+
+    return { exchange, exchangeEntity }
   }
 
-  /**
-   * ユーザーのスレッドを取得する
-   * @param input
-   * @returns
-   */
-  static getUserExchange(input: { userId: Id }) {
-    return db.exchange.findFirst({
+  async getUserExchange(input: { userId: Id }) {
+    const exchange = await db.exchange.findFirst({
       where: {
         messages: {
           some: {
@@ -54,15 +48,14 @@ export class ExchangeRepository {
         userId: input.userId.value,
       },
     })
+
+    const exchangeEntity = this.prismaAdapter.toExchangeEntity(exchange)
+
+    return { exchange, exchangeEntity }
   }
 
-  /**
-   * ユーザーの複数のスレッドを取得する
-   * @param input
-   * @returns
-   */
-  static getUserExchanges(input: { skip: Skip; userId: Id }) {
-    return db.exchange.findMany({
+  async getUserExchanges(input: { skip: Skip; userId: Id }) {
+    const exchanges = await db.exchange.findMany({
       orderBy: { updatedAt: "desc" },
       skip: input.skip.value,
       take: 16,
@@ -76,19 +69,20 @@ export class ExchangeRepository {
         relatedUser: true,
       },
     })
+
+    const exchangeEntities = exchanges.map((exchange) => {
+      return this.prismaAdapter.toExchangeEntity(exchange)
+    })
+
+    return { exchanges, exchangeEntities }
   }
 
-  /**
-   * スレッドのメッセージを作成する
-   * @param input
-   * @returns
-   */
-  static createExchangeMessage(input: {
+  async createExchangeMessage(input: {
     text: PostText
     userId: Id
     exchangeId: Id
   }) {
-    return db.exchange.update({
+    const exchange = await db.exchange.update({
       data: {
         messages: {
           create: {
@@ -100,5 +94,9 @@ export class ExchangeRepository {
       include: { messages: true },
       where: { id: input.exchangeId.value },
     })
+
+    const exchangeEntity = this.prismaAdapter.toExchangeEntity(exchange)
+
+    return { exchange, exchangeEntity }
   }
 }

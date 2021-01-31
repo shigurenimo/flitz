@@ -1,15 +1,7 @@
 import { Ctx } from "blitz"
 import { HashedPasswordFactory, NameFactory } from "domain/factories"
-import {
-  Biography,
-  Email,
-  Id,
-  Name,
-  Password,
-  Username,
-  UserRole,
-} from "domain/valueObjects"
-import { SessionRepository, UserRepository } from "infrastructure"
+import { Biography, Email, Password, UserRole } from "domain/valueObjects"
+import { SessionRepository, UserRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 export const inputSchema = z.object({
@@ -31,7 +23,9 @@ const createUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const name = NameFactory.fromEmail(email)
 
-  const user = await UserRepository.createUser({
+  const userRepository = new UserRepository()
+
+  const { user, userEntity } = await userRepository.createUser({
     biography: new Biography(""),
     email,
     hashedPassword,
@@ -39,11 +33,13 @@ const createUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     role,
   })
 
-  await SessionRepository.createSession(ctx.session, {
-    name: Name.nullable(user.name),
+  const sessionRepository = new SessionRepository()
+
+  await sessionRepository.createSession(ctx.session, {
+    name: userEntity.name,
     role,
-    userId: new Id(user.id),
-    username: new Username(user.username),
+    userId: userEntity.id,
+    username: userEntity.username,
     iconImageId: null,
   })
 

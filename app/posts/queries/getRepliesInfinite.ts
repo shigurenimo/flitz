@@ -1,7 +1,7 @@
 import { Ctx } from "blitz"
 import { PageService } from "domain/services"
 import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
-import { PostRepository } from "infrastructure"
+import { PostRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -24,18 +24,22 @@ const getRepliesInfinite = async (
 
   const take = new Take()
 
-  const posts = await PostRepository.getReplies({
+  const postRepository = new PostRepository()
+
+  const { posts } = await postRepository.getReplies({
     skip,
     take,
     replyId,
     userId,
   })
 
-  const count = await PostRepository.countReplies({ replyId })
+  const count = await postRepository.countReplies({ replyId })
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const pageService = new PageService()
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   return { hasMore, posts, nextPage }
 }

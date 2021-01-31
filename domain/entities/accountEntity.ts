@@ -1,16 +1,16 @@
-import { IAccountEntity, IUserEntity } from "domain/entities/interfaces"
-import { Email, HashedPassword, Id, UserRole } from "domain/valueObjects"
+import type { UserEntity } from "domain/entities"
+import type { Email, HashedPassword, Id, UserRole } from "domain/valueObjects"
 
-export class AccountEntity implements IAccountEntity {
+export class AccountEntity {
   createdAt!: Date
   email!: Email
   hashedPassword!: HashedPassword | null
   id!: Id
   role!: UserRole
-  user!: IUserEntity | null
+  user!: UserEntity | null
   userId!: Id
 
-  constructor(public props: IAccountEntity) {
+  constructor(public props: Omit<AccountEntity, "props">) {
     Object.assign(this, props)
     Object.freeze(this)
   }

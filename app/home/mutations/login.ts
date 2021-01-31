@@ -3,15 +3,13 @@ import { PasswordService } from "domain/services"
 import {
   Email,
   emailSchema,
-  HashedPassword,
-  Id,
-  Name,
   Password,
   passwordSchema,
-  Username,
-  UserRole,
 } from "domain/valueObjects"
-import { AccountRepository, SessionRepository } from "infrastructure"
+import {
+  AccountRepository,
+  SessionRepository,
+} from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({
@@ -26,38 +24,49 @@ const login = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const password = new Password(input.password)
 
-  const account = await AccountRepository.getAccountByEmail(email)
+  const accountRepository = new AccountRepository()
 
-  if (!account || account.hashedPassword === null) {
+  const { account, accountEntity } = await accountRepository.getAccountByEmail(
+    email
+  )
+
+  if (
+    account === null ||
+    accountEntity === null ||
+    accountEntity.user === null ||
+    accountEntity.hashedPassword === null
+  ) {
     throw new NotFoundError()
   }
 
-  const result = await PasswordService.verifyPassword(
-    new HashedPassword(account.hashedPassword),
+  const passwordService = new PasswordService()
+
+  const result = await passwordService.verifyPassword(
+    accountEntity.hashedPassword,
     password
   )
 
-  if (PasswordService.isInvalid(result)) {
+  if (passwordService.isInvalid(result)) {
     throw new AuthenticationError()
   }
 
-  if (PasswordService.needsRehash(result)) {
-    const newHashedPassword = await PasswordService.hashPassword(password)
+  if (passwordService.needsRehash(result)) {
+    const newHashedPassword = await passwordService.hashPassword(password)
 
-    await AccountRepository.updateHashedPassword({
-      id: new Id(account.id),
+    await accountRepository.updateHashedPassword({
+      id: accountEntity.id,
       hashedPassword: newHashedPassword,
     })
   }
 
-  await SessionRepository.createSession(ctx.session, {
-    name: Name.nullable(account.user.name),
-    role: new UserRole(account.role),
-    userId: new Id(account.user.id),
-    username: new Username(account.user.username),
-    iconImageId: account.user.iconImage
-      ? new Id(account.user.iconImage.id)
-      : null,
+  const sessionRepository = new SessionRepository()
+
+  await sessionRepository.createSession(ctx.session, {
+    name: accountEntity.user?.name || null,
+    role: accountEntity.role,
+    userId: accountEntity.user.id,
+    username: accountEntity.user.username,
+    iconImageId: accountEntity.user.iconImage?.id || null,
   })
 
   return account.user

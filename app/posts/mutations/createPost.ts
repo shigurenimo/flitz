@@ -1,7 +1,10 @@
 import { Ctx } from "blitz"
 import { ImageFactory } from "domain/factories"
 import { Id, PostText, postTextSchema } from "domain/valueObjects"
-import { FriendshipRepository, PostRepository } from "infrastructure"
+import {
+  FriendshipRepository,
+  PostRepository,
+} from "infrastructure/repositories"
 import { FileService } from "services"
 import * as z from "zod"
 
@@ -22,17 +25,23 @@ const createPost = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
 
   const userId = new Id(ctx.session.userId)
 
-  const friendships = await FriendshipRepository.getUserFollowers({
+  const friendshipRepository = new FriendshipRepository()
+
+  const { friendships } = await friendshipRepository.getUserFollowers({
     followeeId: userId,
   })
 
-  const file = image ? await FileService.uploadFile({ userId, image }) : null
+  const fileService = new FileService()
 
-  const post = await PostRepository.createPost({
+  const { fileEntity } = await fileService.uploadFile({ userId, image })
+
+  const postRepository = new PostRepository()
+
+  const post = await postRepository.createPost({
     friendships,
     text,
     userId,
-    fileIds: file ? [new Id(file.id)] : [],
+    fileIds: fileEntity ? [fileEntity.id] : [],
   })
 
   return post

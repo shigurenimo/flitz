@@ -1,18 +1,10 @@
 import { SessionContext } from "blitz"
+import { ISessionRepository } from "domain/repositories"
 import { Id, Name, Username, UserRole } from "domain/valueObjects"
 
-/**
- * ## セッション
- */
-export class SessionRepository {
-  /**
-   * 新しいセッションを作成する
-   * @param session
-   * @param input
-   * @returns
-   */
-  static createSession(
-    session: SessionContext,
+export class SessionRepository implements ISessionRepository {
+  async createSession(
+    sessionContext: SessionContext,
     input: {
       name: Name | null
       role: UserRole
@@ -21,44 +13,41 @@ export class SessionRepository {
       iconImageId: Id | null
     }
   ) {
-    return session.create({
+    await sessionContext.create({
       iconImageId: input.iconImageId?.value || null,
       name: input.name?.value || null,
       roles: [input.role.value],
       userId: input.userId.value,
       username: input.username.value,
     })
+
+    return null
   }
 
-  /**
-   * セッションを無効にする
-   * @param session
-   */
-  static async revokeSession(session: SessionContext) {
-    await session.revoke()
+  async revokeSession(sessionContext: SessionContext) {
+    await sessionContext.revoke()
+
+    return null
   }
 
-  /**
-   * セッションを更新する
-   * @param session
-   * @param input
-   */
-  static updatePublicData(
-    session: SessionContext,
+  async updatePublicData(
+    sessionContext: SessionContext,
     input: {
       name: Name | null
       username: Username
       iconImageId: Id | null
     }
   ) {
-    return session.setPublicData({
+    await sessionContext.setPublicData({
       iconImageId: input.iconImageId?.value || null,
       name: input.name?.value || null,
       username: input.username.value,
     })
+
+    return null
   }
 
-  static getUserId(session: { userId: string }) {
+  getUserId(session: { userId: string }) {
     return new Id(session.userId)
   }
 }

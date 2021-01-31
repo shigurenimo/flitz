@@ -1,23 +1,30 @@
 import db from "db"
-// import { FileEntityFactory } from "domain/factories"
+import { ISettingRepository } from "domain/repositories"
 import { Id } from "domain/valueObjects"
+import { PrismaAdapter } from "infrastructure/adapters"
 
-export class SettingRepository {
-  static createSetting(input: { userId: Id }) {
-    return db.setting.create({
+export class SettingRepository implements ISettingRepository {
+  async createSetting(input: { userId: Id }) {
+    await db.setting.create({
       data: {
         user: { connect: { id: input.userId.value } },
       },
     })
+
+    return null
   }
 
-  static async getSetting(input: { userId: Id }) {
-    return db.setting.findUnique({
+  async getSetting(input: { userId: Id }) {
+    const setting = await db.setting.findUnique({
       where: { userId: input.userId.value },
     })
+
+    const settingEntity = new PrismaAdapter().toSettingEntity(setting)
+
+    return { setting, settingEntity }
   }
 
-  static async updateSetting(input: {
+  async updateSetting(input: {
     userId: Id
     fcmToken?: string | null
     fcmTokenForMobile?: string | null
@@ -25,7 +32,7 @@ export class SettingRepository {
     subscribePostLike?: boolean
     subscribePostQuotation?: boolean
   }) {
-    return db.setting.update({
+    const setting = await db.setting.update({
       data: {
         fcmToken: input.fcmToken,
         fcmTokenForMobile: input.fcmTokenForMobile,
@@ -35,5 +42,9 @@ export class SettingRepository {
       },
       where: { userId: input.userId.value },
     })
+
+    const settingEntity = new PrismaAdapter().toSettingEntity(setting)
+
+    return { setting, settingEntity }
   }
 }

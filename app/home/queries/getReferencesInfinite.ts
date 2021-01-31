@@ -2,7 +2,7 @@ import { Ctx } from "blitz"
 import { PageService } from "domain/services"
 import { ReferenceService } from "domain/services/referenceService"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
-import { ReferenceRepository } from "infrastructure"
+import { ReferenceRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 export const inputSchema = z.object({ skip: skipSchema })
@@ -19,23 +19,35 @@ const getReferencesInfinite = async (
 
   const skip = new Skip(input.skip)
 
-  const references = await ReferenceRepository.findReferences({ skip, userId })
+  const referenceRepository = new ReferenceRepository()
 
-  const hasUnreadReferences = ReferenceService.hasUnreadReferences({
+  const {
     references,
+    referenceEntities,
+  } = await referenceRepository.findReferences({
+    skip,
+    userId,
+  })
+
+  const referenceService = new ReferenceService()
+
+  const hasUnreadReferences = referenceService.hasUnreadReferences({
+    referenceEntities,
   })
 
   if (hasUnreadReferences) {
-    await ReferenceRepository.markReferencesAsRead({ userId })
+    await referenceRepository.markReferencesAsRead({ userId })
   }
 
-  const count = await ReferenceRepository.countReferences({ userId })
+  const count = await referenceRepository.countReferences({ userId })
 
   const take = new Take()
 
-  const hasMore = PageService.hasMore({ count, skip, take })
+  const pageService = new PageService()
 
-  const nextPage = hasMore ? PageService.nextPage({ take, skip }) : null
+  const hasMore = pageService.hasMore({ count, skip, take })
+
+  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
   return { hasMore, references, nextPage }
 }

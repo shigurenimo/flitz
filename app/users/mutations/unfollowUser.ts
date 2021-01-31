@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { Id, idSchema } from "domain/valueObjects"
-import { UserRepository } from "infrastructure"
+import { UserRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
 const inputSchema = z.object({ userId: idSchema })
@@ -20,7 +20,9 @@ const unfollowUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
     throw new Error("Unexpected error")
   }
 
-  const user = await UserRepository.unfollowUser({ followeeId, followerId })
+  const userRepository = new UserRepository()
+
+  const { user } = await userRepository.unfollowUser({ followeeId, followerId })
 
   return user
 }

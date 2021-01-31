@@ -1,16 +1,23 @@
+import { IStorageRepository } from "domain/repositories"
 import { Id, Path } from "domain/valueObjects"
 import admin from "firebase-admin"
-import { FirebaseRepository } from "infrastructure/firebaseRepository"
+import { FirebaseRepository } from "infrastructure/repositories"
 import { tmpdir } from "os"
 import { join } from "path"
 
-export class StorageRepository {
-  static getFilePath(fileId: Id) {
+export class StorageRepository implements IStorageRepository {
+  firebaseRepository: FirebaseRepository
+
+  constructor() {
+    this.firebaseRepository = new FirebaseRepository()
+  }
+
+  getFilePath(fileId: Id) {
     return new Path(join(tmpdir(), fileId.value))
   }
 
-  static async uploadToCloudStorage(filePath: Id) {
-    FirebaseRepository.initialize()
+  async uploadToCloudStorage(filePath: Id) {
+    this.firebaseRepository.initialize()
 
     const tmpPath = this.getFilePath(filePath)
 
@@ -20,10 +27,12 @@ export class StorageRepository {
       destination: filePath.value,
       metadata: { contentType: "image/png" },
     })
+
+    return null
   }
 
-  static async downloadFileFromCloudStorage(filePath: Id) {
-    FirebaseRepository.initialize()
+  async downloadFileFromCloudStorage(filePath: Id) {
+    this.firebaseRepository.initialize()
 
     const tmpPath = this.getFilePath(filePath)
 
@@ -32,7 +41,7 @@ export class StorageRepository {
     return bucket.file(filePath.value).download({ destination: tmpPath.value })
   }
 
-  static createPath() {
+  createPath() {
     const chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
