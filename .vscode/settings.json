@@ -4,6 +4,7 @@
     "**/node_modules": true,
     ".blitz": true,
     ".idea": true,
+    ".next": true,
     ".tsbuildinfo": true,
     "yarn-error.log": true,
     "yarn.lock": true

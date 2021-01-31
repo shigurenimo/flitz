@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { SessionRepository } from "infrastructure/repositories"
-import { SettingService } from "services"
+import { SettingService } from "app/services"
 
 const getSetting = async (_: any, ctx: Ctx) => {
   ctx.session.authorize()

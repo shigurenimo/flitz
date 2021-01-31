@@ -5,7 +5,7 @@ import {
   FriendshipRepository,
   PostRepository,
 } from "infrastructure/repositories"
-import { FileService } from "services"
+import { FileService } from "app/services"
 import * as z from "zod"
 
 export const inputSchema = z.object({

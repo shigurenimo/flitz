@@ -16,7 +16,7 @@ import { useMutation, useSession } from "blitz"
 import React, { FunctionComponent, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend } from "react-icons/fi"
-import { ClientFileService } from "services/clientFileService"
+import { ClientFileService } from "app/services/clientFileService"
 
 export const HomePageInput: FunctionComponent = () => {
   const session = useSession()

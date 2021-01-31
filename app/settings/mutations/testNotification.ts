@@ -1,6 +1,6 @@
 import { Ctx } from "blitz"
 import { SessionRepository } from "infrastructure/repositories"
-import { MessagingService } from "services"
+import { MessagingService } from "app/services"
 
 const testNotification = async (_: void, ctx: Ctx) => {
   ctx.session.authorize()

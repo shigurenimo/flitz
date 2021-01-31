@@ -8,7 +8,7 @@ import {
   nameSchema,
 } from "domain/valueObjects"
 import { SessionRepository, UserRepository } from "infrastructure/repositories"
-import { FileService } from "services"
+import { FileService } from "app/services"
 import * as z from "zod"
 
 const inputSchema = z.object({

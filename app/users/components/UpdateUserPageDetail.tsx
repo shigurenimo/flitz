@@ -18,7 +18,7 @@ import { useMutation, useParam, useQuery } from "blitz"
 import React, { FunctionComponent, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { ClientFileService } from "services/clientFileService"
+import { ClientFileService } from "app/services/clientFileService"
 
 export const UpdateUserPageDetail: FunctionComponent = () => {
   const { t } = useTranslation()
