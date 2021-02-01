@@ -4,7 +4,7 @@ import { EmbededPost } from "domain/repositories/types/embededPost"
 import type { Count, Id, Skip, Take, Username } from "domain/valueObjects"
 
 /**
- * ## いいね評価
+ * いいね評価
  */
 export interface ILikeRepository {
   countLikes(input: { username: Username }): Promise<Count>

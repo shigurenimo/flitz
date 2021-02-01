@@ -2,7 +2,7 @@ import { HashedPassword, Password } from "domain/valueObjects"
 import SecurePassword from "secure-password"
 
 /**
- * ## パスワード
+ * パスワード
  */
 export class PasswordService {
   /**

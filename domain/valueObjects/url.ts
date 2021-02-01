@@ -5,7 +5,7 @@ export const urlSchema = z.string().url()
 export type UrlValue = z.infer<typeof urlSchema>
 
 /**
- * ## URL
+ * URL
  */
 export class Url {
   constructor(public value: UrlValue) {

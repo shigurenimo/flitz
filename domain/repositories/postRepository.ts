@@ -11,7 +11,7 @@ import type {
 } from "domain/valueObjects"
 
 /**
- * ## 投稿
+ * 投稿
  */
 export interface IPostRepository {
   countReplies(input: { replyId: Id }): Promise<Count>

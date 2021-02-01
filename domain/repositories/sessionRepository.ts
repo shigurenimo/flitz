@@ -2,7 +2,7 @@ import type { SessionContext } from "blitz"
 import type { Id, Name, Username, UserRole } from "domain/valueObjects"
 
 /**
- * ## セッション
+ * セッション
  */
 export interface ISessionRepository {
   /**

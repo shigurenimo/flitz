@@ -5,7 +5,7 @@ export const emailSchema = z.string().email()
 export type EmailValue = z.infer<typeof emailSchema>
 
 /**
- * ## メールアドレス
+ * メールアドレス
  */
 export class Email {
   /**

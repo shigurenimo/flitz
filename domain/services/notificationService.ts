@@ -1,7 +1,7 @@
 import type { NotificationEntity } from "domain/entities"
 
 /**
- * ## 通知
+ * 通知
  * @category Services
  */
 export class NotificationService {

@@ -4,7 +4,7 @@ import type { EmbededPost, UserWithIcon } from "domain/repositories/types"
 import type { Count, Id, Skip } from "domain/valueObjects"
 
 /**
- * ## タイムライン
+ * タイムライン
  */
 export interface IReferenceRepository {
   countReferences(input: { userId: Id }): Promise<Count>

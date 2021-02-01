@@ -11,7 +11,7 @@ export const fileTypeSchema = z.union([
 export type FileTypeValue = z.infer<typeof fileTypeSchema>
 
 /**
- * ## ファイルタイプ
+ * ファイルタイプ
  */
 export class FileType {
   constructor(public value: FileTypeValue) {

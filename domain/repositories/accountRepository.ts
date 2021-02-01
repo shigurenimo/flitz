@@ -3,7 +3,7 @@ import type { AccountEntity } from "domain/entities"
 import type { Email, HashedPassword, Id } from "domain/valueObjects"
 
 /**
- * ## アカウント
+ * アカウント
  */
 export interface IAccountRepository {
   /**

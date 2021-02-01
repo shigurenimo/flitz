@@ -4,7 +4,7 @@ import { EmbededPost, UserWithIcon } from "domain/repositories/types"
 import type { Count, Id, Skip } from "domain/valueObjects"
 
 /**
- * ## 通知
+ * 通知
  */
 export interface INotificationRepository {
   countNotifications(input: { userId: Id }): Promise<Count>

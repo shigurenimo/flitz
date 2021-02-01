@@ -5,7 +5,7 @@ export const hashedPasswordSchema = z.string()
 export type HashedPasswordValue = z.infer<typeof hashedPasswordSchema>
 
 /**
- * ## パスワードハッシュ
+ * パスワードハッシュ
  */
 export class HashedPassword {
   constructor(public value: HashedPasswordValue) {

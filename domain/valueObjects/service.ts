@@ -8,7 +8,7 @@ export const serviceSchema = z
 export type ServiceValue = z.infer<typeof serviceSchema>
 
 /**
- * ## サービス
+ * サービス
  */
 export class Service {
   constructor(public value: ServiceValue) {

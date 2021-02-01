@@ -3,7 +3,7 @@ import type { FriendshipEntity } from "domain/entities"
 import type { Count, Id, Skip, Take, Username } from "domain/valueObjects"
 
 /**
- * ## フォローフォロワー関係
+ * フォローフォロワー関係
  */
 export interface IFriendshipRepository {
   countUserFollowees(input: { username: Username }): Promise<Count>

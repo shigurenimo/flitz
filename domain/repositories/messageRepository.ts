@@ -3,7 +3,7 @@ import type { MessageEntity } from "domain/entities"
 import type { Count, Id, PostText, Skip } from "domain/valueObjects"
 
 /**
- * ## メッセージ
+ * メッセージ
  */
 export interface IMessageRepository {
   countUserGroupMessages(input: { exchangeId: Id }): Promise<Count>

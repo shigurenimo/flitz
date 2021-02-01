@@ -1,7 +1,7 @@
 import type { ReferenceEntity } from "domain/entities"
 
 /**
- * ## タイムライン
+ * タイムライン
  */
 export class ReferenceService {
   hasUnreadReferences(input: { referenceEntities: ReferenceEntity[] }) {

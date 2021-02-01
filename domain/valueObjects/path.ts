@@ -5,7 +5,7 @@ export const pathSchema = z.string().max(160)
 export type PathValue = z.infer<typeof pathSchema>
 
 /**
- * ## パス
+ * パス
  */
 export class Path {
   constructor(public value: PathValue) {

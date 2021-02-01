@@ -11,7 +11,7 @@ export const notificationTypeSchema = z.union([
 export type NotificationTypeValue = z.infer<typeof notificationTypeSchema>
 
 /**
- * ## 通知の種類
+ * 通知の種類
  */
 export class NotificationType {
   constructor(public value: NotificationTypeValue) {

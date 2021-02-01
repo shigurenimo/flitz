@@ -2,7 +2,7 @@ import type { MessageEntity } from "domain/entities"
 import type { Id } from "domain/valueObjects"
 
 /**
- * ## メッセージ
+ * メッセージ
  */
 export class MessageService {
   hasUnreadMessages(input: { messageEntities: MessageEntity[]; userId: Id }) {

@@ -1,7 +1,7 @@
 import { Email, Name } from "domain/valueObjects"
 
 /**
- * ## ユーザー名
+ * ユーザー名
  */
 export class NameFactory {
   static fromEmail(email: Email) {

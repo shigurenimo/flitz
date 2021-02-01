@@ -9,7 +9,7 @@ export const userRoleSchema = z.union([
 export type UserRoleValue = z.infer<typeof userRoleSchema>
 
 /**
- * ## ユーザーの権限
+ * ユーザーの権限
  */
 export class UserRole {
   constructor(public value: UserRoleValue) {

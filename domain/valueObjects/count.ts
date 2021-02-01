@@ -5,7 +5,7 @@ export const countSchema = z.number().min(0)
 export type CountValue = z.infer<typeof countSchema>
 
 /**
- * ## 集計した値
+ * 集計した値
  *
  * - 数字である
  * - 0以上

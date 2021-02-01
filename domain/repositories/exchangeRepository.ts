@@ -3,7 +3,7 @@ import type { ExchangeEntity } from "domain/entities"
 import type { Count, Id, PostText, Skip } from "domain/valueObjects"
 
 /**
- * ## メッセージスレッド
+ * メッセージスレッド
  */
 export interface IExchangeRepository {
   /**

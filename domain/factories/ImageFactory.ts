@@ -4,7 +4,7 @@ import * as z from "zod"
 export const dataURLSchema = z.string().regex(/^data:([\w/\-.]+);base64,/)
 
 /**
- * ## パスワードハッシュ
+ * パスワードハッシュ
  */
 export class ImageFactory {
   static fromDataURL(dataURL: string | null) {

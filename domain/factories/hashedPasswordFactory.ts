@@ -6,7 +6,7 @@ import {
 import SecurePassword from "secure-password"
 
 /**
- * ## パスワードハッシュ
+ * パスワードハッシュ
  */
 export class HashedPasswordFactory {
   static nullable(value: HashedPasswordValue | null) {

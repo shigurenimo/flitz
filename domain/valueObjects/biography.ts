@@ -5,7 +5,7 @@ export const biographySchema = z.string().max(80)
 export type BiographyValue = z.infer<typeof biographySchema>
 
 /**
- * ## 紹介文
+ * 紹介文
  *
  * ユーザーの紹介文に使われる。
  *

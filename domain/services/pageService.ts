@@ -1,7 +1,7 @@
 import { Count, Skip, Take } from "domain/valueObjects"
 
 /**
- * ## ページング
+ * ページング
  */
 export class PageService {
   hasMore(input: { count: Count; skip: Skip; take: Take }) {
