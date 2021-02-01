@@ -8,5 +8,8 @@
     ".tsbuildinfo": true,
     "yarn-error.log": true,
     "yarn.lock": true
+  },
+  "search.exclude": {
+    "yarn.lock": true
   }
 }
