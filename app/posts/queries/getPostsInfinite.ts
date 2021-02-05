@@ -8,7 +8,6 @@ const GetPostsInfinite = z.object({ skip: skipSchema })
 
 export default resolver.pipe(
   resolver.zod(GetPostsInfinite),
-  resolver.authorize(),
   (input, ctx) => ({
     skip: new Skip(input.skip),
     take: new Take(),

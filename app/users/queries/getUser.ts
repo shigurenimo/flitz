@@ -7,7 +7,6 @@ const GetUser = z.object({ username: usernameSchema })
 
 export default resolver.pipe(
   resolver.zod(GetUser),
-  resolver.authorize(),
   (input, ctx) => ({
     userId: Id.nullable(ctx.session.userId),
     username: new Username(input.username),

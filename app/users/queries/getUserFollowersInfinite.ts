@@ -18,7 +18,6 @@ const GetUserFollowersInfinite = z.object({
 
 export default resolver.pipe(
   resolver.zod(GetUserFollowersInfinite),
-  resolver.authorize(),
   (input, ctx) => ({
     skip: new Skip(input.skip),
     take: new Take(),

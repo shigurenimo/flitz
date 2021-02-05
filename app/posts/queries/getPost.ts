@@ -7,7 +7,6 @@ const GetPost = z.object({ id: idSchema })
 
 export default resolver.pipe(
   resolver.zod(GetPost),
-  resolver.authorize(),
   (input) => ({
     id: new Id(input.id),
   }),

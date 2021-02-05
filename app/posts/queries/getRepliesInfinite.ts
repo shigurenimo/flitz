@@ -11,7 +11,6 @@ const GetRepliesInfinite = z.object({
 
 export default resolver.pipe(
   resolver.zod(GetRepliesInfinite),
-  resolver.authorize(),
   (input, ctx) => ({
     replyId: new Id(input.replyId),
     skip: new Skip(input.skip),

@@ -18,7 +18,6 @@ const GetUserPostsInfinite = z.object({
 
 export default resolver.pipe(
   resolver.zod(GetUserPostsInfinite),
-  resolver.authorize(),
   (input, ctx) => ({
     skip: new Skip(input.skip),
     take: new Take(),
