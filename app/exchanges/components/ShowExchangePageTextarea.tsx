@@ -1,5 +1,5 @@
 import { Button, HStack, Stack, useColorModeValue } from "@chakra-ui/react"
-import { TextareaAutosize } from "app/components/TextareaAutosize"
+import { TextareaAutosize } from "app/core/components/TextareaAutosize"
 import createMessage from "app/exchanges/mutations/createMessage"
 import { useMutation, useParam } from "blitz"
 import React, { FunctionComponent, useState } from "react"

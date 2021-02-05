@@ -1,5 +1,5 @@
 import { useColorMode } from "@chakra-ui/react"
-import { StackButtonRoute } from "app/layouts/components/StackButtonRoute"
+import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
 import React, { FunctionComponent } from "react"
 import { useTranslation } from "react-i18next"
 import { FiMoon, FiSun } from "react-icons/fi"

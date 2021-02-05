@@ -7,10 +7,10 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react"
-import { AvatarUser } from "app/components/AvatarUser"
-import { ButtonFile } from "app/components/ButtonFile"
-import { RenderFileLoader } from "app/components/RenderFileLoader"
-import { TextareaAutosize } from "app/components/TextareaAutosize"
+import { AvatarUser } from "app/core/components/AvatarUser"
+import { ButtonFile } from "app/core/components/ButtonFile"
+import { RenderFileLoader } from "app/core/components/RenderFileLoader"
+import { TextareaAutosize } from "app/core/components/TextareaAutosize"
 import createPost from "app/posts/mutations/createPost"
 import { ClientFileService } from "app/services/clientFileService"
 import { useMutation, useSession } from "blitz"

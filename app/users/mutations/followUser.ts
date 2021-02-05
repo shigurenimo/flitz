@@ -1,4 +1,4 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { Id, idSchema } from "domain/valueObjects"
 import {
   NotificationRepository,
@@ -6,41 +6,37 @@ import {
 } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({ userId: idSchema })
+const FollowUser = z.object({ userId: idSchema })
 
-const followUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
-  ctx.session.authorize()
+export default resolver.pipe(
+  resolver.zod(FollowUser),
+  resolver.authorize(),
+  (input, ctx) => ({
+    followeeId: new Id(input.userId),
+    followerId: new Id(ctx.session.userId),
+  }),
+  async ({ followeeId, followerId }) => {
+    if (followerId.value === followeeId.value) {
+      throw new Error("Unexpected error")
+    }
 
-  const { userId: followeeId } = inputSchema
-    .transform((input) => ({
-      userId: new Id(input.userId),
-    }))
-    .parse(input)
+    const userRepository = new UserRepository()
 
-  const followerId = new Id(ctx.session.userId)
+    const { user, userEntity } = await userRepository.followUser({
+      followeeId,
+      followerId,
+    })
 
-  if (followerId.value === followeeId.value) {
-    throw new Error("Unexpected error")
+    const [friendship] = userEntity.followers
+
+    const notificationRepository = new NotificationRepository()
+
+    await notificationRepository.upsertFollowNotification({
+      followeeId,
+      followerId,
+      friendshipId: friendship.id,
+    })
+
+    return user
   }
-
-  const userRepository = new UserRepository()
-
-  const { user, userEntity } = await userRepository.followUser({
-    followeeId,
-    followerId,
-  })
-
-  const [friendship] = userEntity.followers
-
-  const notificationRepository = new NotificationRepository()
-
-  await notificationRepository.upsertFollowNotification({
-    followeeId,
-    followerId,
-    friendshipId: friendship.id,
-  })
-
-  return user
-}
-
-export default followUser
+)

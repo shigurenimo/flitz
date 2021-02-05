@@ -1,13 +1,13 @@
 import { ChakraProvider } from "@chakra-ui/react"
-import { RootErrorFallback } from "app/components/RootErrorFallback"
-import { useFirebase } from "app/hooks/useFirebase"
+import { RootErrorFallback } from "app/core/components/RootErrorFallback"
+import { useFirebase } from "app/core/hooks/useFirebase"
+import i18n from "app/core/utils/i18n"
+import { theme } from "app/core/utils/theme"
 import { AppProps, BlitzPage, useRouter } from "blitz"
 import React from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { I18nextProvider } from "react-i18next"
 import { queryCache } from "react-query"
-import i18n from "utils/i18n"
-import { theme } from "utils/theme"
 
 const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   useFirebase()

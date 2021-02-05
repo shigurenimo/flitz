@@ -13,7 +13,7 @@ export class SessionRepository implements ISessionRepository {
       iconImageId: Id | null
     }
   ) {
-    await sessionContext.create({
+    await sessionContext.$create({
       iconImageId: input.iconImageId?.value || null,
       name: input.name?.value || null,
       roles: [input.role.value],
@@ -25,7 +25,7 @@ export class SessionRepository implements ISessionRepository {
   }
 
   async revokeSession(sessionContext: SessionContext) {
-    await sessionContext.revoke()
+    await sessionContext.$revoke()
 
     return null
   }
@@ -38,7 +38,7 @@ export class SessionRepository implements ISessionRepository {
       iconImageId: Id | null
     }
   ) {
-    await sessionContext.setPublicData({
+    await sessionContext.$setPublicData({
       iconImageId: input.iconImageId?.value || null,
       name: input.name?.value || null,
       username: input.username.value,

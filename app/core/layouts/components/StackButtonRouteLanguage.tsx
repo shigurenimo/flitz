@@ -1,4 +1,4 @@
-import { StackButtonRoute } from "app/layouts/components/StackButtonRoute"
+import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
 import React, { FunctionComponent } from "react"
 import { useTranslation } from "react-i18next"
 import { FiGlobe } from "react-icons/fi"

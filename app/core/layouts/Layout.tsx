@@ -1,7 +1,7 @@
 import { Container, Stack } from "@chakra-ui/react"
-import { useFirebaseCloudMessaging } from "app/hooks/useFirebaseCloudMessaging"
-import { LayoutAside } from "app/layouts/components/LayoutAside"
-import { LayoutHeader } from "app/layouts/components/LayoutHeader"
+import { useFirebaseCloudMessaging } from "app/core/hooks/useFirebaseCloudMessaging"
+import { LayoutAside } from "app/core/layouts/components/LayoutAside"
+import { LayoutHeader } from "app/core/layouts/components/LayoutHeader"
 import { Head } from "blitz"
 import React, { FunctionComponent } from "react"
 

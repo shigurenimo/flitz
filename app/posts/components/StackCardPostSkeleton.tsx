@@ -7,7 +7,7 @@ import {
   SkeletonText,
   Stack,
 } from "@chakra-ui/react"
-import { StackCard } from "app/components/StackCard"
+import { StackCard } from "app/core/components/StackCard"
 import { ButtonPostAction } from "app/posts/components/ButtonPostAction"
 import React, { FunctionComponent } from "react"
 import { FiHeart, FiMessageCircle, FiRepeat, FiShare } from "react-icons/fi"

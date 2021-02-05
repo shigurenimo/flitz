@@ -1,35 +1,33 @@
-import { Ctx } from "blitz"
-import { Name, nameSchema } from "domain/valueObjects"
+import { resolver } from "blitz"
+import { Id, Name, nameSchema } from "domain/valueObjects"
 import { SessionRepository, UserRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({ username: nameSchema })
+const UpdateUsername = z.object({ username: nameSchema })
 
-const updateUsername = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
-  ctx.session.authorize()
+export default resolver.pipe(
+  resolver.zod(UpdateUsername),
+  resolver.authorize(),
+  (input, ctx) => ({
+    userId: new Id(ctx.session.userId),
+    username: new Name(input.username),
+  }),
+  async ({ userId, username }, ctx) => {
+    const userRepository = new UserRepository()
 
-  const { username } = inputSchema
-    .transform((input) => ({ username: new Name(input.username) }))
-    .parse(input)
+    const { user, userEntity } = await userRepository.updateUsername({
+      username,
+      id: userId,
+    })
 
-  const sessionRepository = new SessionRepository()
+    const sessionRepository = new SessionRepository()
 
-  const userId = sessionRepository.getUserId(ctx.session)
+    await sessionRepository.updatePublicData(ctx.session, {
+      name: userEntity.name,
+      username: userEntity.username,
+      iconImageId: userEntity.iconImage?.id || null,
+    })
 
-  const userRepository = new UserRepository()
-
-  const { user, userEntity } = await userRepository.updateUsername({
-    username,
-    id: userId,
-  })
-
-  await sessionRepository.updatePublicData(ctx.session, {
-    name: userEntity.name,
-    username: userEntity.username,
-    iconImageId: userEntity.iconImage?.id || null,
-  })
-
-  return user
-}
-
-export default updateUsername
+    return user
+  }
+)

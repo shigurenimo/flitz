@@ -1,5 +1,5 @@
 import { HStack, Stack, Text, useColorModeValue } from "@chakra-ui/react"
-import { AvatarUser } from "app/components/AvatarUser"
+import { AvatarUser } from "app/core/components/AvatarUser"
 import { useRouter } from "blitz"
 import React, { FunctionComponent } from "react"
 

@@ -1,4 +1,4 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { PageService } from "domain/services"
 import {
   Id,
@@ -11,45 +11,40 @@ import {
 import { FriendshipRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
+const GetUserFolloweesInfinite = z.object({
   skip: skipSchema,
   username: usernameSchema,
 })
 
-const getUserFolloweesInfinite = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(GetUserFolloweesInfinite),
+  resolver.authorize(),
+  (input, ctx) => ({
+    skip: new Skip(input.skip),
+    take: new Take(),
+    userId: Id.nullable(ctx.session.userId),
+    username: new Username(input.username),
+  }),
+  async ({ skip, take, userId, username }) => {
+    const friendshipRepository = new FriendshipRepository()
 
-  const userId = Id.nullable(ctx.session.userId)
-
-  const skip = new Skip(input.skip)
-
-  const take = new Take()
-
-  const username = new Username(input.username)
-
-  const friendshipRepository = new FriendshipRepository()
-
-  const { friendships } = await friendshipRepository.getUserFolloweesByUsername(
-    {
+    const {
+      friendships,
+    } = await friendshipRepository.getUserFolloweesByUsername({
       skip,
       take,
       userId,
       username,
-    }
-  )
+    })
 
-  const count = await friendshipRepository.countUserFollowees({ username })
+    const count = await friendshipRepository.countUserFollowees({ username })
 
-  const pageService = new PageService()
+    const pageService = new PageService()
 
-  const hasMore = pageService.hasMore({ count, skip, take })
+    const hasMore = pageService.hasMore({ count, skip, take })
 
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
-  return { count, hasMore, friendships, nextPage }
-}
-
-export default getUserFolloweesInfinite
+    return { count, hasMore, friendships, nextPage }
+  }
+)

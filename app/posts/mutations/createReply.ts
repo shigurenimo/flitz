@@ -1,4 +1,4 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { Id, idSchema, PostText, postTextSchema } from "domain/valueObjects"
 import {
   FriendshipRepository,
@@ -7,47 +7,44 @@ import {
 } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
-  text: postTextSchema,
+const CreateReply = z.object({
   postId: idSchema,
+  text: postTextSchema,
 })
 
-const createReply = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(CreateReply),
+  resolver.authorize(),
+  (input, ctx) => ({
+    postId: new Id(input.postId),
+    text: new PostText(input.text),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ postId, text, userId }) => {
+    const friendshipRepository = new FriendshipRepository()
 
-  ctx.session.authorize()
+    const { friendships } = await friendshipRepository.getUserFollowers({
+      followeeId: userId,
+    })
 
-  const text = new PostText(input.text)
+    const postRepository = new PostRepository()
 
-  const postId = new Id(input.postId)
+    const { post, postEntity } = await postRepository.createReply({
+      friendships,
+      postId,
+      text,
+      userId,
+    })
 
-  const userId = new Id(ctx.session.userId)
+    const [replyEntity] = postEntity.replies
 
-  const friendshipRepository = new FriendshipRepository()
+    const notificationRepository = new NotificationRepository()
 
-  const { friendships } = await friendshipRepository.getUserFollowers({
-    followeeId: userId,
-  })
+    await notificationRepository.createReplyNotification({
+      postUserId: postEntity.userId,
+      replyId: replyEntity.id,
+    })
 
-  const postRepository = new PostRepository()
-
-  const { post, postEntity } = await postRepository.createReply({
-    friendships,
-    postId,
-    text,
-    userId,
-  })
-
-  const [replyEntity] = postEntity.replies
-
-  const notificationRepository = new NotificationRepository()
-
-  await notificationRepository.createReplyNotification({
-    postUserId: postEntity.userId,
-    replyId: replyEntity.id,
-  })
-
-  return post
-}
-
-export default createReply
+    return post
+  }
+)

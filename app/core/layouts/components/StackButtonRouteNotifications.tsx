@@ -1,4 +1,4 @@
-import { StackButtonRoute } from "app/layouts/components/StackButtonRoute"
+import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
 import checkUnreadNotifications from "app/notifications/queries/checkUnreadNotifications"
 import { useQuery } from "blitz"
 import React, { FunctionComponent } from "react"

@@ -25,7 +25,10 @@ export * from "@testing-library/react"
 //   router: { pathname: '/my-custom-pathname' },
 // });
 // --------------------------------------------------
-export function render(ui: RenderUI, { wrapper, router, ...options }: RenderOptions = {}) {
+export function render(
+  ui: RenderUI,
+  { wrapper, router, ...options }: RenderOptions = {}
+) {
   if (!wrapper) {
     // Add a default context wrapper if one isn't supplied from the test
     wrapper = ({ children }) => (
@@ -70,6 +73,7 @@ export const mockRouter: BlitzRouter = {
   asPath: "/",
   params: {},
   query: {},
+  isReady: true,
   push: jest.fn(),
   replace: jest.fn(),
   reload: jest.fn(),
@@ -90,4 +94,6 @@ type RenderOptions = DefaultParams[1] & { router?: Partial<BlitzRouter> }
 
 type DefaultHookParams = Parameters<typeof defaultRenderHook>
 type RenderHook = DefaultHookParams[0]
-type RenderHookOptions = DefaultHookParams[1] & { router?: Partial<BlitzRouter> }
+type RenderHookOptions = DefaultHookParams[1] & {
+  router?: Partial<BlitzRouter>
+}

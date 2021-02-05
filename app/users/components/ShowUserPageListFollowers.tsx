@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, StackDivider } from "@chakra-ui/react"
-import { StackList } from "app/components/StackList"
+import { StackList } from "app/core/components/StackList"
 import { StackCardUser } from "app/users/components/StackCardUser"
 import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"

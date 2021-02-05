@@ -1,38 +1,32 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { Id, idSchema, PostText, postTextSchema } from "domain/valueObjects"
 import { ExchangeRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
-  text: postTextSchema,
+const CreateGroupMessage = z.object({
   exchangeId: idSchema,
+  text: postTextSchema,
 })
 
-const createGroupMessage = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(CreateGroupMessage),
+  resolver.authorize(),
+  (input, ctx) => ({
+    exchangeId: new Id(input.text),
+    text: new PostText(input.text),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ exchangeId, text, userId }) => {
+    const exchangeRepository = new ExchangeRepository()
 
-  ctx.session.authorize()
+    const { exchange } = await exchangeRepository.createExchangeMessage({
+      exchangeId,
+      text,
+      userId,
+    })
 
-  const userId = new Id(ctx.session.userId)
+    const [message] = exchange.messages
 
-  const text = new PostText(input.text)
-
-  const exchangeId = new Id(input.exchangeId)
-
-  const exchangeRepository = new ExchangeRepository()
-
-  const { exchange } = await exchangeRepository.createExchangeMessage({
-    exchangeId,
-    text,
-    userId,
-  })
-
-  const [message] = exchange.messages
-
-  return message
-}
-
-export default createGroupMessage
+    return message
+  }
+)

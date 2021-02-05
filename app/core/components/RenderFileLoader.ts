@@ -1,4 +1,4 @@
-import { useObjectURL } from "app/hooks/useObjectURL"
+import { useObjectURL } from "app/core/hooks/useObjectURL"
 import { FunctionComponent } from "react"
 
 export const RenderFileLoader: FunctionComponent<{

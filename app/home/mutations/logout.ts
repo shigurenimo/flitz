@@ -1,10 +1,10 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { SessionRepository } from "infrastructure/repositories"
 
-const logout = async (_: any, ctx: Ctx) => {
+export default resolver.pipe(resolver.authorize(), async (_: unknown, ctx) => {
   const sessionRepository = new SessionRepository()
 
   await sessionRepository.revokeSession(ctx.session)
-}
 
-export default logout
+  return null
+})

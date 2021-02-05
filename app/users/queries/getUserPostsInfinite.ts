@@ -1,4 +1,4 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { PageService } from "domain/services"
 import {
   Id,
@@ -11,45 +11,40 @@ import {
 import { PostRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
+const GetUserPostsInfinite = z.object({
   skip: skipSchema,
   username: usernameSchema,
 })
 
-const getUserPostsInfinite = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(GetUserPostsInfinite),
+  resolver.authorize(),
+  (input, ctx) => ({
+    skip: new Skip(input.skip),
+    take: new Take(),
+    userId: Id.nullable(ctx.session.userId),
+    username: new Username(input.username),
+  }),
+  async ({ skip, take, userId, username }) => {
+    const postRepository = new PostRepository()
 
-  const userId = Id.nullable(ctx.session.userId)
+    const { posts } = await postRepository.getPostsByUsername({
+      skip,
+      take,
+      userId,
+      username,
+    })
 
-  const skip = new Skip(input.skip)
+    const count = await postRepository.countUserPosts({ username })
 
-  const take = new Take()
+    const pageService = new PageService()
 
-  const username = new Username(input.username)
+    const hasMore = pageService.hasMore({ count, skip, take })
 
-  const postRepository = new PostRepository()
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
-  const { posts } = await postRepository.getPostsByUsername({
-    skip,
-    take,
-    userId,
-    username,
-  })
+    const isEmpty = posts.length === 0
 
-  const count = await postRepository.countUserPosts({ username })
-
-  const pageService = new PageService()
-
-  const hasMore = pageService.hasMore({ count, skip, take })
-
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
-
-  const isEmpty = posts.length === 0
-
-  return { count, posts, nextPage, hasMore, isEmpty }
-}
-
-export default getUserPostsInfinite
+    return { count, posts, nextPage, hasMore, isEmpty }
+  }
+)

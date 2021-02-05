@@ -11,6 +11,9 @@ import type {
   UserRole,
 } from "domain/valueObjects"
 
+/**
+ * ユーザー・リポジトリ
+ */
 export interface IUserRepository {
   /**
    * 新しいユーザーを作成する
@@ -93,6 +96,11 @@ export interface IUserRepository {
     userEntity: UserEntity
   }>
 
+  /**
+   * ユーザーを更新する
+   *
+   * @param input
+   */
   updateUser(input: {
     id: Id
     biography: Id
@@ -104,6 +112,11 @@ export interface IUserRepository {
     userEntity: UserEntity
   }>
 
+  /**
+   * ユーザーネームを更新する
+   *
+   * @param input
+   */
   updateUsername(input: {
     id: Id
     username: Name

@@ -1,11 +1,9 @@
-import { Ctx } from "blitz"
-import {
-  SessionRepository,
-  SettingRepository,
-} from "infrastructure/repositories"
+import { resolver } from "blitz"
+import { Id } from "domain/valueObjects"
+import { SettingRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
+const UpdateSetting = z.object({
   fcmToken: z.string().nullable().optional(),
   fcmTokenForMobile: z.string().nullable().optional(),
   subscribeMessage: z.boolean().optional(),
@@ -13,39 +11,36 @@ const inputSchema = z.object({
   subscribePostQuotation: z.boolean().optional(),
 })
 
-type Input = z.infer<typeof inputSchema>
-
-const updateSetting = async (input: Input, ctx: Ctx) => {
-  ctx.session.authorize()
-
-  const {
-    fcmToken,
-    fcmTokenForMobile,
-    subscribeMessage,
-    subscribePostLike,
-    subscribePostQuotation,
-  } = inputSchema.parse(input)
-
-  const sessionRepository = new SessionRepository()
-
-  const userId = sessionRepository.getUserId(ctx.session)
-
-  const settingRepository = new SettingRepository()
-
-  const { setting } = await settingRepository.updateSetting({
+export default resolver.pipe(
+  resolver.zod(UpdateSetting),
+  resolver.authorize(),
+  (input, ctx) => ({
+    ...input,
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({
     fcmToken,
     fcmTokenForMobile,
     subscribeMessage,
     subscribePostLike,
     subscribePostQuotation,
     userId,
-  })
+  }) => {
+    const settingRepository = new SettingRepository()
 
-  return {
-    ...setting,
-    fcmToken: setting.fcmToken?.slice(0, 4) || null,
-    fcmTokenForMobile: setting.fcmTokenForMobile?.slice(0, 4) || null,
+    const { setting } = await settingRepository.updateSetting({
+      fcmToken,
+      fcmTokenForMobile,
+      subscribeMessage,
+      subscribePostLike,
+      subscribePostQuotation,
+      userId,
+    })
+
+    return {
+      ...setting,
+      fcmToken: setting.fcmToken?.slice(0, 4) || null,
+      fcmTokenForMobile: setting.fcmTokenForMobile?.slice(0, 4) || null,
+    }
   }
-}
-
-export default updateSetting
+)

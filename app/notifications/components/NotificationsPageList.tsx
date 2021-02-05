@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
-import { StackList } from "app/components/StackList"
+import { StackList } from "app/core/components/StackList"
 import { StackCardNotification } from "app/notifications/components/StackCardNotification"
 import getNotificationsInfinite from "app/notifications/queries/getNotificationsInfinite"
 import { useInfiniteQuery } from "blitz"

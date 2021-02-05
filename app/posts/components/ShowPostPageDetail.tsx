@@ -1,5 +1,5 @@
 import { HStack, Stack, Text } from "@chakra-ui/react"
-import { AvatarUser } from "app/components/AvatarUser"
+import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackHeaderUserAction } from "app/posts/components/StackHeaderUserAction"
 import { StackPostImage } from "app/posts/components/StackPostImage"
 import getPost from "app/posts/queries/getPost"

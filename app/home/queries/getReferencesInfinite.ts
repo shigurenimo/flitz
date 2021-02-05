@@ -1,55 +1,50 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { PageService } from "domain/services"
 import { ReferenceService } from "domain/services/referenceService"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
 import { ReferenceRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-export const inputSchema = z.object({ skip: skipSchema })
+export const GetReferencesInfinite = z.object({ skip: skipSchema })
 
-const getReferencesInfinite = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(GetReferencesInfinite),
+  resolver.authorize(),
+  (input, ctx) => ({
+    skip: new Skip(input.skip),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ skip, userId }) => {
+    const referenceRepository = new ReferenceRepository()
 
-  ctx.session.authorize()
+    const {
+      references,
+      referenceEntities,
+    } = await referenceRepository.findReferences({
+      skip,
+      userId,
+    })
 
-  const userId = new Id(ctx.session.userId)
+    const referenceService = new ReferenceService()
 
-  const skip = new Skip(input.skip)
+    const hasUnreadReferences = referenceService.hasUnreadReferences({
+      referenceEntities,
+    })
 
-  const referenceRepository = new ReferenceRepository()
+    if (hasUnreadReferences) {
+      await referenceRepository.markReferencesAsRead({ userId })
+    }
 
-  const {
-    references,
-    referenceEntities,
-  } = await referenceRepository.findReferences({
-    skip,
-    userId,
-  })
+    const count = await referenceRepository.countReferences({ userId })
 
-  const referenceService = new ReferenceService()
+    const take = new Take()
 
-  const hasUnreadReferences = referenceService.hasUnreadReferences({
-    referenceEntities,
-  })
+    const pageService = new PageService()
 
-  if (hasUnreadReferences) {
-    await referenceRepository.markReferencesAsRead({ userId })
+    const hasMore = pageService.hasMore({ count, skip, take })
+
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+
+    return { hasMore, references, nextPage }
   }
-
-  const count = await referenceRepository.countReferences({ userId })
-
-  const take = new Take()
-
-  const pageService = new PageService()
-
-  const hasMore = pageService.hasMore({ count, skip, take })
-
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
-
-  return { hasMore, references, nextPage }
-}
-
-export default getReferencesInfinite
+)

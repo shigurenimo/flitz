@@ -1,47 +1,41 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { PageService } from "domain/services"
 import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
 import { PostRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
+const GetRepliesInfinite = z.object({
   skip: skipSchema,
   replyId: idSchema,
 })
 
-const getRepliesInfinite = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  const { replyId, skip } = inputSchema
-    .transform((input) => ({
-      skip: new Skip(input.skip),
-      replyId: new Id(input.replyId),
-    }))
-    .parse(input)
+export default resolver.pipe(
+  resolver.zod(GetRepliesInfinite),
+  resolver.authorize(),
+  (input, ctx) => ({
+    replyId: new Id(input.replyId),
+    skip: new Skip(input.skip),
+    take: new Take(),
+    userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
+  }),
+  async ({ replyId, skip, take, userId }) => {
+    const postRepository = new PostRepository()
 
-  const userId = ctx.session.userId === null ? null : new Id(ctx.session.userId)
+    const { posts } = await postRepository.getReplies({
+      skip,
+      take,
+      replyId,
+      userId,
+    })
 
-  const take = new Take()
+    const count = await postRepository.countReplies({ replyId })
 
-  const postRepository = new PostRepository()
+    const pageService = new PageService()
 
-  const { posts } = await postRepository.getReplies({
-    skip,
-    take,
-    replyId,
-    userId,
-  })
+    const hasMore = pageService.hasMore({ count, skip, take })
 
-  const count = await postRepository.countReplies({ replyId })
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
-  const pageService = new PageService()
-
-  const hasMore = pageService.hasMore({ count, skip, take })
-
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
-
-  return { hasMore, posts, nextPage }
-}
-
-export default getRepliesInfinite
+    return { hasMore, posts, nextPage }
+  }
+)

@@ -1,6 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
-import { StackMain } from "app/components/StackMain"
-import Layout from "app/layouts/Layout"
+import { StackMain } from "app/core/components/StackMain"
+import Layout from "app/core/layouts/Layout"
 import { ShowUserPageDetail } from "app/users/components/ShowUserPageDetail"
 import { ShowUserPageListLikes } from "app/users/components/ShowUserPageListLikes"
 import { ShowUserPageListPosts } from "app/users/components/ShowUserPageListPosts"

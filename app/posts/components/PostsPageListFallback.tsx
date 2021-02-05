@@ -1,5 +1,5 @@
 import { StackDivider } from "@chakra-ui/react"
-import { StackList } from "app/components/StackList"
+import { StackList } from "app/core/components/StackList"
 import { StackCardPostSkeleton } from "app/posts/components/StackCardPostSkeleton"
 import React, { FunctionComponent } from "react"
 

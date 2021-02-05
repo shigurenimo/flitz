@@ -1,33 +1,23 @@
-import { Ctx } from "blitz"
-import { Email, emailSchema } from "domain/valueObjects"
-import {
-  AccountRepository,
-  SessionRepository,
-} from "infrastructure/repositories"
+import { resolver } from "blitz"
+import { Email, emailSchema, Id } from "domain/valueObjects"
+import { AccountRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({ email: emailSchema })
+const UpdateAccountEmail = z.object({ email: emailSchema })
 
-const updateAccountEmail = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  ctx.session.authorize()
+export default resolver.pipe(
+  resolver.zod(UpdateAccountEmail),
+  resolver.authorize(),
+  (input, ctx) => ({
+    email: new Email(input.email),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ email, userId }) => {
+    const accountRepository = new AccountRepository()
 
-  const { email } = inputSchema
-    .transform((input) => ({ email: new Email(input.email) }))
-    .parse(input)
+    // メールアドレスを更新する
+    await accountRepository.updateByUserId(userId, { email })
 
-  const sessionRepository = new SessionRepository()
-
-  const userId = sessionRepository.getUserId(ctx.session)
-
-  const accountRepository = new AccountRepository()
-
-  // メールアドレスを更新する
-  await accountRepository.updateByUserId(userId, { email })
-
-  return null
-}
-
-export default updateAccountEmail
+    return null
+  }
+)

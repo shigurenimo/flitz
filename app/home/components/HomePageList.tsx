@@ -1,5 +1,5 @@
 import { StackDivider } from "@chakra-ui/react"
-import { StackList } from "app/components/StackList"
+import { StackList } from "app/core/components/StackList"
 import getReferencesInfinite from "app/home/queries/getReferencesInfinite"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import { useInfiniteQuery, useSession } from "blitz"

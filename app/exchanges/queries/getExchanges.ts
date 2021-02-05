@@ -1,40 +1,38 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { PageService } from "domain/services"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
 import { ExchangeRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({ skip: skipSchema })
+const GetExchanges = z.object({ skip: skipSchema })
 
-const getExchanges = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(GetExchanges),
+  resolver.authorize(),
+  (input, ctx) => ({
+    skip: new Skip(input.skip),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ skip, userId }) => {
+    const exchangeRepository = new ExchangeRepository()
 
-  ctx.session.authorize()
+    const { exchanges } = await exchangeRepository.getUserExchanges({
+      userId,
+      skip,
+    })
 
-  const skip = new Skip(input.skip)
+    const count = await exchangeRepository.countUserExchanges({ userId })
 
-  const userId = new Id(ctx.session.userId)
+    const take = new Take(16)
 
-  const exchangeRepository = new ExchangeRepository()
+    const pageService = new PageService()
 
-  const { exchanges } = await exchangeRepository.getUserExchanges({
-    userId,
-    skip,
-  })
+    const hasMore = pageService.hasMore({ count, skip, take })
 
-  const count = await exchangeRepository.countUserExchanges({ userId })
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
-  const take = new Take(16)
+    const isEmpty = exchanges.length === 0
 
-  const pageService = new PageService()
-
-  const hasMore = pageService.hasMore({ count, skip, take })
-
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
-
-  const isEmpty = exchanges.length === 0
-
-  return { isEmpty, nextPage, exchanges, hasMore, count }
-}
-
-export default getExchanges
+    return { isEmpty, nextPage, exchanges, hasMore, count }
+  }
+)

@@ -1,4 +1,4 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { PageService } from "domain/services"
 import {
   Id,
@@ -11,45 +11,40 @@ import {
 import { LikeRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
+const GetUserLikesInfinite = z.object({
   skip: skipSchema,
   username: usernameSchema,
 })
 
-const getUserLikesInfinite = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(GetUserLikesInfinite),
+  resolver.authorize(),
+  (input, ctx) => ({
+    skip: new Skip(input.skip),
+    take: new Take(),
+    userId: Id.nullable(ctx.session.userId),
+    username: new Username(input.username),
+  }),
+  async ({ skip, take, userId, username }) => {
+    const likeRepository = new LikeRepository()
 
-  const userId = Id.nullable(ctx.session.userId)
+    const { likes } = await likeRepository.getLikes({
+      skip,
+      take,
+      userId,
+      username,
+    })
 
-  const username = new Username(input.username)
+    const count = await likeRepository.countLikes({ username })
 
-  const skip = new Skip(input.skip)
+    const pageService = new PageService()
 
-  const take = new Take()
+    const hasMore = pageService.hasMore({ count, skip, take })
 
-  const likeRepository = new LikeRepository()
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
-  const { likes } = await likeRepository.getLikes({
-    skip,
-    take,
-    userId,
-    username,
-  })
+    const isEmpty = likes.length === 0
 
-  const count = await likeRepository.countLikes({ username })
-
-  const pageService = new PageService()
-
-  const hasMore = pageService.hasMore({ count, skip, take })
-
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
-
-  const isEmpty = likes.length === 0
-
-  return { count, likes, nextPage, hasMore, isEmpty }
-}
-
-export default getUserLikesInfinite
+    return { count, likes, nextPage, hasMore, isEmpty }
+  }
+)

@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next"
 export const SettingsPageDetail: FunctionComponent = () => {
   const { t } = useTranslation()
 
-  const [setting, { setQueryData }] = useQuery(getSetting, {
+  const [setting, { setQueryData }] = useQuery(getSetting, null, {
     refetchInterval: false,
   })
 

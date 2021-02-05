@@ -1,24 +1,26 @@
-import { getSessionContext } from "@blitzjs/server"
 import { StackDivider } from "@chakra-ui/react"
-import { StackHeader } from "app/components/StackHeader"
-import { StackMain } from "app/components/StackMain"
-import Layout from "app/layouts/Layout"
+import { StackHeader } from "app/core/components/StackHeader"
+import { StackMain } from "app/core/components/StackMain"
+import Layout from "app/core/layouts/Layout"
 import { ShowUserPageListFollowers } from "app/users/components/ShowUserPageListFollowers"
-import { BlitzPage, GetServerSideProps, PublicData } from "blitz"
-import path from "path"
+import { BlitzPage, useSession } from "blitz"
 import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
 
-type Props = Partial<PublicData>
-
-const ShowUserFolloweesPage: BlitzPage<Props> = ({ userId }) => {
+const ShowUserFolloweesPage: BlitzPage = () => {
   const { t } = useTranslation()
+
+  const session = useSession()
+
+  if (session.isLoading) {
+    return <p>{"loading..."}</p>
+  }
 
   return (
     <StackMain divider={<StackDivider />}>
       <StackHeader>{t("Followers")}</StackHeader>
       <Suspense fallback={<div>{"loading..."}</div>}>
-        <ShowUserPageListFollowers userId={userId} />
+        <ShowUserPageListFollowers userId={session.userId} />
       </Suspense>
     </StackMain>
   )
@@ -26,19 +28,6 @@ const ShowUserFolloweesPage: BlitzPage<Props> = ({ userId }) => {
 
 ShowUserFolloweesPage.getLayout = (page) => {
   return <Layout title={"Followers"}>{page}</Layout>
-}
-
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-  res,
-}) => {
-  // https://github.com/blitz-js/blitz/issues/794
-  path.resolve("blitz.config.js")
-  path.resolve(".next/__db.js")
-
-  const session = await getSessionContext(req, res)
-
-  return { props: session.publicData }
 }
 
 export default ShowUserFolloweesPage

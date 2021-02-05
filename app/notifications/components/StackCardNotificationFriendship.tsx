@@ -6,8 +6,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react"
-import { AvatarUser } from "app/components/AvatarUser"
-import { StackCard } from "app/components/StackCard"
+import { AvatarUser } from "app/core/components/AvatarUser"
+import { StackCard } from "app/core/components/StackCard"
 import React, { FunctionComponent } from "react"
 import { FiUserPlus } from "react-icons/fi"
 

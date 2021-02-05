@@ -1,6 +1,6 @@
 import { Badge, Button, HStack, Stack, Text, useToast } from "@chakra-ui/react"
-import { AvatarUser } from "app/components/AvatarUser"
-import { StackCard } from "app/components/StackCard"
+import { AvatarUser } from "app/core/components/AvatarUser"
+import { StackCard } from "app/core/components/StackCard"
 import { useRouter } from "blitz"
 import React, { FunctionComponent } from "react"
 

@@ -1,4 +1,4 @@
-import { AuthenticationError, Ctx, NotFoundError } from "blitz"
+import { AuthenticationError, Ctx, NotFoundError, resolver } from "blitz"
 import { PasswordService } from "domain/services"
 import {
   Email,
@@ -12,64 +12,64 @@ import {
 } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
+const Login = z.object({
   email: emailSchema,
   password: passwordSchema,
 })
 
-const login = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(Login),
+  (input) => ({
+    email: new Email(input.email),
+    password: new Password(input.password),
+  }),
+  async ({ email, password }, ctx: Ctx) => {
+    const accountRepository = new AccountRepository()
 
-  const email = new Email(input.email)
+    const {
+      account,
+      accountEntity,
+    } = await accountRepository.getAccountByEmail(email)
 
-  const password = new Password(input.password)
+    if (
+      account === null ||
+      accountEntity === null ||
+      accountEntity.user === null ||
+      accountEntity.hashedPassword === null
+    ) {
+      throw new NotFoundError()
+    }
 
-  const accountRepository = new AccountRepository()
+    const passwordService = new PasswordService()
 
-  const { account, accountEntity } = await accountRepository.getAccountByEmail(
-    email
-  )
+    const result = await passwordService.verifyPassword(
+      accountEntity.hashedPassword,
+      password
+    )
 
-  if (
-    account === null ||
-    accountEntity === null ||
-    accountEntity.user === null ||
-    accountEntity.hashedPassword === null
-  ) {
-    throw new NotFoundError()
-  }
+    if (passwordService.isInvalid(result)) {
+      throw new AuthenticationError()
+    }
 
-  const passwordService = new PasswordService()
+    if (passwordService.needsRehash(result)) {
+      const newHashedPassword = await passwordService.hashPassword(password)
 
-  const result = await passwordService.verifyPassword(
-    accountEntity.hashedPassword,
-    password
-  )
+      await accountRepository.updateHashedPassword({
+        id: accountEntity.id,
+        hashedPassword: newHashedPassword,
+      })
+    }
 
-  if (passwordService.isInvalid(result)) {
-    throw new AuthenticationError()
-  }
+    const sessionRepository = new SessionRepository()
 
-  if (passwordService.needsRehash(result)) {
-    const newHashedPassword = await passwordService.hashPassword(password)
-
-    await accountRepository.updateHashedPassword({
-      id: accountEntity.id,
-      hashedPassword: newHashedPassword,
+    await sessionRepository.createSession(ctx.session, {
+      name: accountEntity.user?.name || null,
+      role: accountEntity.role,
+      userId: accountEntity.user.id,
+      username: accountEntity.user.username,
+      iconImageId: accountEntity.user.iconImage?.id || null,
     })
+
+    return account.user
   }
-
-  const sessionRepository = new SessionRepository()
-
-  await sessionRepository.createSession(ctx.session, {
-    name: accountEntity.user?.name || null,
-    role: accountEntity.role,
-    userId: accountEntity.user.id,
-    username: accountEntity.user.username,
-    iconImageId: accountEntity.user.iconImage?.id || null,
-  })
-
-  return account.user
-}
-
-export default login
+)

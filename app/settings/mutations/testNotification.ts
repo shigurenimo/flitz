@@ -1,17 +1,19 @@
-import { Ctx } from "blitz"
-import { SessionRepository } from "infrastructure/repositories"
 import { MessagingService } from "app/services"
+import { resolver } from "blitz"
+import { SessionRepository } from "infrastructure/repositories"
+import * as z from "zod"
 
-const testNotification = async (_: void, ctx: Ctx) => {
-  ctx.session.authorize()
+const TestNotification = z.null()
 
-  const sessionRepository = new SessionRepository()
+export default resolver.pipe(
+  resolver.zod(TestNotification),
+  resolver.authorize(),
+  (_, ctx) => ({
+    userId: new SessionRepository().getUserId(ctx.session),
+  }),
+  ({ userId }) => {
+    const messagingService = new MessagingService()
 
-  const userId = sessionRepository.getUserId(ctx.session)
-
-  const messagingService = new MessagingService()
-
-  return messagingService.sendTestMesasge({ userId })
-}
-
-export default testNotification
+    return messagingService.sendTestMesasge({ userId })
+  }
+)

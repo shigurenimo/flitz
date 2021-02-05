@@ -1,4 +1,4 @@
-import { useUnmount } from "app/hooks/useUnmount"
+import { useUnmount } from "app/core/hooks/useUnmount"
 import { useState } from "react"
 
 export const useObjectURL = (object?: Blob) => {

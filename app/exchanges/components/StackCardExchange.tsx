@@ -1,6 +1,6 @@
 import { HStack, Stack, Text } from "@chakra-ui/react"
-import { AvatarUser } from "app/components/AvatarUser"
-import { StackCard } from "app/components/StackCard"
+import { AvatarUser } from "app/core/components/AvatarUser"
+import { StackCard } from "app/core/components/StackCard"
 import { StackExchangeUser } from "app/exchanges/components/StackExchangeUser"
 import { StackPostDate } from "app/posts/components/StackPostDate"
 import React, { FunctionComponent } from "react"

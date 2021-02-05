@@ -6,7 +6,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react"
-import { AvatarUser } from "app/components/AvatarUser"
+import { AvatarUser } from "app/core/components/AvatarUser"
 import createReply from "app/posts/mutations/createReply"
 import { useMutation, useParam, useSession } from "blitz"
 import React, { FunctionComponent, useState } from "react"

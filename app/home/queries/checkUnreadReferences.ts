@@ -1,15 +1,15 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { Id } from "domain/valueObjects"
 import { ReferenceRepository } from "infrastructure/repositories"
 
-const checkUnreadReferences = async (_ = null, ctx: Ctx) => {
-  ctx.session.authorize()
+export default resolver.pipe(
+  resolver.authorize(),
+  (_: unknown, ctx) => ({
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ userId }) => {
+    const referenceRepository = new ReferenceRepository()
 
-  const userId = new Id(ctx.session.userId)
-
-  const referenceRepository = new ReferenceRepository()
-
-  return await referenceRepository.hasUnreadReference({ userId })
-}
-
-export default checkUnreadReferences
+    return await referenceRepository.hasUnreadReference({ userId })
+  }
+)

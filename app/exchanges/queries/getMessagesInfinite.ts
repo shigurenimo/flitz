@@ -1,64 +1,58 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { MessageService, PageService } from "domain/services"
 import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
 import { MessageRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
-  skip: skipSchema,
+const GetMessagesInfinite = z.object({
   relatedUserId: idSchema,
+  skip: skipSchema,
 })
 
-const getMessagesInfinite = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  ctx.session.authorize()
+export default resolver.pipe(
+  resolver.zod(GetMessagesInfinite),
+  resolver.authorize(),
+  (input, ctx) => ({
+    relatedUserId: new Id(input.relatedUserId),
+    skip: new Skip(input.skip),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ relatedUserId, skip, userId }) => {
+    const messageRepository = new MessageRepository()
 
-  inputSchema.parse(input)
+    const {
+      messages,
+      messageEntities,
+    } = await messageRepository.getUserExchangeMessages({
+      relatedUserId,
+      skip,
+      userId,
+    })
 
-  const relatedUserId = new Id(input.relatedUserId)
+    const messageService = new MessageService()
 
-  const userId = new Id(ctx.session.userId)
+    const hasUnreadMessages = messageService.hasUnreadMessages({
+      messageEntities,
+      userId,
+    })
 
-  const skip = new Skip(input.skip)
+    if (hasUnreadMessages) {
+      await messageRepository.markMesagesAsRead({ relatedUserId, userId })
+    }
 
-  const messageRepository = new MessageRepository()
+    const count = await messageRepository.countUserMessages({
+      relatedUserId,
+      userId,
+    })
 
-  const {
-    messages,
-    messageEntities,
-  } = await messageRepository.getUserExchangeMessages({
-    relatedUserId,
-    skip,
-    userId,
-  })
+    const take = new Take()
 
-  const messageService = new MessageService()
+    const pageService = new PageService()
 
-  const hasUnreadMessages = messageService.hasUnreadMessages({
-    messageEntities,
-    userId,
-  })
+    const hasMore = pageService.hasMore({ count, skip, take })
 
-  if (hasUnreadMessages) {
-    await messageRepository.markMesagesAsRead({ relatedUserId, userId })
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+
+    return { messages, nextPage }
   }
-
-  const count = await messageRepository.countUserMessages({
-    relatedUserId,
-    userId,
-  })
-
-  const take = new Take()
-
-  const pageService = new PageService()
-
-  const hasMore = pageService.hasMore({ count, skip, take })
-
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
-
-  return { messages, nextPage }
-}
-
-export default getMessagesInfinite
+)

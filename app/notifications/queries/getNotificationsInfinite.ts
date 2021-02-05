@@ -1,54 +1,49 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { NotificationService, PageService } from "domain/services"
 import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
 import { NotificationRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({ skip: skipSchema })
+const GetNotificationsInfinite = z.object({ skip: skipSchema })
 
-const getNotificationsInfinite = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(GetNotificationsInfinite),
+  resolver.authorize(),
+  (input, ctx) => ({
+    skip: new Skip(input.skip),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ skip, userId }) => {
+    const notificationRepository = new NotificationRepository()
 
-  ctx.session.authorize()
+    const {
+      notifications,
+      notificationEntities,
+    } = await notificationRepository.findNotifications({
+      skip,
+      userId,
+    })
 
-  const userId = new Id(ctx.session.userId)
+    const notificationService = new NotificationService()
 
-  const skip = new Skip(input.skip)
+    const hasUnreadNotifications = notificationService.hasUnreadNotifications({
+      notificationEntities,
+    })
 
-  const notificationRepository = new NotificationRepository()
+    if (hasUnreadNotifications) {
+      await notificationRepository.markNotificationsAsRead({ userId })
+    }
 
-  const {
-    notifications,
-    notificationEntities,
-  } = await notificationRepository.findNotifications({
-    skip,
-    userId,
-  })
+    const count = await notificationRepository.countNotifications({ userId })
 
-  const notificationService = new NotificationService()
+    const take = new Take()
 
-  const hasUnreadNotifications = notificationService.hasUnreadNotifications({
-    notificationEntities,
-  })
+    const pageService = new PageService()
 
-  if (hasUnreadNotifications) {
-    await notificationRepository.markNotificationsAsRead({ userId })
+    const hasMore = pageService.hasMore({ count, skip, take })
+
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+
+    return { notifications, hasMore, nextPage }
   }
-
-  const count = await notificationRepository.countNotifications({ userId })
-
-  const take = new Take()
-
-  const pageService = new PageService()
-
-  const hasMore = pageService.hasMore({ count, skip, take })
-
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
-
-  return { notifications, hasMore, nextPage }
-}
-
-export default getNotificationsInfinite
+)

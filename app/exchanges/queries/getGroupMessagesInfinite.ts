@@ -1,4 +1,4 @@
-import { Ctx, NotFoundError } from "blitz"
+import { NotFoundError, resolver } from "blitz"
 import { PageService } from "domain/services"
 import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
 import {
@@ -7,47 +7,42 @@ import {
 } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
-  skip: skipSchema,
+const GetExchangeMessagesInfinite = z.object({
   exchangeId: idSchema,
+  skip: skipSchema,
 })
 
-const getExchangeMessagesInfinite = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(GetExchangeMessagesInfinite),
+  resolver.authorize(),
+  (input) => ({
+    exchangeId: new Id(input.exchangeId),
+    skip: new Skip(input.skip),
+  }),
+  async ({ exchangeId, skip }) => {
+    const exchangeRepository = new ExchangeRepository()
 
-  ctx.session.authorize()
+    const { exchange } = await exchangeRepository.getExchange({
+      skip,
+      exchangeId,
+    })
 
-  const skip = new Skip(input.skip)
+    if (exchange === null) {
+      throw new NotFoundError()
+    }
 
-  const exchangeId = new Id(input.exchangeId)
+    const messageRepository = new MessageRepository()
 
-  const exchangeRepository = new ExchangeRepository()
+    const count = await messageRepository.countUserGroupMessages({ exchangeId })
 
-  const { exchange } = await exchangeRepository.getExchange({
-    skip,
-    exchangeId,
-  })
+    const take = new Take()
 
-  if (exchange === null) {
-    throw new NotFoundError()
+    const pageService = new PageService()
+
+    const hasMore = pageService.hasMore({ count, skip, take })
+
+    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+
+    return { messages: exchange.messages, nextPage }
   }
-
-  const messageRepository = new MessageRepository()
-
-  const count = await messageRepository.countUserGroupMessages({ exchangeId })
-
-  const take = new Take()
-
-  const pageService = new PageService()
-
-  const hasMore = pageService.hasMore({ count, skip, take })
-
-  const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
-
-  return { messages: exchange.messages, nextPage }
-}
-
-export default getExchangeMessagesInfinite
+)

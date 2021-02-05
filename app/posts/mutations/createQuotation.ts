@@ -1,4 +1,4 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { Id, idSchema } from "domain/valueObjects"
 import {
   FriendshipRepository,
@@ -7,45 +7,40 @@ import {
 } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({ postId: idSchema })
+const CreateQuotation = z.object({ postId: idSchema })
 
-const createQuotation = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  inputSchema.parse(input)
+export default resolver.pipe(
+  resolver.zod(CreateQuotation),
+  resolver.authorize(),
+  (input, ctx) => ({
+    postId: new Id(input.postId),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ postId, userId }) => {
+    const friendshipRepository = new FriendshipRepository()
 
-  ctx.session.authorize()
+    const { friendships } = await friendshipRepository.getUserFollowers({
+      followeeId: userId,
+    })
 
-  const postId = new Id(input.postId)
+    const postRepository = new PostRepository()
 
-  const userId = new Id(ctx.session.userId)
+    const { post, postEntity } = await postRepository.createPostQuotation({
+      friendships,
+      postId,
+      userId,
+    })
 
-  const friendshipRepository = new FriendshipRepository()
+    const [quotationEntity] = postEntity.quotations
 
-  const { friendships } = await friendshipRepository.getUserFollowers({
-    followeeId: userId,
-  })
+    const notificationRepository = new NotificationRepository()
 
-  const postRepository = new PostRepository()
+    await notificationRepository.upsertQuotationNotification({
+      postUserId: postEntity.userId,
+      quotationId: quotationEntity.id,
+      postId,
+    })
 
-  const { post, postEntity } = await postRepository.createPostQuotation({
-    friendships,
-    postId,
-    userId,
-  })
-
-  const [quotationEntity] = postEntity.quotations
-
-  const notificationRepository = new NotificationRepository()
-
-  await notificationRepository.upsertQuotationNotification({
-    postUserId: postEntity.userId,
-    quotationId: quotationEntity.id,
-    postId,
-  })
-
-  return post
-}
-
-export default createQuotation
+    return post
+  }
+)

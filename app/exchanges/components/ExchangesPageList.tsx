@@ -6,7 +6,7 @@ import {
   HStack,
   StackDivider,
 } from "@chakra-ui/react"
-import { StackList } from "app/components/StackList"
+import { StackList } from "app/core/components/StackList"
 import { StackCardExchange } from "app/exchanges/components/StackCardExchange"
 import getExchanges from "app/exchanges/queries/getExchanges"
 import { usePaginatedQuery, useRouter } from "blitz"

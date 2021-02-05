@@ -1,30 +1,29 @@
-import { Ctx } from "blitz"
+import { resolver } from "blitz"
 import { Id, idSchema } from "domain/valueObjects"
 import { UserRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({ userId: idSchema })
+const UnfollowUser = z.object({ userId: idSchema })
 
-const unfollowUser = async (input: z.infer<typeof inputSchema>, ctx: Ctx) => {
-  ctx.session.authorize()
+export default resolver.pipe(
+  resolver.zod(UnfollowUser),
+  resolver.authorize(),
+  (input, ctx) => ({
+    followeeId: new Id(input.userId),
+    followerId: new Id(ctx.session.userId),
+  }),
+  async ({ followeeId, followerId }) => {
+    if (followerId.value === followeeId.value) {
+      throw new Error("Unexpected error")
+    }
 
-  const { userId: followeeId } = inputSchema
-    .transform((input) => ({
-      userId: new Id(input.userId),
-    }))
-    .parse(input)
+    const userRepository = new UserRepository()
 
-  const followerId = new Id(ctx.session.userId)
+    const { user } = await userRepository.unfollowUser({
+      followeeId,
+      followerId,
+    })
 
-  if (followerId.value === followeeId.value) {
-    throw new Error("Unexpected error")
+    return user
   }
-
-  const userRepository = new UserRepository()
-
-  const { user } = await userRepository.unfollowUser({ followeeId, followerId })
-
-  return user
-}
-
-export default unfollowUser
+)

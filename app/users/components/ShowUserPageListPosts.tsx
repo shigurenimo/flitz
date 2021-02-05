@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
-import { StackList } from "app/components/StackList"
+import { StackList } from "app/core/components/StackList"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import getUserPostsInfinite from "app/users/queries/getUserPostsInfinite"
 import { useInfiniteQuery, useParam } from "blitz"

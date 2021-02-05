@@ -1,5 +1,5 @@
-import { StackMain } from "app/components/StackMain"
-import Layout from "app/layouts/Layout"
+import { StackMain } from "app/core/components/StackMain"
+import Layout from "app/core/layouts/Layout"
 import { UpdateUserPageDetail } from "app/users/components/UpdateUserPageDetail"
 import { BlitzPage } from "blitz"
 import React, { Suspense } from "react"

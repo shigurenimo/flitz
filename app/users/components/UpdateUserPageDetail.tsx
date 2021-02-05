@@ -10,7 +10,8 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react"
-import { ButtonFile } from "app/components/ButtonFile"
+import { ButtonFile } from "app/core/components/ButtonFile"
+import { ClientFileService } from "app/services/clientFileService"
 import { StackProfileUpdateActions } from "app/users/components/StackProfileUpdateActions"
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
@@ -18,7 +19,6 @@ import { useMutation, useParam, useQuery } from "blitz"
 import React, { FunctionComponent, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { ClientFileService } from "app/services/clientFileService"
 
 export const UpdateUserPageDetail: FunctionComponent = () => {
   const { t } = useTranslation()

@@ -25,7 +25,7 @@ export const SettingsPageAccount: FunctionComponent = () => {
 
   const session = useSession()
 
-  const [account] = useQuery(getAccount, {
+  const [account] = useQuery(getAccount, null, {
     refetchInterval: false,
   })
 

@@ -1,5 +1,5 @@
 import { Box, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react"
-import { AvatarUser } from "app/components/AvatarUser"
+import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
 import { Link, useSession } from "blitz"
 import React, { FunctionComponent } from "react"

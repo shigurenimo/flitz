@@ -1,63 +1,51 @@
-import { AuthenticationError, Ctx, NotFoundError } from "blitz"
+import { AuthenticationError, NotFoundError, resolver } from "blitz"
 import { PasswordService } from "domain/services"
-import { Password, passwordSchema } from "domain/valueObjects"
-import {
-  AccountRepository,
-  SessionRepository,
-} from "infrastructure/repositories"
+import { Id, Password, passwordSchema } from "domain/valueObjects"
+import { AccountRepository } from "infrastructure/repositories"
 import * as z from "zod"
 
-const inputSchema = z.object({
+const UpdateAccountPassword = z.object({
   currentPassword: passwordSchema,
   password: passwordSchema,
 })
 
-const updateAccountPassword = async (
-  input: z.infer<typeof inputSchema>,
-  ctx: Ctx
-) => {
-  ctx.session.authorize()
+export default resolver.pipe(
+  resolver.zod(UpdateAccountPassword),
+  resolver.authorize(),
+  (input, ctx) => ({
+    currentPassword: new Password(input.currentPassword),
+    password: new Password(input.password),
+    userId: new Id(ctx.session.userId),
+  }),
+  async ({ currentPassword, password, userId }) => {
+    const accountRepository = new AccountRepository()
 
-  const { currentPassword, password } = inputSchema
-    .transform((input) => ({
-      currentPassword: new Password(input.password),
-      password: new Password(input.password),
-    }))
-    .parse(input)
+    const { accountEntity } = await accountRepository.findByUserId(userId)
 
-  const sessionRepository = new SessionRepository()
+    if (!accountEntity || accountEntity.hashedPassword === null) {
+      throw new NotFoundError()
+    }
 
-  const userId = sessionRepository.getUserId(ctx.session)
+    const passwordService = new PasswordService()
 
-  const accountRepository = new AccountRepository()
+    // 現在のパスワードを確認する
+    const result = await passwordService.verifyPassword(
+      accountEntity.hashedPassword,
+      currentPassword
+    )
 
-  const { accountEntity } = await accountRepository.findByUserId(userId)
+    if (passwordService.isInvalid(result)) {
+      throw new AuthenticationError()
+    }
 
-  if (!accountEntity || accountEntity.hashedPassword === null) {
-    throw new NotFoundError()
+    const hashedPassword = await passwordService.hashPassword(password)
+
+    // 新しいパスワードを保存する
+    await accountRepository.updateHashedPassword({
+      id: accountEntity.id,
+      hashedPassword,
+    })
+
+    return null
   }
-
-  const passwordService = new PasswordService()
-
-  // 現在のパスワードを確認する
-  const result = await passwordService.verifyPassword(
-    accountEntity.hashedPassword,
-    currentPassword
-  )
-
-  if (passwordService.isInvalid(result)) {
-    throw new AuthenticationError()
-  }
-
-  const hashedPassword = await passwordService.hashPassword(password)
-
-  // 新しいパスワードを保存する
-  await accountRepository.updateHashedPassword({
-    id: accountEntity.id,
-    hashedPassword,
-  })
-
-  return null
-}
-
-export default updateAccountPassword
+)
