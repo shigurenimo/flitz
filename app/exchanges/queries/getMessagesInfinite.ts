@@ -15,9 +15,10 @@ export default resolver.pipe(
   (input, ctx) => ({
     relatedUserId: new Id(input.relatedUserId),
     skip: new Skip(input.skip),
+    take: new Take(),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ relatedUserId, skip, userId }) => {
+  async ({ relatedUserId, skip, take, userId }) => {
     const messageRepository = new MessageRepository()
 
     const {
@@ -44,8 +45,6 @@ export default resolver.pipe(
       relatedUserId,
       userId,
     })
-
-    const take = new Take()
 
     const pageService = new PageService()
 

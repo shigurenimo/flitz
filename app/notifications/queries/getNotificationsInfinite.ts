@@ -11,9 +11,10 @@ export default resolver.pipe(
   resolver.authorize(),
   (input, ctx) => ({
     skip: new Skip(input.skip),
+    take: new Take(),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ skip, userId }) => {
+  async ({ skip, take, userId }) => {
     const notificationRepository = new NotificationRepository()
 
     const {
@@ -35,8 +36,6 @@ export default resolver.pipe(
     }
 
     const count = await notificationRepository.countNotifications({ userId })
-
-    const take = new Take()
 
     const pageService = new PageService()
 

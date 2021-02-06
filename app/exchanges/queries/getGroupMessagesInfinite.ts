@@ -18,8 +18,9 @@ export default resolver.pipe(
   (input) => ({
     exchangeId: new Id(input.exchangeId),
     skip: new Skip(input.skip),
+    take: new Take(),
   }),
-  async ({ exchangeId, skip }) => {
+  async ({ exchangeId, skip, take }) => {
     const exchangeRepository = new ExchangeRepository()
 
     const { exchange } = await exchangeRepository.getExchange({
@@ -34,8 +35,6 @@ export default resolver.pipe(
     const messageRepository = new MessageRepository()
 
     const count = await messageRepository.countUserGroupMessages({ exchangeId })
-
-    const take = new Take()
 
     const pageService = new PageService()
 

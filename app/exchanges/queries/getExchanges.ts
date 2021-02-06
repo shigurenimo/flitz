@@ -11,9 +11,10 @@ export default resolver.pipe(
   resolver.authorize(),
   (input, ctx) => ({
     skip: new Skip(input.skip),
+    take: new Take(16),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ skip, userId }) => {
+  async ({ skip, take, userId }) => {
     const exchangeRepository = new ExchangeRepository()
 
     const { exchanges } = await exchangeRepository.getUserExchanges({
@@ -22,8 +23,6 @@ export default resolver.pipe(
     })
 
     const count = await exchangeRepository.countUserExchanges({ userId })
-
-    const take = new Take(16)
 
     const pageService = new PageService()
 
