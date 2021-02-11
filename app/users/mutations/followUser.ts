@@ -1,9 +1,9 @@
 import { resolver } from "blitz"
-import { Id, idSchema } from "domain/valueObjects"
+import { Id, idSchema } from "integrations/domain/valueObjects"
 import {
   NotificationRepository,
   UserRepository,
-} from "infrastructure/repositories"
+} from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const FollowUser = z.object({ userId: idSchema })

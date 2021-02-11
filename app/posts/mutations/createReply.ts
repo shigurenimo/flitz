@@ -1,10 +1,10 @@
 import { resolver } from "blitz"
-import { Id, idSchema, PostText, postTextSchema } from "domain/valueObjects"
+import { Id, idSchema, PostText, postTextSchema } from "integrations/domain/valueObjects"
 import {
   FriendshipRepository,
   NotificationRepository,
   PostRepository,
-} from "infrastructure/repositories"
+} from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const CreateReply = z.object({

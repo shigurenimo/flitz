@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
-import { Id } from "domain/valueObjects"
-import { NotificationRepository } from "infrastructure/repositories"
+import { Id } from "integrations/domain/valueObjects"
+import { NotificationRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const CheckUnreadNotifications = z.null()

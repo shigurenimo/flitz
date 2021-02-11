@@ -1,7 +1,7 @@
 import { resolver } from "blitz"
-import { PageService } from "domain/services"
-import { Id, Skip, skipSchema, Take } from "domain/valueObjects"
-import { ExchangeRepository } from "infrastructure/repositories"
+import { PageService } from "integrations/domain/services"
+import { Id, Skip, skipSchema, Take } from "integrations/domain/valueObjects"
+import { ExchangeRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const GetExchanges = z.object({ skip: skipSchema })

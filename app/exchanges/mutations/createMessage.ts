@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
-import { Id, idSchema, PostText, postTextSchema } from "domain/valueObjects"
-import { MessageRepository } from "infrastructure/repositories"
+import { Id, idSchema, PostText, postTextSchema } from "integrations/domain/valueObjects"
+import { MessageRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 export const CreateMessage = z.object({

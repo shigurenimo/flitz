@@ -1,10 +1,10 @@
 import { NotFoundError, resolver } from "blitz"
-import { PageService } from "domain/services"
-import { Id, idSchema, Skip, skipSchema, Take } from "domain/valueObjects"
+import { PageService } from "integrations/domain/services"
+import { Id, idSchema, Skip, skipSchema, Take } from "integrations/domain/valueObjects"
 import {
   ExchangeRepository,
   MessageRepository,
-} from "infrastructure/repositories"
+} from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const GetExchangeMessagesInfinite = z.object({

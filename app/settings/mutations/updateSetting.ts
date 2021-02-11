@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
-import { Id } from "domain/valueObjects"
-import { SettingRepository } from "infrastructure/repositories"
+import { Id } from "integrations/domain/valueObjects"
+import { SettingRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const UpdateSetting = z.object({

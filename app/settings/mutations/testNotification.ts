@@ -1,6 +1,6 @@
 import { MessagingService } from "app/services"
 import { resolver } from "blitz"
-import { SessionRepository } from "infrastructure/repositories"
+import { SessionRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const TestNotification = z.null()

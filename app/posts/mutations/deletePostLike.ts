@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
-import { Id, idSchema } from "domain/valueObjects"
-import { PostRepository } from "infrastructure/repositories"
+import { Id, idSchema } from "integrations/domain/valueObjects"
+import { PostRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const DeletePostLike = z.object({ postId: idSchema })

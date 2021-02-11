@@ -1,15 +1,15 @@
 import { AuthenticationError, Ctx, NotFoundError, resolver } from "blitz"
-import { PasswordService } from "domain/services"
+import { PasswordService } from "integrations/domain/services"
 import {
   Email,
   emailSchema,
   Password,
   passwordSchema,
-} from "domain/valueObjects"
+} from "integrations/domain/valueObjects"
 import {
   AccountRepository,
   SessionRepository,
-} from "infrastructure/repositories"
+} from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const Login = z.object({

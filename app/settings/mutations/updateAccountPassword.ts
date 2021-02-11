@@ -1,7 +1,7 @@
 import { AuthenticationError, NotFoundError, resolver } from "blitz"
-import { PasswordService } from "domain/services"
-import { Id, Password, passwordSchema } from "domain/valueObjects"
-import { AccountRepository } from "infrastructure/repositories"
+import { PasswordService } from "integrations/domain/services"
+import { Id, Password, passwordSchema } from "integrations/domain/valueObjects"
+import { AccountRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const UpdateAccountPassword = z.object({

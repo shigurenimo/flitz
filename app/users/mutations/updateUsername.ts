@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
-import { Id, Name, nameSchema } from "domain/valueObjects"
-import { SessionRepository, UserRepository } from "infrastructure/repositories"
+import { Id, Name, nameSchema } from "integrations/domain/valueObjects"
+import { SessionRepository, UserRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 const UpdateUsername = z.object({ username: nameSchema })

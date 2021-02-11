@@ -1,5 +1,5 @@
-import { Id } from "domain/valueObjects"
-import { SettingRepository } from "infrastructure/repositories"
+import { Id } from "integrations/domain/valueObjects"
+import { SettingRepository } from "integrations/infrastructure/repositories"
 
 export class SettingService {
   settingRepository: SettingRepository

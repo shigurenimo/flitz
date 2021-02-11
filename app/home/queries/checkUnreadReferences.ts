@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
-import { Id } from "domain/valueObjects"
-import { ReferenceRepository } from "infrastructure/repositories"
+import { Id } from "integrations/domain/valueObjects"
+import { ReferenceRepository } from "integrations/infrastructure/repositories"
 
 export default resolver.pipe(
   resolver.authorize(),

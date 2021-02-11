@@ -1,7 +1,7 @@
 import { resolver } from "blitz"
-import { HashedPasswordFactory, NameFactory } from "domain/factories"
-import { Biography, Email, Password, UserRole } from "domain/valueObjects"
-import { SessionRepository, UserRepository } from "infrastructure/repositories"
+import { HashedPasswordFactory, NameFactory } from "integrations/domain/factories"
+import { Biography, Email, Password, UserRole } from "integrations/domain/valueObjects"
+import { SessionRepository, UserRepository } from "integrations/infrastructure/repositories"
 import * as z from "zod"
 
 export const CreateUser = z.object({
