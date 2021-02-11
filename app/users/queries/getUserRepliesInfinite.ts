@@ -1,14 +1,14 @@
 import { resolver } from "blitz"
-import { PageService } from "integrations/domain/services"
 import {
   Id,
+  PageService,
   Skip,
   skipSchema,
   Take,
   Username,
   usernameSchema,
-} from "integrations/domain/valueObjects"
-import { PostRepository } from "integrations/infrastructure/repositories"
+} from "integrations/domain"
+import { PostRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetUserRepliesInfinite = z.object({

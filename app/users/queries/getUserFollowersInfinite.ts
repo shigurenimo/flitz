@@ -1,14 +1,14 @@
 import { resolver } from "blitz"
-import { PageService } from "integrations/domain/services"
 import {
   Id,
+  PageService,
   Skip,
   skipSchema,
   Take,
   Username,
   usernameSchema,
-} from "integrations/domain/valueObjects"
-import { FriendshipRepository } from "integrations/infrastructure/repositories"
+} from "integrations/domain"
+import { FriendshipRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetUserFollowersInfinite = z.object({

@@ -1,7 +1,6 @@
 import { resolver } from "blitz"
-import { PageService } from "integrations/domain/services"
-import { Id, Skip, skipSchema, Take } from "integrations/domain/valueObjects"
-import { PostRepository } from "integrations/infrastructure/repositories"
+import { Id, PageService, Skip, skipSchema, Take } from "integrations/domain"
+import { PostRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetPostsInfinite = z.object({ skip: skipSchema })

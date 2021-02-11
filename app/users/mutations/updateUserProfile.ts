@@ -1,14 +1,14 @@
 import { FileService } from "app/services"
 import { resolver } from "blitz"
-import { ImageFactory } from "integrations/domain/factories"
 import {
   Biography,
   biographySchema,
   Id,
+  ImageFactory,
   Name,
   nameSchema,
-} from "integrations/domain/valueObjects"
-import { SessionRepository, UserRepository } from "integrations/infrastructure/repositories"
+} from "integrations/domain"
+import { SessionRepository, UserRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const UpdateUserProfile = z.object({

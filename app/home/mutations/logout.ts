@@ -1,5 +1,5 @@
 import { resolver } from "blitz"
-import { SessionRepository } from "integrations/infrastructure/repositories"
+import { SessionRepository } from "integrations/infrastructure"
 
 export default resolver.pipe(resolver.authorize(), async (_: unknown, ctx) => {
   const sessionRepository = new SessionRepository()

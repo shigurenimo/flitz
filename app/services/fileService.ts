@@ -1,12 +1,11 @@
 import { File } from "db"
-import { FileEntity } from "integrations/domain/entities"
-import { FileType, Id, Image, Service } from "integrations/domain/valueObjects"
+import { FileEntity, FileType, Id, Image, Service } from "integrations/domain"
 import {
   EnvRepository,
   FileRepository,
   ImageRepository,
   StorageRepository,
-} from "integrations/infrastructure/repositories"
+} from "integrations/infrastructure"
 
 export class FileService {
   async uploadFile(input: {

@@ -1,10 +1,10 @@
-import { Id } from "integrations/domain/valueObjects"
+import { Id } from "integrations/domain"
 import {
   EnvRepository,
   FileRepository,
   ImageRepository,
   StorageRepository,
-} from "integrations/infrastructure/repositories"
+} from "integrations/infrastructure"
 import { NextApiRequest, NextApiResponse } from "next"
 
 const icon = async (req: NextApiRequest, resp: NextApiResponse) => {

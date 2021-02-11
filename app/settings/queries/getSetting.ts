@@ -1,6 +1,6 @@
 import { SettingService } from "app/services"
 import { resolver } from "blitz"
-import { Id } from "integrations/domain/valueObjects"
+import { Id } from "integrations/domain"
 import * as z from "zod"
 
 const GetSetting = z.null()

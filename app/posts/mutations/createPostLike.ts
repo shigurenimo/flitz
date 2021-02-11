@@ -1,9 +1,9 @@
 import { resolver } from "blitz"
-import { Id, idSchema } from "integrations/domain/valueObjects"
+import { Id, idSchema } from "integrations/domain"
 import {
   NotificationRepository,
   PostRepository,
-} from "integrations/infrastructure/repositories"
+} from "integrations/infrastructure"
 import * as z from "zod"
 
 export const CreatePostLike = z.object({ postId: idSchema })

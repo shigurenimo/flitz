@@ -1,6 +1,6 @@
 import { NotFoundError, resolver } from "blitz"
-import { Id, Username, usernameSchema } from "integrations/domain/valueObjects"
-import { UserRepository } from "integrations/infrastructure/repositories"
+import { Id, Username, usernameSchema } from "integrations/domain"
+import { UserRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetUser = z.object({ username: usernameSchema })

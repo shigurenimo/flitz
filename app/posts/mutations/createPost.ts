@@ -1,11 +1,10 @@
 import { FileService } from "app/services"
 import { resolver } from "blitz"
-import { ImageFactory } from "integrations/domain/factories"
-import { Id, PostText, postTextSchema } from "integrations/domain/valueObjects"
+import { Id, ImageFactory, PostText, postTextSchema } from "integrations/domain"
 import {
   FriendshipRepository,
   PostRepository,
-} from "integrations/infrastructure/repositories"
+} from "integrations/infrastructure"
 import * as z from "zod"
 
 export const CreatePost = z.object({

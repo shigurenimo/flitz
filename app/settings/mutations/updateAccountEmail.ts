@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
-import { Email, emailSchema, Id } from "integrations/domain/valueObjects"
-import { AccountRepository } from "integrations/infrastructure/repositories"
+import { Email, emailSchema, Id } from "integrations/domain"
+import { AccountRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const UpdateAccountEmail = z.object({ email: emailSchema })

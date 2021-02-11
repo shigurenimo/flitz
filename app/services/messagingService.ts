@@ -1,9 +1,9 @@
-import { Id } from "integrations/domain/valueObjects"
 import admin from "firebase-admin"
+import { Id } from "integrations/domain"
 import {
   FirebaseRepository,
   SettingRepository,
-} from "integrations/infrastructure/repositories"
+} from "integrations/infrastructure"
 
 export class MessagingService {
   firebaseRepository: FirebaseRepository

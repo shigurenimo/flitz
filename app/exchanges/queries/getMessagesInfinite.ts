@@ -1,7 +1,14 @@
 import { resolver } from "blitz"
-import { MessageService, PageService } from "integrations/domain/services"
-import { Id, idSchema, Skip, skipSchema, Take } from "integrations/domain/valueObjects"
-import { MessageRepository } from "integrations/infrastructure/repositories"
+import {
+  Id,
+  idSchema,
+  MessageService,
+  PageService,
+  Skip,
+  skipSchema,
+  Take,
+} from "integrations/domain"
+import { MessageRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetMessagesInfinite = z.object({

@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
-import { Id, idSchema } from "integrations/domain/valueObjects"
-import { UserRepository } from "integrations/infrastructure/repositories"
+import { Id, idSchema } from "integrations/domain"
+import { UserRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const UnfollowUser = z.object({ userId: idSchema })

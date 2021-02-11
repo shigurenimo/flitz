@@ -1,7 +1,13 @@
 import { resolver } from "blitz"
-import { NotificationService, PageService } from "integrations/domain/services"
-import { Id, Skip, skipSchema, Take } from "integrations/domain/valueObjects"
-import { NotificationRepository } from "integrations/infrastructure/repositories"
+import {
+  Id,
+  NotificationService,
+  PageService,
+  Skip,
+  skipSchema,
+  Take,
+} from "integrations/domain"
+import { NotificationRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetNotificationsInfinite = z.object({ skip: skipSchema })

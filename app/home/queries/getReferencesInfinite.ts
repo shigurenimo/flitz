@@ -1,8 +1,13 @@
 import { resolver } from "blitz"
-import { PageService } from "integrations/domain/services"
-import { ReferenceService } from "integrations/domain/services/referenceService"
-import { Id, Skip, skipSchema, Take } from "integrations/domain/valueObjects"
-import { ReferenceRepository } from "integrations/infrastructure/repositories"
+import {
+  Id,
+  PageService,
+  ReferenceService,
+  Skip,
+  skipSchema,
+  Take,
+} from "integrations/domain"
+import { ReferenceRepository } from "integrations/infrastructure"
 import * as z from "zod"
 
 export const GetReferencesInfinite = z.object({ skip: skipSchema })
