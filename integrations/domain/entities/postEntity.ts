@@ -5,7 +5,7 @@ import type {
   NotificationEntity,
   ReferenceEntity,
   UserEntity,
-} from "integrations/domain/entities/index"
+} from "integrations/domain/entities"
 import type { Count, Id, PostText } from "integrations/domain/valueObjects"
 
 export class PostEntity {

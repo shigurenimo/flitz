@@ -1,5 +1,5 @@
-import { PostText } from "integrations/domain/valueObjects/index"
 import faker from "faker"
+import { PostText } from "integrations/domain/valueObjects"
 
 describe("text", () => {
   it("minLength=1", () => {

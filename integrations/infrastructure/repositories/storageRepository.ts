@@ -1,7 +1,7 @@
+import admin from "firebase-admin"
 import { IStorageRepository } from "integrations/domain/repositories"
 import { Id, Path } from "integrations/domain/valueObjects"
-import admin from "firebase-admin"
-import { FirebaseRepository } from "integrations/infrastructure/repositories/index"
+import { FirebaseRepository } from "integrations/infrastructure/repositories"
 import { tmpdir } from "os"
 import { join } from "path"
 

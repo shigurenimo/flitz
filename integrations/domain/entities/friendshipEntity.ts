@@ -1,4 +1,7 @@
-import type { NotificationEntity, UserEntity } from "integrations/domain/entities/index"
+import type {
+  NotificationEntity,
+  UserEntity,
+} from "integrations/domain/entities"
 import type { Id } from "integrations/domain/valueObjects"
 
 export class FriendshipEntity {

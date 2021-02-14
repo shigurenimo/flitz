@@ -1,4 +1,4 @@
-import type { UserEntity } from "integrations/domain/entities/index"
+import type { UserEntity } from "integrations/domain/entities"
 import type { Email, Id } from "integrations/domain/valueObjects"
 
 export class SettingEntity {

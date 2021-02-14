@@ -1,5 +1,10 @@
-import type { PostEntity, UserEntity } from "integrations/domain/entities/index"
-import type { FileType, Id, Path, Service } from "integrations/domain/valueObjects"
+import type { PostEntity, UserEntity } from "integrations/domain/entities"
+import type {
+  FileType,
+  Id,
+  Path,
+  Service,
+} from "integrations/domain/valueObjects"
 
 export class FileEntity {
   createdAt!: Date

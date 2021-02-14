@@ -10,8 +10,14 @@ import type {
   PostEntity,
   ReferenceEntity,
   SessionEntity,
-} from "integrations/domain/entities/index"
-import type { Biography, Count, Id, Name, Username } from "integrations/domain/valueObjects"
+} from "integrations/domain/entities"
+import type {
+  Biography,
+  Count,
+  Id,
+  Name,
+  Username,
+} from "integrations/domain/valueObjects"
 
 export class UserEntity {
   account!: AccountEntity | null

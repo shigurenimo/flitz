@@ -3,7 +3,7 @@ import type {
   LikeEntity,
   PostEntity,
   UserEntity,
-} from "integrations/domain/entities/index"
+} from "integrations/domain/entities"
 import type { Id, NotificationType } from "integrations/domain/valueObjects"
 
 export class NotificationEntity {

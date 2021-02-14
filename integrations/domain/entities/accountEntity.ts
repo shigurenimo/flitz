@@ -1,5 +1,10 @@
-import type { UserEntity } from "integrations/domain/entities/index"
-import type { Email, HashedPassword, Id, UserRole } from "integrations/domain/valueObjects"
+import type { UserEntity } from "integrations/domain/entities"
+import type {
+  Email,
+  HashedPassword,
+  Id,
+  UserRole,
+} from "integrations/domain/valueObjects"
 
 export class AccountEntity {
   createdAt!: Date
