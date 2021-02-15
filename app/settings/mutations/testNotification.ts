@@ -1,6 +1,10 @@
-import { MessagingService } from "app/services"
+import { SendTestMessageService } from "app/services"
 import { resolver } from "blitz"
-import { SessionRepository } from "integrations/infrastructure"
+import {
+  FirebaseRepository,
+  SessionRepository,
+  SettingRepository,
+} from "integrations/infrastructure"
 import * as z from "zod"
 
 const TestNotification = z.null()
@@ -12,8 +16,11 @@ export default resolver.pipe(
     userId: new SessionRepository().getUserId(ctx.session),
   }),
   ({ userId }) => {
-    const messagingService = new MessagingService()
+    const messagingService = new SendTestMessageService(
+      new FirebaseRepository(),
+      new SettingRepository()
+    )
 
-    return messagingService.sendTestMesasge({ userId })
+    return messagingService.execute({ userId })
   }
 )

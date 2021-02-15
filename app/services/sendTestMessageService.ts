@@ -5,17 +5,13 @@ import {
   SettingRepository,
 } from "integrations/infrastructure"
 
-export class MessagingService {
-  firebaseRepository: FirebaseRepository
+export class SendTestMessageService {
+  constructor(
+    private firebaseRepository: FirebaseRepository,
+    private settingRepository: SettingRepository
+  ) {}
 
-  settingRepository: SettingRepository
-
-  constructor() {
-    this.firebaseRepository = new FirebaseRepository()
-    this.settingRepository = new SettingRepository()
-  }
-
-  async sendTestMesasge(input: { userId: Id }) {
+  async execute(input: { userId: Id }) {
     this.firebaseRepository.initialize()
 
     const { settingEntity } = await this.settingRepository.getSetting({

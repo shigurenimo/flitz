@@ -1,17 +1,15 @@
 import db from "db"
-import { IReferenceRepository } from "integrations/domain/repositories"
 import { Count, Id, Skip } from "integrations/domain/valueObjects"
-import { PrismaAdapter } from "integrations/infrastructure/adapters"
 import { includeReplyPost } from "integrations/infrastructure/utils"
 
-export class ReferenceRepository implements IReferenceRepository {
-  async countReferences(input: { userId: Id }) {
+export class ReferenceQuery {
+  async count(input: { userId: Id }) {
     const count = await db.post.count({ where: { userId: input.userId.value } })
 
     return new Count(count)
   }
 
-  async hasUnreadReference(input: { userId: Id }) {
+  async hasUnread(input: { userId: Id }) {
     const reference = await db.reference.findFirst({
       where: {
         isRead: false,
@@ -22,7 +20,7 @@ export class ReferenceRepository implements IReferenceRepository {
     return reference !== null
   }
 
-  async findReferences(input: { skip: Skip; userId: Id }) {
+  async findMany(input: { skip: Skip; userId: Id }) {
     const references = await db.reference.findMany({
       include: {
         post: {
@@ -43,22 +41,6 @@ export class ReferenceRepository implements IReferenceRepository {
       where: { userId: input.userId.value },
     })
 
-    const referenceEntities = references.map((reference) => {
-      return new PrismaAdapter().toReferenceEntity(reference)
-    })
-
-    return { references, referenceEntities }
-  }
-
-  async markReferencesAsRead(input: { userId: Id }) {
-    await db.reference.updateMany({
-      data: { isRead: true },
-      where: {
-        userId: input.userId.value,
-        isRead: false,
-      },
-    })
-
-    return null
+    return references
   }
 }

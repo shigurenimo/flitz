@@ -2,7 +2,7 @@ import db from "db"
 import { INotificationRepository } from "integrations/domain/repositories"
 import { Count, Id, Skip } from "integrations/domain/valueObjects"
 import { PrismaAdapter } from "integrations/infrastructure/adapters"
-import { includeEmbededPost } from "integrations/infrastructure/repositories/utils"
+import { includeEmbededPost } from "integrations/infrastructure/utils"
 
 export class NotificationRepository implements INotificationRepository {
   async countNotifications(input: { userId: Id }) {
@@ -175,7 +175,7 @@ export class NotificationRepository implements INotificationRepository {
     return null
   }
 
-  async markNotificationsAsRead(input: { userId: Id }) {
+  async markAsRead(input: { userId: Id }) {
     await db.notification.updateMany({
       data: { isRead: true },
       where: {

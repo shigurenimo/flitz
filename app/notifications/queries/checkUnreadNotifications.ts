@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
 import { Id } from "integrations/domain"
-import { NotificationRepository } from "integrations/infrastructure"
+import { UserNotificationQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const CheckUnreadNotifications = z.null()
@@ -12,11 +12,9 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ userId }) => {
-    const notificationRepository = new NotificationRepository()
+    const notificationQuery = new UserNotificationQuery()
 
-    const hasUnreadNotifications = await notificationRepository.hasUnreadNotifications(
-      { userId }
-    )
+    const hasUnreadNotifications = await notificationQuery.hasUnread({ userId })
 
     return hasUnreadNotifications
   }

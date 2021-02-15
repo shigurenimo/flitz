@@ -1,4 +1,4 @@
-import type { NotificationEntity } from "integrations/domain/entities"
+import type { Notification } from "db"
 
 /**
  * 通知
@@ -9,10 +9,8 @@ export class NotificationService {
    * if there is an 'unread' notification
    * 通知の中に未読のものが混じっているかどうか
    */
-  hasUnreadNotifications(input: {
-    notificationEntities: NotificationEntity[]
-  }) {
-    const unreadNotifications = input.notificationEntities.filter(
+  hasUnread(input: { notifications: Notification[] }) {
+    const unreadNotifications = input.notifications.filter(
       (notificationEntity) => {
         return !notificationEntity.isRead
       }

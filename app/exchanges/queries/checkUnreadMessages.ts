@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
 import { Id } from "integrations/domain"
-import { ExchangeRepository } from "integrations/infrastructure"
+import { UserExchangeQuery } from "integrations/infrastructure"
 
 export default resolver.pipe(
   resolver.authorize(),
@@ -8,10 +8,10 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ userId }) => {
-    const exchangeRepository = new ExchangeRepository()
+    const userExchangeQuery = new UserExchangeQuery()
 
-    const { exchange } = await exchangeRepository.getUserExchange({ userId })
+    const existence = await userExchangeQuery.checkExistence({ userId })
 
-    return exchange !== null
+    return existence
   }
 )

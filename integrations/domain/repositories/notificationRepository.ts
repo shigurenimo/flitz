@@ -1,6 +1,9 @@
 import { Friendship, Like, Notification, Post } from "db"
 import { NotificationEntity } from "integrations/domain/entities"
-import { EmbededPost, UserWithIcon } from "integrations/domain/repositories/types"
+import {
+  EmbededPost,
+  UserWithIcon,
+} from "integrations/domain/repositories/types"
 import type { Count, Id, Skip } from "integrations/domain/valueObjects"
 
 /**
@@ -65,5 +68,5 @@ export interface INotificationRepository {
 
   createReplyNotification(input: { replyId: Id; postUserId: Id }): Promise<null>
 
-  markNotificationsAsRead(input: { userId: Id }): Promise<null>
+  markAsRead(input: { userId: Id }): Promise<null>
 }

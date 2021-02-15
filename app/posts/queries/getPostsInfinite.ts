@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
 import { Id, PageService, Skip, skipSchema, Take } from "integrations/domain"
-import { PostRepository } from "integrations/infrastructure"
+import { LatestPostQuery, PostQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetPostsInfinite = z.object({ skip: skipSchema })
@@ -13,11 +13,13 @@ export default resolver.pipe(
     userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
   }),
   async ({ skip, take, userId }) => {
-    const postRepository = new PostRepository()
+    const latestPostQuery = new LatestPostQuery()
 
-    const { posts } = await postRepository.getNewPosts({ skip, userId })
+    const posts = await latestPostQuery.findMany({ skip, userId })
 
-    const count = await postRepository.countPosts()
+    const postQuery = new PostQuery()
+
+    const count = await postQuery.count()
 
     const pageService = new PageService()
 

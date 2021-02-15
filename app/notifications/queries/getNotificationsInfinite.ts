@@ -7,7 +7,10 @@ import {
   skipSchema,
   Take,
 } from "integrations/domain"
-import { NotificationRepository } from "integrations/infrastructure"
+import {
+  NotificationRepository,
+  UserNotificationQuery,
+} from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetNotificationsInfinite = z.object({ skip: skipSchema })
@@ -21,27 +24,21 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ skip, take, userId }) => {
-    const notificationRepository = new NotificationRepository()
+    const userNotificationQuery = new UserNotificationQuery()
 
-    const {
-      notifications,
-      notificationEntities,
-    } = await notificationRepository.findNotifications({
-      skip,
-      userId,
-    })
+    const notifications = await userNotificationQuery.findMany({ skip, userId })
 
     const notificationService = new NotificationService()
 
-    const hasUnreadNotifications = notificationService.hasUnreadNotifications({
-      notificationEntities,
-    })
+    const hasUnread = notificationService.hasUnread({ notifications })
 
-    if (hasUnreadNotifications) {
-      await notificationRepository.markNotificationsAsRead({ userId })
+    if (hasUnread) {
+      const notificationRepository = new NotificationRepository()
+
+      await notificationRepository.markAsRead({ userId })
     }
 
-    const count = await notificationRepository.countNotifications({ userId })
+    const count = await userNotificationQuery.count({ userId })
 
     const pageService = new PageService()
 

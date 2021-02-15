@@ -19,12 +19,12 @@ export default resolver.pipe(
   async ({ relatedUserId, text, userId }) => {
     const messageRepository = new MessageRepository()
 
-    const message = await messageRepository.createMessage({
+    await messageRepository.createMessage({
       text,
       userId,
       relatedUserId,
     })
 
-    return message
+    return null
   }
 )

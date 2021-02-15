@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "integrations/domain"
-import { PostRepository } from "integrations/infrastructure"
+import { UserReplyQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetUserRepliesInfinite = z.object({
@@ -25,16 +25,16 @@ export default resolver.pipe(
     username: new Username(input.username),
   }),
   async ({ skip, take, userId, username }) => {
-    const postRepository = new PostRepository()
+    const userReplyQuery = new UserReplyQuery()
 
-    const { posts } = await postRepository.getRepliesByUsername({
+    const posts = await userReplyQuery.findMany({
       skip,
       take,
       userId,
       username,
     })
 
-    const count = await postRepository.countUserReplies({ username })
+    const count = await userReplyQuery.count({ username })
 
     const pageService = new PageService()
 

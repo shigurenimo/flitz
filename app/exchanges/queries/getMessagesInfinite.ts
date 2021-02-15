@@ -8,7 +8,11 @@ import {
   skipSchema,
   Take,
 } from "integrations/domain"
-import { MessageRepository } from "integrations/infrastructure"
+import {
+  ExchangeMessageQuery,
+  MessageRepository,
+  UserMessageQuery,
+} from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetMessagesInfinite = z.object({
@@ -26,12 +30,9 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ relatedUserId, skip, take, userId }) => {
-    const messageRepository = new MessageRepository()
+    const exchangeMessageQuery = new ExchangeMessageQuery()
 
-    const {
-      messages,
-      messageEntities,
-    } = await messageRepository.getUserExchangeMessages({
+    const messages = await exchangeMessageQuery.findManyByUserId({
       relatedUserId,
       skip,
       userId,
@@ -40,18 +41,19 @@ export default resolver.pipe(
     const messageService = new MessageService()
 
     const hasUnreadMessages = messageService.hasUnreadMessages({
-      messageEntities,
+      messages,
       userId,
     })
 
     if (hasUnreadMessages) {
+      const messageRepository = new MessageRepository()
+
       await messageRepository.markMesagesAsRead({ relatedUserId, userId })
     }
 
-    const count = await messageRepository.countUserMessages({
-      relatedUserId,
-      userId,
-    })
+    const userMessageQuery = new UserMessageQuery()
+
+    const count = await userMessageQuery.count({ relatedUserId, userId })
 
     const pageService = new PageService()
 

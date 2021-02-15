@@ -1,6 +1,6 @@
 import { NotFoundError, resolver } from "blitz"
 import { Id, Username, usernameSchema } from "integrations/domain"
-import { UserRepository } from "integrations/infrastructure"
+import { UserQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetUser = z.object({ username: usernameSchema })
@@ -12,9 +12,9 @@ export default resolver.pipe(
     username: new Username(input.username),
   }),
   async ({ userId, username }) => {
-    const userRepository = new UserRepository()
+    const userQuery = new UserQuery()
 
-    const { user } = await userRepository.getUserByUsername({
+    const user = await userQuery.findByUsername({
       userId,
       username,
     })

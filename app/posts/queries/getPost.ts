@@ -1,6 +1,6 @@
 import { NotFoundError, resolver } from "blitz"
 import { Id, idSchema } from "integrations/domain"
-import { PostRepository } from "integrations/infrastructure"
+import { PostQuery } from "integrations/infrastructure/queries/postsQuery"
 import * as z from "zod"
 
 const GetPost = z.object({ id: idSchema })
@@ -11,9 +11,9 @@ export default resolver.pipe(
     id: new Id(input.id),
   }),
   async ({ id }) => {
-    const postRepository = new PostRepository()
+    const postQuery = new PostQuery()
 
-    const { post } = await postRepository.getPost({ id })
+    const post = await postQuery.find({ id })
 
     if (!post) {
       throw new NotFoundError()

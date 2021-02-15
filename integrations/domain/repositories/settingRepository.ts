@@ -3,7 +3,11 @@ import { SettingEntity } from "integrations/domain/entities"
 import type { Id } from "integrations/domain/valueObjects"
 
 export interface ISettingRepository {
-  createSetting(input: { userId: Id }): Promise<null>
+  /**
+   * TODO: 集約を適用する
+   * @param input
+   */
+  create(input: { userId: Id }): Promise<null>
 
   getSetting(input: {
     userId: Id

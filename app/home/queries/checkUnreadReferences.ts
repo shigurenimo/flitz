@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
 import { Id } from "integrations/domain"
-import { ReferenceRepository } from "integrations/infrastructure"
+import { ReferenceQuery } from "integrations/infrastructure"
 
 export default resolver.pipe(
   resolver.authorize(),
@@ -8,8 +8,10 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ userId }) => {
-    const referenceRepository = new ReferenceRepository()
+    const referenceQuery = new ReferenceQuery()
 
-    return await referenceRepository.hasUnreadReference({ userId })
+    const hasUnread = await referenceQuery.hasUnread({ userId })
+
+    return hasUnread
   }
 )

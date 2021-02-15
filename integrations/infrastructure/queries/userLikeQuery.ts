@@ -1,5 +1,4 @@
 import db from "db"
-import { ILikeRepository } from "integrations/domain/repositories"
 import {
   Count,
   Id,
@@ -7,11 +6,10 @@ import {
   Take,
   Username,
 } from "integrations/domain/valueObjects"
-import { PrismaAdapter } from "integrations/infrastructure/adapters"
 import { includeEmbededPost } from "integrations/infrastructure/utils"
 
-export class LikeRepository implements ILikeRepository {
-  async countLikes(input: { username: Username }) {
+export class UserLikeQuery {
+  async count(input: { username: Username }) {
     const count = await db.like.count({
       where: { user: { username: input.username.value } },
     })
@@ -19,7 +17,7 @@ export class LikeRepository implements ILikeRepository {
     return new Count(count)
   }
 
-  async getLikes(input: {
+  async findMany(input: {
     userId: Id | null
     skip: Skip
     take: Take
@@ -50,10 +48,6 @@ export class LikeRepository implements ILikeRepository {
       where: { user: { username: input.username.value } },
     })
 
-    const likeEntities = likes.map((like) => {
-      return new PrismaAdapter().toLikeEntity(like)
-    })
-
-    return { likes, likeEntities }
+    return likes
   }
 }

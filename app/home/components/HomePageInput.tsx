@@ -12,7 +12,7 @@ import { ButtonFile } from "app/core/components/ButtonFile"
 import { RenderFileLoader } from "app/core/components/RenderFileLoader"
 import { TextareaAutosize } from "app/core/components/TextareaAutosize"
 import createPost from "app/posts/mutations/createPost"
-import { ClientFileService } from "app/services/clientFileService"
+import { ConvertFileService } from "app/services/convertFileService"
 import { useMutation, useSession } from "blitz"
 import React, { FunctionComponent, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -32,10 +32,10 @@ export const HomePageInput: FunctionComponent = () => {
   const toast = useToast()
 
   const onCreatePost = async () => {
-    const clientFileService = new ClientFileService()
+    const convertFileService = new ConvertFileService()
 
     try {
-      const encodedImage = await clientFileService.convertFileToBase64(file)
+      const encodedImage = await convertFileService.execute(file)
       await createPostMutation({ text, image: encodedImage })
       setText("")
       setFile(null)

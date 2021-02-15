@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "integrations/domain"
-import { PostRepository } from "integrations/infrastructure"
+import { UserPostQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetUserPostsInfinite = z.object({
@@ -25,16 +25,11 @@ export default resolver.pipe(
     username: new Username(input.username),
   }),
   async ({ skip, take, userId, username }) => {
-    const postRepository = new PostRepository()
+    const userPostQuery = new UserPostQuery()
 
-    const { posts } = await postRepository.getPostsByUsername({
-      skip,
-      take,
-      userId,
-      username,
-    })
+    const posts = await userPostQuery.findMany({ skip, take, userId, username })
 
-    const count = await postRepository.countUserPosts({ username })
+    const count = await userPostQuery.count({ username })
 
     const pageService = new PageService()
 

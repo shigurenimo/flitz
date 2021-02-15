@@ -1,12 +1,11 @@
-export class ClientFileService {
-  /**
-   * FileをBase64に変換する
-   *
-   * Upload images by base64 because blitz mutations does not accept Files
-   * See https://github.com/blitz-js/blitz/issues/843
-   * @param file
-   */
-  convertFileToBase64 = (file?: File | null): Promise<string | null> => {
+/**
+ * FileをBase64に変換する
+ *
+ * Upload images by base64 because blitz mutations does not accept Files
+ * See https://github.com/blitz-js/blitz/issues/843
+ */
+export class ConvertFileService {
+  execute(file?: File | null): Promise<string | null> {
     if (!file) {
       return Promise.resolve(null)
     }

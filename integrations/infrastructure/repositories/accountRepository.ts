@@ -21,12 +21,7 @@ export class AccountRepository implements IAccountRepository {
     return { account, accountEntity }
   }
 
-  /**
-   * メールアドレスで指定しアカウントを取得する
-   * @param email
-   * @returns
-   */
-  async getAccountByEmail(email: Email) {
+  async findByEmail(email: Email) {
     const account = await db.account.findUnique({
       where: { email: email.value },
       include: {

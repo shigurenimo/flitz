@@ -7,7 +7,7 @@ import {
   skipSchema,
   Take,
 } from "integrations/domain"
-import { PostRepository } from "integrations/infrastructure"
+import { ReplyQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetRepliesInfinite = z.object({
@@ -24,16 +24,16 @@ export default resolver.pipe(
     userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
   }),
   async ({ replyId, skip, take, userId }) => {
-    const postRepository = new PostRepository()
+    const replyQuery = new ReplyQuery()
 
-    const { posts } = await postRepository.getReplies({
+    const posts = await replyQuery.findMany({
       skip,
       take,
       replyId,
       userId,
     })
 
-    const count = await postRepository.countReplies({ replyId })
+    const count = await replyQuery.count({ replyId })
 
     const pageService = new PageService()
 

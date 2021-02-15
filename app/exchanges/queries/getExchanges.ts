@@ -1,6 +1,6 @@
 import { resolver } from "blitz"
 import { Id, PageService, Skip, skipSchema, Take } from "integrations/domain"
-import { ExchangeRepository } from "integrations/infrastructure"
+import { UserExchangeQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetExchanges = z.object({ skip: skipSchema })
@@ -14,14 +14,11 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ skip, take, userId }) => {
-    const exchangeRepository = new ExchangeRepository()
+    const userExchangeQuery = new UserExchangeQuery()
 
-    const { exchanges } = await exchangeRepository.getUserExchanges({
-      userId,
-      skip,
-    })
+    const exchanges = await userExchangeQuery.findMany({ userId, skip })
 
-    const count = await exchangeRepository.countUserExchanges({ userId })
+    const count = await userExchangeQuery.count({ userId })
 
     const pageService = new PageService()
 

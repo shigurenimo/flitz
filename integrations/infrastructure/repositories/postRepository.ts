@@ -1,8 +1,15 @@
 import db, { Friendship } from "db"
 import { IPostRepository } from "integrations/domain/repositories"
-import { Count, Id, PostText, Skip, Take, Username } from "integrations/domain/valueObjects"
+import {
+  Count,
+  Id,
+  PostText,
+  Skip,
+  Take,
+  Username,
+} from "integrations/domain/valueObjects"
 import { PrismaAdapter } from "integrations/infrastructure/adapters"
-import { includeReplyPost } from "integrations/infrastructure/repositories/utils"
+import { includeReplyPost } from "integrations/infrastructure/utils"
 
 export class PostRepository implements IPostRepository {
   prismaAdapter: PrismaAdapter

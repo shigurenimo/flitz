@@ -1,4 +1,3 @@
-export * from "./clientFileService"
-export * from "./fileService"
-export * from "./messagingService"
-export * from "./settingService"
+export * from "./convertFileService"
+export * from "./sendTestMessageService"
+export * from "./uploadFileService"

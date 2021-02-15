@@ -7,8 +7,15 @@ import {
   StorageRepository,
 } from "integrations/infrastructure"
 
-export class FileService {
-  async uploadFile(input: {
+export class UploadFileService {
+  constructor(
+    private envRepository: EnvRepository,
+    private fileRepository: FileRepository,
+    private imageRepository: ImageRepository,
+    private storageRepository: StorageRepository
+  ) {}
+
+  async execute(input: {
     userId: Id
     image: Image | null
   }): Promise<{
@@ -19,22 +26,14 @@ export class FileService {
       return { file: null, fileEntity: null }
     }
 
-    const storageRepository = new StorageRepository()
+    const filePath = this.storageRepository.createPath()
 
-    const filePath = storageRepository.createPath()
+    await this.imageRepository.writeImage(input.image, filePath)
 
-    const imageRepository = new ImageRepository()
+    if (this.envRepository.isFirebaseProject()) {
+      await this.storageRepository.uploadToCloudStorage(filePath)
 
-    await imageRepository.writeImage(input.image, filePath)
-
-    const envRepository = new EnvRepository()
-
-    const fileRepository = new FileRepository()
-
-    if (envRepository.isFirebaseProject()) {
-      await storageRepository.uploadToCloudStorage(filePath)
-
-      return fileRepository.createFile({
+      return this.fileRepository.createFile({
         userId: input.userId,
         fileType: new FileType("IMAGE_PNG"),
         service: new Service("CLOUD_STORAGE"),
@@ -42,7 +41,7 @@ export class FileService {
       })
     }
 
-    return fileRepository.createFile({
+    return this.fileRepository.createFile({
       userId: input.userId,
       fileType: new FileType("IMAGE_PNG"),
       service: null,

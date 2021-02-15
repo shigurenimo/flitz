@@ -7,10 +7,7 @@ import {
   skipSchema,
   Take,
 } from "integrations/domain"
-import {
-  ExchangeRepository,
-  MessageRepository,
-} from "integrations/infrastructure"
+import { ExchangeMessageQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetExchangeMessagesInfinite = z.object({
@@ -27,20 +24,18 @@ export default resolver.pipe(
     take: new Take(),
   }),
   async ({ exchangeId, skip, take }) => {
-    const exchangeRepository = new ExchangeRepository()
+    const exchangeMessageQuery = new ExchangeMessageQuery()
 
-    const { exchange } = await exchangeRepository.getExchange({
+    const messages = await exchangeMessageQuery.findMany({
       skip,
       exchangeId,
     })
 
-    if (exchange === null) {
+    if (messages === null) {
       throw new NotFoundError()
     }
 
-    const messageRepository = new MessageRepository()
-
-    const count = await messageRepository.countUserGroupMessages({ exchangeId })
+    const count = await exchangeMessageQuery.count({ exchangeId })
 
     const pageService = new PageService()
 
@@ -48,6 +43,6 @@ export default resolver.pipe(
 
     const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
 
-    return { messages: exchange.messages, nextPage }
+    return { messages, nextPage }
   }
 )

@@ -1,15 +1,13 @@
-import type { ReferenceEntity } from "integrations/domain/entities"
+import { Reference } from "db"
 
 /**
  * タイムライン
  */
 export class ReferenceService {
-  hasUnreadReferences(input: { referenceEntities: ReferenceEntity[] }) {
-    const unreadReferences = input.referenceEntities.filter(
-      (referenceEntity) => {
-        return !referenceEntity.isRead
-      }
-    )
+  hasUnread(input: { references: Reference[] }) {
+    const unreadReferences = input.references.filter((referenceEntity) => {
+      return !referenceEntity.isRead
+    })
 
     return unreadReferences.length > 0
   }

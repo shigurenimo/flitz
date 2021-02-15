@@ -1,9 +1,13 @@
-import { FileService } from "app/services"
+import { UploadFileService } from "app/services"
 import { resolver } from "blitz"
 import { Id, ImageFactory, PostText, postTextSchema } from "integrations/domain"
 import {
+  EnvRepository,
+  FileRepository,
   FriendshipRepository,
+  ImageRepository,
   PostRepository,
+  StorageRepository,
 } from "integrations/infrastructure"
 import * as z from "zod"
 
@@ -28,9 +32,14 @@ export default resolver.pipe(
       followeeId: userId,
     })
 
-    const fileService = new FileService()
+    const fileService = new UploadFileService(
+      new EnvRepository(),
+      new FileRepository(),
+      new ImageRepository(),
+      new StorageRepository()
+    )
 
-    const { fileEntity } = await fileService.uploadFile({ userId, image })
+    const { fileEntity } = await fileService.execute({ userId, image })
 
     const postRepository = new PostRepository()
 

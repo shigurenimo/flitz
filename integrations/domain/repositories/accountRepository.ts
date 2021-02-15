@@ -1,6 +1,10 @@
 import type { Account, File, User } from "db"
 import type { AccountEntity } from "integrations/domain/entities"
-import type { Email, HashedPassword, Id } from "integrations/domain/valueObjects"
+import type {
+  Email,
+  HashedPassword,
+  Id,
+} from "integrations/domain/valueObjects"
 
 /**
  * アカウント
@@ -23,7 +27,7 @@ export interface IAccountRepository {
    * @param email
    * @returns
    */
-  getAccountByEmail(
+  findByEmail(
     email: Email
   ): Promise<{
     account: { user: User & { iconImage: File | null } } | null

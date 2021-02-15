@@ -26,10 +26,9 @@ export default resolver.pipe(
   async ({ email, password }, ctx: Ctx) => {
     const accountRepository = new AccountRepository()
 
-    const {
-      account,
-      accountEntity,
-    } = await accountRepository.getAccountByEmail(email)
+    const { account, accountEntity } = await accountRepository.findByEmail(
+      email
+    )
 
     if (
       account === null ||

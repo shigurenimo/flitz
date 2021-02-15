@@ -7,7 +7,10 @@ import {
   skipSchema,
   Take,
 } from "integrations/domain"
-import { ReferenceRepository } from "integrations/infrastructure"
+import {
+  ReferenceQuery,
+  ReferenceRepository,
+} from "integrations/infrastructure"
 import * as z from "zod"
 
 export const GetReferencesInfinite = z.object({ skip: skipSchema })
@@ -20,27 +23,21 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ skip, userId }) => {
-    const referenceRepository = new ReferenceRepository()
+    const referenceQuery = new ReferenceQuery()
 
-    const {
-      references,
-      referenceEntities,
-    } = await referenceRepository.findReferences({
-      skip,
-      userId,
-    })
+    const references = await referenceQuery.findMany({ skip, userId })
 
     const referenceService = new ReferenceService()
 
-    const hasUnreadReferences = referenceService.hasUnreadReferences({
-      referenceEntities,
-    })
+    const hasUnreadReferences = referenceService.hasUnread({ references })
 
     if (hasUnreadReferences) {
+      const referenceRepository = new ReferenceRepository()
+
       await referenceRepository.markReferencesAsRead({ userId })
     }
 
-    const count = await referenceRepository.countReferences({ userId })
+    const count = await referenceQuery.count({ userId })
 
     const take = new Take()
 

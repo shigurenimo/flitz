@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "integrations/domain"
-import { LikeRepository } from "integrations/infrastructure"
+import { UserLikeQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetUserLikesInfinite = z.object({
@@ -25,16 +25,11 @@ export default resolver.pipe(
     username: new Username(input.username),
   }),
   async ({ skip, take, userId, username }) => {
-    const likeRepository = new LikeRepository()
+    const userLikeQuery = new UserLikeQuery()
 
-    const { likes } = await likeRepository.getLikes({
-      skip,
-      take,
-      userId,
-      username,
-    })
+    const likes = await userLikeQuery.findMany({ skip, take, userId, username })
 
-    const count = await likeRepository.countLikes({ username })
+    const count = await userLikeQuery.count({ username })
 
     const pageService = new PageService()
 

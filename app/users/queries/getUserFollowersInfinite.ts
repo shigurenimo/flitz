@@ -8,7 +8,7 @@ import {
   Username,
   usernameSchema,
 } from "integrations/domain"
-import { FriendshipRepository } from "integrations/infrastructure"
+import { UserFolloweerQuery } from "integrations/infrastructure"
 import * as z from "zod"
 
 const GetUserFollowersInfinite = z.object({
@@ -25,18 +25,16 @@ export default resolver.pipe(
     username: new Username(input.username),
   }),
   async ({ skip, take, userId, username }) => {
-    const friendshipRepository = new FriendshipRepository()
+    const userFolloweerQuery = new UserFolloweerQuery()
 
-    const {
-      friendships,
-    } = await friendshipRepository.getUserFollowersByUsername({
+    const friendships = await userFolloweerQuery.findByUsername({
       skip,
       take,
       userId,
       username,
     })
 
-    const count = await friendshipRepository.countUserFollowers({ username })
+    const count = await userFolloweerQuery.count({ username })
 
     const pageService = new PageService()
 

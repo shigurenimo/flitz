@@ -4,7 +4,7 @@ import { Id } from "integrations/domain/valueObjects"
 import { PrismaAdapter } from "integrations/infrastructure/adapters"
 
 export class SettingRepository implements ISettingRepository {
-  async createSetting(input: { userId: Id }) {
+  async create(input: { userId: Id }) {
     await db.setting.create({
       data: {
         user: { connect: { id: input.userId.value } },
