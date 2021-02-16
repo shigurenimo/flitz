@@ -9,6 +9,7 @@ import {
 import {
   AccountRepository,
   SessionRepository,
+  UserQuery,
 } from "integrations/infrastructure"
 import * as z from "zod"
 
@@ -53,7 +54,7 @@ export default resolver.pipe(
     if (passwordService.needsRehash(result)) {
       const newHashedPassword = await passwordService.hashPassword(password)
 
-      await accountRepository.updateHashedPassword({
+      await accountRepository.update({
         id: accountEntity.id,
         hashedPassword: newHashedPassword,
       })
@@ -69,6 +70,10 @@ export default resolver.pipe(
       iconImageId: accountEntity.user.iconImage?.id || null,
     })
 
-    return account.user
+    const userQuery = new UserQuery()
+
+    const user = userQuery.find(accountEntity.user.id)
+
+    return user
   }
 )

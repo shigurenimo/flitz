@@ -1,4 +1,4 @@
-import type { Account, File, User } from "db"
+import type { File, User } from "db"
 import type { AccountEntity } from "integrations/domain/entities"
 import type {
   Email,
@@ -12,18 +12,17 @@ import type {
 export interface IAccountRepository {
   /**
    * ユーザーIDでアカウントを探す
+   * TODO: 削除する
+   * @deprecated
    * @param email
    * @returns
    */
-  findByUserId(
-    userId: Id
-  ): Promise<{
-    account: (Account & { user: User }) | null
-    accountEntity: AccountEntity | null
-  }>
+  findByUserId(userId: Id): Promise<AccountEntity | null>
 
   /**
    * メールアドレスで指定しアカウントを取得する
+   * TODO: 削除する
+   * @deprecated
    * @param email
    * @returns
    */
@@ -36,16 +35,17 @@ export interface IAccountRepository {
 
   /**
    * アカウントを更新する
+   * TODO: 集約
+   * @deprecated
    * @param input
    */
   updateByUserId(userId: Id, input: { email: Email }): Promise<null>
 
   /**
    * アカウントのパスワードを更新する
+   * TODO: 集約
+   * @deprecated
    * @param input
    */
-  updateHashedPassword(input: {
-    id: Id
-    hashedPassword: HashedPassword
-  }): Promise<null>
+  update(input: { id: Id; hashedPassword: HashedPassword }): Promise<null>
 }

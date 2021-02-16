@@ -1,11 +1,9 @@
 import { DownloadResponse } from "@google-cloud/storage"
-import type { Id, Path } from "integrations/domain/valueObjects"
+import type { Id } from "integrations/domain/valueObjects"
 import type { FirebaseRepository } from "integrations/infrastructure/repositories"
 
 export interface IStorageRepository {
   firebaseRepository: FirebaseRepository
-
-  getFilePath(fileId: Id): Path
 
   uploadToCloudStorage(filePath: Id): Promise<null>
 

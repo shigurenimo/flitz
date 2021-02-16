@@ -4,7 +4,7 @@ import type { Id } from "integrations/domain/valueObjects"
 
 export interface ISettingRepository {
   /**
-   * TODO: 集約を適用する
+   * TODO: 集約
    * @param input
    */
   create(input: { userId: Id }): Promise<null>
@@ -16,6 +16,10 @@ export interface ISettingRepository {
     settingEntity: SettingEntity | null
   }>
 
+  /**
+   * TODO: 集約
+   * @param input
+   */
   updateSetting(input: {
     userId: Id
     fcmToken?: string | null

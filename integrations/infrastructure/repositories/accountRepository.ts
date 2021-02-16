@@ -18,7 +18,7 @@ export class AccountRepository implements IAccountRepository {
 
     const accountEntity = this.prismaAdapter.toAccountEntity(account)
 
-    return { account, accountEntity }
+    return accountEntity
   }
 
   async findByEmail(email: Email) {
@@ -47,10 +47,7 @@ export class AccountRepository implements IAccountRepository {
     return null
   }
 
-  async updateHashedPassword(input: {
-    id: Id
-    hashedPassword: HashedPassword
-  }) {
+  async update(input: { id: Id; hashedPassword: HashedPassword }) {
     await db.account.update({
       where: { id: input.id.value },
       data: { hashedPassword: input.hashedPassword.value },

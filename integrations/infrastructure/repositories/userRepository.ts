@@ -6,7 +6,6 @@ import {
   HashedPassword,
   Id,
   Name,
-  Username,
   UserRole,
 } from "integrations/domain/valueObjects"
 import { PrismaAdapter } from "integrations/infrastructure/adapters"
@@ -31,33 +30,6 @@ export class UserRepository implements IUserRepository {
         biography: input.biography.value,
         name: input.name.value,
       },
-    })
-
-    const userEntity = new PrismaAdapter().toUserEntity(user)
-
-    return { user, userEntity }
-  }
-
-  async getUser(input: { userId: Id }) {
-    const user = await db.user.findFirst({
-      where: { id: input.userId.value },
-    })
-
-    const userEntity = new PrismaAdapter().toUserEntity(user)
-
-    return { user, userEntity }
-  }
-
-  async getUserByUsername(input: { userId: Id | null; username: Username }) {
-    const user = await db.user.findUnique({
-      include: {
-        followers: input.userId
-          ? { where: { followerId: input.userId.value } }
-          : false,
-        headerImage: true,
-        iconImage: true,
-      },
-      where: { username: input.username.value },
     })
 
     const userEntity = new PrismaAdapter().toUserEntity(user)
@@ -124,7 +96,7 @@ export class UserRepository implements IUserRepository {
     return { user, userEntity }
   }
 
-  async updateUser(input: {
+  async update(input: {
     id: Id
     biography: Id
     headerImageId: Id | null

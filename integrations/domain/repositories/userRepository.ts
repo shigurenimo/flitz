@@ -7,7 +7,6 @@ import type {
   HashedPassword,
   Id,
   Name,
-  Username,
   UserRole,
 } from "integrations/domain/valueObjects"
 
@@ -17,6 +16,7 @@ import type {
 export interface IUserRepository {
   /**
    * 新しいユーザーを作成する
+   * TODO: 集約
    * @param input
    * @returns
    */
@@ -32,38 +32,9 @@ export interface IUserRepository {
   }>
 
   /**
-   * ユーザーを取得する
-   * @param input
-   * @returns
-   */
-  getUser(input: {
-    userId: Id
-  }): Promise<{
-    user: User | null
-    userEntity: UserEntity | null
-  }>
-
-  /**
-   * ユーザーネームからユーザーを探す
-   * @param input
-   * @returns
-   */
-  getUserByUsername(input: {
-    userId: Id | null
-    username: Username
-  }): Promise<{
-    user:
-      | (User & {
-          followers: Friendship[]
-          headerImage: File | null
-          iconImage: File | null
-        })
-      | null
-    userEntity: UserEntity | null
-  }>
-
-  /**
    * ユーザーをフォローする
+   * TODO: Move to UserFriendshipRepository
+   * @deprecated
    * @param input
    * @returns
    */
@@ -81,6 +52,7 @@ export interface IUserRepository {
 
   /**
    * ユーザーのフォローを外す
+   * TODO: Move to UserFriendshipRepository
    * @param input
    * @returns
    */
@@ -98,10 +70,10 @@ export interface IUserRepository {
 
   /**
    * ユーザーを更新する
-   *
+   * TODO: 集約
    * @param input
    */
-  updateUser(input: {
+  update(input: {
     id: Id
     biography: Id
     headerImageId: Id | null
@@ -114,7 +86,8 @@ export interface IUserRepository {
 
   /**
    * ユーザーネームを更新する
-   *
+   * TODO: 統合する
+   * @deprecated
    * @param input
    */
   updateUsername(input: {

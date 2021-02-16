@@ -1,54 +1,13 @@
 import db, { Friendship } from "db"
 import { IPostRepository } from "integrations/domain/repositories"
-import {
-  Count,
-  Id,
-  PostText,
-  Skip,
-  Take,
-  Username,
-} from "integrations/domain/valueObjects"
+import { Id, PostText } from "integrations/domain/valueObjects"
 import { PrismaAdapter } from "integrations/infrastructure/adapters"
-import { includeReplyPost } from "integrations/infrastructure/utils"
 
 export class PostRepository implements IPostRepository {
   prismaAdapter: PrismaAdapter
 
   constructor() {
     this.prismaAdapter = new PrismaAdapter()
-  }
-
-  async countReplies(input: { replyId: Id }) {
-    const count = await db.post.count({
-      where: { replyId: input.replyId.value },
-    })
-
-    return new Count(count)
-  }
-
-  async countPosts() {
-    const count = await db.post.count()
-
-    return new Count(count)
-  }
-
-  async countUserPosts(input: { username: Username }) {
-    const count = await db.post.count({
-      where: { user: { username: input.username.value } },
-    })
-
-    return new Count(count)
-  }
-
-  async countUserReplies(input: { username: Username }) {
-    const count = await db.post.count({
-      where: {
-        user: { username: input.username.value },
-        replyId: { not: null },
-      },
-    })
-
-    return new Count(count)
   }
 
   async createPost(input: {
@@ -236,136 +195,5 @@ export class PostRepository implements IPostRepository {
     })
 
     return null
-  }
-
-  async getReplies(input: {
-    skip: Skip
-    take: Take
-    replyId: Id
-    userId: Id | null
-  }) {
-    const posts = await db.post.findMany({
-      include: includeReplyPost(input.userId),
-      orderBy: { createdAt: "desc" },
-      skip: input.skip.value,
-      take: input.take.value,
-      where: { replyId: input.replyId.value },
-    })
-
-    const postEntities = posts.map((post) => {
-      return new PrismaAdapter().toPostEntity(post)
-    })
-
-    return { posts, postEntities }
-  }
-
-  async getRepliesByUsername(input: {
-    skip: Skip
-    take: Take
-    userId: Id | null
-    username: Username
-  }) {
-    const posts = await db.post.findMany({
-      include: {
-        files: true,
-        likes: input.userId ? { where: { userId: input.userId.value } } : false,
-        quotation: { include: includeReplyPost(input.userId) },
-        quotations: input.userId
-          ? { where: { userId: input.userId.value } }
-          : false,
-        replies: input.userId
-          ? { where: { userId: input.userId.value } }
-          : false,
-        reply: { include: includeReplyPost(input.userId) },
-        user: { include: { iconImage: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      skip: input.skip.value,
-      take: input.take.value,
-      where: {
-        user: { username: input.username.value },
-        replyId: { not: null },
-      },
-    })
-
-    const postEntities = posts.map((post) => {
-      return new PrismaAdapter().toPostEntity(post)
-    })
-
-    return { posts, postEntities }
-  }
-
-  async getPostsByUsername(input: {
-    skip: Skip
-    take: Take
-    userId: Id | null
-    username: Username
-  }) {
-    const posts = await db.post.findMany({
-      include: {
-        files: true,
-        likes: input.userId ? { where: { userId: input.userId.value } } : false,
-        quotation: { include: includeReplyPost(input.userId) },
-        quotations: input.userId
-          ? { where: { userId: input.userId.value } }
-          : false,
-        replies: input.userId
-          ? { where: { userId: input.userId.value } }
-          : false,
-        reply: { include: includeReplyPost(input.userId) },
-        user: { include: { iconImage: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      skip: input.skip.value,
-      take: input.take.value,
-      where: { user: { username: input.username.value } },
-    })
-
-    const postEntities = posts.map((post) => {
-      return new PrismaAdapter().toPostEntity(post)
-    })
-
-    return { posts, postEntities }
-  }
-
-  async getNewPosts(input: { skip: Skip; userId: Id | null }) {
-    const posts = await db.post.findMany({
-      include: {
-        files: true,
-        likes: input.userId ? { where: { userId: input.userId.value } } : false,
-        quotation: { include: includeReplyPost(input.userId) },
-        quotations: input.userId
-          ? { where: { userId: input.userId.value } }
-          : false,
-        replies: input.userId
-          ? { where: { userId: input.userId.value } }
-          : false,
-        reply: { include: includeReplyPost(input.userId) },
-        user: { include: { iconImage: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      skip: input.skip.value,
-      take: 16,
-    })
-
-    const postEntities = posts.map((post) => {
-      return new PrismaAdapter().toPostEntity(post)
-    })
-
-    return { posts, postEntities }
-  }
-
-  async getPost(input: { id: Id }) {
-    const post = await db.post.findUnique({
-      include: {
-        files: true,
-        user: { include: { iconImage: true } },
-      },
-      where: { id: input.id.value },
-    })
-
-    const postEntity = new PrismaAdapter().toPostEntity(post)
-
-    return { post, postEntity }
   }
 }

@@ -1,32 +1,8 @@
 import db from "db"
 import { IMessageRepository } from "integrations/domain/repositories"
-import { Count, Id, PostText, Skip } from "integrations/domain/valueObjects"
-import { PrismaAdapter } from "integrations/infrastructure/adapters"
+import { Id, PostText } from "integrations/domain/valueObjects"
 
 export class MessageRepository implements IMessageRepository {
-  async countUserGroupMessages(input: { exchangeId: Id }) {
-    const count = await db.message.count({
-      where: { id: input.exchangeId.value },
-    })
-
-    return new Count(count)
-  }
-
-  async countUserMessages(input: { relatedUserId: Id; userId: Id }) {
-    const count = await db.message.count({
-      where: {
-        exchanges: {
-          some: {
-            userId: input.userId.value,
-            relatedUserId: input.relatedUserId.value,
-          },
-        },
-      },
-    })
-
-    return new Count(count)
-  }
-
   async markMesagesAsRead(input: { relatedUserId: Id; userId: Id }) {
     await db.message.updateMany({
       data: { isRead: true },
@@ -43,36 +19,6 @@ export class MessageRepository implements IMessageRepository {
     })
 
     return null
-  }
-
-  async getUserExchangeMessages(input: {
-    relatedUserId: Id
-    skip: Skip
-    userId: Id
-  }) {
-    const messages = await db.message.findMany({
-      include: {
-        user: true,
-        exchanges: true,
-      },
-      orderBy: { createdAt: "desc" },
-      skip: input.skip.value,
-      take: 20,
-      where: {
-        exchanges: {
-          some: {
-            userId: input.userId.value,
-            relatedUsers: { every: { id: input.relatedUserId.value } },
-          },
-        },
-      },
-    })
-
-    const messageEntities = messages.map((message) => {
-      return new PrismaAdapter().toMessageEntity(message)
-    })
-
-    return { messages, messageEntities }
   }
 
   async createMessage(input: {

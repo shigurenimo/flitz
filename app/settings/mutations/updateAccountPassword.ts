@@ -24,7 +24,7 @@ export default resolver.pipe(
   async ({ currentPassword, password, userId }) => {
     const accountRepository = new AccountRepository()
 
-    const { accountEntity } = await accountRepository.findByUserId(userId)
+    const accountEntity = await accountRepository.findByUserId(userId)
 
     if (!accountEntity || accountEntity.hashedPassword === null) {
       throw new NotFoundError()
@@ -45,7 +45,7 @@ export default resolver.pipe(
     const hashedPassword = await passwordService.hashPassword(password)
 
     // 新しいパスワードを保存する
-    await accountRepository.updateHashedPassword({
+    await accountRepository.update({
       id: accountEntity.id,
       hashedPassword,
     })

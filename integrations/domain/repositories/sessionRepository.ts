@@ -1,5 +1,10 @@
 import type { SessionContext } from "blitz"
-import type { Id, Name, Username, UserRole } from "integrations/domain/valueObjects"
+import type {
+  Id,
+  Name,
+  Username,
+  UserRole,
+} from "integrations/domain/valueObjects"
 
 /**
  * セッション
@@ -7,6 +12,7 @@ import type { Id, Name, Username, UserRole } from "integrations/domain/valueObje
 export interface ISessionRepository {
   /**
    * 新しいセッションを作成する
+   * TODO: 集約
    * @param session
    * @param input
    * @returns
@@ -30,6 +36,7 @@ export interface ISessionRepository {
 
   /**
    * セッションを更新する
+   * TODO: 集約
    * @param session
    * @param input
    */

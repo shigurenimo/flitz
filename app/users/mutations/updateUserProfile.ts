@@ -55,7 +55,7 @@ export default resolver.pipe(
 
     const userRepository = new UserRepository()
 
-    const { user, userEntity } = await userRepository.updateUser({
+    const { user, userEntity } = await userRepository.update({
       biography,
       headerImageId: headerImageFileEntry ? headerImageFileEntry.id : null,
       iconImageId: iconImageFileEntity ? iconImageFileEntity.id : null,

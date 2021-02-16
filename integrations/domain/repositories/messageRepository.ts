@@ -1,29 +1,18 @@
-import type { Exchange, Message, User } from "db"
-import type { MessageEntity } from "integrations/domain/entities"
-import type { Count, Id, PostText, Skip } from "integrations/domain/valueObjects"
+import type { Id, PostText } from "integrations/domain/valueObjects"
 
 /**
  * メッセージ
  */
 export interface IMessageRepository {
-  countUserGroupMessages(input: { exchangeId: Id }): Promise<Count>
-
-  countUserMessages(input: { relatedUserId: Id; userId: Id }): Promise<Count>
-
+  /**
+   * @param input
+   */
   markMesagesAsRead(input: { relatedUserId: Id; userId: Id }): Promise<null>
 
-  getUserExchangeMessages(input: {
-    relatedUserId: Id
-    skip: Skip
-    userId: Id
-  }): Promise<{
-    messages: (Message & {
-      user: User
-      exchanges: Exchange[]
-    })[]
-    messageEntities: MessageEntity[]
-  }>
-
+  /**
+   * TODO: 集約
+   * @param input
+   */
   createMessage(input: {
     text: PostText
     userId: Id

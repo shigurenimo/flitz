@@ -12,10 +12,6 @@ export class StorageRepository implements IStorageRepository {
     this.firebaseRepository = new FirebaseRepository()
   }
 
-  getFilePath(fileId: Id) {
-    return new Path(join(tmpdir(), fileId.value))
-  }
-
   async uploadToCloudStorage(filePath: Id) {
     this.firebaseRepository.initialize()
 
@@ -52,5 +48,9 @@ export class StorageRepository implements IStorageRepository {
     }
 
     return new Id(autoId)
+  }
+
+  private getFilePath(fileId: Id) {
+    return new Path(join(tmpdir(), fileId.value))
   }
 }
