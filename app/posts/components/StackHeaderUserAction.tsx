@@ -3,15 +3,10 @@ import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
 import { MenuPost } from "app/posts/components/MenuPost"
 import { StackPostUser } from "app/posts/components/StackPostUser"
 import { useSession } from "blitz"
+import { QueryEmbeddedUser } from "integrations/interface/types/queryEmbeddedUser"
 import React, { FunctionComponent } from "react"
 
-type Props = {
-  id: string
-  name: string | null
-  username: string
-}
-
-export const StackHeaderUserAction: FunctionComponent<Props> = ({
+export const StackHeaderUserAction: FunctionComponent<QueryEmbeddedUser> = ({
   id,
   name,
   username,

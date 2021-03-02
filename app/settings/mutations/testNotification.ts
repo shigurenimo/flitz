@@ -1,26 +1,22 @@
-import { SendTestMessageService } from "app/services"
 import { resolver } from "blitz"
-import {
-  FirebaseRepository,
-  SessionRepository,
-  SettingRepository,
-} from "integrations/infrastructure"
+import { TestNotificationService } from "integrations/application"
+import { SessionRepository } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-const TestNotification = z.null()
-
 export default resolver.pipe(
-  resolver.zod(TestNotification),
+  resolver.zod(z.null()),
   resolver.authorize(),
   (_, ctx) => ({
     userId: new SessionRepository().getUserId(ctx.session),
   }),
-  ({ userId }) => {
-    const messagingService = new SendTestMessageService(
-      new FirebaseRepository(),
-      new SettingRepository()
-    )
+  async (input) => {
+    const app = await createAppContext()
 
-    return messagingService.execute({ userId })
+    await app.get(TestNotificationService).call({
+      userId: input.userId,
+    })
+
+    return null
   }
 )

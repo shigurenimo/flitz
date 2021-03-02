@@ -1,6 +1,7 @@
 import { resolver } from "blitz"
 import { Id } from "integrations/domain"
 import { ReferenceQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 
 export default resolver.pipe(
   resolver.authorize(),
@@ -8,9 +9,9 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ userId }) => {
-    const referenceQuery = new ReferenceQuery()
+    const app = await createAppContext()
 
-    const hasUnread = await referenceQuery.hasUnread({ userId })
+    const hasUnread = await app.get(ReferenceQuery).hasUnread(userId)
 
     return hasUnread
   }

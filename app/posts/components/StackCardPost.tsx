@@ -10,136 +10,46 @@ import { StackPostImage } from "app/posts/components/StackPostImage"
 import { StackPostReply } from "app/posts/components/StackPostReply"
 import { StackPostText } from "app/posts/components/StackPostText"
 import { useRouter } from "blitz"
+import { QueryFeedPost } from "integrations/interface/types/queryFeedPost"
 import React, { FunctionComponent } from "react"
 
-type Props = {
-  createdAt: Date
-  files?: { id: string }[]
-  id: string
-  isDisabled?: boolean
-  likesCount: number
-  likes?: {
-    userId: string
-  }[]
-  quotation?: {
-    createdAt: Date
-    files?: { id: string }[]
-    id: string
-    likesCount: number
-    likes?: {
-      userId: string
-    }[]
-    quotations?: {
-      userId: string
-    }[]
-    quotationsCount: number
-    replies?: {
-      userId: string
-    }[]
-    repliesCount: number
-    text: string | null
-    user: {
-      iconImage: { id: string } | null
-      id: string
-      name: string | null
-      username: string
-    }
-    userId: string
-  } | null
-  quotations?: {
-    userId: string
-  }[]
-  quotationsCount: number
-  replies?: {
-    userId: string
-  }[]
-  reply?: {
-    createdAt: Date
-    files?: { id: string }[]
-    id: string
-    likesCount: number
-    likes?: {
-      userId: string
-    }[]
-    quotations?: {
-      userId: string
-    }[]
-    quotationsCount: number
-    replies?: {
-      userId: string
-    }[]
-    repliesCount: number
-    text: string | null
-    user: {
-      iconImage: { id: string } | null
-      id: string
-      name: string | null
-      username: string
-    }
-    userId: string
-  } | null
-  repliesCount: number
-  text: string | null
-  user: {
-    iconImage: { id: string } | null
-    id: string
-    name: string | null
-    username: string
-  }
-  userId: string
-}
-
-export const StackCardPost: FunctionComponent<Props> = ({
-  createdAt,
-  files,
-  id,
-  isDisabled = false,
-  likes,
-  likesCount,
-  quotation,
-  quotations,
-  quotationsCount,
-  replies,
-  repliesCount,
-  reply,
-  text,
-  user,
-  userId,
-}) => {
+export const StackCardPost: FunctionComponent<
+  QueryFeedPost & { isDisabled: boolean }
+> = (props) => {
   const router = useRouter()
 
   const onPushRouter = () => {
-    router.push(`/posts/${id}`)
+    router.push(`/posts/${props.id}`)
   }
 
   const onClickQuotation = () => {
-    router.push(`/posts/${quotation?.id}`)
+    router.push(`/posts/${props.quotation?.id}`)
   }
 
-  if (quotation && text === null) {
+  if (props.quotation && props.text === null) {
     return (
       <StackCard onClick={() => onClickQuotation()}>
-        <StackHeaderRepost name={user.name || user.username} />
+        <StackHeaderRepost name={props.user.name || props.user.username} />
         <HStack align={"start"} spacing={4}>
           <AvatarUser
-            userId={quotation.userId}
-            fileId={quotation.user.iconImage?.id}
+            userId={props.quotation.user.id}
+            fileId={props.quotation.user.iconImageId}
           />
           <Stack spacing={2} w={"full"}>
-            <StackHeaderUserAction {...user} />
-            <StackPostText text={quotation.text} />
-            <StackPostImage files={quotation.files} />
-            <StackPostDate createdAt={quotation.createdAt} />
+            <StackHeaderUserAction {...props.user} />
+            <StackPostText text={props.quotation.text} />
+            <StackPostImage fileIds={props.quotation.fileIds} />
+            <StackPostDate createdAt={props.quotation.createdAt} />
             <StackPostActions
-              hasLike={!!quotation.likes && 0 < quotation.likes.length}
+              hasLike={props.hasLike}
               hasQuotation={false}
-              hasReply={!!quotation.replies && 0 < quotation.replies.length}
-              isDisabled={isDisabled}
-              likesCount={quotation.likesCount}
-              postId={id}
-              quotationsCount={quotation.quotationsCount}
-              repliesCount={quotation.repliesCount}
-              text={quotation.text}
+              hasReply={props.hasReply}
+              isDisabled={props.isDisabled}
+              likesCount={props.quotation.likesCount}
+              postId={props.id}
+              quotationsCount={props.quotation.quotationsCount}
+              repliesCount={props.quotation.repliesCount}
+              text={props.quotation.text}
             />
           </Stack>
         </HStack>
@@ -147,28 +57,28 @@ export const StackCardPost: FunctionComponent<Props> = ({
     )
   }
 
-  if (quotation) {
+  if (props.quotation) {
     return (
       <StackCard onClick={() => onPushRouter()}>
         <HStack align={"start"} spacing={4}>
-          <AvatarUser userId={userId} fileId={user.iconImage?.id} />
+          <AvatarUser userId={props.user.id} fileId={props.user.iconImageId} />
           <Stack spacing={2} w={"full"}>
-            <StackHeaderUserAction {...user} />
-            <StackPostReply {...quotation.user} />
-            <StackPostText text={text} />
-            <StackPostImage files={files} />
-            <StackCardQuotationEmbedded {...quotation} />
-            <StackPostDate createdAt={createdAt} />
+            <StackHeaderUserAction {...props.user} />
+            <StackPostReply {...props.quotation.user} />
+            <StackPostText text={props.text} />
+            <StackPostImage fileIds={props.fileIds} />
+            <StackCardQuotationEmbedded {...props.quotation} />
+            <StackPostDate createdAt={props.createdAt} />
             <StackPostActions
-              hasLike={!!likes && 0 < likes.length}
+              hasLike={props.hasLike}
               hasQuotation={false}
-              hasReply={!!replies && 0 < replies.length}
-              isDisabled={isDisabled}
-              likesCount={likesCount}
-              postId={id}
-              quotationsCount={quotationsCount}
-              repliesCount={repliesCount}
-              text={quotation.text}
+              hasReply={props.hasReply}
+              isDisabled={props.isDisabled}
+              likesCount={props.likesCount}
+              postId={props.id}
+              quotationsCount={props.quotationsCount}
+              repliesCount={props.repliesCount}
+              text={props.quotation.text}
             />
           </Stack>
         </HStack>
@@ -176,27 +86,27 @@ export const StackCardPost: FunctionComponent<Props> = ({
     )
   }
 
-  if (reply) {
+  if (props.reply) {
     return (
-      <StackCard onClick={() => router.push(`/posts/${reply.id}`)}>
+      <StackCard onClick={() => router.push(`/posts/${props.reply?.id}`)}>
         <HStack align={"start"} spacing={4}>
-          <AvatarUser userId={userId} fileId={user.iconImage?.id} />
+          <AvatarUser userId={props.user.id} fileId={props.user.iconImageId} />
           <Stack spacing={2} w={"full"}>
-            <StackHeaderUserAction {...user} />
-            <StackPostReply {...reply.user} />
-            <StackPostText text={text} />
-            <StackPostImage files={files} />
-            <StackPostDate createdAt={createdAt} />
+            <StackHeaderUserAction {...props.user} />
+            <StackPostReply {...props.reply.user} />
+            <StackPostText text={props.text} />
+            <StackPostImage fileIds={props.fileIds} />
+            <StackPostDate createdAt={props.createdAt} />
             <StackPostActions
-              hasLike={!!likes && 0 < likes.length}
+              hasLike={props.hasLike}
               hasQuotation={false}
-              hasReply={!!replies && 0 < replies.length}
-              isDisabled={isDisabled}
-              likesCount={likesCount}
-              postId={id}
-              quotationsCount={quotationsCount}
-              repliesCount={repliesCount}
-              text={text}
+              hasReply={props.hasReply}
+              isDisabled={props.isDisabled}
+              likesCount={props.likesCount}
+              postId={props.id}
+              quotationsCount={props.quotationsCount}
+              repliesCount={props.repliesCount}
+              text={props.text}
             />
           </Stack>
         </HStack>
@@ -207,22 +117,22 @@ export const StackCardPost: FunctionComponent<Props> = ({
   return (
     <StackCard onClick={() => onPushRouter()}>
       <HStack align={"start"} spacing={4}>
-        <AvatarUser userId={userId} fileId={user.iconImage?.id} />
+        <AvatarUser userId={props.user.id} fileId={props.user.iconImageId} />
         <Stack spacing={2} w={"full"}>
-          <StackHeaderUserAction {...user} />
-          <StackPostText text={text} />
-          <StackPostImage files={files} />
-          <StackPostDate createdAt={createdAt} />
+          <StackHeaderUserAction {...props.user} />
+          <StackPostText text={props.text} />
+          <StackPostImage fileIds={props.fileIds} />
+          <StackPostDate createdAt={props.createdAt} />
           <StackPostActions
-            hasLike={!!likes && 0 < likes.length}
-            hasQuotation={!!quotations && 0 < quotations.length}
-            hasReply={!!replies && 0 < replies.length}
-            isDisabled={isDisabled}
-            likesCount={likesCount}
-            postId={id}
-            quotationsCount={quotationsCount}
-            repliesCount={repliesCount}
-            text={text}
+            hasLike={props.hasLike}
+            hasQuotation={props.hasQuotation}
+            hasReply={props.hasReply}
+            isDisabled={props.isDisabled}
+            likesCount={props.likesCount}
+            postId={props.id}
+            quotationsCount={props.quotationsCount}
+            repliesCount={props.repliesCount}
+            text={props.text}
           />
         </Stack>
       </HStack>

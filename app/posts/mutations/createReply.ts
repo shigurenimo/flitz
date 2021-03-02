@@ -1,50 +1,26 @@
+import { zCreateReplyMutation } from "app/posts/validations/createReplyMutation"
 import { resolver } from "blitz"
-import { Id, idSchema, PostText, postTextSchema } from "integrations/domain"
-import {
-  FriendshipRepository,
-  NotificationRepository,
-  PostRepository,
-} from "integrations/infrastructure"
-import * as z from "zod"
-
-const CreateReply = z.object({
-  postId: idSchema,
-  text: postTextSchema,
-})
+import { CreateReplyService } from "integrations/application"
+import { Id, PostText } from "integrations/domain"
+import { createAppContext } from "integrations/registry"
 
 export default resolver.pipe(
-  resolver.zod(CreateReply),
+  resolver.zod(zCreateReplyMutation),
   resolver.authorize(),
   (input, ctx) => ({
     postId: new Id(input.postId),
     text: new PostText(input.text),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ postId, text, userId }) => {
-    const friendshipRepository = new FriendshipRepository()
+  async (input) => {
+    const app = await createAppContext()
 
-    const { friendships } = await friendshipRepository.getUserFollowers({
-      followeeId: userId,
+    await app.get(CreateReplyService).call({
+      postId: input.postId,
+      text: input.text,
+      userId: input.userId,
     })
 
-    const postRepository = new PostRepository()
-
-    const { post, postEntity } = await postRepository.createReply({
-      friendships,
-      postId,
-      text,
-      userId,
-    })
-
-    const [replyEntity] = postEntity.replies
-
-    const notificationRepository = new NotificationRepository()
-
-    await notificationRepository.createReplyNotification({
-      postUserId: postEntity.userId,
-      replyId: replyEntity.id,
-    })
-
-    return post
+    return null
   }
 )

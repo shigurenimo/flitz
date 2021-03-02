@@ -1,12 +1,11 @@
-import { resolver } from "blitz"
-import { Id, idSchema } from "integrations/domain"
-import {
-  NotificationRepository,
-  UserRepository,
-} from "integrations/infrastructure"
+import { NotFoundError, resolver } from "blitz"
+import { FollowUserService } from "integrations/application/followUser.service"
+import { Id, zId } from "integrations/domain"
+import { UserQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-const FollowUser = z.object({ userId: idSchema })
+const FollowUser = z.object({ userId: zId })
 
 export default resolver.pipe(
   resolver.zod(FollowUser),
@@ -15,28 +14,20 @@ export default resolver.pipe(
     followeeId: new Id(input.userId),
     followerId: new Id(ctx.session.userId),
   }),
-  async ({ followeeId, followerId }) => {
-    if (followerId.value === followeeId.value) {
-      throw new Error("Unexpected error")
+  async (input) => {
+    const app = await createAppContext()
+
+    await app.get(FollowUserService).call({
+      followeeId: input.followeeId,
+      followerId: input.followerId,
+    })
+
+    const queryProfile = await app.get(UserQuery).find(input.followerId)
+
+    if (queryProfile === null) {
+      throw new NotFoundError()
     }
 
-    const userRepository = new UserRepository()
-
-    const { user, userEntity } = await userRepository.followUser({
-      followeeId,
-      followerId,
-    })
-
-    const [friendship] = userEntity.followers
-
-    const notificationRepository = new NotificationRepository()
-
-    await notificationRepository.upsertFollowNotification({
-      followeeId,
-      followerId,
-      friendshipId: friendship.id,
-    })
-
-    return user
+    return queryProfile
   }
 )

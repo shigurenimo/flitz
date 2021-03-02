@@ -62,7 +62,7 @@ export const ExchangesPageList: FunctionComponent = () => {
             {...exchange}
             key={exchange.id}
             onClick={() => {
-              onMoveExchangePage(exchange.id, exchange.relatedUserId)
+              onMoveExchangePage(exchange.id, exchange.relatedUser.id)
             }}
           />
         ))}

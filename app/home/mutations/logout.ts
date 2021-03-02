@@ -1,10 +1,17 @@
 import { resolver } from "blitz"
-import { SessionRepository } from "integrations/infrastructure"
+import { RevokeSessionService } from "integrations/application"
+import { createAppContext } from "integrations/registry"
 
 export default resolver.pipe(resolver.authorize(), async (_: unknown, ctx) => {
-  const sessionRepository = new SessionRepository()
+  const app = await createAppContext()
 
-  await sessionRepository.revokeSession(ctx.session)
+  const logout = await app
+    .get(RevokeSessionService)
+    .call({ session: ctx.session })
+
+  if (logout instanceof Error) {
+    throw logout
+  }
 
   return null
 })

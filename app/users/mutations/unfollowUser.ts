@@ -1,9 +1,11 @@
-import { resolver } from "blitz"
-import { Id, idSchema } from "integrations/domain"
-import { UserRepository } from "integrations/infrastructure"
+import { NotFoundError, resolver } from "blitz"
+import { UnfollowUserService } from "integrations/application"
+import { Id, zId } from "integrations/domain"
+import { UserQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-const UnfollowUser = z.object({ userId: idSchema })
+const UnfollowUser = z.object({ userId: zId })
 
 export default resolver.pipe(
   resolver.zod(UnfollowUser),
@@ -12,18 +14,20 @@ export default resolver.pipe(
     followeeId: new Id(input.userId),
     followerId: new Id(ctx.session.userId),
   }),
-  async ({ followeeId, followerId }) => {
-    if (followerId.value === followeeId.value) {
-      throw new Error("Unexpected error")
-    }
+  async (input) => {
+    const app = await createAppContext()
 
-    const userRepository = new UserRepository()
-
-    const { user } = await userRepository.unfollowUser({
-      followeeId,
-      followerId,
+    await app.get(UnfollowUserService).call({
+      followeeId: input.followeeId,
+      followerId: input.followerId,
     })
 
-    return user
+    const queryProfile = await app.get(UserQuery).find(input.followerId)
+
+    if (queryProfile === null) {
+      throw new NotFoundError()
+    }
+
+    return queryProfile
   }
 )

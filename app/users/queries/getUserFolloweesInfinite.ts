@@ -5,27 +5,26 @@ import {
 import { resolver } from "blitz"
 import { PageService } from "integrations/domain"
 import { UserFolloweeQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 
 export default resolver.pipe(
   resolver.zod(zGetUserFolloweesInfinite),
   resolveGetUserFolloweesInfinite,
   async ({ skip, take, userId, username }) => {
-    const userFolloweeQuery = new UserFolloweeQuery()
+    const app = await createAppContext()
 
-    const friendships = await userFolloweeQuery.findByUsername({
+    const friendships = await app.get(UserFolloweeQuery).findByUsername({
       skip,
       take,
       userId,
       username,
     })
 
-    const count = await userFolloweeQuery.count({ username })
+    const count = await app.get(UserFolloweeQuery).count({ username })
 
-    const pageService = new PageService()
+    const hasMore = app.get(PageService).hasMore(skip, take, count)
 
-    const hasMore = pageService.hasMore({ count, skip, take })
-
-    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
 
     return { count, hasMore, friendships, nextPage }
   }

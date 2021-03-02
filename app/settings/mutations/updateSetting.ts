@@ -1,9 +1,11 @@
 import { resolver } from "blitz"
+import { UpdateSettingService } from "integrations/application"
 import { Id } from "integrations/domain"
-import { SettingRepository } from "integrations/infrastructure"
+import { QuerySetting } from "integrations/interface/types/querySetting"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-const UpdateSetting = z.object({
+const zUpdateSettingMutation = z.object({
   fcmToken: z.string().nullable().optional(),
   fcmTokenForMobile: z.string().nullable().optional(),
   subscribeMessage: z.boolean().optional(),
@@ -12,35 +14,39 @@ const UpdateSetting = z.object({
 })
 
 export default resolver.pipe(
-  resolver.zod(UpdateSetting),
+  resolver.zod(zUpdateSettingMutation),
   resolver.authorize(),
   (input, ctx) => ({
-    ...input,
+    fcmToken: input.fcmToken || null,
+    fcmTokenForMobile: input.fcmTokenForMobile || null,
+    subscribeMessage: input.subscribeMessage || false,
+    subscribePostLike: input.subscribePostLike || false,
+    subscribePostQuotation: input.subscribePostQuotation || false,
     userId: new Id(ctx.session.userId),
   }),
-  async ({
-    fcmToken,
-    fcmTokenForMobile,
-    subscribeMessage,
-    subscribePostLike,
-    subscribePostQuotation,
-    userId,
-  }) => {
-    const settingRepository = new SettingRepository()
+  async (input): Promise<QuerySetting> => {
+    const app = await createAppContext()
 
-    const { setting } = await settingRepository.updateSetting({
-      fcmToken,
-      fcmTokenForMobile,
-      subscribeMessage,
-      subscribePostLike,
-      subscribePostQuotation,
-      userId,
+    const settingEntity = await app.get(UpdateSettingService).call({
+      fcmTokenForMobile: input.fcmTokenForMobile,
+      fcmToken: input.fcmToken,
+      userId: input.userId,
     })
 
+    if (settingEntity instanceof Error) {
+      throw new Error()
+    }
+
     return {
-      ...setting,
-      fcmToken: setting.fcmToken?.slice(0, 4) || null,
-      fcmTokenForMobile: setting.fcmTokenForMobile?.slice(0, 4) || null,
+      fcmToken: settingEntity.fcmToken?.slice(0, 4) || null,
+      fcmTokenForMobile: settingEntity.fcmTokenForMobile?.slice(0, 4) || null,
+      id: settingEntity.id.value,
+      notificationEmail: settingEntity.notificationEmail?.value || null,
+      protected: settingEntity.protected,
+      subscribeMessage: settingEntity.subscribeMessage,
+      subscribePostLike: settingEntity.subscribePostLike,
+      subscribePostQuotation: settingEntity.subscribePostQuotation,
+      discoverableByEmail: settingEntity.discoverableByEmail,
     }
   }
 )

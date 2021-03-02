@@ -1,6 +1,7 @@
 import { resolver } from "blitz"
 import { Id } from "integrations/domain"
-import { AccountsQuery } from "integrations/infrastructure"
+import { AccountQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
 const GetAccount = z.null()
@@ -12,9 +13,9 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ userId }) => {
-    const accountQuery = new AccountsQuery()
+    const app = await createAppContext()
 
-    const account = await accountQuery.findByUserId(userId)
+    const account = await app.get(AccountQuery).findByUserId(userId)
 
     if (account === null) {
       throw new Error("")

@@ -1,9 +1,7 @@
 import { NotFoundError, resolver } from "blitz"
 import { Id } from "integrations/domain"
-import {
-  SettingRepository,
-  UserSettingQuery,
-} from "integrations/infrastructure"
+import { UserSettingQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
 const GetSetting = z.null()
@@ -14,18 +12,12 @@ export default resolver.pipe(
   (_, ctx) => ({
     userId: new Id(ctx.session.userId),
   }),
-  async ({ userId }) => {
-    const userSettingQuery = new UserSettingQuery()
+  async (input) => {
+    const app = await createAppContext()
 
-    const hasSetting = await userSettingQuery.has({ userId })
-
-    if (hasSetting) {
-      const settingRepository = new SettingRepository()
-
-      await settingRepository.create({ userId })
-    }
-
-    const setting = await userSettingQuery.find({ userId })
+    const setting = await app
+      .get(UserSettingQuery)
+      .find({ userId: input.userId })
 
     if (setting === null) {
       throw new NotFoundError()

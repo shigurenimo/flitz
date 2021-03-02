@@ -1,28 +1,24 @@
-import { UploadFileService } from "app/services"
 import { resolver } from "blitz"
 import {
+  CreateFileService,
+  UpdateUserProfileService,
+} from "integrations/application"
+import {
   Biography,
-  biographySchema,
   Id,
   ImageFactory,
   Name,
-  nameSchema,
+  zBiography,
+  zName,
 } from "integrations/domain"
-import {
-  EnvRepository,
-  FileRepository,
-  ImageRepository,
-  SessionRepository,
-  StorageRepository,
-  UserRepository,
-} from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
 const UpdateUserProfile = z.object({
-  biography: biographySchema,
+  biography: zBiography,
   headerImage: z.string().nullable(),
   iconImage: z.string().nullable(),
-  name: nameSchema,
+  name: zName,
 })
 
 export default resolver.pipe(
@@ -35,42 +31,26 @@ export default resolver.pipe(
     name: new Name(input.name),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ biography, headerImage, iconImage, name, userId }, ctx) => {
-    const fileService = new UploadFileService(
-      new EnvRepository(),
-      new FileRepository(),
-      new ImageRepository(),
-      new StorageRepository()
-    )
+  async (input, ctx) => {
+    const app = await createAppContext()
 
-    const { fileEntity: headerImageFileEntry } = await fileService.execute({
-      userId,
-      image: headerImage,
+    const headerImageFileEntry = await app
+      .get(CreateFileService)
+      .call({ userId: input.userId, image: input.headerImage })
+
+    const iconImageFileEntity = await app
+      .get(CreateFileService)
+      .call({ userId: input.userId, image: input.iconImage })
+
+    await app.get(UpdateUserProfileService).call({
+      headerImageId: headerImageFileEntry?.id,
+      iconImageId: iconImageFileEntity?.id,
+      biography: input.biography,
+      name: input.name,
+      userId: input.userId,
+      session: ctx.session,
     })
 
-    const { fileEntity: iconImageFileEntity } = await fileService.execute({
-      userId,
-      image: iconImage,
-    })
-
-    const userRepository = new UserRepository()
-
-    const { user, userEntity } = await userRepository.update({
-      biography,
-      headerImageId: headerImageFileEntry ? headerImageFileEntry.id : null,
-      iconImageId: iconImageFileEntity ? iconImageFileEntity.id : null,
-      id: userId,
-      name,
-    })
-
-    const sessionRepository = new SessionRepository()
-
-    await sessionRepository.updatePublicData(ctx.session, {
-      name: userEntity.name,
-      username: userEntity.username,
-      iconImageId: userEntity.iconImage?.id || null,
-    })
-
-    return user
+    return null
   }
 )

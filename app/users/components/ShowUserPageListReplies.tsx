@@ -34,7 +34,7 @@ export const ShowUserPageListReplies: FunctionComponent = () => {
           )
         }
         return group.posts.map((post) => {
-          return <StackCardPost key={post.id} {...post} />
+          return <StackCardPost key={post.id} {...post} isDisabled={false} />
         })
       })}
     </StackList>

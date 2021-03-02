@@ -34,8 +34,8 @@ export const ShowUserPageListLikes: FunctionComponent = () => {
           )
         }
 
-        return group.likes.map((like) => {
-          return <StackCardPost key={like.id} {...like.post} />
+        return group.likes.map((post) => {
+          return <StackCardPost key={post.id} {...post} isDisabled={false} />
         })
       })}
     </StackList>

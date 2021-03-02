@@ -3,46 +3,27 @@ import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackCard } from "app/core/components/StackCard"
 import { StackExchangeUser } from "app/exchanges/components/StackExchangeUser"
 import { StackPostDate } from "app/posts/components/StackPostDate"
+import { QueryUserExchange } from "integrations/interface/types/queryExchangeMessage"
 import React, { FunctionComponent } from "react"
 
-type Props = {
-  messages: {
-    text: string
-    createdAt: Date
-    user: {
-      id: string
-      name: string | null
-      username: string
-    }
-  }[]
-  onClick: () => void
-  relatedUser: {
-    id: string
-    name: string | null
-    username: string
-  } | null
-}
-
-export const StackCardExchange: FunctionComponent<Props> = ({
-  messages,
-  onClick,
-  relatedUser,
-}) => {
-  const [message] = messages
-
-  if (relatedUser === null) return null
+export const StackCardExchange: FunctionComponent<
+  QueryUserExchange & {
+    onClick: () => void
+  }
+> = (props) => {
+  if (props.relatedUser === null) return null
 
   return (
-    <StackCard onClick={onClick}>
+    <StackCard onClick={props.onClick}>
       <HStack align={"start"} spacing={4}>
-        <AvatarUser userId={relatedUser.id} />
+        <AvatarUser userId={props.relatedUser.id} />
         <Stack spacing={2} w={"full"}>
-          <StackExchangeUser user={relatedUser} />
-          <Text lineHeight={1}>{`${message.user.name} responded`}</Text>
+          <StackExchangeUser user={props.relatedUser} />
+          <Text lineHeight={1}>{`${props.relatedUser.name} responded`}</Text>
           <Text fontSize={"lg"} lineHeight={1}>
-            {message.text}
+            {props.lastMessage.text}
           </Text>
-          <StackPostDate createdAt={message.createdAt} />
+          <StackPostDate createdAt={props.lastMessage.createdAt} />
         </Stack>
       </HStack>
     </StackCard>

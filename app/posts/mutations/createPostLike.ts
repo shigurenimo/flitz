@@ -1,43 +1,27 @@
+import { zCreatePostLikeMutation } from "app/posts/validations/createPostLikeMutation"
 import { resolver } from "blitz"
-import { Id, idSchema } from "integrations/domain"
-import {
-  NotificationRepository,
-  PostRepository,
-} from "integrations/infrastructure"
+import { CreatePostLikeService } from "integrations/application"
+import { Id, zId } from "integrations/domain"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-export const CreatePostLike = z.object({ postId: idSchema })
+export const CreatePostLike = z.object({ postId: zId })
 
 export default resolver.pipe(
-  resolver.zod(CreatePostLike),
+  resolver.zod(zCreatePostLikeMutation),
   resolver.authorize(),
   (input, ctx) => ({
     postId: new Id(input.postId),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ postId, userId }) => {
-    const postRepository = new PostRepository()
+  async (input) => {
+    const app = await createAppContext()
 
-    const { post, postEntity } = await postRepository.createLikes({
-      postId,
-      userId,
+    await app.get(CreatePostLikeService).call({
+      postId: input.postId,
+      userId: input.userId,
     })
 
-    const [likeEntity] = postEntity.likes
-
-    const notificationRepository = new NotificationRepository()
-
-    if (postEntity.user === null) {
-      return null
-    }
-
-    await notificationRepository.upsertPostLikeNotification({
-      likeId: likeEntity.id,
-      postId,
-      postUserId: postEntity.user.id,
-      userId,
-    })
-
-    return post
+    return null
   }
 )

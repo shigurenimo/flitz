@@ -14,7 +14,7 @@ export const ShowPostPageDetail: FunctionComponent = () => {
   return (
     <Stack spacing={4} px={4}>
       <HStack spacing={4}>
-        <AvatarUser userId={post.userId} />
+        <AvatarUser userId={post.user.id} />
         <StackHeaderUserAction {...post.user} />
       </HStack>
       <Stack>
@@ -22,7 +22,7 @@ export const ShowPostPageDetail: FunctionComponent = () => {
           {post.text}
         </Text>
       </Stack>
-      {post.files?.length && <StackPostImage files={post.files} />}
+      {post.fileIds?.length && <StackPostImage fileIds={post.fileIds} />}
       <HStack>
         <Text color={"gray.500"} fontSize={"lg"}>
           {post.createdAt.toLocaleTimeString()}

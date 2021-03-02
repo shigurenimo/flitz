@@ -23,7 +23,7 @@ export const PostsPageList: FunctionComponent = () => {
         return group.posts.map((post) => {
           return (
             <StackCardPost
-              isDisabled={!session.userId || session.userId === post.userId}
+              isDisabled={!session.userId || session.userId === post.user.id}
               {...post}
             />
           )

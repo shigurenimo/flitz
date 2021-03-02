@@ -1,23 +1,24 @@
 import { resolver } from "blitz"
 import {
   Id,
-  idSchema,
+  MessageRepository,
   MessageService,
   PageService,
   Skip,
-  skipSchema,
   Take,
+  zId,
+  zSkip,
 } from "integrations/domain"
 import {
   ExchangeMessageQuery,
-  MessageRepository,
   UserMessageQuery,
 } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
 const GetMessagesInfinite = z.object({
-  relatedUserId: idSchema,
-  skip: skipSchema,
+  relatedUserId: zId,
+  skip: zSkip,
 })
 
 export default resolver.pipe(
@@ -30,36 +31,28 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ relatedUserId, skip, take, userId }) => {
-    const exchangeMessageQuery = new ExchangeMessageQuery()
+    const app = await createAppContext()
 
-    const messages = await exchangeMessageQuery.findManyByUserId({
+    const messages = await app.get(ExchangeMessageQuery).findManyByUserId({
       relatedUserId,
       skip,
       userId,
     })
 
-    const messageService = new MessageService()
-
-    const hasUnreadMessages = messageService.hasUnreadMessages({
+    const hasUnreadMessages = app.get(MessageService).hasUnreadMessages({
       messages,
       userId,
     })
 
     if (hasUnreadMessages) {
-      const messageRepository = new MessageRepository()
-
-      await messageRepository.markMesagesAsRead({ relatedUserId, userId })
+      await app.get(MessageRepository).markAsRead(userId, relatedUserId)
     }
 
-    const userMessageQuery = new UserMessageQuery()
+    const count = await app.get(UserMessageQuery).count(userId, relatedUserId)
 
-    const count = await userMessageQuery.count({ relatedUserId, userId })
+    const hasMore = app.get(PageService).hasMore(skip, take, count)
 
-    const pageService = new PageService()
-
-    const hasMore = pageService.hasMore({ count, skip, take })
-
-    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
 
     return { messages, nextPage }
   }

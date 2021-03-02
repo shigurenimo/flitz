@@ -2,44 +2,27 @@ import { Badge, Button, HStack, Stack, Text, useToast } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackCard } from "app/core/components/StackCard"
 import { useRouter } from "blitz"
+import { QueryFollower } from "integrations/interface/types/queryFollower"
 import React, { FunctionComponent } from "react"
 
-type Props = {
+export const StackCardUser: FunctionComponent<{
   createdAt: Date
   hasAction: boolean
   onFollow: () => Promise<void>
   onUnfollow: () => Promise<void>
-  user: {
-    biography: string
-    followees: {
-      id: string
-    }[]
-    followers: {
-      id: string
-    }[]
-    id: string
-    name: string | null
-    username: string | null
-  }
-}
-
-export const StackCardUser: FunctionComponent<Props> = ({
-  hasAction,
-  onFollow,
-  onUnfollow,
-  user,
-}) => {
+  follower: QueryFollower
+}> = (props) => {
   const router = useRouter()
 
   const toast = useToast()
 
   const onShowUser = () => {
-    router.push(`/${user.username}`)
+    router.push(`/${props.follower.username}`)
   }
 
   const onRunFollow = async () => {
     try {
-      await onFollow()
+      await props.onFollow()
       toast({ status: "success", title: "Success" })
     } catch (error) {
       toast({ status: "error", title: error.message })
@@ -48,52 +31,48 @@ export const StackCardUser: FunctionComponent<Props> = ({
 
   const onRunUnfollow = async () => {
     try {
-      await onUnfollow()
+      await props.onUnfollow()
       toast({ status: "success", title: "Success" })
     } catch (error) {
       toast({ status: "error", title: error.message })
     }
   }
 
-  const isFollowee = user.followers.length !== 0
-
-  const isFollower = user.followees.length !== 0
-
   return (
     <StackCard onClick={() => onShowUser()}>
       <HStack align={"start"} spacing={4}>
-        <AvatarUser userId={user.id} />
+        <AvatarUser userId={props.follower.id} />
         <Stack spacing={2} w={"full"}>
           <HStack align={"start"} spacing={4}>
             <Stack spacing={2} w={"full"}>
               <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
-                {user.name}
+                {props.follower.name}
               </Text>
               <Text color={"gray.500"} fontSize={"sm"} lineHeight={1}>
-                {`@${user.username || user.id}`}
+                {`@${props.follower.username || props.follower.id}`}
               </Text>
             </Stack>
-            {hasAction && (
+            {props.hasAction && (
               <Button
                 onClick={(event) => {
                   event.stopPropagation()
-                  if (isFollowee) {
+                  if (props.follower.isFollowee) {
                     return onRunUnfollow()
                   }
                   return onRunFollow()
                 }}
               >
-                {isFollowee ? "Following" : "Follow"}
+                {props.follower.isFollowee ? "Following" : "Follow"}
               </Button>
             )}
           </HStack>
-          {isFollower && (
+          {props.follower.isFollower && (
             <HStack>
               <Badge colorScheme={"green"}>{"Follows you"}</Badge>
             </HStack>
           )}
           <Text fontSize={"lg"} fontWeight={"bold"} lineHeight={1.5}>
-            {user.biography}
+            {props.follower.biography}
           </Text>
         </Stack>
       </HStack>

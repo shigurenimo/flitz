@@ -1,46 +1,24 @@
+import { zCreateQuotation } from "app/posts/validations/createQuotationMutation"
 import { resolver } from "blitz"
-import { Id, idSchema } from "integrations/domain"
-import {
-  FriendshipRepository,
-  NotificationRepository,
-  PostRepository,
-} from "integrations/infrastructure"
-import * as z from "zod"
-
-const CreateQuotation = z.object({ postId: idSchema })
+import { CreateQuotationService } from "integrations/application"
+import { Id } from "integrations/domain"
+import { createAppContext } from "integrations/registry"
 
 export default resolver.pipe(
-  resolver.zod(CreateQuotation),
+  resolver.zod(zCreateQuotation),
   resolver.authorize(),
   (input, ctx) => ({
     postId: new Id(input.postId),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ postId, userId }) => {
-    const friendshipRepository = new FriendshipRepository()
+  async (input) => {
+    const app = await createAppContext()
 
-    const { friendships } = await friendshipRepository.getUserFollowers({
-      followeeId: userId,
+    await app.get(CreateQuotationService).call({
+      postId: input.postId,
+      userId: input.userId,
     })
 
-    const postRepository = new PostRepository()
-
-    const { post, postEntity } = await postRepository.createPostQuotation({
-      friendships,
-      postId,
-      userId,
-    })
-
-    const [quotationEntity] = postEntity.quotations
-
-    const notificationRepository = new NotificationRepository()
-
-    await notificationRepository.upsertQuotationNotification({
-      postUserId: postEntity.userId,
-      quotationId: quotationEntity.id,
-      postId,
-    })
-
-    return post
+    return null
   }
 )

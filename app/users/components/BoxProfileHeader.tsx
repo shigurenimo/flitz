@@ -2,7 +2,7 @@ import { AspectRatio, Box, Image } from "@chakra-ui/react"
 import React, { FunctionComponent } from "react"
 
 type Props = {
-  fileId?: string
+  fileId?: string | null
   src?: string
 }
 
