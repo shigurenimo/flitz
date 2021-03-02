@@ -1,17 +1,23 @@
-import type {
-  NotificationEntity,
-  UserEntity,
-} from "integrations/domain/entities"
 import type { Id } from "integrations/domain/valueObjects"
 
+/**
+ * フォロー関係
+ */
 export class FriendshipEntity {
-  createdAt!: Date
-  followee!: UserEntity | null
-  followeeId!: Id
-  follower!: UserEntity | null
-  followerId!: Id
+  /**
+   * ID
+   */
   id!: Id
-  notifications!: NotificationEntity[]
+
+  /**
+   * フォローされているユーザーのID
+   */
+  followeeId!: Id
+
+  /**
+   * フォローしているユーザーのID
+   */
+  followerId!: Id
 
   constructor(public props: Omit<FriendshipEntity, "props">) {
     Object.assign(this, props)

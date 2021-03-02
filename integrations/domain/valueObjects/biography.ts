@@ -1,8 +1,8 @@
 import * as z from "zod"
 
-export const biographySchema = z.string().max(80)
+export const zBiography = z.string().max(80)
 
-export type BiographyValue = z.infer<typeof biographySchema>
+export type BiographyValue = z.infer<typeof zBiography>
 
 /**
  * 紹介文
@@ -19,7 +19,7 @@ export type BiographyValue = z.infer<typeof biographySchema>
  */
 export class Biography {
   constructor(public value: BiographyValue) {
-    biographySchema.parse(value)
+    zBiography.parse(value)
     Object.freeze(this)
   }
 }

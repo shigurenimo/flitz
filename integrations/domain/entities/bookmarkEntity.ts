@@ -1,11 +1,27 @@
-import type { PostEntity, UserEntity } from "integrations/domain/entities"
 import type { Id } from "integrations/domain/valueObjects"
 
+/**
+ * ブックマーク
+ */
 export class BookmarkEntity {
+  /**
+   * ID
+   */
+  id!: Id
+
+  /**
+   * 作成日
+   */
   createdAt!: Date
-  post!: PostEntity | null
+
+  /**
+   * ブックマークした投稿のID
+   */
   postId!: Id
-  user!: UserEntity | null
+
+  /**
+   * ブックマークしたユーザーのID
+   */
   userId!: Id
 
   constructor(public props: Omit<BookmarkEntity, "props">) {

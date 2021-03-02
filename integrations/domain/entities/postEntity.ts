@@ -1,34 +1,57 @@
-import type {
-  BookmarkEntity,
-  FileEntity,
-  LikeEntity,
-  NotificationEntity,
-  ReferenceEntity,
-  UserEntity,
-} from "integrations/domain/entities"
 import type { Count, Id, PostText } from "integrations/domain/valueObjects"
 
+/**
+ * 投稿
+ */
 export class PostEntity {
-  bookmarks!: BookmarkEntity[]
-  createdAt!: Date
-  files!: FileEntity[]
+  /**
+   * ID
+   */
   id!: Id
-  likes!: LikeEntity[]
-  likesCount!: Count
-  notifications!: NotificationEntity[]
-  quotation!: PostEntity | null
+
+  /**
+   * 引用のID
+   */
   quotationId!: Id | null
-  quotations!: PostEntity[]
+
+  /**
+   * 引用された回数
+   */
   quotationsCount!: Count
-  references!: ReferenceEntity[]
-  replies!: PostEntity[]
+
+  /**
+   * 返信された回数
+   */
   repliesCount!: Count
-  reply!: PostEntity | null
+
+  /**
+   * 返信先のID
+   */
   replyId!: Id | null
+
+  /**
+   * 文章
+   */
   text!: PostText | null
-  updatedAt!: Date
-  user!: UserEntity | null
+
+  /**
+   * 作成したユーザーのID
+   */
   userId!: Id
+
+  /**
+   * 関連付けされたファイルのID
+   */
+  fileIds!: Id[]
+
+  /**
+   * 関連するフィード
+   *
+   * referencesに変更する
+   *
+   * @deprecated
+   */
+  followerIds!: Id[]
 
   constructor(public props: Omit<PostEntity, "props">) {
     Object.assign(this, props)

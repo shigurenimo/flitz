@@ -1,4 +1,3 @@
-import type { PostEntity, UserEntity } from "integrations/domain/entities"
 import type {
   FileType,
   Id,
@@ -6,19 +5,38 @@ import type {
   Service,
 } from "integrations/domain/valueObjects"
 
+/**
+ * 画像ファイル
+ */
 export class FileEntity {
-  createdAt!: Date
-  headerUser!: UserEntity | null
-  headerUserId!: Id | null
-  iconUser!: UserEntity | null
-  iconUserId!: Id | null
+  /**
+   * ID
+   */
   id!: Id
+
+  /**
+   * アップロードしたパス
+   */
   path!: Path
-  post!: PostEntity | null
-  postId!: Id | null
-  service!: Service | null
+
+  /**
+   * 画像の形式
+   *
+   * - IMAGE_PNG
+   */
   type!: FileType
-  user!: UserEntity | null
+
+  /**
+   * アップロード先のサービス
+   *
+   * - ローカル
+   * - CloudStorage
+   */
+  service!: Service | null
+
+  /**
+   * アップロードしたユーザーのID
+   */
   userId!: Id
 
   constructor(public props: Omit<FileEntity, "props">) {

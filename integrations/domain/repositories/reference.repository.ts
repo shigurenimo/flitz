@@ -3,10 +3,9 @@ import type { Id } from "integrations/domain/valueObjects"
 /**
  * タイムライン
  */
-export interface IReferenceRepository {
+export abstract class ReferenceRepository {
   /**
-   * TODO: 集約
    * @param input
    */
-  markReferencesAsRead(input: { userId: Id }): Promise<null>
+  abstract markAsRead(userId: Id): Promise<null>
 }

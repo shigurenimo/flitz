@@ -1,17 +1,10 @@
 import { Ctx } from "blitz"
-import {
-  Id,
-  Skip,
-  skipSchema,
-  Take,
-  Username,
-  usernameSchema,
-} from "integrations/domain"
+import { Id, Skip, Take, Username, zSkip, zUsername } from "integrations/domain"
 import * as z from "zod"
 
 export const zGetUserFolloweesInfinite = z.object({
-  skip: skipSchema,
-  username: usernameSchema,
+  skip: zSkip,
+  username: zUsername,
 })
 
 export const resolveGetUserFolloweesInfinite = (

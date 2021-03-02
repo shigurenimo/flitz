@@ -1,15 +1,15 @@
 import * as z from "zod"
 
-export const postTextSchema = z.string().min(1).max(280)
+export const zPostText = z.string().min(1).max(280)
 
-export type PostTextValue = z.infer<typeof postTextSchema>
+export type PostTextValue = z.infer<typeof zPostText>
 
 /**
  * 投稿のテキスト
  */
 export class PostText {
   constructor(public value: PostTextValue) {
-    postTextSchema.parse(value)
+    zPostText.parse(value)
     Object.freeze(this)
   }
 }
