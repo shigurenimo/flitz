@@ -1,15 +1,15 @@
 import * as z from "zod"
 
-export const nameSchema = z.string().max(12)
+export const zName = z.string().max(12)
 
-export type NameValue = z.infer<typeof nameSchema>
+export type NameValue = z.infer<typeof zName>
 
 /**
  * ユーザー名
  */
 export class Name {
   constructor(public value: NameValue) {
-    nameSchema.parse(value)
+    zName.parse(value)
     Object.freeze(this)
   }
 

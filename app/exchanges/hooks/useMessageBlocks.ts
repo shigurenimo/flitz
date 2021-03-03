@@ -1,13 +1,7 @@
 import { MessageBlock } from "app/exchanges/types/messageBlock"
-import { Message } from "db"
+import { QueryUserMessage } from "integrations/interface/types/queryUserMessage"
 
-type MessageWithUser = Message & {
-  user: {
-    id: string
-    name: string | null
-    username: string
-  }
-}
+type MessageWithUser = QueryUserMessage
 
 export const useMessageBlocks = (
   messages: MessageWithUser[],

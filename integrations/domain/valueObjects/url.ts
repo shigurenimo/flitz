@@ -1,15 +1,15 @@
 import * as z from "zod"
 
-export const urlSchema = z.string().url()
+export const zUrl = z.string().url()
 
-export type UrlValue = z.infer<typeof urlSchema>
+export type UrlValue = z.infer<typeof zUrl>
 
 /**
  * URL
  */
 export class Url {
   constructor(public value: UrlValue) {
-    urlSchema.parse(value)
+    zUrl.parse(value)
     Object.freeze(this)
   }
 }

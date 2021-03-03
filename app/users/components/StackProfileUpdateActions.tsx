@@ -2,50 +2,48 @@ import { Box, HStack } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { RenderFileLoader } from "app/core/components/RenderFileLoader"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
+import { QueryProfile } from "integrations/interface/types/queryProfile"
 import React, { FunctionComponent } from "react"
 
-type Props = {
-  headerImage: { id: string } | null
-  headerImageFile: File | null
-  iconImage: { id: string } | null
-  iconImageFile: File | null
-  id: string
-}
-
-export const StackProfileUpdateActions: FunctionComponent<Props> = ({
-  headerImage,
-  headerImageFile,
-  iconImage,
-  iconImageFile,
-  id,
-}) => {
+export const StackProfileUpdateActions: FunctionComponent<
+  QueryProfile & {
+    headerImageFile: File | null
+    iconImageFile: File | null
+  }
+> = (props) => {
   return (
     <Box>
       <HStack w={"full"}>
-        {headerImageFile && (
+        {props.headerImageFile && (
           <RenderFileLoader
-            key={`${headerImageFile.name}-${headerImageFile.lastModified}`}
-            file={headerImageFile}
+            key={`${props.headerImageFile.name}-${props.headerImageFile.lastModified}`}
+            file={props.headerImageFile}
             render={(src) => <BoxProfileHeader src={src} />}
           />
         )}
-        {!headerImageFile && (
+        {props.headerImageFile === null && (
           <BoxProfileHeader
-            fileId={headerImage?.id}
+            fileId={props.headerImageId}
             src={"https://via.placeholder.com/400?text=FLITZ"}
           />
         )}
       </HStack>
       <HStack spacing={4} align={"center"} mt={-10} px={4}>
-        {iconImageFile && (
+        {props.iconImageFile && (
           <RenderFileLoader
-            key={`${iconImageFile.name}-${iconImageFile.lastModified}`}
-            file={iconImageFile}
-            render={(url) => <AvatarUser userId={id} src={url} size={"xl"} />}
+            key={`${props.iconImageFile.name}-${props.iconImageFile.lastModified}`}
+            file={props.iconImageFile}
+            render={(url) => (
+              <AvatarUser userId={props.id} src={url} size={"xl"} />
+            )}
           />
         )}
-        {!iconImageFile && (
-          <AvatarUser userId={id} fileId={iconImage?.id} size={"xl"} />
+        {props.iconImageFile === null && (
+          <AvatarUser
+            userId={props.id}
+            fileId={props.iconImageId}
+            size={"xl"}
+          />
         )}
       </HStack>
     </Box>

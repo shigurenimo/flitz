@@ -1,10 +1,10 @@
-import { Reference } from "db"
+import { QueryFeed } from "integrations/interface/types/queryFeed"
 
 /**
  * タイムライン
  */
 export class ReferenceService {
-  hasUnread(input: { references: Reference[] }) {
+  hasUnread(input: { references: QueryFeed[] }) {
     const unreadReferences = input.references.filter((referenceEntity) => {
       return !referenceEntity.isRead
     })

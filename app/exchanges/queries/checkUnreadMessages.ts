@@ -1,6 +1,7 @@
 import { resolver } from "blitz"
 import { Id } from "integrations/domain"
 import { UserExchangeQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 
 export default resolver.pipe(
   resolver.authorize(),
@@ -8,9 +9,11 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ userId }) => {
-    const userExchangeQuery = new UserExchangeQuery()
+    const app = await createAppContext()
 
-    const existence = await userExchangeQuery.checkExistence({ userId })
+    const existence = await app
+      .get(UserExchangeQuery)
+      .checkExistence({ userId })
 
     return existence
   }

@@ -1,19 +1,18 @@
 import { resolver } from "blitz"
 import {
   Id,
+  NotificationRepository,
   NotificationService,
   PageService,
   Skip,
-  skipSchema,
   Take,
+  zSkip,
 } from "integrations/domain"
-import {
-  NotificationRepository,
-  UserNotificationQuery,
-} from "integrations/infrastructure"
+import { UserNotificationQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-const GetNotificationsInfinite = z.object({ skip: skipSchema })
+const GetNotificationsInfinite = z.object({ skip: zSkip })
 
 export default resolver.pipe(
   resolver.zod(GetNotificationsInfinite),
@@ -23,28 +22,26 @@ export default resolver.pipe(
     take: new Take(),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ skip, take, userId }) => {
-    const userNotificationQuery = new UserNotificationQuery()
+  async (input) => {
+    const app = await createAppContext()
 
-    const notifications = await userNotificationQuery.findMany({ skip, userId })
+    const notifications = await app
+      .get(UserNotificationQuery)
+      .findMany(input.userId, input.skip)
 
-    const notificationService = new NotificationService()
-
-    const hasUnread = notificationService.hasUnread({ notifications })
+    const hasUnread = app.get(NotificationService).hasUnread(notifications)
 
     if (hasUnread) {
-      const notificationRepository = new NotificationRepository()
-
-      await notificationRepository.markAsRead({ userId })
+      await app.get(NotificationRepository).markAsRead(input.userId)
     }
 
-    const count = await userNotificationQuery.count({ userId })
+    const count = await app.get(UserNotificationQuery).count(input.userId)
 
-    const pageService = new PageService()
+    const hasMore = app.get(PageService).hasMore(input.skip, input.take, count)
 
-    const hasMore = pageService.hasMore({ count, skip, take })
-
-    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore
+      ? app.get(PageService).nextPage(input.take, input.skip)
+      : null
 
     return { notifications, hasMore, nextPage }
   }

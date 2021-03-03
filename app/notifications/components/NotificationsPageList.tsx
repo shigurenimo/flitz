@@ -34,7 +34,7 @@ export const NotificationsPageList: FunctionComponent = () => {
       )}
       {groupedNotifications.map((group) => {
         return group.notifications.map((notification) => {
-          return (
+          return notification === null ? null : (
             <StackCardNotification key={notification.id} {...notification} />
           )
         })

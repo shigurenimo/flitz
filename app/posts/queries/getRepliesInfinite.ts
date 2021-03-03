@@ -1,18 +1,12 @@
 import { resolver } from "blitz"
-import {
-  Id,
-  idSchema,
-  PageService,
-  Skip,
-  skipSchema,
-  Take,
-} from "integrations/domain"
+import { Id, PageService, Skip, Take, zId, zSkip } from "integrations/domain"
 import { ReplyQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
 const GetRepliesInfinite = z.object({
-  skip: skipSchema,
-  replyId: idSchema,
+  skip: zSkip,
+  replyId: zId,
 })
 
 export default resolver.pipe(
@@ -24,22 +18,20 @@ export default resolver.pipe(
     userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
   }),
   async ({ replyId, skip, take, userId }) => {
-    const replyQuery = new ReplyQuery()
+    const app = await createAppContext()
 
-    const posts = await replyQuery.findMany({
+    const posts = await app.get(ReplyQuery).findMany({
       skip,
       take,
       replyId,
       userId,
     })
 
-    const count = await replyQuery.count({ replyId })
+    const count = await app.get(ReplyQuery).count({ replyId })
 
-    const pageService = new PageService()
+    const hasMore = app.get(PageService).hasMore(skip, take, count)
 
-    const hasMore = pageService.hasMore({ count, skip, take })
-
-    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
 
     return { hasMore, posts, nextPage }
   }

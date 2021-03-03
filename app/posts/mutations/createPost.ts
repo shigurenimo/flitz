@@ -1,55 +1,31 @@
-import { UploadFileService } from "app/services"
+import { zCreatePostMutation } from "app/posts/validations/createPostMutation"
 import { resolver } from "blitz"
-import { Id, ImageFactory, PostText, postTextSchema } from "integrations/domain"
-import {
-  EnvRepository,
-  FileRepository,
-  FriendshipRepository,
-  ImageRepository,
-  PostRepository,
-  StorageRepository,
-} from "integrations/infrastructure"
-import * as z from "zod"
-
-export const CreatePost = z.object({
-  // base64 workaround. see onCreatePost in HomePageInput
-  image: z.string().nullable(),
-  text: postTextSchema,
-})
+import { CreateFileService, CreatePostService } from "integrations/application"
+import { Id, ImageFactory, PostText } from "integrations/domain"
+import { createAppContext } from "integrations/registry"
 
 export default resolver.pipe(
-  resolver.zod(CreatePost),
+  resolver.zod(zCreatePostMutation),
   resolver.authorize(),
   (input, ctx) => ({
     image: ImageFactory.fromDataURL(input.image),
     text: new PostText(input.text),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ image, text, userId }) => {
-    const friendshipRepository = new FriendshipRepository()
+  async (input) => {
+    const app = await createAppContext()
 
-    const { friendships } = await friendshipRepository.getUserFollowers({
-      followeeId: userId,
+    const fileEntity = await app.get(CreateFileService).call({
+      userId: input.userId,
+      image: input.image,
     })
 
-    const fileService = new UploadFileService(
-      new EnvRepository(),
-      new FileRepository(),
-      new ImageRepository(),
-      new StorageRepository()
-    )
-
-    const { fileEntity } = await fileService.execute({ userId, image })
-
-    const postRepository = new PostRepository()
-
-    const { post } = await postRepository.createPost({
-      friendships,
-      text,
-      userId,
+    await app.get(CreatePostService).call({
       fileIds: fileEntity ? [fileEntity.id] : [],
+      text: input.text,
+      userId: input.userId,
     })
 
-    return post
+    return null
   }
 )

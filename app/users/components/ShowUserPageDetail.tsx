@@ -62,7 +62,7 @@ export const ShowUserPageDetail: FunctionComponent = () => {
       <ErrorBoundary FallbackComponent={() => null}>
         <Suspense fallback={null}>
           <StackUserAction
-            hasRelationship={user.followers && user.followers.length !== 0}
+            hasRelationship={user.isFollowee}
             isLoading={isLoadingFollowUser || isLoadingUnfollowUser}
             onExchange={onExchange}
             onFollow={onFollow}

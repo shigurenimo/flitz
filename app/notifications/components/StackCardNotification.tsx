@@ -2,110 +2,30 @@ import { StackCardNotificationFriendship } from "app/notifications/components/St
 import { StackCardNotificationLike } from "app/notifications/components/StackCardNotificationLike"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import { Link } from "blitz"
+import { QueryNotification } from "integrations/interface/types/queryNotification"
 import React, { FunctionComponent } from "react"
 
-type Props = {
-  createdAt: Date
-  friendship: {
-    follower: {
-      biography: string
-      id: string
-      name: string | null
-      username: string
-      iconImage: { id: string } | null
-    }
-  } | null
-  like: {
-    post: {
-      createdAt: Date
-      id: string
-      text: string | null
-      userId: string
-      user: {
-        name: string | null
-        username: string
-      }
-    }
-    user: {
-      biography: string
-      id: string
-      name: string | null
-      username: string
-      iconImage: { id: string } | null
-    }
-  } | null
-  post: {
-    createdAt: Date
-    id: string
-    isDisabled?: boolean
-    likesCount: number
-    likes?: {
-      userId: string
-    }[]
-    quotationsCount: number
-    replies?: {
-      userId: string
-    }[]
-    reply?: {
-      createdAt: Date
-      id: string
-      likesCount: number
-      likes?: {
-        userId: string
-      }[]
-      quotationsCount: number
-      replies?: {
-        userId: string
-      }[]
-      repliesCount: number
-      text: string | null
-      user: {
-        id: string
-        name: string | null
-        username: string
-        iconImage: { id: string } | null
-      }
-      userId: string
-    } | null
-    repliesCount: number
-    text: string | null
-    user: {
-      id: string
-      name: string | null
-      username: string
-      iconImage: { id: string } | null
-    }
-    userId: string
-  } | null
-}
-
-export const StackCardNotification: FunctionComponent<Props> = ({
-  createdAt,
-  friendship,
-  like,
-  post,
-}) => {
-  if (friendship) {
+export const StackCardNotification: FunctionComponent<QueryNotification> = (
+  props
+) => {
+  if (props.type === "FOLLOW") {
     return (
-      <Link href={`/${friendship.follower.username}`} passHref>
-        <StackCardNotificationFriendship
-          createdAt={createdAt}
-          friendship={friendship}
-        />
+      <Link href={`/${props.embedded.username}`} passHref>
+        <StackCardNotificationFriendship {...props} />
       </Link>
     )
   }
 
-  if (like) {
+  if (props.type === "LIKE") {
     return (
-      <Link href={`/posts/${like.post.id}`} passHref>
-        <StackCardNotificationLike createdAt={createdAt} like={like} />
+      <Link href={`/posts/${props.embedded.id}`} passHref>
+        <StackCardNotificationLike {...props} />
       </Link>
     )
   }
 
-  if (post) {
-    return <StackCardPost isDisabled={false} {...post} />
+  if (props.type === "POST") {
+    return <StackCardPost isDisabled={false} {...props.embedded} />
   }
 
   /*

@@ -1,26 +1,12 @@
 import { HStack, Stack, Text, useColorModeValue } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { useRouter } from "blitz"
+import { QueryQuotation } from "integrations/interface/types/queryQuotation"
 import React, { FunctionComponent } from "react"
 
-type Props = {
-  createdAt: Date
-  id: string
-  text: string | null
-  userId: string
-  user: {
-    name: string | null
-    username: string | null
-  }
-}
-
-export const StackCardQuotationEmbedded: FunctionComponent<Props> = ({
-  createdAt,
-  id,
-  text,
-  user,
-  userId,
-}) => {
+export const StackCardQuotationEmbedded: FunctionComponent<QueryQuotation> = (
+  props
+) => {
   const hoverBg = useColorModeValue("gray.200", "gray.600")
 
   const bg = useColorModeValue("gray.50", "gray.700")
@@ -28,7 +14,7 @@ export const StackCardQuotationEmbedded: FunctionComponent<Props> = ({
   const router = useRouter()
 
   const onClickQuotation = () => {
-    router.push(`/posts/${id}`)
+    router.push(`/posts/${props.id}`)
   }
 
   return (
@@ -46,27 +32,29 @@ export const StackCardQuotationEmbedded: FunctionComponent<Props> = ({
       }}
     >
       <HStack align={"center"} spacing={2}>
-        <AvatarUser userId={userId} size={"sm"} />
-        {user.name && <Text fontWeight={"bold"}>{user.name}</Text>}
-        {user.name ? (
+        <AvatarUser userId={props.user.id} size={"sm"} />
+        {props.user.name && <Text fontWeight={"bold"}>{props.user.name}</Text>}
+        {props.user.name ? (
           <Text color={"gray.500"} fontSize={"sm"}>
-            {`@${user.username || userId}`}
+            {`@${props.user.username || props.user.id}`}
           </Text>
         ) : (
-          <Text fontWeight={"bold"}>{`@${user.username || userId}`}</Text>
+          <Text fontWeight={"bold"}>{`@${
+            props.user.username || props.user.id
+          }`}</Text>
         )}
       </HStack>
-      {text && (
+      {props.text && (
         <Text fontSize={"lg"} fontWeight={"bold"}>
-          {text}
+          {props.text}
         </Text>
       )}
       <HStack align={"center"} spacing={2}>
         <Text color={"gray.500"} fontSize={"sm"}>
-          {createdAt.toLocaleTimeString()}
+          {props.createdAt.toLocaleTimeString()}
         </Text>
         <Text color={"gray.500"} fontSize={"sm"}>
-          {createdAt.toDateString()}
+          {props.createdAt.toDateString()}
         </Text>
       </HStack>
     </Stack>

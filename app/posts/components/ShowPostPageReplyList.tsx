@@ -1,5 +1,5 @@
 import { Stack, StackDivider } from "@chakra-ui/react"
-import { StackCardPost } from "app/posts/components/StackCardPost"
+import { StackCardReply } from "app/posts/components/StackCardPostReply"
 import getRepliesInfinite from "app/posts/queries/getRepliesInfinite"
 import { useInfiniteQuery, useParam } from "blitz"
 import React, { FunctionComponent } from "react"
@@ -20,7 +20,7 @@ export const ShowPostPageReplyList: FunctionComponent = () => {
     <Stack align={"stretch"} divider={<StackDivider />} spacing={4}>
       {groupedPosts.map((group) => {
         return group.posts.map((post) => {
-          return <StackCardPost {...post} />
+          return <StackCardReply {...post} />
         })
       })}
     </Stack>

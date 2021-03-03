@@ -1,15 +1,38 @@
-import type { ExchangeEntity, UserEntity } from "integrations/domain/entities"
-import type { Id } from "integrations/domain/valueObjects"
+import type { Id, PostText } from "integrations/domain/valueObjects"
 
+/**
+ * DM
+ */
 export class MessageEntity {
-  createdAt!: Date
-  exchanges!: ExchangeEntity[]
+  /**
+   * ID
+   */
   id!: Id
+
+  /**
+   * 作成日
+   */
+  createdAt!: Date
+
+  /**
+   * メッセージを確認したかどうか
+   */
   isRead!: boolean
-  text!: string
-  updatedAt!: Date
-  user!: UserEntity | null
+
+  /**
+   * メッセージ
+   */
+  text!: PostText
+
+  /**
+   * メッセージを送信したユーザーのID
+   */
   userId!: Id
+
+  /**
+   * メッセージを受け取ったユーザーのID
+   */
+  relatedUserId!: Id
 
   constructor(public props: Omit<MessageEntity, "props">) {
     Object.assign(this, props)

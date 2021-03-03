@@ -1,9 +1,10 @@
 import { resolver } from "blitz"
-import { Id, PageService, Skip, skipSchema, Take } from "integrations/domain"
+import { Id, PageService, Skip, Take, zSkip } from "integrations/domain"
 import { UserExchangeQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-const GetExchanges = z.object({ skip: skipSchema })
+const GetExchanges = z.object({ skip: zSkip })
 
 export default resolver.pipe(
   resolver.zod(GetExchanges),
@@ -14,17 +15,17 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ skip, take, userId }) => {
-    const userExchangeQuery = new UserExchangeQuery()
+    const app = await createAppContext()
 
-    const exchanges = await userExchangeQuery.findMany({ userId, skip })
+    const exchanges = await app
+      .get(UserExchangeQuery)
+      .findMany({ userId, skip })
 
-    const count = await userExchangeQuery.count({ userId })
+    const count = await app.get(UserExchangeQuery).count({ userId })
 
-    const pageService = new PageService()
+    const hasMore = app.get(PageService).hasMore(skip, take, count)
 
-    const hasMore = pageService.hasMore({ count, skip, take })
-
-    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
 
     const isEmpty = exchanges.length === 0
 

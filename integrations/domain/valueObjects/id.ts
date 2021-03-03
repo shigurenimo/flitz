@@ -1,15 +1,15 @@
 import * as z from "zod"
 
-export const idSchema = z.string().min(8).max(40)
+export const zId = z.string().min(8).max(40)
 
-export type IdValue = z.infer<typeof idSchema>
+export type IdValue = z.infer<typeof zId>
 
 /**
  * ID
  */
 export class Id {
   constructor(public value: IdValue) {
-    idSchema.parse(value)
+    zId.parse(value)
     Object.freeze(this)
   }
 

@@ -2,18 +2,17 @@ import { resolver } from "blitz"
 import {
   Id,
   PageService,
+  ReferenceRepository,
   ReferenceService,
   Skip,
-  skipSchema,
   Take,
+  zSkip,
 } from "integrations/domain"
-import {
-  ReferenceQuery,
-  ReferenceRepository,
-} from "integrations/infrastructure"
+import { ReferenceQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-export const GetReferencesInfinite = z.object({ skip: skipSchema })
+export const GetReferencesInfinite = z.object({ skip: zSkip })
 
 export default resolver.pipe(
   resolver.zod(GetReferencesInfinite),
@@ -23,29 +22,25 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
   }),
   async ({ skip, userId }) => {
-    const referenceQuery = new ReferenceQuery()
+    const app = await createAppContext()
 
-    const references = await referenceQuery.findMany({ skip, userId })
+    const references = await app.get(ReferenceQuery).findMany({ skip, userId })
 
-    const referenceService = new ReferenceService()
-
-    const hasUnreadReferences = referenceService.hasUnread({ references })
+    const hasUnreadReferences = app
+      .get(ReferenceService)
+      .hasUnread({ references })
 
     if (hasUnreadReferences) {
-      const referenceRepository = new ReferenceRepository()
-
-      await referenceRepository.markReferencesAsRead({ userId })
+      await app.get(ReferenceRepository).markAsRead(userId)
     }
 
-    const count = await referenceQuery.count({ userId })
+    const count = await app.get(ReferenceQuery).count(userId)
 
     const take = new Take()
 
-    const pageService = new PageService()
+    const hasMore = app.get(PageService).hasMore(skip, take, count)
 
-    const hasMore = pageService.hasMore({ count, skip, take })
-
-    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
 
     return { hasMore, references, nextPage }
   }

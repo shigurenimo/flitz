@@ -15,22 +15,13 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react"
+import { QuerySetting } from "integrations/interface/types/querySetting"
 import React, { FunctionComponent } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend, FiZap, FiZapOff } from "react-icons/fi"
 
 type Props = {
-  setting: {
-    fcmToken: string | null
-    fcmTokenForMobile: string | null
-    discoverableByEmail: boolean
-    id: string
-    notificationEmail: string | null
-    protected: boolean
-    subscribeMessage: boolean
-    subscribePostLike: boolean
-    subscribePostQuotation: boolean
-  }
+  setting: QuerySetting
   onTurnOnNotification(): void
   onTurnOffNotification(): void
   onSendTestNotification(): void

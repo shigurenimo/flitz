@@ -1,5 +1,5 @@
+import { SecurePassword } from "blitz"
 import { HashedPassword, Password } from "integrations/domain/valueObjects"
-import SecurePassword from "secure-password"
 
 /**
  * パスワード
@@ -11,15 +11,9 @@ export class PasswordService {
    * @returns
    */
   async hashPassword(password: Password) {
-    const passwordBuffer = Buffer.from(password.value)
+    const improvedHash = await SecurePassword.hash(password.value)
 
-    const securePassword = new SecurePassword()
-
-    const hashedBuffer = await securePassword.hash(passwordBuffer)
-
-    const string = hashedBuffer.toString("base64")
-
-    return new HashedPassword(string)
+    return new HashedPassword(improvedHash)
   }
 
   /**
@@ -28,15 +22,14 @@ export class PasswordService {
    * @param password
    * @returns
    */
-  verifyPassword(hashedPassword: HashedPassword, password: Password) {
+  async verifyPassword(hashedPassword: HashedPassword, password: Password) {
     try {
-      const passwordBuffer = Buffer.from(password.value)
+      const result = await SecurePassword.verify(
+        hashedPassword.value,
+        password.value
+      )
 
-      const hashedPasswordBuffer = Buffer.from(hashedPassword.value, "base64")
-
-      const securePassword = new SecurePassword()
-
-      return securePassword.verify(passwordBuffer, hashedPasswordBuffer)
+      return result
     } catch (error) {
       return error
     }

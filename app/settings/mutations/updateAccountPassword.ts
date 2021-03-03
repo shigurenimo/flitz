@@ -1,53 +1,29 @@
-import { AuthenticationError, NotFoundError, resolver } from "blitz"
-import {
-  Id,
-  Password,
-  passwordSchema,
-  PasswordService,
-} from "integrations/domain"
-import { AccountRepository } from "integrations/infrastructure"
+import { resolver } from "blitz"
+import { UpdateAccountPasswordService } from "integrations/application"
+import { Id, Password, zPassword } from "integrations/domain"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-const UpdateAccountPassword = z.object({
-  currentPassword: passwordSchema,
-  password: passwordSchema,
+const zUpdateAccountPassword = z.object({
+  currentPassword: zPassword,
+  password: zPassword,
 })
 
 export default resolver.pipe(
-  resolver.zod(UpdateAccountPassword),
+  resolver.zod(zUpdateAccountPassword),
   resolver.authorize(),
   (input, ctx) => ({
     currentPassword: new Password(input.currentPassword),
     password: new Password(input.password),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ currentPassword, password, userId }) => {
-    const accountRepository = new AccountRepository()
+  async (input) => {
+    const app = await createAppContext()
 
-    const accountEntity = await accountRepository.findByUserId(userId)
-
-    if (!accountEntity || accountEntity.hashedPassword === null) {
-      throw new NotFoundError()
-    }
-
-    const passwordService = new PasswordService()
-
-    // 現在のパスワードを確認する
-    const result = await passwordService.verifyPassword(
-      accountEntity.hashedPassword,
-      currentPassword
-    )
-
-    if (passwordService.isInvalid(result)) {
-      throw new AuthenticationError()
-    }
-
-    const hashedPassword = await passwordService.hashPassword(password)
-
-    // 新しいパスワードを保存する
-    await accountRepository.update({
-      id: accountEntity.id,
-      hashedPassword,
+    await app.get(UpdateAccountPasswordService).call({
+      currentPassword: input.currentPassword,
+      password: input.password,
+      userId: input.userId,
     })
 
     return null

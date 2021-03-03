@@ -17,7 +17,7 @@ export const ShowUserPageListFollowers: FunctionComponent<Props> = ({
 
   const username = useParam("username", "string")
 
-  const [groupedFriendships, { setQueryData }] = useInfiniteQuery(
+  const [groupedFollowers, { setQueryData }] = useInfiniteQuery(
     getUserFollowersInfinite,
     (page = { take: 80, skip: 0, username }) => page,
     {
@@ -31,32 +31,32 @@ export const ShowUserPageListFollowers: FunctionComponent<Props> = ({
   const [unfollowUserMutation] = useMutation(unfollowUser)
 
   const onFollow = async (userId: string) => {
-    const updated = await followUserMutation({ userId })
-    for (const groupedFriendship of groupedFriendships) {
-      for (const friendship of groupedFriendship.friendships) {
-        if (friendship.followeeId !== userId) {
+    await followUserMutation({ userId })
+    for (const groupedFriendship of groupedFollowers) {
+      for (const follower of groupedFriendship.friendships) {
+        if (follower.id !== userId) {
           continue
         }
-        friendship.follower.followers = updated.followers
+        follower.isFollowee = true
         await setQueryData(groupedFriendship)
       }
     }
   }
 
   const onUnfollow = async (userId: string) => {
-    const updated = await unfollowUserMutation({ userId })
-    for (const groupedFriendship of groupedFriendships) {
-      for (const friendship of groupedFriendship.friendships) {
-        if (friendship.followeeId !== userId) {
+    await unfollowUserMutation({ userId })
+    for (const groupedFriendship of groupedFollowers) {
+      for (const follower of groupedFriendship.friendships) {
+        if (follower.id !== userId) {
           continue
         }
-        friendship.follower.followers = updated.followers
+        follower.isFollowee = false
         await setQueryData(groupedFriendship)
       }
     }
   }
 
-  const [group] = groupedFriendships
+  const [group] = groupedFollowers
 
   const isEmpty = group.friendships.length === 0
 
@@ -68,15 +68,15 @@ export const ShowUserPageListFollowers: FunctionComponent<Props> = ({
           {t("No Followers")}
         </Alert>
       )}
-      {groupedFriendships.map((group) => {
-        return group.friendships.map((friendship) => {
+      {groupedFollowers.map((group) => {
+        return group.friendships.map((follower) => {
           return (
             <StackCardUser
-              {...friendship}
-              hasAction={!!userId && userId !== friendship.followerId}
-              onFollow={() => onFollow(friendship.followerId)}
-              onUnfollow={() => onUnfollow(friendship.followerId)}
-              user={friendship.follower}
+              {...follower}
+              hasAction={!!userId && userId !== follower.id}
+              onFollow={() => onFollow(follower.id)}
+              onUnfollow={() => onUnfollow(follower.id)}
+              follower={follower}
             />
           )
         })

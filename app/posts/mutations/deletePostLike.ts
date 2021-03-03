@@ -1,22 +1,24 @@
+import { zDeletePostLikeMutation } from "app/posts/validations/deletePostLikeMutation"
 import { resolver } from "blitz"
-import { Id, idSchema } from "integrations/domain"
-import { PostRepository } from "integrations/infrastructure"
-import * as z from "zod"
-
-const DeletePostLike = z.object({ postId: idSchema })
+import { DeletePostLikeService } from "integrations/application/deletePostLike.service"
+import { Id } from "integrations/domain"
+import { createAppContext } from "integrations/registry"
 
 export default resolver.pipe(
-  resolver.zod(DeletePostLike),
+  resolver.zod(zDeletePostLikeMutation),
   resolver.authorize(),
   (input, ctx) => ({
     postId: new Id(input.postId),
     userId: new Id(ctx.session.userId),
   }),
-  async ({ postId, userId }) => {
-    const postRepository = new PostRepository()
+  async (input) => {
+    const app = await createAppContext()
 
-    const post = await postRepository.deleteLikes({ postId, userId })
+    await app.get(DeletePostLikeService).call({
+      postId: input.postId,
+      userId: input.userId,
+    })
 
-    return post
+    return null
   }
 )

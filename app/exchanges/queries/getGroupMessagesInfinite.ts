@@ -1,18 +1,12 @@
 import { NotFoundError, resolver } from "blitz"
-import {
-  Id,
-  idSchema,
-  PageService,
-  Skip,
-  skipSchema,
-  Take,
-} from "integrations/domain"
+import { Id, PageService, Skip, Take, zId, zSkip } from "integrations/domain"
 import { ExchangeMessageQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
 const GetExchangeMessagesInfinite = z.object({
-  exchangeId: idSchema,
-  skip: skipSchema,
+  exchangeId: zId,
+  skip: zSkip,
 })
 
 export default resolver.pipe(
@@ -24,9 +18,9 @@ export default resolver.pipe(
     take: new Take(),
   }),
   async ({ exchangeId, skip, take }) => {
-    const exchangeMessageQuery = new ExchangeMessageQuery()
+    const app = await createAppContext()
 
-    const messages = await exchangeMessageQuery.findMany({
+    const messages = await app.get(ExchangeMessageQuery).findMany({
       skip,
       exchangeId,
     })
@@ -35,13 +29,11 @@ export default resolver.pipe(
       throw new NotFoundError()
     }
 
-    const count = await exchangeMessageQuery.count({ exchangeId })
+    const count = await app.get(ExchangeMessageQuery).count(exchangeId)
 
-    const pageService = new PageService()
+    const hasMore = app.get(PageService).hasMore(skip, take, count)
 
-    const hasMore = pageService.hasMore({ count, skip, take })
-
-    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
 
     return { messages, nextPage }
   }

@@ -24,10 +24,9 @@ export const HomePageList: FunctionComponent = () => {
           return (
             <StackCardPost
               isDisabled={
-                session.userId !== null &&
-                session.userId === reference.post.userId
+                session.userId !== null && session.userId === reference.user.id
               }
-              {...reference.post}
+              {...reference}
             />
           )
         })

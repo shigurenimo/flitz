@@ -1,52 +1,102 @@
 import type {
-  AccountEntity,
-  BookmarkEntity,
-  ExchangeEntity,
-  FileEntity,
-  FriendshipEntity,
-  LikeEntity,
-  MessageEntity,
-  NotificationEntity,
-  PostEntity,
-  ReferenceEntity,
-  SessionEntity,
-} from "integrations/domain/entities"
-import type {
   Biography,
-  Count,
+  Email,
+  HashedPassword,
   Id,
   Name,
   Username,
 } from "integrations/domain/valueObjects"
 
+/**
+ * ユーザー
+ */
 export class UserEntity {
-  account!: AccountEntity | null
-  biography!: Biography
-  bookmarks!: BookmarkEntity[]
-  createdAt!: Date
-  exchanges!: ExchangeEntity[]
-  files!: FileEntity[]
-  followees!: FriendshipEntity[]
-  followeesCount!: Count
-  followers!: FriendshipEntity[]
-  followersCount!: Count
-  headerImage!: FileEntity | null
-  iconImage!: FileEntity | null
+  /**
+   * ID
+   */
   id!: Id
-  likes!: LikeEntity[]
-  messages!: MessageEntity[]
-  name!: Name | null
-  notifications!: NotificationEntity[]
-  posts!: PostEntity[]
-  references!: ReferenceEntity[]
-  relatedExchanges!: ExchangeEntity[]
-  relatedGroupExchanges!: ExchangeEntity[]
-  sessions!: SessionEntity[]
-  updatedAt!: Date
+
+  /**
+   * メールアドレス（非公開）
+   */
+  email!: Email
+
+  /**
+   * ユーザーID
+   */
   username!: Username
 
-  constructor(public props: Omit<UserEntity, "props">) {
+  /**
+   * 表示名
+   */
+  name!: Name | null
+
+  /**
+   * 自己紹介
+   */
+  biography!: Biography
+
+  /**
+   * ヘッダー画像
+   */
+  headerImageId!: Id | null
+
+  /**
+   * アイコン画像
+   */
+  iconImageId!: Id | null
+
+  /**
+   * パスワードハッシュ
+   */
+  hashedPassword!: HashedPassword
+
+  /**
+   * 設定データのID
+   */
+  settingId!: Id | null
+
+  constructor(
+    public props: {
+      id: Id
+      email: Email
+      username: Username
+      name: Name | null
+      biography: Biography
+      headerImageId: Id | null
+      iconImageId: Id | null
+      hashedPassword: HashedPassword
+      settingId: Id | null
+    }
+  ) {
     Object.assign(this, props)
     Object.freeze(this)
+  }
+
+  updateHashedPassword(hashedPassword: HashedPassword) {
+    return new UserEntity({ ...this.props, hashedPassword })
+  }
+
+  updateEmail(email: Email) {
+    return new UserEntity({ ...this.props, email })
+  }
+
+  updateUsername(username: Username) {
+    return new UserEntity({ ...this.props, username })
+  }
+
+  update(input: {
+    headerImageId?: Id
+    iconImageId?: Id
+    name: Name
+    biography: Biography
+  }) {
+    return new UserEntity({
+      ...this.props,
+      biography: input.biography ?? this.biography,
+      name: input.name ?? this.name,
+      headerImageId: input.iconImageId ?? this.headerImageId,
+      iconImageId: input.iconImageId ?? this.iconImageId,
+    })
   }
 }

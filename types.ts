@@ -1,6 +1,6 @@
 import { simpleRolesIsAuthorized } from "@blitzjs/server"
 import { DefaultCtx, SessionContext } from "blitz"
-import { Account, File, User } from "db"
+import { File, User } from "db"
 
 declare module "blitz" {
   export interface Ctx extends DefaultCtx {
@@ -14,7 +14,7 @@ declare module "blitz" {
       name: User["name"]
       userId: User["id"]
       username: User["username"]
-      roles: Account["role"][]
+      role: User["role"]
     }
   }
 }

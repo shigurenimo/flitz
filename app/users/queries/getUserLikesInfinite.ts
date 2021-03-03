@@ -3,17 +3,18 @@ import {
   Id,
   PageService,
   Skip,
-  skipSchema,
   Take,
   Username,
-  usernameSchema,
+  zSkip,
+  zUsername,
 } from "integrations/domain"
 import { UserLikeQuery } from "integrations/infrastructure"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
 const GetUserLikesInfinite = z.object({
-  skip: skipSchema,
-  username: usernameSchema,
+  skip: zSkip,
+  username: zUsername,
 })
 
 export default resolver.pipe(
@@ -25,17 +26,17 @@ export default resolver.pipe(
     username: new Username(input.username),
   }),
   async ({ skip, take, userId, username }) => {
-    const userLikeQuery = new UserLikeQuery()
+    const app = await createAppContext()
 
-    const likes = await userLikeQuery.findMany({ skip, take, userId, username })
+    const likes = await app
+      .get(UserLikeQuery)
+      .findMany({ skip, take, userId, username })
 
-    const count = await userLikeQuery.count({ username })
+    const count = await app.get(UserLikeQuery).count(username)
 
-    const pageService = new PageService()
+    const hasMore = app.get(PageService).hasMore(skip, take, count)
 
-    const hasMore = pageService.hasMore({ count, skip, take })
-
-    const nextPage = hasMore ? pageService.nextPage({ take, skip }) : null
+    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
 
     const isEmpty = likes.length === 0
 

@@ -1,17 +1,22 @@
-import type {
-  NotificationEntity,
-  PostEntity,
-  UserEntity,
-} from "integrations/domain/entities"
 import type { Id } from "integrations/domain/valueObjects"
 
+/**
+ * 投稿に対するイイネ
+ */
 export class LikeEntity {
-  createdAt!: Date
+  /**
+   * ID
+   */
   id!: Id
-  notifications!: NotificationEntity[]
-  post!: PostEntity | null
+
+  /**
+   * 投稿のID
+   */
   postId!: Id
-  user!: UserEntity | null
+
+  /**
+   * いいねしたユーザーのID
+   */
   userId!: Id
 
   constructor(public props: Omit<LikeEntity, "props">) {

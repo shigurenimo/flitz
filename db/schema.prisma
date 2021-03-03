@@ -4,30 +4,50 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["createMany"]
 }
 
-model Account {
-  createdAt      DateTime @default(now()) @map("created_at")
-  email          String   @unique
-  hashedPassword String?  @map("hashed_password")
-  id             String   @id @default(cuid())
-  role           UserRole @default(USER)
-  user           User     @relation("user_account", fields: [userId], references: [id])
-  userId         String   @map("user_id")
+model User {
+  biography        String         @default("") @map("biography")
+  bookmarks        Bookmark[]     @relation("user_bookmarks")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  email            String         @unique @map("email")
+  exchanges        Exchange[]     @relation("user_exchanges")
+  files            File[]         @relation("user_files")
+  followees        Friendship[]   @relation("user_followers")
+  followeesCount   Int            @default(0) @map("followees_count")
+  followers        Friendship[]   @relation("user_followees")
+  followersCount   Int            @default(0) @map("followers_count")
+  hashedPassword   String         @map("hashed_password")
+  headerImage      File?          @relation("user_header_image")
+  iconImage        File?          @relation("user_icon_image")
+  id               String         @id @map("id")
+  likes            Like[]         @relation("user_likes")
+  messages         Message[]      @relation("user_messages")
+  name             String?        @map("name")
+  notifications    Notification[] @relation("user_notifications")
+  posts            Post[]         @relation("user_posts")
+  references       Reference[]    @relation("user_references")
+  relatedExchanges Exchange[]     @relation("user_related_exchanges")
+  role             UserRole       @default(USER)
+  sessions         Session[]      @relation("user_sessions")
+  setting          Setting?       @relation("user_setting")
+  siteURL          String         @default("") @map("site_url")
+  updatedAt        DateTime       @default(now()) @updatedAt @map("updated_at")
+  username         String         @unique @map("username")
 
-  @@unique([email])
-  @@unique([userId])
-  @@map("accounts")
+  @@index([createdAt])
+  @@map("users")
 }
 
 model Setting {
   discoverableByEmail    Boolean @default(true) @map("discoverable_by_email")
   fcmToken               String? @map("fcm_token")
   fcmTokenForMobile      String? @map("fcm_token_for_mobile")
-  id                     String  @id @default(cuid())
+  id                     String  @id @map("id")
   notificationEmail      String? @map("notification_email")
-  protected              Boolean @default(false)
+  protected              Boolean @default(false) @map("protected")
   subscribeMessage       Boolean @default(false) @map("subscribe_message")
   subscribePostLike      Boolean @default(false) @map("subscribe_post_like")
   subscribePostQuotation Boolean @default(false) @map("subscribe_post_quotation")
@@ -38,45 +58,13 @@ model Setting {
   @@map("settings")
 }
 
-model User {
-  account               Account?       @relation("user_account")
-  biography             String         @default("")
-  bookmarks             Bookmark[]     @relation("user_bookmarks")
-  createdAt             DateTime       @default(now()) @map("created_at")
-  exchanges             Exchange[]     @relation("user_exchanges")
-  files                 File[]         @relation("user_files")
-  followees             Friendship[]   @relation("user_followers")
-  followeesCount        Int            @default(0) @map("followees_count")
-  followers             Friendship[]   @relation("user_followees")
-  followersCount        Int            @default(0) @map("followers_count")
-  headerImage           File?          @relation("user_header_image")
-  iconImage             File?          @relation("user_icon_image")
-  id                    String         @id @default(cuid())
-  likes                 Like[]         @relation("user_likes")
-  messages              Message[]      @relation("user_messages")
-  name                  String?
-  notifications         Notification[] @relation("user_notifications")
-  posts                 Post[]         @relation("user_posts")
-  references            Reference[]    @relation("user_references")
-  relatedExchanges      Exchange[]     @relation("user_related_exchanges")
-  relatedGroupExchanges Exchange[]     @relation("users_related_exchanges")
-  sessions              Session[]      @relation("user_sessions")
-  setting               Setting?       @relation("user_setting")
-  siteURL               String         @default("") @map("site_url")
-  updatedAt             DateTime       @default(now()) @updatedAt @map("updated_at")
-  username              String         @unique @default(cuid())
-
-  @@index([createdAt])
-  @@map("users")
-}
-
 model Friendship {
   createdAt     DateTime       @default(now()) @map("created_at")
-  followee      User           @relation("user_followees", fields: [followeeId])
+  followee      User           @relation("user_followees", fields: [followeeId], references: [id])
   followeeId    String         @map("followee_id")
-  follower      User           @relation("user_followers", fields: [followerId])
+  follower      User           @relation("user_followers", fields: [followerId], references: [id])
   followerId    String         @map("follower_id")
-  id            String         @id @default(cuid())
+  id            String         @id @map("id")
   notifications Notification[] @relation("notifications_friendship")
 
   @@unique([followerId, followeeId])
@@ -88,13 +76,13 @@ model Session {
   antiCSRFToken      String?   @map("anti_csrf_token")
   createdAt          DateTime  @default(now()) @map("created_at")
   expiresAt          DateTime? @map("expires_at")
-  handle             String    @unique
+  handle             String    @unique @map("handle")
   hashedSessionToken String?   @map("hashed_session_token")
-  id                 String    @id @default(cuid())
+  id                 String    @id @default(cuid()) @map("id")
   privateData        String?   @map("private_data")
   publicData         String?   @map("public_data")
   updatedAt          DateTime  @default(now()) @updatedAt @map("updated_at")
-  user               User?     @relation("user_sessions", fields: [userId])
+  user               User?     @relation("user_sessions", fields: [userId], references: [id])
   userId             String?   @map("user_id")
 
   @@map("sessions")
@@ -104,22 +92,22 @@ model Post {
   bookmarks       Bookmark[]     @relation("post_bookmarks")
   createdAt       DateTime       @default(now()) @map("created_at")
   files           File[]         @relation("post_files")
-  id              String         @id @default(cuid())
+  id              String         @id @map("id")
   likes           Like[]         @relation("post_likes")
   likesCount      Int            @default(0) @map("likes_count")
   notifications   Notification[] @relation("notifications_post")
-  quotation       Post?          @relation("post_quotations", fields: [quotationId])
+  quotation       Post?          @relation("post_quotations", fields: [quotationId], references: [id])
   quotationId     String?        @map("quotation_id")
   quotations      Post[]         @relation("post_quotations")
   quotationsCount Int            @default(0) @map("quotations_count")
   references      Reference[]    @relation("post_references")
   replies         Post[]         @relation("post_replies")
   repliesCount    Int            @default(0) @map("replies_count")
-  reply           Post?          @relation("post_replies", fields: [replyId])
+  reply           Post?          @relation("post_replies", fields: [replyId], references: [id])
   replyId         String?        @map("reply_id")
-  text            String?
+  text            String?        @map("text")
   updatedAt       DateTime       @default(now()) @updatedAt @map("updated_at")
-  user            User           @relation("user_posts", fields: [userId])
+  user            User           @relation("user_posts", fields: [userId], references: [id])
   userId          String         @map("user_id")
 
   @@unique([userId, quotationId])
@@ -132,9 +120,9 @@ model Post {
 model Reference {
   createdAt DateTime @default(now()) @map("created_at")
   isRead    Boolean  @default(false) @map("is_read")
-  post      Post     @relation("post_references", fields: [postId])
+  post      Post     @relation("post_references", fields: [postId], references: [id])
   postId    String   @map("post_id")
-  user      User     @relation("user_references", fields: [userId])
+  user      User     @relation("user_references", fields: [userId], references: [id])
   userId    String   @map("user_id")
 
   @@id([userId, postId])
@@ -144,11 +132,11 @@ model Reference {
 
 model Like {
   createdAt     DateTime       @default(now()) @map("created_at")
-  id            String         @id @default(cuid())
+  id            String         @id @map("id")
   notifications Notification[] @relation("notifications_like")
-  post          Post           @relation("post_likes", fields: [postId])
+  post          Post           @relation("post_likes", fields: [postId], references: [id])
   postId        String         @map("post_id")
-  user          User           @relation("user_likes", fields: [userId])
+  user          User           @relation("user_likes", fields: [userId], references: [id])
   userId        String         @map("user_id")
 
   @@unique([userId, postId])
@@ -158,9 +146,9 @@ model Like {
 
 model Bookmark {
   createdAt DateTime @default(now()) @map("created_at")
-  post      Post     @relation("post_bookmarks", fields: [postId])
+  post      Post     @relation("post_bookmarks", fields: [postId], references: [id])
   postId    String   @map("post_id")
-  user      User     @relation("user_bookmarks", fields: [userId])
+  user      User     @relation("user_bookmarks", fields: [userId], references: [id])
   userId    String   @map("user_id")
 
   @@unique([userId, postId])
@@ -170,17 +158,17 @@ model Bookmark {
 
 model Notification {
   createdAt    DateTime         @default(now()) @map("created_at")
-  friendship   Friendship?      @relation("notifications_friendship", fields: [friendshipId])
+  friendship   Friendship?      @relation("notifications_friendship", fields: [friendshipId], references: [id])
   friendshipId String?          @map("friendship_id")
-  id           String           @id @default(cuid())
+  id           String           @id @map("id")
   isRead       Boolean          @default(false) @map("is_read")
-  like         Like?            @relation("notifications_like", fields: [likeId])
+  like         Like?            @relation("notifications_like", fields: [likeId], references: [id])
   likeId       String?          @map("like_id")
-  post         Post?            @relation("notifications_post", fields: [postId])
+  post         Post?            @relation("notifications_post", fields: [postId], references: [id])
   postId       String?          @map("post_id")
-  type         NotificationType
+  type         NotificationType @map("type")
   uniqueId     String           @map("unique_id")
-  user         User?            @relation("user_notifications", fields: [userId])
+  user         User?            @relation("user_notifications", fields: [userId], references: [id])
   userId       String?          @map("user_id")
 
   @@unique([userId, type, uniqueId])
@@ -191,9 +179,9 @@ model Notification {
 model Message {
   createdAt DateTime   @default(now()) @map("created_at")
   exchanges Exchange[] @relation("exchanges_messages")
-  id        String     @id @default(cuid())
+  id        String     @id @map("id")
   isRead    Boolean    @default(false) @map("is_read")
-  text      String
+  text      String     @map("text")
   updatedAt DateTime   @default(now()) @updatedAt @map("updated_at")
   user      User       @relation("user_messages", fields: [userId], references: [id])
   userId    String     @map("user_id")
@@ -204,12 +192,11 @@ model Message {
 
 model Exchange {
   createdAt     DateTime  @default(now()) @map("created_at")
-  id            String    @id @default(cuid())
+  id            String    @id @map("id")
   isRead        Boolean   @default(false) @map("is_read")
   messages      Message[] @relation("exchanges_messages")
-  relatedUser   User?     @relation("user_related_exchanges", fields: [relatedUserId], references: [id])
-  relatedUserId String?   @map("related_user_id")
-  relatedUsers  User[]    @relation("users_related_exchanges")
+  relatedUser   User      @relation("user_related_exchanges", fields: [relatedUserId], references: [id])
+  relatedUserId String    @map("related_user_id")
   updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at")
   user          User      @relation("user_exchanges", fields: [userId], references: [id])
   userId        String    @map("user_id")
@@ -225,8 +212,8 @@ model File {
   headerUserId String?  @map("header_user_id")
   iconUser     User?    @relation("user_icon_image", fields: [iconUserId], references: [id])
   iconUserId   String?  @map("icon_user_id")
-  id           String   @id @default(cuid())
-  path         String
+  id           String   @id @map("id")
+  path         String   @map("path")
   post         Post?    @relation("post_files", fields: [postId], references: [id])
   postId       String?  @map("post_id")
   service      Service? @default(CLOUD_STORAGE)

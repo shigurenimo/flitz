@@ -25,7 +25,7 @@ export const ShowUserPageListPosts: FunctionComponent = () => {
       {groupedPosts.map((group) => {
         if (group.isEmpty) {
           return (
-            <Box px={4}>
+            <Box key={"empty"} px={4}>
               <Alert key={"alert"} status={"info"}>
                 <AlertIcon />
                 {t("This user hasn't posted yet.")}
@@ -34,7 +34,7 @@ export const ShowUserPageListPosts: FunctionComponent = () => {
           )
         }
         return group.posts.map((post) => {
-          return <StackCardPost key={post.id} {...post} />
+          return <StackCardPost key={post.id} {...post} isDisabled={false} />
         })
       })}
     </StackList>

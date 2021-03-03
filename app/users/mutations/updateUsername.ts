@@ -1,9 +1,10 @@
 import { resolver } from "blitz"
-import { Id, Name, nameSchema } from "integrations/domain"
-import { SessionRepository, UserRepository } from "integrations/infrastructure"
+import { UpdateUsernameService } from "integrations/application"
+import { Id, Name, zName } from "integrations/domain"
+import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
-const UpdateUsername = z.object({ username: nameSchema })
+const UpdateUsername = z.object({ username: zName })
 
 export default resolver.pipe(
   resolver.zod(UpdateUsername),
@@ -12,22 +13,15 @@ export default resolver.pipe(
     userId: new Id(ctx.session.userId),
     username: new Name(input.username),
   }),
-  async ({ userId, username }, ctx) => {
-    const userRepository = new UserRepository()
+  async (input, ctx) => {
+    const app = await createAppContext()
 
-    const { user, userEntity } = await userRepository.updateUsername({
-      username,
-      id: userId,
+    await app.get(UpdateUsernameService).call({
+      session: ctx.session,
+      username: input.username,
+      userId: input.userId,
     })
 
-    const sessionRepository = new SessionRepository()
-
-    await sessionRepository.updatePublicData(ctx.session, {
-      name: userEntity.name,
-      username: userEntity.username,
-      iconImageId: userEntity.iconImage?.id || null,
-    })
-
-    return user
+    return null
   }
 )

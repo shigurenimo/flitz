@@ -11,7 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react"
 import { ButtonFile } from "app/core/components/ButtonFile"
-import { ConvertFileService } from "app/services/convertFileService"
+import { ConvertFile } from "app/core/utils/convertFile"
 import { StackProfileUpdateActions } from "app/users/components/StackProfileUpdateActions"
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
@@ -56,7 +56,7 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
     siteURL: string
   }) => {
     try {
-      const convertFileService = new ConvertFileService()
+      const convertFileService = new ConvertFile()
 
       await updateUserProfileMutation({
         headerImage: await convertFileService.execute(headerImageFile),

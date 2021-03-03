@@ -1,15 +1,15 @@
 import * as z from "zod"
 
-export const hashedPasswordSchema = z.string()
+export const zHashedPassword = z.string()
 
-export type HashedPasswordValue = z.infer<typeof hashedPasswordSchema>
+export type HashedPasswordValue = z.infer<typeof zHashedPassword>
 
 /**
  * パスワードハッシュ
  */
 export class HashedPassword {
   constructor(public value: HashedPasswordValue) {
-    hashedPasswordSchema.parse(value)
+    zHashedPassword.parse(value)
     Object.freeze(this)
   }
 }
