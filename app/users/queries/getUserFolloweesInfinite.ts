@@ -1,15 +1,30 @@
-import {
-  resolveGetUserFolloweesInfinite,
-  zGetUserFolloweesInfinite,
-} from "app/users/queries/validations/getUserFolloweesInfinite"
 import { resolver } from "blitz"
-import { PageService } from "integrations/domain"
+import {
+  Id,
+  PageService,
+  Skip,
+  Take,
+  Username,
+  zSkip,
+  zUsername,
+} from "integrations/domain"
 import { UserFolloweeQuery } from "integrations/infrastructure"
 import { createAppContext } from "integrations/registry"
+import * as z from "zod"
+
+const zGetUserFolloweesInfinite = z.object({
+  skip: zSkip,
+  username: zUsername,
+})
 
 export default resolver.pipe(
   resolver.zod(zGetUserFolloweesInfinite),
-  resolveGetUserFolloweesInfinite,
+  (input, ctx) => ({
+    skip: new Skip(input.skip),
+    take: new Take(),
+    userId: Id.nullable(ctx.session.userId),
+    username: new Username(input.username),
+  }),
   async ({ skip, take, userId, username }) => {
     const app = await createAppContext()
 
