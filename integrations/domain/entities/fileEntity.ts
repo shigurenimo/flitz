@@ -12,19 +12,19 @@ export class FileEntity {
   /**
    * ID
    */
-  id!: Id
+  readonly id!: Id
 
   /**
    * アップロードしたパス
    */
-  path!: Path
+  readonly path!: Path
 
   /**
    * 画像の形式
    *
    * - IMAGE_PNG
    */
-  type!: FileType
+  readonly type!: FileType
 
   /**
    * アップロード先のサービス
@@ -32,12 +32,12 @@ export class FileEntity {
    * - ローカル
    * - CloudStorage
    */
-  service!: Service | null
+  readonly service!: Service | null
 
   /**
    * アップロードしたユーザーのID
    */
-  userId!: Id
+  readonly userId!: Id
 
   constructor(public props: Omit<FileEntity, "props">) {
     Object.assign(this, props)

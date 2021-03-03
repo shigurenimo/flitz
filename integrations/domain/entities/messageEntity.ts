@@ -7,32 +7,32 @@ export class MessageEntity {
   /**
    * ID
    */
-  id!: Id
+  readonly id!: Id
 
   /**
    * 作成日
    */
-  createdAt!: Date
+  readonly createdAt!: Date
 
   /**
    * メッセージを確認したかどうか
    */
-  isRead!: boolean
+  readonly isRead!: boolean
 
   /**
    * メッセージ
    */
-  text!: PostText
+  readonly text!: PostText
 
   /**
    * メッセージを送信したユーザーのID
    */
-  userId!: Id
+  readonly userId!: Id
 
   /**
    * メッセージを受け取ったユーザーのID
    */
-  relatedUserId!: Id
+  readonly relatedUserId!: Id
 
   constructor(public props: Omit<MessageEntity, "props">) {
     Object.assign(this, props)

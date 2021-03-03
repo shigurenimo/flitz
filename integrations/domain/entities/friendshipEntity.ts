@@ -7,17 +7,17 @@ export class FriendshipEntity {
   /**
    * ID
    */
-  id!: Id
+  readonly id!: Id
 
   /**
    * フォローされているユーザーのID
    */
-  followeeId!: Id
+  readonly followeeId!: Id
 
   /**
    * フォローしているユーザーのID
    */
-  followerId!: Id
+  readonly followerId!: Id
 
   constructor(public props: Omit<FriendshipEntity, "props">) {
     Object.assign(this, props)

@@ -7,42 +7,42 @@ export class NotificationEntity {
   /**
    * ID
    */
-  id!: Id
+  readonly id!: Id
 
   /**
    * フォロー関係のID
    */
-  friendshipId!: Id | null
+  readonly friendshipId!: Id | null
 
   /**
    * 通知を確認したかどうか
    */
-  isRead!: boolean
+  readonly isRead!: boolean
 
   /**
    * イイネのID
    */
-  likeId!: Id | null
+  readonly likeId!: Id | null
 
   /**
    * 投稿のID
    */
-  postId!: Id | null
+  readonly postId!: Id | null
 
   /**
    * 通知の種類
    */
-  type!: NotificationType
+  readonly type!: NotificationType
 
   /**
    * 通知を受け取るユーザーのID
    */
-  userId!: Id
+  readonly userId!: Id
 
   /**
    * 通知を発生させたユーザーのID
    */
-  relatedUserId!: Id | null
+  readonly relatedUserId!: Id | null
 
   constructor(public props: Omit<NotificationEntity, "props">) {
     Object.assign(this, props)

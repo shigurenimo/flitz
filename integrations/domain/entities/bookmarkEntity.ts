@@ -7,24 +7,31 @@ export class BookmarkEntity {
   /**
    * ID
    */
-  id!: Id
+  readonly id!: Id
 
   /**
    * 作成日
    */
-  createdAt!: Date
+  readonly createdAt!: Date
 
   /**
    * ブックマークした投稿のID
    */
-  postId!: Id
+  readonly postId!: Id
 
   /**
    * ブックマークしたユーザーのID
    */
-  userId!: Id
+  readonly userId!: Id
 
-  constructor(public props: Omit<BookmarkEntity, "props">) {
+  constructor(
+    public props: {
+      createdAt: Date
+      id: ImageData
+      postId: Id
+      userId: Id
+    }
+  ) {
     Object.assign(this, props)
     Object.freeze(this)
   }

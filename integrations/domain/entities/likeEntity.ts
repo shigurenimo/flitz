@@ -7,17 +7,17 @@ export class LikeEntity {
   /**
    * ID
    */
-  id!: Id
+  readonly id!: Id
 
   /**
    * 投稿のID
    */
-  postId!: Id
+  readonly postId!: Id
 
   /**
    * いいねしたユーザーのID
    */
-  userId!: Id
+  readonly userId!: Id
 
   constructor(public props: Omit<LikeEntity, "props">) {
     Object.assign(this, props)

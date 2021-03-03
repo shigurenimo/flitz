@@ -14,47 +14,47 @@ export class UserEntity {
   /**
    * ID
    */
-  id!: Id
+  readonly id!: Id
 
   /**
    * メールアドレス（非公開）
    */
-  email!: Email
+  readonly email!: Email
 
   /**
    * ユーザーID
    */
-  username!: Username
+  readonly username!: Username
 
   /**
    * 表示名
    */
-  name!: Name | null
+  readonly name!: Name | null
 
   /**
    * 自己紹介
    */
-  biography!: Biography
+  readonly biography!: Biography
 
   /**
    * ヘッダー画像
    */
-  headerImageId!: Id | null
+  readonly headerImageId!: Id | null
 
   /**
    * アイコン画像
    */
-  iconImageId!: Id | null
+  readonly iconImageId!: Id | null
 
   /**
    * パスワードハッシュ
    */
-  hashedPassword!: HashedPassword
+  readonly hashedPassword!: HashedPassword
 
   /**
    * 設定データのID
    */
-  settingId!: Id | null
+  readonly settingId!: Id | null
 
   constructor(
     public props: {

@@ -7,54 +7,54 @@ export class SettingEntity {
   /**
    * ID
    */
-  id!: Id
+  readonly id!: Id
 
   /**
    * 未定義
    */
-  discoverableByEmail!: boolean
+  readonly discoverableByEmail!: boolean
 
   /**
    * FCMトークン
    *
    * ブラウザ通知を受け取る為に使用します。
    */
-  fcmToken!: string | null
+  readonly fcmToken!: string | null
 
   /**
    * FCMトークン（モバイル用）
    */
-  fcmTokenForMobile!: string | null
+  readonly fcmTokenForMobile!: string | null
 
   /**
    * 未定義
    */
-  notificationEmail!: Email | null
+  readonly notificationEmail!: Email | null
 
   /**
    * 未定義
    */
-  protected!: boolean
+  readonly protected!: boolean
 
   /**
    * 未定義
    */
-  subscribeMessage!: boolean
+  readonly subscribeMessage!: boolean
 
   /**
    * 未定義
    */
-  subscribePostLike!: boolean
+  readonly subscribePostLike!: boolean
 
   /**
    * 未定義
    */
-  subscribePostQuotation!: boolean
+  readonly subscribePostQuotation!: boolean
 
   /**
    * ユーザーID
    */
-  userId!: Id
+  readonly userId!: Id
 
   constructor(
     public props: {
