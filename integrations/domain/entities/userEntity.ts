@@ -51,6 +51,11 @@ export class UserEntity {
    */
   hashedPassword!: HashedPassword
 
+  /**
+   * 設定データのID
+   */
+  settingId!: Id | null
+
   constructor(
     public props: {
       id: Id
@@ -61,6 +66,7 @@ export class UserEntity {
       headerImageId: Id | null
       iconImageId: Id | null
       hashedPassword: HashedPassword
+      settingId: Id | null
     }
   ) {
     Object.assign(this, props)

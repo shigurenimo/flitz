@@ -1,5 +1,4 @@
 export * from "./bookmarkEntity"
-export * from "./exchangeEntity"
 export * from "./fileEntity"
 export * from "./friendshipEntity"
 export * from "./likeEntity"

@@ -25,7 +25,7 @@ export const ShowUserPageListLikes: FunctionComponent = () => {
       {groupedLikes.map((group) => {
         if (group.isEmpty) {
           return (
-            <Box key={"alert"} px={4}>
+            <Box key={"empty"} px={4}>
               <Alert status={"info"}>
                 <AlertIcon />
                 {t("This user hasn't liked any post yet.")}

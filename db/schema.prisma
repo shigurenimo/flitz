@@ -60,9 +60,9 @@ model Setting {
 
 model Friendship {
   createdAt     DateTime       @default(now()) @map("created_at")
-  followee      User           @relation("user_followees", fields: [followeeId])
+  followee      User           @relation("user_followees", fields: [followeeId], references: [id])
   followeeId    String         @map("followee_id")
-  follower      User           @relation("user_followers", fields: [followerId])
+  follower      User           @relation("user_followers", fields: [followerId], references: [id])
   followerId    String         @map("follower_id")
   id            String         @id @map("id")
   notifications Notification[] @relation("notifications_friendship")
@@ -82,7 +82,7 @@ model Session {
   privateData        String?   @map("private_data")
   publicData         String?   @map("public_data")
   updatedAt          DateTime  @default(now()) @updatedAt @map("updated_at")
-  user               User?     @relation("user_sessions", fields: [userId])
+  user               User?     @relation("user_sessions", fields: [userId], references: [id])
   userId             String?   @map("user_id")
 
   @@map("sessions")
@@ -96,18 +96,18 @@ model Post {
   likes           Like[]         @relation("post_likes")
   likesCount      Int            @default(0) @map("likes_count")
   notifications   Notification[] @relation("notifications_post")
-  quotation       Post?          @relation("post_quotations", fields: [quotationId])
+  quotation       Post?          @relation("post_quotations", fields: [quotationId], references: [id])
   quotationId     String?        @map("quotation_id")
   quotations      Post[]         @relation("post_quotations")
   quotationsCount Int            @default(0) @map("quotations_count")
   references      Reference[]    @relation("post_references")
   replies         Post[]         @relation("post_replies")
   repliesCount    Int            @default(0) @map("replies_count")
-  reply           Post?          @relation("post_replies", fields: [replyId])
+  reply           Post?          @relation("post_replies", fields: [replyId], references: [id])
   replyId         String?        @map("reply_id")
   text            String?        @map("text")
   updatedAt       DateTime       @default(now()) @updatedAt @map("updated_at")
-  user            User           @relation("user_posts", fields: [userId])
+  user            User           @relation("user_posts", fields: [userId], references: [id])
   userId          String         @map("user_id")
 
   @@unique([userId, quotationId])
@@ -120,9 +120,9 @@ model Post {
 model Reference {
   createdAt DateTime @default(now()) @map("created_at")
   isRead    Boolean  @default(false) @map("is_read")
-  post      Post     @relation("post_references", fields: [postId])
+  post      Post     @relation("post_references", fields: [postId], references: [id])
   postId    String   @map("post_id")
-  user      User     @relation("user_references", fields: [userId])
+  user      User     @relation("user_references", fields: [userId], references: [id])
   userId    String   @map("user_id")
 
   @@id([userId, postId])
@@ -134,9 +134,9 @@ model Like {
   createdAt     DateTime       @default(now()) @map("created_at")
   id            String         @id @map("id")
   notifications Notification[] @relation("notifications_like")
-  post          Post           @relation("post_likes", fields: [postId])
+  post          Post           @relation("post_likes", fields: [postId], references: [id])
   postId        String         @map("post_id")
-  user          User           @relation("user_likes", fields: [userId])
+  user          User           @relation("user_likes", fields: [userId], references: [id])
   userId        String         @map("user_id")
 
   @@unique([userId, postId])
@@ -146,9 +146,9 @@ model Like {
 
 model Bookmark {
   createdAt DateTime @default(now()) @map("created_at")
-  post      Post     @relation("post_bookmarks", fields: [postId])
+  post      Post     @relation("post_bookmarks", fields: [postId], references: [id])
   postId    String   @map("post_id")
-  user      User     @relation("user_bookmarks", fields: [userId])
+  user      User     @relation("user_bookmarks", fields: [userId], references: [id])
   userId    String   @map("user_id")
 
   @@unique([userId, postId])
@@ -158,17 +158,17 @@ model Bookmark {
 
 model Notification {
   createdAt    DateTime         @default(now()) @map("created_at")
-  friendship   Friendship?      @relation("notifications_friendship", fields: [friendshipId])
+  friendship   Friendship?      @relation("notifications_friendship", fields: [friendshipId], references: [id])
   friendshipId String?          @map("friendship_id")
   id           String           @id @map("id")
   isRead       Boolean          @default(false) @map("is_read")
-  like         Like?            @relation("notifications_like", fields: [likeId])
+  like         Like?            @relation("notifications_like", fields: [likeId], references: [id])
   likeId       String?          @map("like_id")
-  post         Post?            @relation("notifications_post", fields: [postId])
+  post         Post?            @relation("notifications_post", fields: [postId], references: [id])
   postId       String?          @map("post_id")
   type         NotificationType @map("type")
   uniqueId     String           @map("unique_id")
-  user         User?            @relation("user_notifications", fields: [userId])
+  user         User?            @relation("user_notifications", fields: [userId], references: [id])
   userId       String?          @map("user_id")
 
   @@unique([userId, type, uniqueId])

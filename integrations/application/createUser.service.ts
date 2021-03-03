@@ -6,6 +6,8 @@ import {
   HashedPasswordFactory,
   IdFactory,
   Password,
+  SettingEntity,
+  SettingRepository,
   UserEntity,
   UserRepository,
   UserRole,
@@ -16,6 +18,7 @@ import { SessionRepository } from "integrations/infrastructure"
 export class SignUpService {
   constructor(
     private userRepository: UserRepository,
+    private settingRepository: SettingRepository,
     private sessionRepository: SessionRepository
   ) {}
 
@@ -31,6 +34,21 @@ export class SignUpService {
 
       const userId = IdFactory.create()
 
+      const settingEntity = new SettingEntity({
+        id: IdFactory.create(),
+        discoverableByEmail: false,
+        fcmToken: null,
+        fcmTokenForMobile: null,
+        notificationEmail: null,
+        protected: false,
+        subscribeMessage: false,
+        subscribePostLike: false,
+        subscribePostQuotation: false,
+        userId: userId,
+      })
+
+      await this.settingRepository.upsert(settingEntity)
+
       const userEntity = new UserEntity({
         biography: new Biography(""),
         hashedPassword,
@@ -38,8 +56,9 @@ export class SignUpService {
         iconImageId: null,
         id: userId,
         name: null,
-        username: userId,
+        username: IdFactory.createUsername(),
         email: input.email,
+        settingId: settingEntity.id,
       })
 
       const upsertUser = await this.userRepository.upsert(userEntity)
