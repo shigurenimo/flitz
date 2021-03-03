@@ -37,6 +37,7 @@ export class UserRepositoryService implements UserRepository {
       name: user.name ? new Name(user.name) : null,
       username: new Username(user.username),
       hashedPassword: new HashedPassword(user.hashedPassword),
+      settingId: null,
     })
   }
 
@@ -66,6 +67,7 @@ export class UserRepositoryService implements UserRepository {
       name: user.name ? new Name(user.name) : null,
       username: new Username(user.username),
       hashedPassword: new HashedPassword(user.hashedPassword),
+      settingId: null,
     })
   }
 

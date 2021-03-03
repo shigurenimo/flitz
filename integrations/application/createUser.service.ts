@@ -32,10 +32,30 @@ export class SignUpService {
         input.password
       )
 
+      const settingId = IdFactory.create()
+
       const userId = IdFactory.create()
 
+      const userEntity = new UserEntity({
+        biography: new Biography(""),
+        hashedPassword,
+        headerImageId: null,
+        iconImageId: null,
+        id: userId,
+        name: null,
+        username: IdFactory.createUsername(),
+        email: input.email,
+        settingId: settingId,
+      })
+
+      const upsertUser = await this.userRepository.upsert(userEntity)
+
+      if (upsertUser instanceof Error) {
+        return upsertUser
+      }
+
       const settingEntity = new SettingEntity({
-        id: IdFactory.create(),
+        id: settingId,
         discoverableByEmail: false,
         fcmToken: null,
         fcmTokenForMobile: null,
@@ -47,24 +67,11 @@ export class SignUpService {
         userId: userId,
       })
 
-      await this.settingRepository.upsert(settingEntity)
+      const upsertSetting = await this.settingRepository.upsert(settingEntity)
 
-      const userEntity = new UserEntity({
-        biography: new Biography(""),
-        hashedPassword,
-        headerImageId: null,
-        iconImageId: null,
-        id: userId,
-        name: null,
-        username: IdFactory.createUsername(),
-        email: input.email,
-        settingId: settingEntity.id,
-      })
-
-      const upsertUser = await this.userRepository.upsert(userEntity)
-
-      if (upsertUser instanceof Error) {
-        return upsertUser
+      if (upsertSetting instanceof Error) {
+        console.log(upsertSetting)
+        return upsertSetting
       }
 
       await this.sessionRepository.createSession(input.session, {

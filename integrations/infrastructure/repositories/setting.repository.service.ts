@@ -8,29 +8,33 @@ import {
 
 export class SettingRepositoryService implements SettingRepository {
   async upsert(setting: SettingEntity) {
-    await db.setting.upsert({
-      create: {
-        id: setting.id.value,
-        fcmToken: setting.fcmToken,
-        fcmTokenForMobile: setting.fcmTokenForMobile,
-        subscribeMessage: setting.subscribeMessage,
-        subscribePostLike: setting.subscribePostLike,
-        subscribePostQuotation: setting.subscribePostQuotation,
-        userId: setting.userId.value,
-      },
-      update: {
-        id: setting.id.value,
-        fcmToken: setting.fcmToken,
-        fcmTokenForMobile: setting.fcmTokenForMobile,
-        subscribeMessage: setting.subscribeMessage,
-        subscribePostLike: setting.subscribePostLike,
-        subscribePostQuotation: setting.subscribePostQuotation,
-        userId: setting.userId.value,
-      },
-      where: { userId: setting.userId.value },
-    })
+    try {
+      await db.setting.upsert({
+        create: {
+          id: setting.id.value,
+          fcmToken: setting.fcmToken,
+          fcmTokenForMobile: setting.fcmTokenForMobile,
+          subscribeMessage: setting.subscribeMessage,
+          subscribePostLike: setting.subscribePostLike,
+          subscribePostQuotation: setting.subscribePostQuotation,
+          userId: setting.userId.value,
+        },
+        update: {
+          id: setting.id.value,
+          fcmToken: setting.fcmToken,
+          fcmTokenForMobile: setting.fcmTokenForMobile,
+          subscribeMessage: setting.subscribeMessage,
+          subscribePostLike: setting.subscribePostLike,
+          subscribePostQuotation: setting.subscribePostQuotation,
+          userId: setting.userId.value,
+        },
+        where: { userId: setting.userId.value },
+      })
 
-    return null
+      return null
+    } catch (error) {
+      return new Error(error.message)
+    }
   }
 
   async findByUserId(userId: Id) {
