@@ -4,7 +4,7 @@ import React, { FunctionComponent } from "react"
 type Props = AvatarProps & {
   fileId?: string | null
   src?: string
-  userId: string
+  userId: string | null
 }
 
 export const AvatarUser: FunctionComponent<Props> = ({

@@ -8,7 +8,7 @@ import { useInfiniteQuery, useMutation, useParam } from "blitz"
 import React, { FunctionComponent } from "react"
 import { useTranslation } from "react-i18next"
 
-type Props = { userId?: string }
+type Props = { userId: string | null }
 
 export const ShowUserPageListFollowers: FunctionComponent<Props> = ({
   userId,
