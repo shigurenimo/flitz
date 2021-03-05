@@ -36,6 +36,7 @@ model User {
   siteURL          String         @default("") @map("site_url")
   updatedAt        DateTime       @default(now()) @updatedAt @map("updated_at")
   username         String         @unique @map("username")
+  tokens           Token[]        @relation("user_tokens")
 
   @@index([createdAt])
   @@map("users")
@@ -222,6 +223,25 @@ model File {
   userId       String   @map("user_id")
 
   @@map("files")
+}
+
+model Token {
+  id          String    @id @map("id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  hashedToken String    @map("hashed_token")
+  type        TokenType @map("type")
+  expiresAt   DateTime  @map("expires_at")
+  sentTo      String    @map("sent_to")
+  user        User      @relation("user_tokens", fields: [userId], references: [id])
+  userId      String    @map("user_id")
+
+  @@unique([hashedToken, type])
+  @@map("tokens")
+}
+
+enum TokenType {
+  RESET_PASSWORD
 }
 
 enum FileType {
