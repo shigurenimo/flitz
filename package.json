@@ -2,7 +2,7 @@
   "name": "flitz",
   "version": "1.0.0",
   "scripts": {
-    "build": "prisma db push --preview-feature --accept-data-loss && blitz build",
+    "build": "blitz build",
     "build:typedoc": "typedoc",
     "dev": "rm -rf .blitz && prisma generate && blitz dev",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
@@ -56,7 +56,7 @@
     "prettier": "2.2.1",
     "pretty-quick": "3.1.0",
     "typedoc": "0.20.29",
-    "prettier-plugin-prisma": "0.x"
+    "prettier-plugin-prisma": "0.4.0"
   },
   "private": true,
   "prisma": {
