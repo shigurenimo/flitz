@@ -2,7 +2,7 @@
   "name": "flitz",
   "version": "1.0.0",
   "scripts": {
-    "build": "rm -rf .blitz && prisma db push --preview-feature --force && prisma generate && blitz build",
+    "build": "rm -rf .blitz && prisma db push --preview-feature --accept-data-loss && prisma generate && blitz build",
     "build:typedoc": "typedoc",
     "dev": "rm -rf .blitz && prisma generate && blitz dev",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
