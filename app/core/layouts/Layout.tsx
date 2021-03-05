@@ -3,7 +3,7 @@ import { useFirebaseCloudMessaging } from "app/core/hooks/useFirebaseCloudMessag
 import { LayoutAside } from "app/core/layouts/components/LayoutAside"
 import { LayoutHeader } from "app/core/layouts/components/LayoutHeader"
 import { Head } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { Suspense, FunctionComponent } from "react"
 
 type LayoutProps = {
   title?: string
@@ -32,13 +32,15 @@ const Layout: FunctionComponent<LayoutProps> = ({
           rel={"stylesheet"}
         />
       </Head>
-      <LayoutAside />
-      <Stack pl={{ base: 0, md: 56 }}>
-        <Container maxW={"4xl"} centerContent w={"full"} px={0}>
-          <LayoutHeader />
-          {children}
-        </Container>
-      </Stack>
+      <Suspense fallback={<></>}>
+        <LayoutAside />
+        <Stack pl={{ base: 0, md: 56 }}>
+          <Container maxW={"4xl"} centerContent w={"full"} px={0}>
+            <LayoutHeader />
+            {children}
+          </Container>
+        </Stack>
+      </Suspense>
     </>
   )
 }
