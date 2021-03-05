@@ -11,7 +11,7 @@ export class EnvAdapterService {
         privateKey: z.string(),
       })
       .safeParse({
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
         privateKey: process.env.FIREBASE_PRIVATE_KEY,
       })
