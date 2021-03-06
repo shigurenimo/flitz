@@ -19,7 +19,7 @@
     "@nestjs/core": "7.6.13",
     "@nestjs/platform-express": "7.6.13",
     "@prisma/client": "~2.17",
-    "blitz": "0.31.0",
+    "blitz": "0.31.1",
     "chakra-ui": "0.3.9",
     "faker": "5.4.0",
     "firebase": "8.2.9",
@@ -54,9 +54,9 @@
     "husky": "4.3.8",
     "lint-staged": "10.5.4",
     "prettier": "2.2.1",
+    "prettier-plugin-prisma": "0.4.0",
     "pretty-quick": "3.1.0",
-    "typedoc": "0.20.29",
-    "prettier-plugin-prisma": "0.4.0"
+    "typedoc": "0.20.29"
   },
   "private": true,
   "prisma": {
