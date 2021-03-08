@@ -2,7 +2,7 @@
   "name": "flitz",
   "version": "1.0.0",
   "scripts": {
-    "build": "blitz build",
+    "build": "export NODE_OPTIONS=--max_old_space_size=4096 && blitz build",
     "start:production": "blitz start --port $PORT",
     "build:typedoc": "typedoc",
     "dev": "prisma generate && blitz dev",
