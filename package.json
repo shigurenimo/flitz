@@ -5,7 +5,7 @@
     "build": "blitz build",
     "start:production": "blitz start --port $PORT",
     "build:typedoc": "typedoc",
-    "dev": "rm -rf .blitz && prisma generate && blitz dev",
+    "dev": "prisma generate && blitz dev",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "start": "blitz start",
     "studio": "blitz db studio",
@@ -73,5 +73,8 @@
     "*.{js,ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "engines": {
+    "node": "12.20.0"
   }
 }
