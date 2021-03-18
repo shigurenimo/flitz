@@ -37,9 +37,9 @@ export class QueryConverter {
       likesCount: post.likesCount,
       quotationsCount: post.quotationsCount,
       repliesCount: post.repliesCount,
-      hasLike: post.likes.length > 0,
-      hasQuotation: post.quotations.length > 0,
-      hasReply: post.replies.length > 0,
+      hasLike: (post.likes || []).length > 0,
+      hasQuotation: (post.quotations || []).length > 0,
+      hasReply: (post.replies || []).length > 0,
       text: post.text || null,
     }
   }
@@ -100,7 +100,7 @@ export class QueryConverter {
       iconImageId: user.iconImage?.id || null,
       headerImageId: user.headerImage?.id || null,
       siteURL: user.siteURL,
-      isFollowee: user.followers.length > 0,
+      isFollowee: (user.followers || []).length > 0,
       followeesCount: user.followeesCount,
       followersCount: user.followersCount,
     }
