@@ -4,7 +4,7 @@ import { CreateFileService, CreatePostService } from "integrations/application"
 import { Id, ImageFactory, PostText } from "integrations/domain"
 import { createAppContext } from "integrations/registry"
 
-export default resolver.pipe(
+const createPost = resolver.pipe(
   resolver.zod(zCreatePostMutation),
   resolver.authorize(),
   (input, ctx) => ({
@@ -29,3 +29,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default createPost

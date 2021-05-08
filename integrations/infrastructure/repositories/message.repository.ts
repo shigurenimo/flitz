@@ -1,8 +1,8 @@
 import db from "db"
 import { Id, IdFactory, MessageEntity } from "integrations/domain"
-import { MessageRepository } from "integrations/domain/repositories"
+import { MessageRepository as Repository } from "integrations/domain/repositories"
 
-export class MessageRepositoryService implements MessageRepository {
+export class MessageRepository implements Repository {
   async markAsRead(userId: Id, relatedUserId: Id) {
     await db.message.updateMany({
       data: { isRead: true },

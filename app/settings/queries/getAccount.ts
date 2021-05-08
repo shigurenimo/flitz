@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const GetAccount = z.null()
 
-export default resolver.pipe(
+const getAccount = resolver.pipe(
   resolver.zod(GetAccount),
   resolver.authorize(),
   (_, ctx) => ({
@@ -24,3 +24,5 @@ export default resolver.pipe(
     return account
   }
 )
+
+export default getAccount

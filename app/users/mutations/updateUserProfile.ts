@@ -21,7 +21,7 @@ const UpdateUserProfile = z.object({
   name: zName,
 })
 
-export default resolver.pipe(
+const updateUserProfile = resolver.pipe(
   resolver.zod(UpdateUserProfile),
   resolver.authorize(),
   (input, ctx) => ({
@@ -54,3 +54,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default updateUserProfile

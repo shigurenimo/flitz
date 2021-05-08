@@ -2,7 +2,7 @@ import firebase from "firebase/app"
 import "firebase/messaging"
 import { useEffect } from "react"
 
-export const useFirebase = async () => {
+export const useFirebase =  () => {
   useEffect(() => {
     if (typeof window === "undefined") return
 

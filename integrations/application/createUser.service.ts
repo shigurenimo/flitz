@@ -12,14 +12,14 @@ import {
   UserRepository,
   UserRole,
 } from "integrations/domain"
-import { SessionRepository } from "integrations/infrastructure"
+import { SessionAdapter } from "integrations/infrastructure"
 
 @Injectable()
 export class SignUpService {
   constructor(
     private userRepository: UserRepository,
     private settingRepository: SettingRepository,
-    private sessionRepository: SessionRepository
+    private sessionRepository: SessionAdapter
   ) {}
 
   async call(input: {

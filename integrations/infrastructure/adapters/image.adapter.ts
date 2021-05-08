@@ -4,7 +4,7 @@ import { tmpdir } from "os"
 import { join } from "path"
 import sharp from "sharp"
 
-export class ImageAdapterService {
+export class ImageAdapter {
   getTmpPath(fileName: Path) {
     return new Path(join(tmpdir(), fileName.value))
   }

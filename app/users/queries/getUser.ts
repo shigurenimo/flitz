@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const GetUser = z.object({ username: zUsername })
 
-export default resolver.pipe(
+const getUser = resolver.pipe(
   resolver.zod(GetUser),
   (input, ctx) => ({
     userId: Id.nullable(ctx.session.userId),
@@ -24,3 +24,5 @@ export default resolver.pipe(
     return user
   }
 )
+
+export default getUser

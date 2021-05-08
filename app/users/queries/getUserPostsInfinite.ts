@@ -17,7 +17,7 @@ const GetUserPostsInfinite = z.object({
   username: zUsername,
 })
 
-export default resolver.pipe(
+const getUserPostsInfinite = resolver.pipe(
   resolver.zod(GetUserPostsInfinite),
   (input, ctx) => ({
     skip: new Skip(input.skip),
@@ -43,3 +43,5 @@ export default resolver.pipe(
     return { count, posts, nextPage, hasMore, isEmpty }
   }
 )
+
+export default getUserPostsInfinite

@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const GetSetting = z.null()
 
-export default resolver.pipe(
+const getSetting = resolver.pipe(
   resolver.zod(GetSetting),
   resolver.authorize(),
   (_, ctx) => ({
@@ -26,3 +26,5 @@ export default resolver.pipe(
     return setting
   }
 )
+
+export default getSetting

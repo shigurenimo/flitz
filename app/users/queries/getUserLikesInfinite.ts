@@ -17,7 +17,7 @@ const GetUserLikesInfinite = z.object({
   username: zUsername,
 })
 
-export default resolver.pipe(
+const getUserLikesInfinite = resolver.pipe(
   resolver.zod(GetUserLikesInfinite),
   (input, ctx) => ({
     skip: new Skip(input.skip),
@@ -43,3 +43,5 @@ export default resolver.pipe(
     return { count, likes, nextPage, hasMore, isEmpty }
   }
 )
+
+export default getUserLikesInfinite

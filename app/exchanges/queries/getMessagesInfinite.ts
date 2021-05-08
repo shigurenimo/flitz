@@ -21,7 +21,7 @@ const GetMessagesInfinite = z.object({
   skip: zSkip,
 })
 
-export default resolver.pipe(
+const getMessagesInfinite = resolver.pipe(
   resolver.zod(GetMessagesInfinite),
   resolver.authorize(),
   (input, ctx) => ({
@@ -57,3 +57,5 @@ export default resolver.pipe(
     return { messages, nextPage }
   }
 )
+
+export default getMessagesInfinite

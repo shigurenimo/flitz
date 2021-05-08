@@ -3,7 +3,7 @@ import admin from "firebase-admin"
 import * as z from "zod"
 
 @Injectable()
-export class FirebaseAdapterService {
+export class FirebaseAdapter {
   initialize() {
     if (admin.apps.length > 0) return null
 

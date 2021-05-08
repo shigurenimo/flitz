@@ -1,18 +1,18 @@
 import { Injectable } from "@nestjs/common"
 import { FileRepository, Id } from "integrations/domain"
 import {
-  EnvAdapterService,
-  ImageAdapterService,
-  StorageAdapterService,
+  EnvAdapter,
+  ImageAdapter,
+  StorageAdapter,
 } from "integrations/infrastructure"
 
 @Injectable()
 export class ReadImageBufferService {
   constructor(
-    private envAdapter: EnvAdapterService,
+    private envAdapter: EnvAdapter,
     private fileRepository: FileRepository,
-    private imageAdapter: ImageAdapterService,
-    private storageAdapter: StorageAdapterService
+    private imageAdapter: ImageAdapter,
+    private storageAdapter: StorageAdapter
   ) {}
 
   async call(input: { fileId: Id }) {

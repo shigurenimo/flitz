@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const GetPost = z.object({ id: zId })
 
-export default resolver.pipe(
+const getPost = resolver.pipe(
   resolver.zod(GetPost),
   (input, ctx) => ({
     id: new Id(input.id),
@@ -24,3 +24,5 @@ export default resolver.pipe(
     return post
   }
 )
+
+export default getPost

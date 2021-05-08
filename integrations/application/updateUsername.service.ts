@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common"
 import { NotFoundError, SessionContext } from "blitz"
 import { Id, Username, UserRepository } from "integrations/domain"
-import { SessionRepository } from "integrations/infrastructure"
+import { SessionAdapter } from "integrations/infrastructure"
 
 @Injectable()
 export class UpdateUsernameService {
   constructor(
     private userRepository: UserRepository,
-    private sessionRepository: SessionRepository
+    private sessionRepository: SessionAdapter
   ) {}
 
   async call(input: {

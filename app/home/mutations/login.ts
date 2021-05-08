@@ -1,16 +1,16 @@
 import { zLoginMutation } from "app/home/validations/loginMutation"
-import { Ctx, resolver } from "blitz"
+import { resolver } from "blitz"
 import { LoginService } from "integrations/application/authenticateUser.service"
 import { Email, Password } from "integrations/domain"
 import { createAppContext } from "integrations/registry"
 
-export default resolver.pipe(
+const login = resolver.pipe(
   resolver.zod(zLoginMutation),
   (input) => ({
     email: new Email(input.email),
     password: new Password(input.password),
   }),
-  async (input, ctx: Ctx) => {
+  async (input, ctx) => {
     const app = await createAppContext()
 
     const login = await app.get(LoginService).call({
@@ -26,3 +26,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default login

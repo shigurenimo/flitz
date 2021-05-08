@@ -4,7 +4,7 @@ import { CreateQuotationService } from "integrations/application"
 import { Id } from "integrations/domain"
 import { createAppContext } from "integrations/registry"
 
-export default resolver.pipe(
+const createQuotation = resolver.pipe(
   resolver.zod(zCreateQuotation),
   resolver.authorize(),
   (input, ctx) => ({
@@ -22,3 +22,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default createQuotation

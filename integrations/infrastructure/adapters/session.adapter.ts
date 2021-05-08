@@ -3,7 +3,7 @@ import { SessionContext } from "blitz"
 import { Id, Name, Username, UserRole } from "integrations/domain/valueObjects"
 
 @Injectable()
-export class SessionRepository {
+export class SessionAdapter {
   async createSession(
     sessionContext: SessionContext,
     input: {

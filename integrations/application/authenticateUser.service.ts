@@ -7,13 +7,13 @@ import {
   UserRepository,
   UserRole,
 } from "integrations/domain"
-import { SessionRepository } from "integrations/infrastructure"
+import { SessionAdapter } from "integrations/infrastructure"
 
 @Injectable()
 export class LoginService {
   constructor(
     private userRepository: UserRepository,
-    private sessionRepository: SessionRepository,
+    private sessionRepository: SessionAdapter,
     private passwordService: PasswordService
   ) {}
 

@@ -3,10 +3,10 @@ import {
   Email,
   Id,
   SettingEntity,
-  SettingRepository,
+  SettingRepository as Repository,
 } from "integrations/domain"
 
-export class SettingRepositoryService implements SettingRepository {
+export class SettingRepository implements Repository {
   async upsert(setting: SettingEntity) {
     try {
       await db.setting.upsert({

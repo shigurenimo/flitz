@@ -14,7 +14,7 @@ import * as z from "zod"
 
 const GetNotificationsInfinite = z.object({ skip: zSkip })
 
-export default resolver.pipe(
+const getNotificationsInfinite = resolver.pipe(
   resolver.zod(GetNotificationsInfinite),
   resolver.authorize(),
   (input, ctx) => ({
@@ -46,3 +46,5 @@ export default resolver.pipe(
     return { notifications, hasMore, nextPage }
   }
 )
+
+export default getNotificationsInfinite

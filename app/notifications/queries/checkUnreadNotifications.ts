@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const CheckUnreadNotifications = z.null()
 
-export default resolver.pipe(
+const checkUnreadNotifications = resolver.pipe(
   resolver.zod(CheckUnreadNotifications),
   resolver.authorize(),
   (_, ctx) => ({
@@ -22,3 +22,5 @@ export default resolver.pipe(
     return hasUnreadNotifications
   }
 )
+
+export default checkUnreadNotifications

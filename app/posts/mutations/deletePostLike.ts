@@ -4,7 +4,7 @@ import { DeletePostLikeService } from "integrations/application/deletePostLike.s
 import { Id } from "integrations/domain"
 import { createAppContext } from "integrations/registry"
 
-export default resolver.pipe(
+const deletePostLike = resolver.pipe(
   resolver.zod(zDeletePostLikeMutation),
   resolver.authorize(),
   (input, ctx) => ({
@@ -22,3 +22,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default deletePostLike

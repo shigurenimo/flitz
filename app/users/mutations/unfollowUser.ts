@@ -7,7 +7,7 @@ import * as z from "zod"
 
 const UnfollowUser = z.object({ userId: zId })
 
-export default resolver.pipe(
+const unfollowUser = resolver.pipe(
   resolver.zod(UnfollowUser),
   resolver.authorize(),
   (input, ctx) => ({
@@ -31,3 +31,5 @@ export default resolver.pipe(
     return queryProfile
   }
 )
+
+export default unfollowUser

@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const GetPostsInfinite = z.object({ skip: zSkip })
 
-export default resolver.pipe(
+const getPostsInfinite = resolver.pipe(
   resolver.zod(GetPostsInfinite),
   (input, ctx) => ({
     skip: new Skip(input.skip),
@@ -27,3 +27,5 @@ export default resolver.pipe(
     return { hasMore, posts, nextPage }
   }
 )
+
+export default getPostsInfinite

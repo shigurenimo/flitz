@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const UpdateUsername = z.object({ username: zName })
 
-export default resolver.pipe(
+const updateUsername = resolver.pipe(
   resolver.zod(UpdateUsername),
   resolver.authorize(),
   (input, ctx) => ({
@@ -25,3 +25,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default updateUsername

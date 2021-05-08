@@ -14,7 +14,7 @@ import * as z from "zod"
 
 export const GetReferencesInfinite = z.object({ skip: zSkip })
 
-export default resolver.pipe(
+const getReferencesInfinite = resolver.pipe(
   resolver.zod(GetReferencesInfinite),
   resolver.authorize(),
   (input, ctx) => ({
@@ -45,3 +45,5 @@ export default resolver.pipe(
     return { hasMore, references, nextPage }
   }
 )
+
+export default getReferencesInfinite

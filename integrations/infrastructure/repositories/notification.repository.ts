@@ -1,8 +1,8 @@
 import db from "db"
 import { Id, NotificationEntity } from "integrations/domain"
-import { NotificationRepository } from "integrations/domain/repositories"
+import { NotificationRepository as Repository } from "integrations/domain/repositories"
 
-export class NotificationRepositoryService implements NotificationRepository {
+export class NotificationRepository implements Repository {
   async upsert(notificationEntity: NotificationEntity) {
     if (notificationEntity.type.value === "QUOTATION") {
       return this.upsertQuotationNotification(notificationEntity)

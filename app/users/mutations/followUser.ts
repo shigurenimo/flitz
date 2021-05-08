@@ -7,7 +7,7 @@ import * as z from "zod"
 
 const FollowUser = z.object({ userId: zId })
 
-export default resolver.pipe(
+const followUser = resolver.pipe(
   resolver.zod(FollowUser),
   resolver.authorize(),
   (input, ctx) => ({
@@ -31,3 +31,5 @@ export default resolver.pipe(
     return queryProfile
   }
 )
+
+export default followUser

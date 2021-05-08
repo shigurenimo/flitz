@@ -9,7 +9,7 @@ const zUpdateAccountPassword = z.object({
   password: zPassword,
 })
 
-export default resolver.pipe(
+const updateAccountPassword =  resolver.pipe(
   resolver.zod(zUpdateAccountPassword),
   resolver.authorize(),
   (input, ctx) => ({
@@ -29,3 +29,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default updateAccountPassword

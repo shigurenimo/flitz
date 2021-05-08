@@ -3,7 +3,7 @@ import { Id } from "integrations/domain"
 import { UserExchangeQuery } from "integrations/infrastructure"
 import { createAppContext } from "integrations/registry"
 
-export default resolver.pipe(
+const checkUnreadMessages = resolver.pipe(
   resolver.authorize(),
   (_: unknown, ctx) => ({
     userId: new Id(ctx.session.userId),
@@ -18,3 +18,5 @@ export default resolver.pipe(
     return existence
   }
 )
+
+export default checkUnreadMessages

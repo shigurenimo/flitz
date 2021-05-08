@@ -1,5 +1,11 @@
 {
+  "deno.enable": false,
   "typescript.preferences.importModuleSpecifier": "non-relative",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "files.exclude": {
     "**/node_modules": true,
     ".blitz": true,

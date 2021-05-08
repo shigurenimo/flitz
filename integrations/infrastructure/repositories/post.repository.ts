@@ -1,8 +1,8 @@
 import db from "db"
 import { Count, Id, PostEntity, PostText } from "integrations/domain"
-import { PostRepository } from "integrations/domain/repositories"
+import { PostRepository as Repository } from "integrations/domain/repositories"
 
-export class PostRepositoryService implements PostRepository {
+export class PostRepository implements Repository {
   async find(id: Id) {
     const post = await db.post.findUnique({
       where: { id: id.value },

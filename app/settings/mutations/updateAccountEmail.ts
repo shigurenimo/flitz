@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const zUpdateAccountEmailMutation = z.object({ email: zEmail })
 
-export default resolver.pipe(
+const updateAccountEmail = resolver.pipe(
   resolver.zod(zUpdateAccountEmailMutation),
   resolver.authorize(),
   (input, ctx) => ({
@@ -24,3 +24,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default updateAccountEmail

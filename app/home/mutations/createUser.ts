@@ -4,7 +4,7 @@ import { SignUpService } from "integrations/application"
 import { Email, Password } from "integrations/domain"
 import { createAppContext } from "integrations/registry"
 
-export default resolver.pipe(
+const createUser = resolver.pipe(
   resolver.zod(zCreateUserMutation),
   (input) => ({
     email: new Email(input.email),
@@ -26,3 +26,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default createUser

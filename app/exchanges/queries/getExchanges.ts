@@ -6,7 +6,7 @@ import * as z from "zod"
 
 const GetExchanges = z.object({ skip: zSkip })
 
-export default resolver.pipe(
+const getExchanges =  resolver.pipe(
   resolver.zod(GetExchanges),
   resolver.authorize(),
   (input, ctx) => ({
@@ -32,3 +32,5 @@ export default resolver.pipe(
     return { isEmpty, nextPage, exchanges, hasMore, count }
   }
 )
+
+export default getExchanges

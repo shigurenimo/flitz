@@ -2,13 +2,13 @@ import { Injectable } from "@nestjs/common"
 import { NotFoundError } from "blitz"
 import admin from "firebase-admin"
 import { Id, SettingRepository } from "integrations/domain"
-import { FirebaseAdapterService } from "integrations/infrastructure"
+import { FirebaseAdapter } from "integrations/infrastructure"
 
 @Injectable()
 export class TestNotificationService {
   constructor(
     private settingRepository: SettingRepository,
-    private firebaseAdapterService: FirebaseAdapterService
+    private firebaseAdapterService: FirebaseAdapter
   ) {}
 
   async call(input: { userId: Id }) {

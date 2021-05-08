@@ -9,18 +9,18 @@ import {
   Service,
 } from "integrations/domain"
 import {
-  EnvAdapterService,
-  ImageAdapterService,
-  StorageAdapterService,
+  EnvAdapter,
+  ImageAdapter,
+  StorageAdapter,
 } from "integrations/infrastructure"
 
 @Injectable()
 export class CreateFileService {
   constructor(
-    private envRepository: EnvAdapterService,
+    private envRepository: EnvAdapter,
     private fileRepository: FileRepository,
-    private imageRepository: ImageAdapterService,
-    private storageRepository: StorageAdapterService
+    private imageRepository: ImageAdapter,
+    private storageRepository: StorageAdapter
   ) {}
 
   async call(input: { userId: Id; image: Image | null }) {

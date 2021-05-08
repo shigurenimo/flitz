@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common"
 import admin from "firebase-admin"
 import { Id, Path } from "integrations/domain/valueObjects"
-import { FirebaseAdapterService } from "integrations/infrastructure/adapters/firebase.adapter.service"
+import { FirebaseAdapter } from "integrations/infrastructure/adapters/firebase.adapter"
 import { tmpdir } from "os"
 import { join } from "path"
 
 @Injectable()
-export class StorageAdapterService {
-  constructor(private firebaseRepository: FirebaseAdapterService) {}
+export class StorageAdapter {
+  constructor(private firebaseRepository: FirebaseAdapter) {}
 
   async uploadToCloudStorage(filePath: Id) {
     this.firebaseRepository.initialize()

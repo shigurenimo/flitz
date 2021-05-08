@@ -9,7 +9,7 @@ const GetRepliesInfinite = z.object({
   replyId: zId,
 })
 
-export default resolver.pipe(
+const getRepliesInfinite = resolver.pipe(
   resolver.zod(GetRepliesInfinite),
   (input, ctx) => ({
     replyId: new Id(input.replyId),
@@ -36,3 +36,5 @@ export default resolver.pipe(
     return { hasMore, posts, nextPage }
   }
 )
+
+export default getRepliesInfinite

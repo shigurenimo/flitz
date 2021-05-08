@@ -4,7 +4,7 @@ import { CreateReplyService } from "integrations/application"
 import { Id, PostText } from "integrations/domain"
 import { createAppContext } from "integrations/registry"
 
-export default resolver.pipe(
+const createReply = resolver.pipe(
   resolver.zod(zCreateReplyMutation),
   resolver.authorize(),
   (input, ctx) => ({
@@ -24,3 +24,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default createReply

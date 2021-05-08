@@ -9,7 +9,7 @@ const GetExchangeMessagesInfinite = z.object({
   skip: zSkip,
 })
 
-export default resolver.pipe(
+const getGroupMessagesInfinite = resolver.pipe(
   resolver.zod(GetExchangeMessagesInfinite),
   resolver.authorize(),
   (input) => ({
@@ -38,3 +38,5 @@ export default resolver.pipe(
     return { messages, nextPage }
   }
 )
+
+export default getGroupMessagesInfinite

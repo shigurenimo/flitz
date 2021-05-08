@@ -8,9 +8,9 @@ import {
   UserEntity,
   Username,
 } from "integrations/domain"
-import { UserRepository } from "integrations/domain/repositories"
+import { UserRepository as Repository } from "integrations/domain/repositories"
 
-export class UserRepositoryService implements UserRepository {
+export class UserRepository implements Repository {
   async find(id: Id) {
     const user = await db.user.findUnique({
       where: { id: id.value },

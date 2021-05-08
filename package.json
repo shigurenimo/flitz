@@ -10,7 +10,8 @@
     "start": "blitz start",
     "studio": "blitz db studio",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@chakra-ui/react": "1.3.3",
@@ -39,7 +40,7 @@
     "react-icons": "4.2.0",
     "react-textarea-autosize": "^8.3.2",
     "reflect-metadata": "0.1.13",
-    "sharp": "0.27.2",
+    "sharp": "0.28.1",
     "typescript": "~4.1",
     "zod": "1.11.11"
   },
@@ -52,7 +53,7 @@
     "@types/sharp": "0.27.1",
     "babel-plugin-transform-typescript-metadata": "0.3.1",
     "eslint": "7.21.0",
-    "husky": "4.3.8",
+    "husky": "6.0.0",
     "lint-staged": "10.5.4",
     "prettier": "2.2.1",
     "prettier-plugin-prisma": "0.4.0",
@@ -62,12 +63,6 @@
   "private": true,
   "prisma": {
     "schema": "db/schema.prisma"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && pretty-quick --staged",
-      "pre-push": "tsc && npm run lint"
-    }
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [

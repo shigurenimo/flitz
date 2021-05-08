@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common"
 import db from "db"
-import { FileEntity, FileRepository } from "integrations/domain"
+import { FileEntity, FileRepository as Repository } from "integrations/domain"
 import { FileType, Id, Path, Service } from "integrations/domain/valueObjects"
 
 @Injectable()
-export class FileRepositoryService extends FileRepository {
+export class FileRepository extends Repository {
   async upsert(fileEntity: FileEntity) {
     await db.file.create({
       data: {

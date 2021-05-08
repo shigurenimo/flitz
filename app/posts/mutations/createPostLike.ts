@@ -7,7 +7,7 @@ import * as z from "zod"
 
 export const CreatePostLike = z.object({ postId: zId })
 
-export default resolver.pipe(
+const createPostLike = resolver.pipe(
   resolver.zod(zCreatePostLikeMutation),
   resolver.authorize(),
   (input, ctx) => ({
@@ -25,3 +25,5 @@ export default resolver.pipe(
     return null
   }
 )
+
+export default createPostLike

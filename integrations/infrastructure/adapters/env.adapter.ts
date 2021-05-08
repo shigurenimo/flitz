@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common"
 import * as z from "zod"
 
 @Injectable()
-export class EnvAdapterService {
+export class EnvAdapter {
   getFirebaseEnv() {
     const result = z
       .object({

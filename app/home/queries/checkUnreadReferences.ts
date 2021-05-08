@@ -3,7 +3,7 @@ import { Id } from "integrations/domain"
 import { ReferenceQuery } from "integrations/infrastructure"
 import { createAppContext } from "integrations/registry"
 
-export default resolver.pipe(
+const checkUnreadReferences = resolver.pipe(
   resolver.authorize(),
   (_: unknown, ctx) => ({
     userId: new Id(ctx.session.userId),
@@ -16,3 +16,5 @@ export default resolver.pipe(
     return hasUnread
   }
 )
+
+export default checkUnreadReferences

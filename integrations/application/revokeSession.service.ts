@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common"
 import { SessionContext } from "blitz"
-import { SessionRepository } from "integrations/infrastructure"
+import { SessionAdapter } from "integrations/infrastructure"
 
 @Injectable()
 export class RevokeSessionService {
-  constructor(private sessionRepository: SessionRepository) {}
+  constructor(private sessionRepository: SessionAdapter) {}
 
   async call(input: { session: SessionContext }) {
     try {

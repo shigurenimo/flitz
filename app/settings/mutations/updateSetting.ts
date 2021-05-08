@@ -13,7 +13,7 @@ const zUpdateSettingMutation = z.object({
   subscribePostQuotation: z.boolean().optional(),
 })
 
-export default resolver.pipe(
+const updateSetting = resolver.pipe(
   resolver.zod(zUpdateSettingMutation),
   resolver.authorize(),
   (input, ctx) => ({
@@ -50,3 +50,5 @@ export default resolver.pipe(
     }
   }
 )
+
+export default updateSetting

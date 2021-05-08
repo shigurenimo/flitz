@@ -1,9 +1,9 @@
 import db from "db"
 import { FriendshipEntity } from "integrations/domain"
-import { FriendshipRepository } from "integrations/domain/repositories"
+import { FriendshipRepository as Repository } from "integrations/domain/repositories"
 import { Id } from "integrations/domain/valueObjects"
 
-export class FriendshipRepositoryService implements FriendshipRepository {
+export class FriendshipRepository implements Repository {
   async find(followerId: Id, followeeId: Id) {
     const friendship = await db.friendship.findUnique({
       where: {

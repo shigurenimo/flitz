@@ -17,7 +17,7 @@ const GetUserRepliesInfinite = z.object({
   username: zUsername,
 })
 
-export default resolver.pipe(
+const getUserRepliesInfinite= resolver.pipe(
   resolver.zod(GetUserRepliesInfinite),
   (input, ctx) => ({
     skip: new Skip(input.skip),
@@ -46,3 +46,5 @@ export default resolver.pipe(
     return { count, posts, nextPage, hasMore, isEmpty }
   }
 )
+
+export default getUserRepliesInfinite
