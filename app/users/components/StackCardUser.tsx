@@ -2,7 +2,7 @@ import { Badge, Button, HStack, Stack, Text, useToast } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackCard } from "app/core/components/StackCard"
 import { useRouter } from "blitz"
-import { QueryFollower } from "integrations/interface/types/queryFollower"
+import { AppFollower } from "integrations/interface/types/appFollower"
 import React, { FunctionComponent } from "react"
 
 export const StackCardUser: FunctionComponent<{
@@ -10,7 +10,7 @@ export const StackCardUser: FunctionComponent<{
   hasAction: boolean
   onFollow: () => Promise<void>
   onUnfollow: () => Promise<void>
-  follower: QueryFollower
+  follower: AppFollower
 }> = (props) => {
   const router = useRouter()
 

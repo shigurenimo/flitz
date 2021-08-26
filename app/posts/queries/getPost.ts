@@ -1,6 +1,6 @@
 import { NotFoundError, resolver } from "blitz"
 import { Id, zId } from "integrations/domain"
-import { PostQuery } from "integrations/infrastructure/queries/post.query"
+import { PostQuery } from "integrations/infrastructure"
 import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 

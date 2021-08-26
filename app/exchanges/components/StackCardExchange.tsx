@@ -3,11 +3,11 @@ import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackCard } from "app/core/components/StackCard"
 import { StackExchangeUser } from "app/exchanges/components/StackExchangeUser"
 import { StackPostDate } from "app/posts/components/StackPostDate"
-import { QueryUserExchange } from "integrations/interface/types/queryExchangeMessage"
+import { AppUserExchange } from "integrations/interface/types/appExchangeMessage"
 import React, { FunctionComponent } from "react"
 
 export const StackCardExchange: FunctionComponent<
-  QueryUserExchange & {
+  AppUserExchange & {
     onClick: () => void
   }
 > = (props) => {

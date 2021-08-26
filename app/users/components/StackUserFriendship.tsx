@@ -1,9 +1,9 @@
 import { HStack, Link as LinkText, Stack, Text } from "@chakra-ui/react"
 import { Link } from "blitz"
-import { QueryProfile } from "integrations/interface/types/queryProfile"
+import { AppProfile } from "integrations/interface/types/appProfile"
 import React, { FunctionComponent } from "react"
 
-export const StackUserFriendship: FunctionComponent<QueryProfile> = (props) => {
+export const StackUserFriendship: FunctionComponent<AppProfile> = (props) => {
   return (
     <Stack pacing={2} px={4}>
       <Stack>

@@ -8,11 +8,11 @@ import {
 } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackCard } from "app/core/components/StackCard"
-import { QueryNotificationFollow } from "integrations/interface/types/queryNotificationFollow"
+import { AppNotificationFollow } from "integrations/interface/types/appNotificationFollow"
 import React, { FunctionComponent } from "react"
 import { FiUserPlus } from "react-icons/fi"
 
-export const StackCardNotificationFriendship: FunctionComponent<QueryNotificationFollow> = (
+export const StackCardNotificationFriendship: FunctionComponent<AppNotificationFollow> = (
   props
 ) => {
   return (

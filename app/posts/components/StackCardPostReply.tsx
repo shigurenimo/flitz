@@ -6,10 +6,10 @@ import { StackPostActions } from "app/posts/components/StackPostActions"
 import { StackPostDate } from "app/posts/components/StackPostDate"
 import { StackPostImage } from "app/posts/components/StackPostImage"
 import { StackPostText } from "app/posts/components/StackPostText"
-import { QueryQuotation } from "integrations/interface/types/queryQuotation"
+import { AppQuotation } from "integrations/interface/types/appQuotation"
 import React, { FunctionComponent } from "react"
 
-export const StackCardReply: FunctionComponent<QueryQuotation> = (props) => {
+export const StackCardReply: FunctionComponent<AppQuotation> = (props) => {
   return (
     <StackCard>
       <HStack align={"start"} spacing={4}>

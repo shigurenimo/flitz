@@ -15,13 +15,13 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react"
-import { QuerySetting } from "integrations/interface/types/querySetting"
+import { AppSetting } from "integrations/interface/types/appSetting"
 import React, { FunctionComponent } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend, FiZap, FiZapOff } from "react-icons/fi"
 
 type Props = {
-  setting: QuerySetting
+  setting: AppSetting
   onTurnOnNotification(): void
   onTurnOffNotification(): void
   onSendTestNotification(): void

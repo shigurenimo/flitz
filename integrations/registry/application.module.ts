@@ -3,7 +3,7 @@ import * as servicesModule from "integrations/application"
 import * as domainRepositoriesModule from "integrations/domain/repositories"
 import * as adaptersModule from "integrations/infrastructure/adapters"
 import * as convertersModule from "integrations/infrastructure/converters"
-import * as queriesModule from "integrations/infrastructure/queries"
+import * as queriesModule from "integrations/infrastructure/views"
 import * as repositoriesModule from "integrations/infrastructure/repositories"
 import * as domainModule from "integrations/domain/services"
 
@@ -51,9 +51,6 @@ import * as domainModule from "integrations/domain/services"
       useClass: repositoriesModule.UserRepository,
     },
   ],
-  exports: [
-    ...Object.values(servicesModule),
-    ...Object.values(queriesModule),
-  ],
+  exports: [...Object.values(servicesModule), ...Object.values(queriesModule)],
 })
 export class AppModule {}

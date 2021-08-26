@@ -1,7 +1,7 @@
 import { resolver } from "blitz"
 import { UpdateSettingService } from "integrations/application"
 import { Id } from "integrations/domain"
-import { QuerySetting } from "integrations/interface/types/querySetting"
+import { AppSetting } from "integrations/interface/types/appSetting"
 import { createAppContext } from "integrations/registry"
 import * as z from "zod"
 
@@ -24,7 +24,7 @@ const updateSetting = resolver.pipe(
     subscribePostQuotation: input.subscribePostQuotation || false,
     userId: new Id(ctx.session.userId),
   }),
-  async (input): Promise<QuerySetting> => {
+  async (input): Promise<AppSetting> => {
     const app = await createAppContext()
 
     const settingEntity = await app.get(UpdateSettingService).call({

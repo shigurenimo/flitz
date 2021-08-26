@@ -1,4 +1,4 @@
-import { QueryNotification } from "integrations/interface/types/queryNotification"
+import { AppNotification } from "integrations/interface/types/appNotification"
 
 /**
  * 通知
@@ -9,7 +9,7 @@ export class NotificationService {
    * if there is an 'unread' notification
    * 通知の中に未読のものが混じっているかどうか
    */
-  hasUnread(notifications: QueryNotification[]) {
+  hasUnread(notifications: AppNotification[]) {
     const unreadNotifications = notifications.filter((notification) => {
       if (notification === null) return false
 

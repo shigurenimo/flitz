@@ -2,10 +2,10 @@ import { StackCardNotificationFriendship } from "app/notifications/components/St
 import { StackCardNotificationLike } from "app/notifications/components/StackCardNotificationLike"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import { Link } from "blitz"
-import { QueryNotification } from "integrations/interface/types/queryNotification"
+import { AppNotification } from "integrations/interface/types/appNotification"
 import React, { FunctionComponent } from "react"
 
-export const StackCardNotification: FunctionComponent<QueryNotification> = (
+export const StackCardNotification: FunctionComponent<AppNotification> = (
   props
 ) => {
   if (props.type === "FOLLOW") {

@@ -2,11 +2,11 @@ import { Box, HStack } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { RenderFileLoader } from "app/core/components/RenderFileLoader"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
-import { QueryProfile } from "integrations/interface/types/queryProfile"
+import { AppProfile } from "integrations/interface/types/appProfile"
 import React, { FunctionComponent } from "react"
 
 export const StackProfileUpdateActions: FunctionComponent<
-  QueryProfile & {
+  AppProfile & {
     headerImageFile: File | null
     iconImageFile: File | null
   }

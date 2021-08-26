@@ -1,4 +1,4 @@
-export * from "./hashedPasswordFactory"
+export * from "./hashedPassword.factory"
 export * from "./id.factory"
-export * from "./ImageFactory"
-export * from "./nameFactory"
+export * from "./Image.factory"
+export * from "./name.factory"

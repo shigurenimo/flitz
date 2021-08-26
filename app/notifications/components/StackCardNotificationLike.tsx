@@ -8,11 +8,11 @@ import {
 } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackCard } from "app/core/components/StackCard"
-import { QueryNotificationLike } from "integrations/interface/types/queryNotificationLike"
+import { AppNotificationLike } from "integrations/interface/types/appNotificationLike"
 import React, { FunctionComponent } from "react"
 import { FiHeart } from "react-icons/fi"
 
-export const StackCardNotificationLike: FunctionComponent<QueryNotificationLike> = (
+export const StackCardNotificationLike: FunctionComponent<AppNotificationLike> = (
   props
 ) => {
   return (

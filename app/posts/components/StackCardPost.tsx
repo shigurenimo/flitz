@@ -10,11 +10,11 @@ import { StackPostImage } from "app/posts/components/StackPostImage"
 import { StackPostReply } from "app/posts/components/StackPostReply"
 import { StackPostText } from "app/posts/components/StackPostText"
 import { useRouter } from "blitz"
-import { QueryFeedPost } from "integrations/interface/types/queryFeedPost"
+import { AppFeedPost } from "integrations/interface/types/appFeedPost"
 import React, { FunctionComponent } from "react"
 
 export const StackCardPost: FunctionComponent<
-  QueryFeedPost & { isDisabled: boolean }
+  AppFeedPost & { isDisabled: boolean }
 > = (props) => {
   const router = useRouter()
 

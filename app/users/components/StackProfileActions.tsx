@@ -2,11 +2,11 @@ import { Box, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
 import { Link, useSession } from "blitz"
-import { QueryProfile } from "integrations/interface/types/queryProfile"
+import { AppProfile } from "integrations/interface/types/appProfile"
 import React, { FunctionComponent } from "react"
 import { useTranslation } from "react-i18next"
 
-export const StackProfileActions: FunctionComponent<QueryProfile> = (props) => {
+export const StackProfileActions: FunctionComponent<AppProfile> = (props) => {
   const { t } = useTranslation()
 
   const session = useSession()
