@@ -12,7 +12,7 @@ export const PostsPageList: FunctionComponent = () => {
     getPostsInfinite,
     (page = { skip: 0 }) => page,
     {
-      getFetchMore: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 1000 * 2 ** 4,
     }
   )
@@ -23,6 +23,7 @@ export const PostsPageList: FunctionComponent = () => {
         return group.posts.map((post) => {
           return (
             <StackCardPost
+              key={post.id}
               isDisabled={!session.userId || session.userId === post.user.id}
               {...post}
             />

@@ -11,7 +11,7 @@ export const ShowPostPageReplyList: FunctionComponent = () => {
     getRepliesInfinite,
     (page = { skip: 0, replyId: postId }) => page,
     {
-      getFetchMore: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 1000 * 2 ** 4,
     }
   )
@@ -20,7 +20,7 @@ export const ShowPostPageReplyList: FunctionComponent = () => {
     <Stack align={"stretch"} divider={<StackDivider />} spacing={4}>
       {groupedPosts.map((group) => {
         return group.posts.map((post) => {
-          return <StackCardReply {...post} />
+          return <StackCardReply key={post.id} {...post} />
         })
       })}
     </Stack>

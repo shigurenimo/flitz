@@ -7,7 +7,7 @@ import { BlitzPage, useSession } from "blitz"
 import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
 
-const ShowUserFolloweesPage: BlitzPage = () => {
+const ShowUserFollowersPage: BlitzPage = () => {
   const { t } = useTranslation()
 
   const session = useSession()
@@ -26,8 +26,8 @@ const ShowUserFolloweesPage: BlitzPage = () => {
   )
 }
 
-ShowUserFolloweesPage.getLayout = (page) => {
+ShowUserFollowersPage.getLayout = (page) => {
   return <Layout title={"Followers"}>{page}</Layout>
 }
 
-export default ShowUserFolloweesPage
+export default ShowUserFollowersPage

@@ -15,7 +15,7 @@ export const ShowUserPageListLikes: FunctionComponent = () => {
     getUserLikesInfinite,
     (page = { skip: 0, username }) => page,
     {
-      getFetchMore: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 1000 * 2 ** 5,
     }
   )

@@ -33,11 +33,17 @@ export const SettingsPagePassword: FunctionComponent = () => {
       })
       toast({ description: t`Changes have bee saved`, status: "success" })
     } catch (err) {
-      toast({ status: "error", title: err.message })
+      toast({
+        status: "error",
+        title:
+          formState.errors.currentPassword?.message ||
+          formState.errors.password?.message ||
+          "",
+      })
     }
   }
 
-  const { handleSubmit, errors, register, getValues } = useForm({
+  const { handleSubmit, register, getValues, formState } = useForm({
     mode: "onBlur",
     reValidateMode: "onBlur",
     defaultValues: {
@@ -55,13 +61,12 @@ export const SettingsPagePassword: FunctionComponent = () => {
           <Input
             aria-label={t`Current Password`}
             isDisabled={isLoading}
-            name={"currentPassword"}
-            ref={register({})}
             type={"password"}
+            {...register("currentPassword")}
           />
         </HStack>
         <FormErrorMessage>
-          {errors.currentPassword && errors.currentPassword.message}
+          {formState.errors.currentPassword?.message}
         </FormErrorMessage>
       </FormControl>
       <FormControl>
@@ -70,9 +75,8 @@ export const SettingsPagePassword: FunctionComponent = () => {
           <Input
             aria-label={t`New Password`}
             isDisabled={isLoading}
-            name={"password"}
-            ref={register({})}
             type={"password"}
+            {...register("password")}
           />
           <Button
             isLoading={isLoading}
@@ -83,7 +87,7 @@ export const SettingsPagePassword: FunctionComponent = () => {
           </Button>
         </HStack>
         <FormErrorMessage>
-          {errors.password && errors.password.message}
+          {formState.errors.password?.message}
         </FormErrorMessage>
       </FormControl>
     </Stack>

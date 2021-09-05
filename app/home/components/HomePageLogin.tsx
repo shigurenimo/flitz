@@ -20,9 +20,8 @@ export const HomePageLogin: FunctionComponent = () => {
 
   const [loginMutation, { isLoading: isLoadingLogin }] = useMutation(login)
 
-  const [createUserMutation, { isLoading: isLoadingCreateUser }] = useMutation(
-    createUser
-  )
+  const [createUserMutation, { isLoading: isLoadingCreateUser }] =
+    useMutation(createUser)
 
   const onLogin = async (email: string, password: string) => {
     await loginMutation({ email, password })
@@ -34,9 +33,13 @@ export const HomePageLogin: FunctionComponent = () => {
     router.push("/")
   }
 
-  const { handleSubmit, errors, register, setError } = useForm({
+  const { handleSubmit, register, setError, formState } = useForm({
     mode: "onBlur",
     reValidateMode: "onBlur",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   })
 
   const onSubmitCreateUser = async (values: {
@@ -51,8 +54,8 @@ export const HomePageLogin: FunctionComponent = () => {
         return
       }
 
-      if (error.message) {
-        setError("password", { message: error.message })
+      if (formState.errors.password?.message) {
+        setError("password", { message: formState.errors.password?.message })
         return
       }
 
@@ -69,8 +72,8 @@ export const HomePageLogin: FunctionComponent = () => {
         return
       }
 
-      if (error.message) {
-        setError("password", { message: error.message })
+      if (formState.errors.password?.message) {
+        setError("password", { message: formState.errors.password?.message })
         return
       }
 
@@ -83,35 +86,25 @@ export const HomePageLogin: FunctionComponent = () => {
   return (
     <Stack maxW={{ base: "none", lg: 80 }} spacing={8} w={"full"} px={4}>
       <Stack as={"form"} onSubmit={handleSubmit(() => null)} spacing={4}>
-        <FormControl isInvalid={errors.email}>
+        <FormControl isInvalid={!!formState.errors.email}>
           <Input
             aria-label={"Email"}
             isDisabled={isLoading}
-            name={"email"}
             placeholder={t("Email")}
-            ref={register({
-              required: {
-                value: true,
-                message: "Please enter an email address.",
-              },
-            })}
             type={"email"}
+            {...register("email", {
+              required: "Please enter an email address.",
+            })}
           />
-          <FormErrorMessage>
-            {errors.email && errors.email.message}
-          </FormErrorMessage>
+          <FormErrorMessage>{formState.errors.email?.message}</FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={errors.password}>
+        <FormControl isInvalid={!!formState.errors.password}>
           <Input
             aria-label={"Password"}
             isDisabled={isLoading}
-            name={"password"}
             placeholder={t("Password")}
-            ref={register({
-              required: {
-                value: true,
-                message: "Please enter a password.",
-              },
+            {...register("password", {
+              required: "Please enter a password.",
               minLength: {
                 value: 5,
                 message:
@@ -121,7 +114,7 @@ export const HomePageLogin: FunctionComponent = () => {
             type={"password"}
           />
           <FormErrorMessage>
-            {errors.password && errors.password.message}
+            {formState.errors.password?.message}
           </FormErrorMessage>
         </FormControl>
         <HStack spacing={4}>

@@ -1,5 +1,11 @@
 import { useToast } from "@chakra-ui/react"
-import firebase from "firebase/app"
+import { getApps } from "firebase/app"
+import {
+  getMessaging,
+  isSupported,
+  onMessage,
+  Unsubscribe,
+} from "firebase/messaging"
 import { useEffect } from "react"
 
 export const useFirebaseCloudMessaging = () => {
@@ -10,20 +16,27 @@ export const useFirebaseCloudMessaging = () => {
 
     if (typeof window === "undefined") return
 
-    if (firebase.apps.length < 1) return
+    if (getApps().length < 1) return
 
-    if (!firebase.messaging.isSupported()) return
+    let unsubscribe: Unsubscribe | null = null
 
-    const messaging = firebase.messaging()
+    const messaging = getMessaging()
 
-    const unsubscribe = messaging.onMessage((payload) => {
-      toast({
-        status: "info",
-        title: payload.notification.title,
-        description: payload.notification.body,
+    isSupported().then((isSupportedSync) => {
+      if (!isSupportedSync) return
+
+      unsubscribe = onMessage(messaging, (payload) => {
+        toast({
+          status: "info",
+          title: payload.notification?.title,
+          description: payload.notification?.body,
+        })
       })
     })
 
-    return () => unsubscribe()
+    return () => {
+      if (unsubscribe === null) return
+      unsubscribe()
+    }
   }, [toast])
 }

@@ -17,9 +17,8 @@ import { useForm } from "react-hook-form"
 export const StackFallbackLogin: FunctionComponent = () => {
   const [loginMutation, { isLoading: isLoadingLogin }] = useMutation(login)
 
-  const [createUserMutation, { isLoading: isLoadingCreateUser }] = useMutation(
-    createUser
-  )
+  const [createUserMutation, { isLoading: isLoadingCreateUser }] =
+    useMutation(createUser)
 
   const onLogin = async (email: string, password: string) => {
     await loginMutation({ email, password })
@@ -31,7 +30,7 @@ export const StackFallbackLogin: FunctionComponent = () => {
     window.location.reload()
   }
 
-  const { handleSubmit, errors, register, setError } = useForm({
+  const { handleSubmit, register, setError, formState } = useForm({
     mode: "onBlur",
     reValidateMode: "onBlur",
   })
@@ -44,20 +43,20 @@ export const StackFallbackLogin: FunctionComponent = () => {
   }) => {
     try {
       await onCreateUser(values.email, values.password)
-    } catch (error) {
+    } catch (error: any) {
       setError("email", { message: "" })
       setError("password", { message: "" })
-      toast({ description: error.message, status: "error" })
+      toast({ description: error?.message, status: "error" })
     }
   }
 
   const onSubmitLogin = async (values: { email: string; password: string }) => {
     try {
       await onLogin(values.email, values.password)
-    } catch (error) {
+    } catch (error: any) {
       setError("email", { message: "" })
       setError("password", { message: "" })
-      toast({ description: error.message, status: "error" })
+      toast({ description: error?.message, status: "error" })
     }
   }
 
@@ -81,35 +80,27 @@ export const StackFallbackLogin: FunctionComponent = () => {
           flex={1}
           spacing={4}
         >
-          <FormControl isInvalid={errors.email}>
+          <FormControl isInvalid={!!formState.errors.email}>
             <Input
               aria-label={"Email"}
               isDisabled={isLoading}
-              name={"email"}
               placeholder={"Email"}
-              ref={register({
-                required: {
-                  value: true,
-                  message: "Please enter an email address.",
-                },
+              {...register("email", {
+                required: "Please enter an email address.",
               })}
               type={"email"}
             />
             <FormErrorMessage>
-              {errors.email && errors.password.email}
+              {formState.errors.email?.message}
             </FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={errors.password}>
+          <FormControl isInvalid={!!formState.errors.password}>
             <Input
               aria-label={"Password"}
               isDisabled={isLoading}
-              name={"password"}
               placeholder={"Password"}
-              ref={register({
-                required: {
-                  value: true,
-                  message: "Please enter a password.",
-                },
+              {...register("password", {
+                required: "Please enter a password.",
                 minLength: {
                   value: 5,
                   message:
@@ -119,7 +110,7 @@ export const StackFallbackLogin: FunctionComponent = () => {
               type={"password"}
             />
             <FormErrorMessage>
-              {errors.password && errors.password.message}
+              {formState.errors.password?.message}
             </FormErrorMessage>
           </FormControl>
         </Stack>

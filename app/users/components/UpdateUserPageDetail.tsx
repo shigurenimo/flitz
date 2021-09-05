@@ -35,16 +35,16 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
     { refetchOnWindowFocus: false }
   )
 
-  const [updateUserProfileMutation, { isLoading }] = useMutation(
-    updateUserProfile
-  )
+  const [updateUserProfileMutation, { isLoading }] =
+    useMutation(updateUserProfile)
 
-  const { handleSubmit, errors, register } = useForm({
+  const { handleSubmit, register, formState } = useForm({
     mode: "onBlur",
     reValidateMode: "onBlur",
     defaultValues: {
       name: user.name,
       biography: user.biography,
+      siteURL: "",
     },
   })
 
@@ -66,7 +66,13 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
       })
       toast({ status: "success", title: t`Succeeded in updating` })
     } catch (error) {
-      toast({ description: error.message, status: "error" })
+      toast({
+        description:
+          formState.errors.name?.message ||
+          formState.errors.biography?.message ||
+          "",
+        status: "error",
+      })
     }
   }
 
@@ -78,7 +84,7 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
         {...user}
       />
       <Stack spacing={4} px={4}>
-        <FormControl isInvalid={!!errors.name}>
+        <FormControl isInvalid={!!formState.errors.name}>
           <FormLabel>{t`Images`}</FormLabel>
           <HStack spacing={4}>
             <ButtonFile
@@ -97,36 +103,29 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
             </ButtonFile>
           </HStack>
         </FormControl>
-        <FormControl isInvalid={!!errors.name}>
+        <FormControl isInvalid={!!formState.errors.name}>
           <FormLabel>{t`Name`}</FormLabel>
           <Input
             aria-label={"Name"}
             isDisabled={isLoading}
-            name={"name"}
             placeholder={t`Name`}
-            ref={register({
-              required: {
-                value: true,
-                message: t`Please enter an email address`,
-              },
+            {...register("name", {
+              required: t`Please enter an email address`.toString(),
             })}
           />
-          <FormErrorMessage>
-            {errors.name && errors.name.message}
-          </FormErrorMessage>
+          <FormErrorMessage>{formState.errors.name?.message}</FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={!!errors.biography}>
+        <FormControl isInvalid={!!formState.errors.biography}>
           <FormLabel>{t`Biography`}</FormLabel>
           <Textarea
             aria-label={"Biography"}
             isDisabled={isLoading}
-            name={"biography"}
             placeholder={t`Biography`}
             resize={"none"}
-            ref={register({})}
+            {...register("biography")}
           />
           <FormErrorMessage>
-            {errors.name && errors.name.message}
+            {formState.errors.biography?.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl>
@@ -134,13 +133,12 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
           <Input
             aria-label={"SiteURL"}
             isDisabled={isLoading}
-            name={"siteURL"}
             placeholder={"https://"}
-            ref={register({})}
             type={"url"}
+            {...register("siteURL")}
           />
           <FormErrorMessage>
-            {errors.name && errors.name.message}
+            {formState.errors.siteURL?.message}
           </FormErrorMessage>
         </FormControl>
         <Box pt={4}>

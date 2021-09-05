@@ -7,7 +7,7 @@ import { BlitzPage } from "blitz"
 import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
 
-const ShowExchangeRecipientPage: BlitzPage = () => {
+const ShowExchangePage: BlitzPage = () => {
   const { t } = useTranslation()
 
   return (
@@ -20,8 +20,8 @@ const ShowExchangeRecipientPage: BlitzPage = () => {
   )
 }
 
-ShowExchangeRecipientPage.getLayout = (page) => {
+ShowExchangePage.getLayout = (page) => {
   return <Layout title={"Messages"}>{page}</Layout>
 }
 
-export default ShowExchangeRecipientPage
+export default ShowExchangePage

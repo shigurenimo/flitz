@@ -1,9 +1,0 @@
-{
-  "entryPoints": [
-    "domain/repositories/index.ts",
-    "domain/services/index.ts",
-    "domain/valueObjects/index.ts"
-  ],
-  "excludeNotDocumented": true,
-  "json": "public/typedoc.json"
-}

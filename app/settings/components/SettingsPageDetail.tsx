@@ -4,7 +4,7 @@ import testNotification from "app/settings/mutations/testNotification"
 import updateSetting from "app/settings/mutations/updateSetting"
 import getSetting from "app/settings/queries/getSetting"
 import { useMutation, useQuery } from "blitz"
-import firebase from "firebase/app"
+import { getMessaging, getToken, isSupported } from "firebase/messaging"
 import React, { FunctionComponent } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -20,10 +20,10 @@ export const SettingsPageDetail: FunctionComponent = () => {
     { isLoading: isLoadingTestNotificationMutation },
   ] = useMutation(testNotification)
 
-  const [
-    updateSettingMutation,
-    { isLoading: isLoadingUpdateSettingMutation },
-  ] = useMutation(updateSetting)
+  const [updateSettingMutation, { isLoading: isLoadingUpdateSettingMutation }] =
+    useMutation(updateSetting)
+
+  const messaging = getMessaging()
 
   const toast = useToast()
 
@@ -45,7 +45,9 @@ export const SettingsPageDetail: FunctionComponent = () => {
   }
 
   const onTurnOnNotification = async () => {
-    if (!firebase.messaging.isSupported()) {
+    const isSupportedSync = await isSupported()
+
+    if (!isSupportedSync) {
       toast({
         status: "error",
         title: t`The Push API is supported`,
@@ -54,9 +56,7 @@ export const SettingsPageDetail: FunctionComponent = () => {
     }
 
     try {
-      const messaging = firebase.messaging()
-
-      const fcmToken = await messaging.getToken({
+      const fcmToken = await getToken(messaging, {
         vapidKey: process.env.NEXT_PUBLIC_VAPID,
       })
 
@@ -68,11 +68,11 @@ export const SettingsPageDetail: FunctionComponent = () => {
         status: "success",
         title: t`Changes have bee saved`,
       })
-    } catch (err) {
+    } catch (error: any) {
       toast({
         status: "error",
-        title: err.code,
-        description: err.message.replace(`(${err.code}).`, ""),
+        title: error?.code,
+        description: error?.message.replace(`(${error?.code}).`, ""),
       })
     }
   }

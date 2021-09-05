@@ -29,23 +29,19 @@ export const SettingsPageAccount: FunctionComponent = () => {
     refetchInterval: false,
   })
 
-  const [
-    updateUsernameMutation,
-    { isLoading: updateUsernameLoading },
-  ] = useMutation(updateUsername)
+  const [updateUsernameMutation, { isLoading: updateUsernameLoading }] =
+    useMutation(updateUsername)
 
-  const [
-    updateAccountEmailMutation,
-    { isLoading: updateAccountEmailLoading },
-  ] = useMutation(updateAccountEmail)
+  const [updateAccountEmailMutation, { isLoading: updateAccountEmailLoading }] =
+    useMutation(updateAccountEmail)
 
   const onUpdateUsername = async () => {
     const values = getValues()
     try {
       await updateUsernameMutation({ username: values.username })
       toast({ description: t`Changes have bee saved`, status: "success" })
-    } catch (err) {
-      toast({ status: "error", title: err.message })
+    } catch (error: any) {
+      toast({ status: "error", title: error?.message })
     }
   }
 
@@ -54,12 +50,12 @@ export const SettingsPageAccount: FunctionComponent = () => {
     try {
       await updateAccountEmailMutation({ email: values.email })
       toast({ description: t`Changes have bee saved`, status: "success" })
-    } catch (err) {
-      toast({ status: "error", title: err.message })
+    } catch (error: any) {
+      toast({ status: "error", title: error?.message })
     }
   }
 
-  const { handleSubmit, errors, register, getValues } = useForm({
+  const { handleSubmit, register, getValues, formState } = useForm({
     mode: "onBlur",
     reValidateMode: "onBlur",
     defaultValues: {
@@ -79,9 +75,8 @@ export const SettingsPageAccount: FunctionComponent = () => {
           <Input
             aria-label={t`Username`}
             isDisabled={updateUsernameLoading}
-            name={"username"}
             placeholder={session.username}
-            ref={register({})}
+            {...register("username")}
           />
           <Button
             isDisabled={isDisabled}
@@ -93,7 +88,7 @@ export const SettingsPageAccount: FunctionComponent = () => {
           </Button>
         </HStack>
         <FormErrorMessage>
-          {errors.username && errors.username.message}
+          {formState.errors.username?.message}
         </FormErrorMessage>
         <FormHelperText>{t`※Username can't be duplicated.`}</FormHelperText>
       </FormControl>
@@ -103,9 +98,8 @@ export const SettingsPageAccount: FunctionComponent = () => {
           <Input
             aria-label={t`Email`}
             isDisabled={updateAccountEmailLoading}
-            name={"email"}
             placeholder={account.email}
-            ref={register({})}
+            {...register("email")}
           />
           <Button
             isDisabled={isDisabled}
@@ -117,7 +111,7 @@ export const SettingsPageAccount: FunctionComponent = () => {
           </Button>
         </HStack>
         <FormErrorMessage>
-          {errors.username && errors.username.message}
+          {formState.errors.username?.message}
         </FormErrorMessage>
       </FormControl>
     </Stack>

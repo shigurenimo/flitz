@@ -12,7 +12,7 @@ export const HomePageList: FunctionComponent = () => {
     getReferencesInfinite,
     (page = { skip: 0 }) => page,
     {
-      getFetchMore: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastGroup) => lastGroup.nextPage,
       refetchInterval: 1000 * 2 ** 3,
     }
   )
