@@ -19,9 +19,9 @@ const unfollowUser = resolver.pipe(
     }
   },
   async (props) => {
-    const unfollowUserService = container.resolve(UnfollowService)
+    const unfollowService = container.resolve(UnfollowService)
 
-    await unfollowUserService.execute({
+    await unfollowService.execute({
       followeeId: props.followeeId,
       followerId: props.followerId,
     })

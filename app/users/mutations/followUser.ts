@@ -18,9 +18,9 @@ const followUser = resolver.pipe(
     }
   },
   async (props) => {
-    const followUserService = container.resolve(FollowService)
+    const followService = container.resolve(FollowService)
 
-    await followUserService.execute({
+    await followService.execute({
       followeeId: props.followeeId,
       followerId: props.followerId,
     })
