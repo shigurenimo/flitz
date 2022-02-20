@@ -1,5 +1,8 @@
+import { captureException } from "@sentry/node"
+import { NotFoundError } from "blitz"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
+import { InternalError } from "integrations/errors"
 import { injectable } from "tsyringe"
 
 @injectable()
@@ -9,15 +12,27 @@ export class FindUserSimpleQuery {
    * @param userId
    */
   async execute(userId: Id) {
-    const user = await db.user.findUnique({
-      where: { id: userId.value },
-    })
+    try {
+      const user = await db.user.findUnique({
+        where: { id: userId.value },
+      })
 
-    if (user === null) return null
+      if (user === null) {
+        return new NotFoundError()
+      }
 
-    return {
-      email: user.email,
-      userId: user.id,
+      return {
+        email: user.email,
+        userId: user.id,
+      }
+    } catch (error) {
+      captureException(error)
+
+      if (error instanceof Error) {
+        return new InternalError(error.message)
+      }
+
+      return new InternalError()
     }
   }
 }

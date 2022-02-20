@@ -1,6 +1,9 @@
 import { withSentry } from "app/core/utils/withSentry"
 import { paginate, resolver } from "blitz"
-import { CountLikesQuery, FindLikeQuery } from "integrations/application"
+import {
+  CountUserLikesQuery,
+  FindUserLikeQuery,
+} from "integrations/application"
 import { Id, Username } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
@@ -21,18 +24,28 @@ const getUserLikes = resolver.pipe(
     }
   },
   async (props) => {
-    const findLikeQuery = container.resolve(FindLikeQuery)
+    const findUserLikeQuery = container.resolve(FindUserLikeQuery)
 
-    const likes = await findLikeQuery.execute({
+    const likes = await findUserLikeQuery.execute({
       skip: props.skip,
       take: props.take,
       userId: props.userId,
       username: props.username,
     })
 
-    const countLikesQuery = container.resolve(CountLikesQuery)
+    if (likes instanceof Error) {
+      throw likes
+    }
 
-    const count = await countLikesQuery.execute({ username: props.username })
+    const countUserLikesQuery = container.resolve(CountUserLikesQuery)
+
+    const count = await countUserLikesQuery.execute({
+      username: props.username,
+    })
+
+    if (count instanceof Error) {
+      throw count
+    }
 
     return paginate({
       skip: props.skip,

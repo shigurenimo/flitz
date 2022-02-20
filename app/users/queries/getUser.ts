@@ -1,5 +1,5 @@
 import { withSentry } from "app/core/utils/withSentry"
-import { NotFoundError, resolver } from "blitz"
+import { resolver } from "blitz"
 import { FindUserByUsernameQuery } from "integrations/application"
 import { Id, Username } from "integrations/domain"
 import { container } from "tsyringe"
@@ -25,8 +25,8 @@ const getUser = resolver.pipe(
       userId: props.userId,
     })
 
-    if (user === null) {
-      throw new NotFoundError()
+    if (user instanceof Error) {
+      throw user
     }
 
     return user

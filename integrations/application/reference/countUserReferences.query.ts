@@ -5,15 +5,15 @@ import { InternalError } from "integrations/errors"
 import { injectable } from "tsyringe"
 
 type Props = {
-  exchangeId: Id
+  userId: Id
 }
 
 @injectable()
-export class CountMessagesQuery {
+export class CountUserReferencesQuery {
   async execute(props: Props) {
     try {
-      const count = await db.message.count({
-        where: { id: props.exchangeId.value },
+      const count = await db.post.count({
+        where: { userId: props.userId.value },
       })
 
       return count

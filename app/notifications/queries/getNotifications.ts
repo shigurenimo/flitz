@@ -1,8 +1,8 @@
 import { withSentry } from "app/core/utils/withSentry"
 import { paginate, resolver } from "blitz"
 import {
-  CountNotificationsQuery,
-  FindNotificationsQuery,
+  CountUserNotificationsQuery,
+  FindUserNotificationsQuery,
   MarkNotificationAsReadService,
 } from "integrations/application"
 import { Id } from "integrations/domain"
@@ -25,12 +25,16 @@ const getNotifications = resolver.pipe(
     }
   },
   async (props) => {
-    const findNotificationsQuery = container.resolve(FindNotificationsQuery)
+    const findNotificationsQuery = container.resolve(FindUserNotificationsQuery)
 
     const notifications = await findNotificationsQuery.execute({
       userId: props.userId,
       skip: props.skip,
     })
+
+    if (notifications instanceof Error) {
+      throw notifications
+    }
 
     // TODO: BAD
     const fn = (notifications: (AppNotification | null)[]) => {
@@ -53,11 +57,17 @@ const getNotifications = resolver.pipe(
       await markNotificationAsReadService.execute({ userId: props.userId })
     }
 
-    const countNotificationsQuery = container.resolve(CountNotificationsQuery)
+    const countNotificationsQuery = container.resolve(
+      CountUserNotificationsQuery
+    )
 
     const count = await countNotificationsQuery.execute({
       userId: props.userId,
     })
+
+    if (count instanceof Error) {
+      throw count
+    }
 
     return paginate({
       skip: props.skip,

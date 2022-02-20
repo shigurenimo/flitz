@@ -1,2 +1,2 @@
-export * from "./countLikes.query"
-export * from "./findLikes.query"
+export * from "./countUserLikes.query"
+export * from "./findUserLikes.query"

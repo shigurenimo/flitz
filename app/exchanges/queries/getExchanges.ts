@@ -28,9 +28,17 @@ const getExchanges = resolver.pipe(
       skip: props.skip,
     })
 
+    if (exchanges instanceof Error) {
+      throw exchanges
+    }
+
     const countExchangesQuery = container.resolve(CountExchangesQuery)
 
     const count = await countExchangesQuery.execute({ userId: props.userId })
+
+    if (count instanceof Error) {
+      throw count
+    }
 
     return paginate({
       skip: props.skip,

@@ -34,6 +34,10 @@ const getMessages = resolver.pipe(
       userId: props.userId,
     })
 
+    if (messages instanceof Error) {
+      throw messages
+    }
+
     const unreadMessages = messages.filter((message) => {
       if (message.user.id === props.userId.value) return false
       return !message.isRead
@@ -58,6 +62,10 @@ const getMessages = resolver.pipe(
       userId: props.userId,
       relatedUserId: props.relatedUserId,
     })
+
+    if (count instanceof Error) {
+      throw count
+    }
 
     return paginate({
       skip: props.skip,

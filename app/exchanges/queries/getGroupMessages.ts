@@ -1,5 +1,5 @@
 import { withSentry } from "app/core/utils/withSentry"
-import { NotFoundError, paginate, resolver } from "blitz"
+import { paginate, resolver } from "blitz"
 import {
   CountMessagesQuery,
   FindGroupMessagesQuery,
@@ -31,8 +31,8 @@ const getGroupMessages = resolver.pipe(
       exchangeId: props.exchangeId,
     })
 
-    if (messages === null) {
-      throw new NotFoundError()
+    if (messages instanceof Error) {
+      throw messages
     }
 
     const countMessagesQuery = container.resolve(CountMessagesQuery)
@@ -40,6 +40,10 @@ const getGroupMessages = resolver.pipe(
     const count = await countMessagesQuery.execute({
       exchangeId: props.exchangeId,
     })
+
+    if (count instanceof Error) {
+      throw count
+    }
 
     return paginate({
       skip: props.skip,

@@ -1,7 +1,7 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
 import { UpdateSettingService } from "integrations/application"
 import { Id } from "integrations/domain"
-import { AppSetting } from "integrations/interface/types/appSetting"
 import { container } from "tsyringe"
 import { z } from "zod"
 
@@ -24,31 +24,31 @@ const updateSetting = resolver.pipe(
     subscribePostQuotation: props.subscribePostQuotation || false,
     userId: new Id(ctx.session.userId),
   }),
-  async (props): Promise<AppSetting> => {
+  async (props) => {
     const updateSettingService = container.resolve(UpdateSettingService)
 
-    const settingEntity = await updateSettingService.execute({
+    const setting = await updateSettingService.execute({
       fcmTokenForMobile: props.fcmTokenForMobile,
       fcmToken: props.fcmToken,
       userId: props.userId,
     })
 
-    if (settingEntity instanceof Error) {
-      throw settingEntity
+    if (setting instanceof Error) {
+      throw setting
     }
 
     return {
-      fcmToken: settingEntity.fcmToken?.slice(0, 4) || null,
-      fcmTokenForMobile: settingEntity.fcmTokenForMobile?.slice(0, 4) || null,
-      id: settingEntity.id.value,
-      notificationEmail: settingEntity.notificationEmail?.value || null,
-      protected: settingEntity.protected,
-      subscribeMessage: settingEntity.subscribeMessage,
-      subscribePostLike: settingEntity.subscribePostLike,
-      subscribePostQuotation: settingEntity.subscribePostQuotation,
-      discoverableByEmail: settingEntity.discoverableByEmail,
+      fcmToken: setting.fcmToken?.slice(0, 4) || null,
+      fcmTokenForMobile: setting.fcmTokenForMobile?.slice(0, 4) || null,
+      id: setting.id.value,
+      notificationEmail: setting.notificationEmail?.value || null,
+      protected: setting.protected,
+      subscribeMessage: setting.subscribeMessage,
+      subscribePostLike: setting.subscribePostLike,
+      subscribePostQuotation: setting.subscribePostQuotation,
+      discoverableByEmail: setting.discoverableByEmail,
     }
   }
 )
 
-export default updateSetting
+export default withSentry(updateSetting, "updateSetting")

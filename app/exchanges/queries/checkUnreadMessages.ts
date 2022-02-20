@@ -18,6 +18,10 @@ const checkUnreadMessages = resolver.pipe(
       userId: props.userId,
     })
 
+    if (existence instanceof Error) {
+      throw existence
+    }
+
     return existence
   }
 )

@@ -15,6 +15,11 @@ type Props = {
 export class UpdateSettingService {
   constructor(private settingRepository: SettingRepository) {}
 
+  /**
+   * @deprecated
+   * @param props
+   * @returns
+   */
   async execute(props: Props) {
     try {
       const setting = await this.settingRepository.findByUserId(props.userId)

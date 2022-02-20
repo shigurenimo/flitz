@@ -1,6 +1,6 @@
 import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { HasUnreadNotificationQuery } from "integrations/application"
+import { CheckUnreadUserNotificationQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
@@ -17,12 +17,16 @@ const checkUnreadNotifications = resolver.pipe(
   },
   async (props) => {
     const hasUnreadNotificationQuery = container.resolve(
-      HasUnreadNotificationQuery
+      CheckUnreadUserNotificationQuery
     )
 
     const hasUnread = await hasUnreadNotificationQuery.execute({
       userId: props.userId,
     })
+
+    if (hasUnread instanceof Error) {
+      throw hasUnread
+    }
 
     return hasUnread
   }

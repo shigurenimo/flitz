@@ -1,6 +1,6 @@
 import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { HasUnreadReferenceQuery } from "integrations/application"
+import { CheckUnreadUserReferenceQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 
@@ -12,11 +12,17 @@ const checkUnreadReferences = resolver.pipe(
     }
   },
   async (props) => {
-    const hasUnreadReferenceQuery = container.resolve(HasUnreadReferenceQuery)
+    const checkUnreadUserReferenceQuery = container.resolve(
+      CheckUnreadUserReferenceQuery
+    )
 
-    const hasUnread = await hasUnreadReferenceQuery.execute({
+    const hasUnread = await checkUnreadUserReferenceQuery.execute({
       userId: props.userId,
     })
+
+    if (hasUnread instanceof Error) {
+      throw hasUnread
+    }
 
     return hasUnread
   }

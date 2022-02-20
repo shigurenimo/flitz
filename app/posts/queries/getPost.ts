@@ -1,5 +1,5 @@
 import { withSentry } from "app/core/utils/withSentry"
-import { NotFoundError, resolver } from "blitz"
+import { resolver } from "blitz"
 import { FindPostQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
@@ -25,8 +25,8 @@ const getPost = resolver.pipe(
       userId: props.userId,
     })
 
-    if (post === null) {
-      throw new NotFoundError()
+    if (post instanceof Error) {
+      throw post
     }
 
     return post

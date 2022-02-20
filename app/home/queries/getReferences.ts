@@ -1,8 +1,8 @@
 import { withSentry } from "app/core/utils/withSentry"
 import { paginate, resolver } from "blitz"
 import {
-  CountReferencesQuery,
-  FindReferenceQuery,
+  CountUserReferencesQuery,
+  FindUserReferenceQuery,
   MarkReferenceAsReadService,
 } from "integrations/application"
 import { Id } from "integrations/domain"
@@ -21,12 +21,16 @@ const getReferences = resolver.pipe(
     }
   },
   async (props) => {
-    const findReferenceQuery = container.resolve(FindReferenceQuery)
+    const findUserReferenceQuery = container.resolve(FindUserReferenceQuery)
 
-    const references = await findReferenceQuery.execute({
+    const references = await findUserReferenceQuery.execute({
       skip: props.skip,
       userId: props.userId,
     })
+
+    if (references instanceof Error) {
+      throw references
+    }
 
     const unreadReferences = references.filter((reference) => {
       return !reference.isRead
@@ -42,9 +46,15 @@ const getReferences = resolver.pipe(
       await markReferenceAsReadService.execute({ userId: props.userId })
     }
 
-    const countReferencesQuery = container.resolve(CountReferencesQuery)
+    const countUserReferencesQuery = container.resolve(CountUserReferencesQuery)
 
-    const count = await countReferencesQuery.execute({ userId: props.userId })
+    const count = await countUserReferencesQuery.execute({
+      userId: props.userId,
+    })
+
+    if (count instanceof Error) {
+      throw count
+    }
 
     return paginate({
       skip: props.skip,

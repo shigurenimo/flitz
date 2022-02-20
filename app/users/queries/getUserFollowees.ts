@@ -33,11 +33,19 @@ const getUserFollowees = resolver.pipe(
       username: props.username,
     })
 
+    if (friendships instanceof Error) {
+      throw friendships
+    }
+
     const countFolloweesQuery = container.resolve(CountFolloweesQuery)
 
     const count = await countFolloweesQuery.execute({
       username: props.username,
     })
+
+    if (count instanceof Error) {
+      throw count
+    }
 
     return paginate({
       skip: props.skip,

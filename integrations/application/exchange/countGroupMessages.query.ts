@@ -1,5 +1,7 @@
+import { captureException } from "@sentry/node"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
+import { InternalError } from "integrations/errors"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -10,17 +12,27 @@ type Props = {
 @injectable()
 export class CountGroupMessagesQuery {
   async execute(props: Props) {
-    const count = await db.message.count({
-      where: {
-        exchanges: {
-          some: {
-            userId: props.userId.value,
-            relatedUserId: props.relatedUserId.value,
+    try {
+      const count = await db.message.count({
+        where: {
+          exchanges: {
+            some: {
+              userId: props.userId.value,
+              relatedUserId: props.relatedUserId.value,
+            },
           },
         },
-      },
-    })
+      })
 
-    return count
+      return count
+    } catch (error) {
+      captureException(error)
+
+      if (error instanceof Error) {
+        return new InternalError(error.message)
+      }
+
+      return new InternalError()
+    }
   }
 }

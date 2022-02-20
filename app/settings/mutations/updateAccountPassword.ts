@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
 import { UpdateAccountPasswordService } from "integrations/application"
 import { Id, Password } from "integrations/domain"
@@ -34,4 +35,4 @@ const updateAccountPassword = resolver.pipe(
   }
 )
 
-export default updateAccountPassword
+export default withSentry(updateAccountPassword, "updateAccountPassword")

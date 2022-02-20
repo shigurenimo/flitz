@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
 import { TestNotificationService } from "integrations/application"
 import { Id } from "integrations/domain"
@@ -14,15 +15,19 @@ const testNotification = resolver.pipe(
       userId: new Id(ctx.session.userId),
     }
   },
-  async (input) => {
+  async (props) => {
     const testNotificationService = container.resolve(TestNotificationService)
 
-    await testNotificationService.execute({
-      userId: input.userId,
+    const result = await testNotificationService.execute({
+      userId: props.userId,
     })
+
+    if (result instanceof Error) {
+      throw result
+    }
 
     return null
   }
 )
 
-export default testNotification
+export default withSentry(testNotification, "testNotification")

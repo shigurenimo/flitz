@@ -1,5 +1,8 @@
+import { captureException } from "@sentry/node"
+import { NotFoundError } from "blitz"
 import db from "db"
 import { Id } from "integrations/domain"
+import { InternalError } from "integrations/errors"
 import { QueryConverter } from "integrations/infrastructure/converters"
 import { injectable } from "tsyringe"
 
@@ -16,21 +19,31 @@ export class FindUserQuery {
    * @param props
    */
   async execute(props: Props) {
-    const user = await db.user.findUnique({
-      include: {
-        followers: props
-          ? { where: { followerId: props.userId.value } }
-          : false,
-        headerImage: true,
-        iconImage: true,
-      },
-      where: { id: props.userId.value },
-    })
+    try {
+      const user = await db.user.findUnique({
+        include: {
+          followers: props
+            ? { where: { followerId: props.userId.value } }
+            : false,
+          headerImage: true,
+          iconImage: true,
+        },
+        where: { id: props.userId.value },
+      })
 
-    if (user === null) {
-      return null
+      if (user === null) {
+        return new NotFoundError()
+      }
+
+      return this.queryConverter.toProfile(user)
+    } catch (error) {
+      captureException(error)
+
+      if (error instanceof Error) {
+        return new InternalError(error.message)
+      }
+
+      return new InternalError()
     }
-
-    return this.queryConverter.toProfile(user)
   }
 }

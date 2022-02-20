@@ -33,11 +33,19 @@ const getUserPosts = resolver.pipe(
       username: props.username,
     })
 
+    if (posts instanceof Error) {
+      throw posts
+    }
+
     const countUserPostsQuery = container.resolve(CountUserPostsQuery)
 
     const count = await countUserPostsQuery.execute({
       username: props.username,
     })
+
+    if (count instanceof Error) {
+      throw count
+    }
 
     return paginate({
       skip: props.skip,

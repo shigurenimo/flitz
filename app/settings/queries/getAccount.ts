@@ -1,13 +1,14 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
 import { FindUserSimpleQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
 
-const GetAccount = z.null()
+const zProps = z.null()
 
 const getAccount = resolver.pipe(
-  resolver.zod(GetAccount),
+  resolver.zod(zProps),
   resolver.authorize(),
   (_, ctx) => {
     return {
@@ -19,12 +20,12 @@ const getAccount = resolver.pipe(
 
     const user = await findUserQuery.execute(props.userId)
 
-    if (user === null) {
-      throw new Error("")
+    if (user instanceof Error) {
+      throw user
     }
 
     return user
   }
 )
 
-export default getAccount
+export default withSentry(getAccount, "getAccount")

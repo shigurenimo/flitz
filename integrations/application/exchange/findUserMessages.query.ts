@@ -1,5 +1,7 @@
+import { captureException } from "@sentry/node"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
+import { InternalError } from "integrations/errors"
 import { QueryConverter } from "integrations/infrastructure/converters"
 import { injectable } from "tsyringe"
 
@@ -14,22 +16,32 @@ export class FindUserMessagesQuery {
   constructor(private queryConverter: QueryConverter) {}
 
   async execute(props: Props) {
-    const messages = await db.message.findMany({
-      include: {
-        user: { include: { iconImage: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      skip: props.skip,
-      take: 20,
-      where: {
-        exchanges: {
-          some: { userId: props.userId.value },
+    try {
+      const messages = await db.message.findMany({
+        include: {
+          user: { include: { iconImage: true } },
         },
-      },
-    })
+        orderBy: { createdAt: "desc" },
+        skip: props.skip,
+        take: 20,
+        where: {
+          exchanges: {
+            some: { userId: props.userId.value },
+          },
+        },
+      })
 
-    return messages.map((message) => {
-      return this.queryConverter.toUserMessage(message)
-    })
+      return messages.map((message) => {
+        return this.queryConverter.toUserMessage(message)
+      })
+    } catch (error) {
+      captureException(error)
+
+      if (error instanceof Error) {
+        return new InternalError(error.message)
+      }
+
+      return new InternalError()
+    }
   }
 }

@@ -1,19 +1,19 @@
 import { captureException } from "@sentry/node"
 import db from "db"
-import { Id } from "integrations/domain/valueObjects"
+import { Username } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { injectable } from "tsyringe"
 
 type Props = {
-  exchangeId: Id
+  username: Username
 }
 
 @injectable()
-export class CountMessagesQuery {
+export class CountUserLikesQuery {
   async execute(props: Props) {
     try {
-      const count = await db.message.count({
-        where: { id: props.exchangeId.value },
+      const count = await db.like.count({
+        where: { user: { username: props.username.value } },
       })
 
       return count

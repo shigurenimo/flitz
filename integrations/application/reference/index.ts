@@ -1,4 +1,4 @@
-export * from "./countReferences.query"
-export * from "./findReferences.query"
-export * from "./hasUnreadReference.query"
+export * from "./checkUnreadUserReference.query"
+export * from "./countUserReferences.query"
+export * from "./findUserReferences.query"
 export * from "./markReferenceAsRead.service"

@@ -5,18 +5,21 @@ import { InternalError } from "integrations/errors"
 import { injectable } from "tsyringe"
 
 type Props = {
-  exchangeId: Id
+  userId: Id
 }
 
 @injectable()
-export class CountMessagesQuery {
+export class CheckUnreadUserNotificationQuery {
   async execute(props: Props) {
     try {
-      const count = await db.message.count({
-        where: { id: props.exchangeId.value },
+      const notification = await db.notification.findFirst({
+        where: {
+          isRead: false,
+          userId: props.userId.value,
+        },
       })
 
-      return count
+      return notification !== null
     } catch (error) {
       captureException(error)
 

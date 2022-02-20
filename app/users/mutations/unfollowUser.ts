@@ -1,5 +1,5 @@
 import { withSentry } from "app/core/utils/withSentry"
-import { NotFoundError, resolver } from "blitz"
+import { resolver } from "blitz"
 import { FindUserQuery, UnfollowService } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
@@ -21,22 +21,26 @@ const unfollowUser = resolver.pipe(
   async (props) => {
     const unfollowService = container.resolve(UnfollowService)
 
-    await unfollowService.execute({
+    const update = await unfollowService.execute({
       followeeId: props.followeeId,
       followerId: props.followerId,
     })
 
+    if (update instanceof Error) {
+      throw update
+    }
+
     const findUserQuery = container.resolve(FindUserQuery)
 
-    const profile = await findUserQuery.execute({
+    const user = await findUserQuery.execute({
       userId: props.followerId,
     })
 
-    if (profile === null) {
-      throw new NotFoundError()
+    if (user instanceof Error) {
+      throw user
     }
 
-    return profile
+    return user
   }
 )
 

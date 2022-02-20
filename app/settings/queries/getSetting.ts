@@ -1,13 +1,14 @@
-import { NotFoundError, resolver } from "blitz"
+import { withSentry } from "app/core/utils/withSentry"
+import { resolver } from "blitz"
 import { FindUserSettingQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
 
-const zGetSetting = z.null()
+const zProps = z.null()
 
 const getSetting = resolver.pipe(
-  resolver.zod(zGetSetting),
+  resolver.zod(zProps),
   resolver.authorize(),
   (_, ctx) => {
     return {
@@ -17,14 +18,14 @@ const getSetting = resolver.pipe(
   async (props) => {
     const userSettingQuery = container.resolve(FindUserSettingQuery)
 
-    const setting = await userSettingQuery.find({ userId: props.userId })
+    const setting = await userSettingQuery.execute({ userId: props.userId })
 
-    if (setting === null) {
-      throw new NotFoundError()
+    if (setting instanceof Error) {
+      throw setting
     }
 
     return setting
   }
 )
 
-export default getSetting
+export default withSentry(getSetting, "getSetting")
