@@ -7,9 +7,9 @@ import { StackPostDate } from "app/posts/components/StackPostDate"
 import { StackPostImage } from "app/posts/components/StackPostImage"
 import { StackPostText } from "app/posts/components/StackPostText"
 import { AppQuotation } from "integrations/interface/types/appQuotation"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackCardReply: FunctionComponent<AppQuotation> = (props) => {
+export const StackCardReply: VFC<AppQuotation> = (props) => {
   return (
     <StackCard>
       <HStack align={"start"} spacing={4}>

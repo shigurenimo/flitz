@@ -1,8 +1,7 @@
 import db from "db"
 import { Id, IdFactory, MessageEntity } from "integrations/domain"
-import { MessageRepository as Repository } from "integrations/domain/repositories"
 
-export class MessageRepository implements Repository {
+export class MessageRepository {
   async markAsRead(userId: Id, relatedUserId: Id) {
     await db.message.updateMany({
       data: { isRead: true },
@@ -30,7 +29,7 @@ export class MessageRepository implements Repository {
           connectOrCreate: [
             {
               create: {
-                id: IdFactory.create().value,
+                id: IdFactory.nanoid().value,
                 isRead: true,
                 relatedUserId: messageEntity.relatedUserId.value,
                 userId: messageEntity.userId.value,
@@ -44,7 +43,7 @@ export class MessageRepository implements Repository {
             },
             {
               create: {
-                id: IdFactory.create().value,
+                id: IdFactory.nanoid().value,
                 isRead: false,
                 relatedUserId: messageEntity.userId.value,
                 userId: messageEntity.relatedUserId.value,

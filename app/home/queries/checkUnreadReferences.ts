@@ -1,17 +1,19 @@
 import { resolver } from "blitz"
+import { ReferenceQuery } from "integrations/application"
 import { Id } from "integrations/domain"
-import { ReferenceQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
+import { container } from "tsyringe"
 
 const checkUnreadReferences = resolver.pipe(
   resolver.authorize(),
-  (_: unknown, ctx) => ({
-    userId: new Id(ctx.session.userId),
-  }),
-  async ({ userId }) => {
-    const app = await createAppContext()
+  (_, ctx) => {
+    return {
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const referenceQuery = container.resolve(ReferenceQuery)
 
-    const hasUnread = await app.get(ReferenceQuery).hasUnread(userId)
+    const hasUnread = await referenceQuery.hasUnread(props.userId)
 
     return hasUnread
   }

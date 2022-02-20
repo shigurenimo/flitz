@@ -1,60 +1,70 @@
-import { resolver } from "blitz"
-import {
-  Id,
-  MessageRepository,
-  MessageService,
-  PageService,
-  Skip,
-  Take,
-  zId,
-  zSkip,
-} from "integrations/domain"
+import { paginate, resolver } from "blitz"
 import {
   ExchangeMessageQuery,
   UserMessageQuery,
-} from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+} from "integrations/application"
+import { Id } from "integrations/domain"
+import { MessageRepository } from "integrations/infrastructure"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetMessagesInfinite = z.object({
-  relatedUserId: zId,
-  skip: zSkip,
+const zGetMessagesInfinite = z.object({
+  relatedUserId: z.string(),
+  skip: z.number(),
 })
 
 const getMessagesInfinite = resolver.pipe(
-  resolver.zod(GetMessagesInfinite),
+  resolver.zod(zGetMessagesInfinite),
   resolver.authorize(),
-  (input, ctx) => ({
-    relatedUserId: new Id(input.relatedUserId),
-    skip: new Skip(input.skip),
-    take: new Take(),
-    userId: new Id(ctx.session.userId),
-  }),
-  async ({ relatedUserId, skip, take, userId }) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      relatedUserId: new Id(props.relatedUserId),
+      skip: props.skip,
+      take: 40,
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const exchangeMessageQuery = container.resolve(ExchangeMessageQuery)
 
-    const messages = await app.get(ExchangeMessageQuery).findManyByUserId({
-      relatedUserId,
-      skip,
-      userId,
+    const messages = await exchangeMessageQuery.findManyByUserId({
+      relatedUserId: props.relatedUserId,
+      skip: props.skip,
+      userId: props.userId,
     })
 
-    const hasUnreadMessages = app.get(MessageService).hasUnreadMessages({
-      messages,
-      userId,
+    const unreadMessages = messages.filter((message) => {
+      if (message.user.id === props.userId.value) return false
+      return !message.isRead
     })
+
+    const hasUnreadMessages = unreadMessages.length > 0
+
+    // TODO: BAD
+    const messageRepository = container.resolve(MessageRepository)
 
     if (hasUnreadMessages) {
-      await app.get(MessageRepository).markAsRead(userId, relatedUserId)
+      // TODO: BAD
+      await messageRepository.markAsRead(props.userId, props.relatedUserId)
     }
 
-    const count = await app.get(UserMessageQuery).count(userId, relatedUserId)
+    const userMessageQuery = container.resolve(UserMessageQuery)
 
-    const hasMore = app.get(PageService).hasMore(skip, take, count)
+    const count = await userMessageQuery.count(
+      props.userId,
+      props.relatedUserId
+    )
 
-    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
-
-    return { messages, nextPage }
+    return paginate({
+      skip: props.skip,
+      take: props.take,
+      async count() {
+        return count
+      },
+      async query() {
+        return messages
+      },
+    })
   }
 )
 

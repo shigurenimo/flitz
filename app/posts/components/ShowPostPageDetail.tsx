@@ -4,9 +4,9 @@ import { StackHeaderUserAction } from "app/posts/components/StackHeaderUserActio
 import { StackPostImage } from "app/posts/components/StackPostImage"
 import getPost from "app/posts/queries/getPost"
 import { useParam, useQuery } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const ShowPostPageDetail: FunctionComponent = () => {
+export const ShowPostPageDetail: VFC = () => {
   const postId = useParam("postId", "string")
 
   const [post] = useQuery(getPost, { id: postId + "" })

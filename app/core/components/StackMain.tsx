@@ -1,9 +1,9 @@
 import { Stack, StackProps } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
 type Props = StackProps
 
-export const StackMain: FunctionComponent<Props> = ({ children, ...props }) => {
+export const StackMain: VFC<Props> = (props) => {
   return (
     <Stack
       as={"main"}
@@ -13,8 +13,6 @@ export const StackMain: FunctionComponent<Props> = ({ children, ...props }) => {
       spacing={8}
       w={"full"}
       {...props}
-    >
-      {children}
-    </Stack>
+    />
   )
 }

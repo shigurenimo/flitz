@@ -1,39 +1,46 @@
-import { resolver } from "blitz"
-import { Id, PageService, Skip, Take, zId, zSkip } from "integrations/domain"
-import { ReplyQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { paginate, resolver } from "blitz"
+import { ReplyQuery } from "integrations/application"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetRepliesInfinite = z.object({
-  skip: zSkip,
-  replyId: zId,
+const zGetRepliesInfinite = z.object({
+  skip: z.number(),
+  replyId: z.string(),
 })
 
 const getRepliesInfinite = resolver.pipe(
-  resolver.zod(GetRepliesInfinite),
-  (input, ctx) => ({
-    replyId: new Id(input.replyId),
-    skip: new Skip(input.skip),
-    take: new Take(),
-    userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
-  }),
-  async ({ replyId, skip, take, userId }) => {
-    const app = await createAppContext()
+  resolver.zod(zGetRepliesInfinite),
+  (props, ctx) => {
+    return {
+      replyId: new Id(props.replyId),
+      skip: props.skip,
+      take: 40,
+      userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const replyQuery = container.resolve(ReplyQuery)
 
-    const posts = await app.get(ReplyQuery).findMany({
-      skip,
-      take,
-      replyId,
-      userId,
+    const posts = await replyQuery.findMany({
+      skip: props.skip,
+      take: props.take,
+      replyId: props.replyId,
+      userId: props.userId,
     })
 
-    const count = await app.get(ReplyQuery).count({ replyId })
+    const count = await replyQuery.count({ replyId: props.replyId })
 
-    const hasMore = app.get(PageService).hasMore(skip, take, count)
-
-    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
-
-    return { hasMore, posts, nextPage }
+    return paginate({
+      skip: props.skip,
+      take: props.take,
+      async count() {
+        return count
+      },
+      async query() {
+        return posts
+      },
+    })
   }
 )
 

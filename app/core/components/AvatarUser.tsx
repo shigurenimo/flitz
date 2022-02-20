@@ -1,5 +1,5 @@
 import { Avatar, AvatarProps } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
 type Props = AvatarProps & {
   fileId?: string | null
@@ -7,12 +7,7 @@ type Props = AvatarProps & {
   userId: string | null
 }
 
-export const AvatarUser: FunctionComponent<Props> = ({
-  fileId,
-  src,
-  userId,
-  ...props
-}) => {
+export const AvatarUser: VFC<Props> = ({ fileId, src, userId, ...props }) => {
   return (
     <Avatar
       bg={"white"}

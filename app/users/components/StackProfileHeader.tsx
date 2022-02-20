@@ -1,5 +1,5 @@
 import { Heading, Stack, Text } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
 type Props = {
   id: string
@@ -7,11 +7,7 @@ type Props = {
   username: string
 }
 
-export const StackUserName: FunctionComponent<Props> = ({
-  id,
-  name,
-  username,
-}) => {
+export const StackUserName: VFC<Props> = ({ id, name, username }) => {
   return (
     <Stack flex={1} h={"full"}>
       <Heading size={"lg"}>{name}</Heading>

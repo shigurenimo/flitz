@@ -1,4 +1,11 @@
-import type { Id } from "integrations/domain/valueObjects"
+import { Id } from "integrations/domain/valueObjects"
+import { z } from "zod"
+
+const zProps = z.object({
+  id: z.instanceof(Id),
+  postId: z.number(),
+  userId: z.number(),
+})
 
 /**
  * ブックマーク
@@ -10,11 +17,6 @@ export class BookmarkEntity {
   readonly id!: Id
 
   /**
-   * 作成日
-   */
-  readonly createdAt!: Date
-
-  /**
    * ブックマークした投稿のID
    */
   readonly postId!: Id
@@ -24,14 +26,8 @@ export class BookmarkEntity {
    */
   readonly userId!: Id
 
-  constructor(
-    public props: {
-      createdAt: Date
-      id: ImageData
-      postId: Id
-      userId: Id
-    }
-  ) {
+  constructor(public props: z.infer<typeof zProps>) {
+    zProps.parse(props)
     Object.assign(this, props)
     Object.freeze(this)
   }

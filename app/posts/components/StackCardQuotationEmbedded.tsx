@@ -2,11 +2,9 @@ import { HStack, Stack, Text, useColorModeValue } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { useRouter } from "blitz"
 import { AppQuotation } from "integrations/interface/types/appQuotation"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackCardQuotationEmbedded: FunctionComponent<AppQuotation> = (
-  props
-) => {
+export const StackCardQuotationEmbedded: VFC<AppQuotation> = (props) => {
   const hoverBg = useColorModeValue("gray.200", "gray.600")
 
   const bg = useColorModeValue("gray.50", "gray.700")

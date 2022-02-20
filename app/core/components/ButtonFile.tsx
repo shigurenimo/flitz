@@ -1,5 +1,5 @@
 import { Button, ButtonProps, Icon, useToast } from "@chakra-ui/react"
-import React, { FunctionComponent, useRef } from "react"
+import React, { useRef, VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiImage } from "react-icons/fi"
 
@@ -7,11 +7,7 @@ type Props = Omit<ButtonProps, "onChange"> & {
   onChange(file: File): void
 }
 
-export const ButtonFile: FunctionComponent<Props> = ({
-  children,
-  onChange,
-  ...props
-}) => {
+export const ButtonFile: VFC<Props> = ({ children, onChange, ...props }) => {
   const { t } = useTranslation()
 
   const ref = useRef<HTMLInputElement>(null)

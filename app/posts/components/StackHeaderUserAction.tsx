@@ -4,9 +4,9 @@ import { MenuPost } from "app/posts/components/MenuPost"
 import { StackPostUser } from "app/posts/components/StackPostUser"
 import { useSession } from "blitz"
 import { AppEmbeddedUser } from "integrations/interface/types/appEmbeddedUser"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackHeaderUserAction: FunctionComponent<AppEmbeddedUser> = ({
+export const StackHeaderUserAction: VFC<AppEmbeddedUser> = ({
   id,
   name,
   username,

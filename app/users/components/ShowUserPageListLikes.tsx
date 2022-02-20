@@ -3,15 +3,15 @@ import { StackList } from "app/core/components/StackList"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import getUserLikesInfinite from "app/users/queries/getUserLikesInfinite"
 import { useInfiniteQuery, useParam } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const ShowUserPageListLikes: FunctionComponent = () => {
+export const ShowUserPageListLikes: VFC = () => {
   const { t } = useTranslation()
 
   const username = useParam("username", "string")
 
-  const [groupedLikes] = useInfiniteQuery(
+  const [pages, { isFetching }] = useInfiniteQuery(
     getUserLikesInfinite,
     (page = { skip: 0, username }) => page,
     {
@@ -20,23 +20,22 @@ export const ShowUserPageListLikes: FunctionComponent = () => {
     }
   )
 
+  const posts = pages.flatMap((page) => page.items)
+
+  const isEmpty = !isFetching && posts.length === 0
+
   return (
     <StackList divider={<StackDivider />}>
-      {groupedLikes.map((group) => {
-        if (group.isEmpty) {
-          return (
-            <Box key={"empty"} px={4}>
-              <Alert status={"info"}>
-                <AlertIcon />
-                {t("This user hasn't liked any post yet.")}
-              </Alert>
-            </Box>
-          )
-        }
-
-        return group.likes.map((post) => {
-          return <StackCardPost key={post.id} {...post} isDisabled={false} />
-        })
+      {isEmpty && (
+        <Box key={"empty"} px={4}>
+          <Alert key={"alert"} status={"info"}>
+            <AlertIcon />
+            {t("This user hasn't posted yet.")}
+          </Alert>
+        </Box>
+      )}
+      {posts.map((post) => {
+        return <StackCardPost key={post.id} {...post} isDisabled={false} />
       })}
     </StackList>
   )

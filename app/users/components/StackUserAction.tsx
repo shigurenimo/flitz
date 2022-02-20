@@ -1,6 +1,6 @@
 import { Button, HStack, Icon } from "@chakra-ui/react"
 import { useSession } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { FiMail, FiUserCheck, FiUserPlus } from "react-icons/fi"
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
   userId: string
 }
 
-export const StackUserAction: FunctionComponent<Props> = ({
+export const StackUserAction: VFC<Props> = ({
   hasRelationship,
   isLoading,
   onExchange,

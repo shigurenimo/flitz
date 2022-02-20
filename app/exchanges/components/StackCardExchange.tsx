@@ -4,14 +4,16 @@ import { StackCard } from "app/core/components/StackCard"
 import { StackExchangeUser } from "app/exchanges/components/StackExchangeUser"
 import { StackPostDate } from "app/posts/components/StackPostDate"
 import { AppUserExchange } from "integrations/interface/types/appExchangeMessage"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackCardExchange: FunctionComponent<
-  AppUserExchange & {
-    onClick: () => void
+type Props = AppUserExchange & {
+  onClick: () => void
+}
+
+export const StackCardExchange: VFC<Props> = (props) => {
+  if (props.relatedUser === null) {
+    return null
   }
-> = (props) => {
-  if (props.relatedUser === null) return null
 
   return (
     <StackCard onClick={props.onClick}>

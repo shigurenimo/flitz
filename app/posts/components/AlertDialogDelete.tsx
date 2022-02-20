@@ -8,9 +8,9 @@ import {
   Button,
   UseDisclosureReturn,
 } from "@chakra-ui/react"
-import React, { FunctionComponent, useRef } from "react"
+import React, { useRef, VFC } from "react"
 
-export const AlertDialogDelete: FunctionComponent<{
+export const AlertDialogDelete: VFC<{
   disclosure: UseDisclosureReturn
   onDelete(): void
 }> = (props) => {

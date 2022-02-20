@@ -1,8 +1,7 @@
 import db from "db"
-import { ReferenceRepository as Repository } from "integrations/domain/repositories"
 import { Id } from "integrations/domain/valueObjects"
 
-export class ReferenceRepository implements Repository {
+export class ReferenceRepository {
   async markAsRead(userId: Id) {
     await db.reference.updateMany({
       data: { isRead: true },

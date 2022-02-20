@@ -9,10 +9,10 @@ import {
 } from "@chakra-ui/react"
 import { StackCard } from "app/core/components/StackCard"
 import { ButtonPostAction } from "app/posts/components/ButtonPostAction"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { FiHeart, FiMessageCircle, FiRepeat, FiShare } from "react-icons/fi"
 
-export const StackCardPostSkeleton: FunctionComponent = () => {
+export const StackCardPostSkeleton: VFC = () => {
   return (
     <StackCard>
       <HStack align={"start"} spacing={4}>

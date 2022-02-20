@@ -1,28 +1,31 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { zCreateMessageMutation } from "app/exchanges/validations/createMessageMutation"
 import { resolver } from "blitz"
 import { SendMessageService } from "integrations/application"
 import { Id, PostText } from "integrations/domain"
-import { createAppContext } from "integrations/registry"
+import { container } from "tsyringe"
 
 const createMessage = resolver.pipe(
   resolver.zod(zCreateMessageMutation),
   resolver.authorize(),
-  (input, ctx) => ({
-    relatedUserId: new Id(input.relatedUserId),
-    text: new PostText(input.text),
-    userId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      relatedUserId: new Id(props.relatedUserId),
+      text: new PostText(props.text),
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const sendMessageService = container.resolve(SendMessageService)
 
-    await app.get(SendMessageService).call({
-      text: input.text,
-      userId: input.userId,
-      relatedUserId: input.relatedUserId,
+    await sendMessageService.execute({
+      text: props.text,
+      userId: props.userId,
+      relatedUserId: props.relatedUserId,
     })
 
     return null
   }
 )
 
-export default createMessage
+export default withSentry(createMessage, "createMessage")

@@ -1,25 +1,27 @@
 import { zCreatePostLikeMutation } from "app/posts/validations/createPostLikeMutation"
 import { resolver } from "blitz"
 import { CreatePostLikeService } from "integrations/application"
-import { Id, zId } from "integrations/domain"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-export const CreatePostLike = z.object({ postId: zId })
+const zCreatePostLike = z.object({ postId: z.string() })
 
 const createPostLike = resolver.pipe(
   resolver.zod(zCreatePostLikeMutation),
   resolver.authorize(),
-  (input, ctx) => ({
-    postId: new Id(input.postId),
-    userId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      postId: new Id(props.postId),
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const createPostLikeService = container.resolve(CreatePostLikeService)
 
-    await app.get(CreatePostLikeService).call({
-      postId: input.postId,
-      userId: input.userId,
+    await createPostLikeService.execute({
+      postId: props.postId,
+      userId: props.userId,
     })
 
     return null

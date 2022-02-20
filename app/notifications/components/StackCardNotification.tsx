@@ -3,11 +3,11 @@ import { StackCardNotificationLike } from "app/notifications/components/StackCar
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import { Link } from "blitz"
 import { AppNotification } from "integrations/interface/types/appNotification"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackCardNotification: FunctionComponent<AppNotification> = (
-  props
-) => {
+type Props = AppNotification
+
+export const StackCardNotification: VFC<Props> = (props) => {
   if (props.type === "FOLLOW") {
     return (
       <Link href={`/${props.embedded.username}`} passHref>

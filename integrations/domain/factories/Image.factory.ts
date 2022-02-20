@@ -1,10 +1,10 @@
 import { Image } from "integrations/domain/valueObjects"
-import * as z from "zod"
+import { z } from "zod"
 
 export const dataURLSchema = z.string().regex(/^data:([\w/\-.]+);base64,/)
 
 /**
- * パスワードハッシュ
+ * 画像
  */
 export class ImageFactory {
   static fromDataURL(dataURL: string | null) {

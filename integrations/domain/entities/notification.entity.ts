@@ -1,4 +1,16 @@
-import type { Id, NotificationType } from "integrations/domain/valueObjects"
+import { Id, NotificationType } from "integrations/domain/valueObjects"
+import { z } from "zod"
+
+const zProps = z.object({
+  id: z.instanceof(Id),
+  friendshipId: z.instanceof(Id).nullable(),
+  isRead: z.boolean(),
+  likeId: z.instanceof(Id).nullable(),
+  postId: z.instanceof(Id).nullable(),
+  type: z.instanceof(NotificationType),
+  userId: z.instanceof(Id),
+  relatedUserId: z.instanceof(Id).nullable(),
+})
 
 /**
  * 通知
@@ -44,7 +56,8 @@ export class NotificationEntity {
    */
   readonly relatedUserId!: Id | null
 
-  constructor(public props: Omit<NotificationEntity, "props">) {
+  constructor(public props: z.infer<typeof zProps>) {
+    zProps.parse(props)
     Object.assign(this, props)
     Object.freeze(this)
   }

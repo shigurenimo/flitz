@@ -1,4 +1,3 @@
-import { zId } from "integrations/domain"
-import * as z from "zod"
+import { z } from "zod"
 
-export const zCreateQuotation = z.object({ postId: zId })
+export const zCreateQuotation = z.object({ postId: z.string() })

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef } from "react"
 
-export const useFileSelect = (options?: {
+type props = {
   accept?: string
   multiple?: boolean
-}) => {
+}
+
+export const useFileSelect = (options?: props) => {
   const inputRef = useRef<HTMLInputElement>()
 
   useEffect(() => {

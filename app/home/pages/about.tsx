@@ -48,9 +48,9 @@ const AboutPage: BlitzPage = () => {
             </Heading>
           </Stack>
           <Box>
-            <Link href={"https://github.com/swimmy/flitz"} passHref>
+            <Link href={"https://github.com/reiwa/flitz"} passHref>
               <Button letterSpacing={"wider"} colorScheme={"blue"}>
-                {"Swimmy/Flitz"}
+                {"reiwa/Flitz"}
               </Button>
             </Link>
           </Box>
@@ -62,7 +62,7 @@ const AboutPage: BlitzPage = () => {
           <Text>{"Close a repository by using GitHub CLI"}</Text>
           <Box>
             <Code p={4} w={"full"} rounded={"md"}>
-              {"% gh repo clone swimmy/flitz"}
+              {"% gh repo clone reiwa/flitz"}
             </Code>
           </Box>
         </Stack>
@@ -109,7 +109,7 @@ const AboutPage: BlitzPage = () => {
           <Text>{"Migrate PostgreSQL schemas."}</Text>
           <Box>
             <Code p={4} w={"full"} rounded={"md"}>
-              {"% yarn prisma db push --preview-feature"}
+              {"% yarn prisma db push"}
             </Code>
           </Box>
         </Stack>

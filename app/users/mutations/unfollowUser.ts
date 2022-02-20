@@ -1,28 +1,33 @@
 import { NotFoundError, resolver } from "blitz"
-import { UnfollowUserService } from "integrations/application"
-import { Id, zId } from "integrations/domain"
-import { UserQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { UnfollowUserService, UserQuery } from "integrations/application"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const UnfollowUser = z.object({ userId: zId })
+const zUnfollowUser = z.object({
+  userId: z.string(),
+})
 
 const unfollowUser = resolver.pipe(
-  resolver.zod(UnfollowUser),
+  resolver.zod(zUnfollowUser),
   resolver.authorize(),
-  (input, ctx) => ({
-    followeeId: new Id(input.userId),
-    followerId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      followeeId: new Id(props.userId),
+      followerId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const unfollowUserService = container.resolve(UnfollowUserService)
 
-    await app.get(UnfollowUserService).call({
-      followeeId: input.followeeId,
-      followerId: input.followerId,
+    await unfollowUserService.execute({
+      followeeId: props.followeeId,
+      followerId: props.followerId,
     })
 
-    const queryProfile = await app.get(UserQuery).find(input.followerId)
+    const userQuery = container.resolve(UserQuery)
+
+    const queryProfile = await userQuery.find(props.followerId)
 
     if (queryProfile === null) {
       throw new NotFoundError()

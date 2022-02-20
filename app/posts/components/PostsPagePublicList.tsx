@@ -3,10 +3,10 @@ import { StackList } from "app/core/components/StackList"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import getPostsInfinite from "app/posts/queries/getPostsInfinite"
 import { useInfiniteQuery } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const PostsPagePublicList: FunctionComponent = () => {
-  const [groupedPosts] = useInfiniteQuery(
+export const PostsPagePublicList: VFC = () => {
+  const [pages] = useInfiniteQuery(
     getPostsInfinite,
     (page = { skip: 0 }) => page,
     {
@@ -15,12 +15,12 @@ export const PostsPagePublicList: FunctionComponent = () => {
     }
   )
 
+  const posts = pages.flatMap((page) => page.items)
+
   return (
     <StackList divider={<StackDivider />}>
-      {groupedPosts.map((group) => {
-        return group.posts.map((post) => {
-          return <StackCardPost isDisabled={true} {...post} />
-        })
+      {posts.map((post) => {
+        return <StackCardPost isDisabled={true} {...post} />
       })}
     </StackList>
   )

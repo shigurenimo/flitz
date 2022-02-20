@@ -9,12 +9,10 @@ import {
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackCard } from "app/core/components/StackCard"
 import { AppNotificationLike } from "integrations/interface/types/appNotificationLike"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { FiHeart } from "react-icons/fi"
 
-export const StackCardNotificationLike: FunctionComponent<AppNotificationLike> = (
-  props
-) => {
+export const StackCardNotificationLike: VFC<AppNotificationLike> = (props) => {
   return (
     <StackCard spacing={4}>
       <HStack spacing={4}>

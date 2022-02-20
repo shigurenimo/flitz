@@ -1,35 +1,41 @@
-import { resolver } from "blitz"
-import { Id, PageService, Skip, Take, zSkip } from "integrations/domain"
-import { UserExchangeQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { paginate, resolver } from "blitz"
+import { UserExchangeQuery } from "integrations/application"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetExchanges = z.object({ skip: zSkip })
+const zProps = z.object({ skip: z.number() })
 
-const getExchanges =  resolver.pipe(
-  resolver.zod(GetExchanges),
+const getExchanges = resolver.pipe(
+  resolver.zod(zProps),
   resolver.authorize(),
-  (input, ctx) => ({
-    skip: new Skip(input.skip),
-    take: new Take(16),
-    userId: new Id(ctx.session.userId),
-  }),
-  async ({ skip, take, userId }) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      skip: props.skip,
+      take: 16,
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const userExchangeQuery = container.resolve(UserExchangeQuery)
 
-    const exchanges = await app
-      .get(UserExchangeQuery)
-      .findMany({ userId, skip })
+    const exchanges = await userExchangeQuery.findMany({
+      userId: props.userId,
+      skip: props.skip,
+    })
 
-    const count = await app.get(UserExchangeQuery).count({ userId })
+    const count = await userExchangeQuery.count({ userId: props.userId })
 
-    const hasMore = app.get(PageService).hasMore(skip, take, count)
-
-    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
-
-    const isEmpty = exchanges.length === 0
-
-    return { isEmpty, nextPage, exchanges, hasMore, count }
+    return paginate({
+      skip: props.skip,
+      take: props.take,
+      async count() {
+        return count
+      },
+      async query() {
+        return exchanges
+      },
+    })
   }
 )
 

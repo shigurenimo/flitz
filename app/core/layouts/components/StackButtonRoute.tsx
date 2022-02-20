@@ -7,7 +7,7 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { IconType } from "react-icons"
 
 type Props = ButtonProps & {
@@ -15,7 +15,7 @@ type Props = ButtonProps & {
   icon: IconType
 }
 
-export const StackButtonRoute: FunctionComponent<Props> = ({
+export const StackButtonRoute: VFC<Props> = ({
   children,
   icon,
   hasBadge,

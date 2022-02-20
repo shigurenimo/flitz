@@ -1,5 +1,5 @@
 import { HStack, Text } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
 type Props = {
   user: {
@@ -9,15 +9,15 @@ type Props = {
   }
 }
 
-export const StackExchangeUser: FunctionComponent<Props> = ({ user }) => {
-  if (user.name) {
+export const StackExchangeUser: VFC<Props> = (props) => {
+  if (props.user.name) {
     return (
       <HStack align={"center"} pt={1}>
         <Text fontSize={"xl"} fontWeight={"bold"} lineHeight={1}>
-          {user.name}
+          {props.user.name}
         </Text>
         <Text color={"gray.500"} fontSize={"sm"} lineHeight={1}>
-          {`@${user.username || user.id}`}
+          {`@${props.user.username || props.user.id}`}
         </Text>
       </HStack>
     )
@@ -26,7 +26,7 @@ export const StackExchangeUser: FunctionComponent<Props> = ({ user }) => {
   return (
     <HStack align={"center"} pt={1}>
       <Text fontWeight={"bold"} lineHeight={1}>
-        {user.username || user.id}
+        {props.user.username || props.user.id}
       </Text>
     </HStack>
   )

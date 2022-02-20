@@ -1,11 +1,24 @@
-import type {
-  Biography,
+import {
   Email,
   HashedPassword,
   Id,
   Name,
+  ShortText,
   Username,
 } from "integrations/domain/valueObjects"
+import { z } from "zod"
+
+const zProps = z.object({
+  id: z.instanceof(Id),
+  email: z.instanceof(Email),
+  username: z.instanceof(Username),
+  name: z.instanceof(Name).nullable(),
+  biography: z.instanceof(ShortText),
+  headerImageId: z.instanceof(Id).nullable(),
+  iconImageId: z.instanceof(Id).nullable(),
+  hashedPassword: z.instanceof(HashedPassword),
+  settingId: z.instanceof(Id).nullable(),
+})
 
 /**
  * ユーザー
@@ -34,7 +47,7 @@ export class UserEntity {
   /**
    * 自己紹介
    */
-  readonly biography!: Biography
+  readonly biography!: ShortText
 
   /**
    * ヘッダー画像
@@ -56,19 +69,8 @@ export class UserEntity {
    */
   readonly settingId!: Id | null
 
-  constructor(
-    public props: {
-      id: Id
-      email: Email
-      username: Username
-      name: Name | null
-      biography: Biography
-      headerImageId: Id | null
-      iconImageId: Id | null
-      hashedPassword: HashedPassword
-      settingId: Id | null
-    }
-  ) {
+  constructor(public props: z.infer<typeof zProps>) {
+    zProps.parse(props)
     Object.assign(this, props)
     Object.freeze(this)
   }
@@ -85,18 +87,25 @@ export class UserEntity {
     return new UserEntity({ ...this.props, username })
   }
 
-  update(input: {
-    headerImageId?: Id
-    iconImageId?: Id
-    name: Name
-    biography: Biography
-  }) {
+  updateHeaderImage(headerImageId: Id | null) {
     return new UserEntity({
       ...this.props,
-      biography: input.biography ?? this.biography,
-      name: input.name ?? this.name,
-      headerImageId: input.iconImageId ?? this.headerImageId,
-      iconImageId: input.iconImageId ?? this.iconImageId,
+      headerImageId: headerImageId ?? this.headerImageId,
     })
+  }
+
+  updateIconImage(iconImageId: Id | null) {
+    return new UserEntity({
+      ...this.props,
+      iconImageId: iconImageId ?? this.iconImageId,
+    })
+  }
+
+  updateName(name: Name) {
+    return new UserEntity({ ...this.props, name })
+  }
+
+  updateBiography(biography: ShortText) {
+    return new UserEntity({ ...this.props, biography })
   }
 }

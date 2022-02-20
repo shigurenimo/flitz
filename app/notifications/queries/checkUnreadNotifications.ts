@@ -1,23 +1,25 @@
 import { resolver } from "blitz"
+import { UserNotificationQuery } from "integrations/application"
 import { Id } from "integrations/domain"
-import { UserNotificationQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const CheckUnreadNotifications = z.null()
+const zCheckUnreadNotifications = z.null()
 
 const checkUnreadNotifications = resolver.pipe(
-  resolver.zod(CheckUnreadNotifications),
+  resolver.zod(zCheckUnreadNotifications),
   resolver.authorize(),
-  (_, ctx) => ({
-    userId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (_, ctx) => {
+    return {
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const sendMessageService = container.resolve(UserNotificationQuery)
 
-    const hasUnreadNotifications = await app
-      .get(UserNotificationQuery)
-      .hasUnread(input.userId)
+    const hasUnreadNotifications = await sendMessageService.hasUnread(
+      props.userId
+    )
 
     return hasUnreadNotifications
   }

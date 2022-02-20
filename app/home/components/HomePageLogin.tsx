@@ -9,11 +9,11 @@ import {
 import createUser from "app/home/mutations/createUser"
 import login from "app/home/mutations/login"
 import { AuthenticationError, useMutation, useRouter } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-export const HomePageLogin: FunctionComponent = () => {
+export const HomePageLogin: VFC = () => {
   const { t } = useTranslation()
 
   const router = useRouter()

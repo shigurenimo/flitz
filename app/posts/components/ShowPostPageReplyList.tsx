@@ -2,12 +2,12 @@ import { Stack, StackDivider } from "@chakra-ui/react"
 import { StackCardReply } from "app/posts/components/StackCardPostReply"
 import getRepliesInfinite from "app/posts/queries/getRepliesInfinite"
 import { useInfiniteQuery, useParam } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const ShowPostPageReplyList: FunctionComponent = () => {
+export const ShowPostPageReplyList: VFC = () => {
   const postId = useParam("postId", "string")
 
-  const [groupedPosts] = useInfiniteQuery(
+  const [pages] = useInfiniteQuery(
     getRepliesInfinite,
     (page = { skip: 0, replyId: postId }) => page,
     {
@@ -16,12 +16,12 @@ export const ShowPostPageReplyList: FunctionComponent = () => {
     }
   )
 
+  const posts = pages.flatMap((page) => page.items)
+
   return (
     <Stack align={"stretch"} divider={<StackDivider />} spacing={4}>
-      {groupedPosts.map((group) => {
-        return group.posts.map((post) => {
-          return <StackCardReply key={post.id} {...post} />
-        })
+      {posts.map((post) => {
+        return <StackCardReply key={post.id} {...post} />
       })}
     </Stack>
   )

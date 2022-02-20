@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common"
 import admin from "firebase-admin"
 import { Id, Path } from "integrations/domain/valueObjects"
 import { FirebaseAdapter } from "integrations/infrastructure/adapters/firebase.adapter"
 import { tmpdir } from "os"
 import { join } from "path"
+import { injectable } from "tsyringe"
 
-@Injectable()
+@injectable()
 export class StorageAdapter {
   constructor(private firebaseRepository: FirebaseAdapter) {}
 

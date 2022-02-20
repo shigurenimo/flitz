@@ -1,4 +1,11 @@
-import type { Id } from "integrations/domain/valueObjects"
+import { Id } from "integrations/domain/valueObjects"
+import { z } from "zod"
+
+const zProps = z.object({
+  id: z.instanceof(Id),
+  postId: z.instanceof(Id),
+  userId: z.instanceof(Id),
+})
 
 /**
  * 投稿に対するイイネ
@@ -19,7 +26,8 @@ export class LikeEntity {
    */
   readonly userId!: Id
 
-  constructor(public props: Omit<LikeEntity, "props">) {
+  constructor(public props: z.infer<typeof zProps>) {
+    zProps.parse(props)
     Object.assign(this, props)
     Object.freeze(this)
   }

@@ -5,10 +5,10 @@ import updateSetting from "app/settings/mutations/updateSetting"
 import getSetting from "app/settings/queries/getSetting"
 import { useMutation, useQuery } from "blitz"
 import { getMessaging, getToken, isSupported } from "firebase/messaging"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const SettingsPageDetail: FunctionComponent = () => {
+export const SettingsPageDetail: VFC = () => {
   const { t } = useTranslation()
 
   const [setting, { setQueryData }] = useQuery(getSetting, null, {
@@ -57,7 +57,7 @@ export const SettingsPageDetail: FunctionComponent = () => {
 
     try {
       const fcmToken = await getToken(messaging, {
-        vapidKey: process.env.NEXT_PUBLIC_VAPID,
+        vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID,
       })
 
       const setting = await updateSettingMutation({ fcmToken: fcmToken })

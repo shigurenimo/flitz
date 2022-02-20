@@ -1,41 +1,47 @@
-import { NotFoundError, resolver } from "blitz"
-import { Id, PageService, Skip, Take, zId, zSkip } from "integrations/domain"
-import { ExchangeMessageQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { NotFoundError, paginate, resolver } from "blitz"
+import { ExchangeMessageQuery } from "integrations/application"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetExchangeMessagesInfinite = z.object({
-  exchangeId: zId,
-  skip: zSkip,
+const zGetExchangeMessagesInfinite = z.object({
+  exchangeId: z.string(),
+  skip: z.number(),
 })
 
 const getGroupMessagesInfinite = resolver.pipe(
-  resolver.zod(GetExchangeMessagesInfinite),
+  resolver.zod(zGetExchangeMessagesInfinite),
   resolver.authorize(),
-  (input) => ({
-    exchangeId: new Id(input.exchangeId),
-    skip: new Skip(input.skip),
-    take: new Take(),
-  }),
-  async ({ exchangeId, skip, take }) => {
-    const app = await createAppContext()
+  (props) => {
+    return {
+      exchangeId: new Id(props.exchangeId),
+      skip: props.skip,
+      take: 16,
+    }
+  },
+  async (props) => {
+    const exchangeMessageQuery = container.resolve(ExchangeMessageQuery)
 
-    const messages = await app.get(ExchangeMessageQuery).findMany({
-      skip,
-      exchangeId,
+    const messages = await exchangeMessageQuery.findMany({
+      skip: props.skip,
+      exchangeId: props.exchangeId,
     })
 
     if (messages === null) {
       throw new NotFoundError()
     }
 
-    const count = await app.get(ExchangeMessageQuery).count(exchangeId)
-
-    const hasMore = app.get(PageService).hasMore(skip, take, count)
-
-    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
-
-    return { messages, nextPage }
+    return paginate({
+      skip: props.skip,
+      take: props.take,
+      async count() {
+        // TODO: FIX
+        return messages.length
+      },
+      async query() {
+        return messages
+      },
+    })
   }
 )
 

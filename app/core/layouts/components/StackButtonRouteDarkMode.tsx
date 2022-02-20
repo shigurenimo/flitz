@@ -1,10 +1,10 @@
 import { useColorMode } from "@chakra-ui/react"
 import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiMoon, FiSun } from "react-icons/fi"
 
-export const StackButtonRouteDarkMode: FunctionComponent = () => {
+export const StackButtonRouteDarkMode: VFC = () => {
   const { t } = useTranslation()
 
   const { colorMode, toggleColorMode } = useColorMode()

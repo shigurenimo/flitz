@@ -1,8 +1,7 @@
-import * as z from "zod"
+import { z } from "zod"
 
-export const zEmail = z.string().email()
-
-export type EmailValue = z.infer<typeof zEmail>
+const zValue = z.string().email()
+export type EmailValue = z.infer<typeof zValue>
 
 /**
  * メールアドレス
@@ -15,8 +14,8 @@ export class Email {
    *
    * @param value
    */
-  constructor(public value: EmailValue) {
-    zEmail.parse(value)
+  constructor(public value: z.infer<typeof zValue>) {
+    zValue.parse(value)
     this.value = value.toLowerCase()
     Object.freeze(this)
   }

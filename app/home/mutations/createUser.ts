@@ -1,27 +1,37 @@
 import { zCreateUserMutation } from "app/home/validations/createUserMutation"
 import { resolver } from "blitz"
 import { SignUpService } from "integrations/application"
-import { Email, Password } from "integrations/domain"
-import { createAppContext } from "integrations/registry"
+import { Email, Password, UserRole } from "integrations/domain"
+import { container } from "tsyringe"
 
 const createUser = resolver.pipe(
   resolver.zod(zCreateUserMutation),
-  (input) => ({
-    email: new Email(input.email),
-    password: new Password(input.password),
-  }),
-  async (input, ctx) => {
-    const app = await createAppContext()
+  (props) => {
+    return {
+      email: new Email(props.email),
+      password: new Password(props.password),
+    }
+  },
+  async (props, ctx) => {
+    const signUpService = container.resolve(SignUpService)
 
-    const signUp = await app.get(SignUpService).call({
+    const user = await signUpService.execute({
       session: ctx.session,
-      password: input.password,
-      email: input.email,
+      password: props.password,
+      email: props.email,
     })
 
-    if (signUp instanceof Error) {
-      throw signUp
+    if (user instanceof Error) {
+      throw user
     }
+
+    await ctx.session.$create({
+      name: user.name?.value ?? null,
+      role: new UserRole("USER").value,
+      userId: user.id.value,
+      username: user.username?.value ?? null,
+      iconImageId: null,
+    })
 
     return null
   }

@@ -12,7 +12,7 @@ export const useFirebaseCloudMessaging = () => {
   const toast = useToast()
 
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_VAPID) return
+    if (!process.env.NEXT_PUBLIC_FIREBASE_VAPID) return
 
     if (typeof window === "undefined") return
 

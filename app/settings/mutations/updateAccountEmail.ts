@@ -1,24 +1,28 @@
 import { resolver } from "blitz"
 import { UpdateAccountEmailService } from "integrations/application"
-import { Email, Id, zEmail } from "integrations/domain"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { Email, Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const zUpdateAccountEmailMutation = z.object({ email: zEmail })
+const zUpdateAccountEmailMutation = z.object({ email: z.string() })
 
 const updateAccountEmail = resolver.pipe(
   resolver.zod(zUpdateAccountEmailMutation),
   resolver.authorize(),
-  (input, ctx) => ({
-    email: new Email(input.email),
-    userId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      email: new Email(props.email),
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const updateAccountEmailService = container.resolve(
+      UpdateAccountEmailService
+    )
 
-    await app.get(UpdateAccountEmailService).call({
-      email: input.email,
-      userId: input.userId,
+    await updateAccountEmailService.execute({
+      email: props.email,
+      userId: props.userId,
     })
 
     return null

@@ -9,10 +9,10 @@ import {
 import { AvatarUser } from "app/core/components/AvatarUser"
 import createReply from "app/posts/mutations/createReply"
 import { useMutation, useParam, useSession } from "blitz"
-import React, { FunctionComponent, useState } from "react"
+import React, { useState, VFC } from "react"
 import { FiImage, FiSend } from "react-icons/fi"
 
-export const ShowPostPageInput: FunctionComponent = () => {
+export const ShowPostPageInput: VFC = () => {
   const session = useSession()
 
   const postId = useParam("postId", "string")
@@ -30,7 +30,9 @@ export const ShowPostPageInput: FunctionComponent = () => {
       toast({ status: "success", title: "Success" })
       setText("")
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 

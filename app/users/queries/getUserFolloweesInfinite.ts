@@ -1,47 +1,46 @@
-import { resolver } from "blitz"
-import {
-  Id,
-  PageService,
-  Skip,
-  Take,
-  Username,
-  zSkip,
-  zUsername,
-} from "integrations/domain"
-import { UserFolloweeQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { paginate, resolver } from "blitz"
+import { UserFolloweeQuery } from "integrations/application"
+import { Id, Username } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
 const zGetUserFolloweesInfinite = z.object({
-  skip: zSkip,
-  username: zUsername,
+  skip: z.number(),
+  username: z.string(),
 })
 
 const getUserFolloweesInfinite = resolver.pipe(
   resolver.zod(zGetUserFolloweesInfinite),
-  (input, ctx) => ({
-    skip: new Skip(input.skip),
-    take: new Take(),
-    userId: Id.nullable(ctx.session.userId),
-    username: new Username(input.username),
-  }),
-  async ({ skip, take, userId, username }) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      skip: props.skip,
+      take: 40,
+      userId: ctx.session.userId ? new Id(ctx.session.userId) : null,
+      username: new Username(props.username),
+    }
+  },
+  async (props) => {
+    const userFolloweeQuery = container.resolve(UserFolloweeQuery)
 
-    const friendships = await app.get(UserFolloweeQuery).findByUsername({
-      skip,
-      take,
-      userId,
-      username,
+    const friendships = await userFolloweeQuery.findByUsername({
+      skip: props.skip,
+      take: props.take,
+      userId: props.userId,
+      username: props.username,
     })
 
-    const count = await app.get(UserFolloweeQuery).count({ username })
+    const count = await userFolloweeQuery.count({ username: props.username })
 
-    const hasMore = app.get(PageService).hasMore(skip, take, count)
-
-    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
-
-    return { count, hasMore, friendships, nextPage }
+    return paginate({
+      skip: props.skip,
+      take: props.take,
+      async count() {
+        return count
+      },
+      async query() {
+        return friendships
+      },
+    })
   }
 )
 

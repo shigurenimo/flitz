@@ -1,8 +1,8 @@
 import { Box, Heading, Image, Stack, Text } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const HomePageHero: FunctionComponent = () => {
+export const HomePageHero: VFC = () => {
   const { t } = useTranslation()
 
   return (

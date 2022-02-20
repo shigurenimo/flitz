@@ -160,7 +160,9 @@ export class ViewConverter {
     }
   }
 
-  toUserNotification(notification: PrismaUserNotification): AppNotification {
+  toUserNotification(
+    notification: PrismaUserNotification
+  ): AppNotification | null {
     if (notification.friendship !== null) {
       return {
         id: notification.id,

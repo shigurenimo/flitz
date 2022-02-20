@@ -14,11 +14,11 @@ import { TextareaAutosize } from "app/core/components/TextareaAutosize"
 import { ConvertFile } from "app/core/utils/convertFile"
 import createPost from "app/posts/mutations/createPost"
 import { useMutation, useSession } from "blitz"
-import React, { FunctionComponent, useState } from "react"
+import React, { useState, VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend } from "react-icons/fi"
 
-export const HomePageInput: FunctionComponent = () => {
+export const HomePageInput: VFC = () => {
   const session = useSession()
 
   const { t } = useTranslation()
@@ -41,7 +41,9 @@ export const HomePageInput: FunctionComponent = () => {
       setFile(null)
       toast({ status: "success", title: "Success" })
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 

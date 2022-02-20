@@ -3,9 +3,9 @@ import { AvatarUser } from "app/core/components/AvatarUser"
 import { StackCard } from "app/core/components/StackCard"
 import { useRouter } from "blitz"
 import { AppFollower } from "integrations/interface/types/appFollower"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackCardUser: FunctionComponent<{
+export const StackCardUser: VFC<{
   createdAt: Date
   hasAction: boolean
   onFollow: () => Promise<void>
@@ -25,7 +25,9 @@ export const StackCardUser: FunctionComponent<{
       await props.onFollow()
       toast({ status: "success", title: "Success" })
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 
@@ -34,7 +36,9 @@ export const StackCardUser: FunctionComponent<{
       await props.onUnfollow()
       toast({ status: "success", title: "Success" })
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 

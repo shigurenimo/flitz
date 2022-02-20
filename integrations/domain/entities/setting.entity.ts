@@ -1,4 +1,18 @@
-import type { Email, Id } from "integrations/domain/valueObjects"
+import { Email, Id } from "integrations/domain/valueObjects"
+import { z } from "zod"
+
+const zProps = z.object({
+  id: z.instanceof(Id),
+  discoverableByEmail: z.boolean(),
+  fcmToken: z.string().nullable(),
+  fcmTokenForMobile: z.string().nullable(),
+  notificationEmail: z.instanceof(Email).nullable(),
+  protected: z.boolean(),
+  subscribeMessage: z.boolean(),
+  subscribePostLike: z.boolean(),
+  subscribePostQuotation: z.boolean(),
+  userId: z.instanceof(Id),
+})
 
 /**
  * 設定
@@ -56,28 +70,17 @@ export class SettingEntity {
    */
   readonly userId!: Id
 
-  constructor(
-    public props: {
-      id: Id
-      discoverableByEmail: boolean
-      fcmToken: string | null
-      fcmTokenForMobile: string | null
-      notificationEmail: Email | null
-      protected: boolean
-      subscribeMessage: boolean
-      subscribePostLike: boolean
-      subscribePostQuotation: boolean
-      userId: Id
-    }
-  ) {
+  constructor(public props: z.infer<typeof zProps>) {
+    zProps.parse(props)
     Object.assign(this, props)
     Object.freeze(this)
   }
 
-  update(input: { fcmToken: string | null; fcmTokenForMobile: string | null }) {
+  updateFcmToken(fcmToken: string | null, fcmTokenForMobile: string | null) {
     return new SettingEntity({
       ...this.props,
-      ...input,
+      fcmToken,
+      fcmTokenForMobile,
     })
   }
 }

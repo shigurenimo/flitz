@@ -1,18 +1,19 @@
-import { ReadImageBufferService } from "integrations/application/readImageBuffer.service"
+import { ReadImageBufferService } from "integrations/application/post/readImageBuffer.service"
 import { Id } from "integrations/domain"
-import { createAppContext } from "integrations/registry/createAppContext"
 import { NextApiRequest, NextApiResponse } from "next"
+import { container } from "tsyringe"
 
 const icon = async (req: NextApiRequest, resp: NextApiResponse) => {
   if (Array.isArray(req.query.id)) {
     return resp.status(500).end()
   }
 
-  const app = await createAppContext()
+  // TODO: BAD
+  const readImageBufferService = container.resolve(ReadImageBufferService)
 
-  const buffer = await app
-    .get(ReadImageBufferService)
-    .call({ fileId: new Id(req.query.id) })
+  const buffer = await readImageBufferService.execute({
+    fileId: new Id(req.query.id),
+  })
 
   if (buffer instanceof Error) {
     return resp.status(500).end()

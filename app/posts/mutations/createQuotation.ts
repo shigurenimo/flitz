@@ -2,21 +2,23 @@ import { zCreateQuotation } from "app/posts/validations/createQuotationMutation"
 import { resolver } from "blitz"
 import { CreateQuotationService } from "integrations/application"
 import { Id } from "integrations/domain"
-import { createAppContext } from "integrations/registry"
+import { container } from "tsyringe"
 
 const createQuotation = resolver.pipe(
   resolver.zod(zCreateQuotation),
   resolver.authorize(),
-  (input, ctx) => ({
-    postId: new Id(input.postId),
-    userId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      postId: new Id(props.postId),
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const createQuotationService = container.resolve(CreateQuotationService)
 
-    await app.get(CreateQuotationService).call({
-      postId: input.postId,
-      userId: input.userId,
+    await createQuotationService.execute({
+      postId: props.postId,
+      userId: props.userId,
     })
 
     return null

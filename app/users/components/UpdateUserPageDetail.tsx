@@ -16,11 +16,17 @@ import { StackProfileUpdateActions } from "app/users/components/StackProfileUpda
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
 import { useMutation, useParam, useQuery } from "blitz"
-import React, { FunctionComponent, useState } from "react"
+import React, { useState, VFC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-export const UpdateUserPageDetail: FunctionComponent = () => {
+type Form = {
+  biography: string
+  name: string
+  siteURL: string
+}
+
+export const UpdateUserPageDetail: VFC = () => {
   const { t } = useTranslation()
 
   const [iconImageFile, setIconImage] = useState<File | null>(null)
@@ -38,11 +44,11 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
   const [updateUserProfileMutation, { isLoading }] =
     useMutation(updateUserProfile)
 
-  const { handleSubmit, register, formState } = useForm({
+  const { handleSubmit, register, formState } = useForm<Form>({
     mode: "onBlur",
     reValidateMode: "onBlur",
     defaultValues: {
-      name: user.name,
+      name: user.name ?? "",
       biography: user.biography,
       siteURL: "",
     },
@@ -50,11 +56,7 @@ export const UpdateUserPageDetail: FunctionComponent = () => {
 
   const toast = useToast()
 
-  const onSubmit = async (values: {
-    biography: string
-    name: string
-    siteURL: string
-  }) => {
+  const onSubmit = async (values: Form) => {
     try {
       const convertFileService = new ConvertFile()
 

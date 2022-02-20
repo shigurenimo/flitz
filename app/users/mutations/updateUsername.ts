@@ -1,25 +1,37 @@
 import { resolver } from "blitz"
 import { UpdateUsernameService } from "integrations/application"
-import { Id, Name, zName } from "integrations/domain"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { Id, Name } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const UpdateUsername = z.object({ username: zName })
+const zUpdateUsername = z.object({ username: z.string() })
 
 const updateUsername = resolver.pipe(
-  resolver.zod(UpdateUsername),
+  resolver.zod(zUpdateUsername),
   resolver.authorize(),
-  (input, ctx) => ({
-    userId: new Id(ctx.session.userId),
-    username: new Name(input.username),
-  }),
-  async (input, ctx) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      userId: new Id(ctx.session.userId),
+      username: new Name(props.username),
+    }
+  },
+  async (props, ctx) => {
+    const updateUsernameService = container.resolve(UpdateUsernameService)
 
-    await app.get(UpdateUsernameService).call({
+    const newUser = await updateUsernameService.execute({
       session: ctx.session,
-      username: input.username,
-      userId: input.userId,
+      username: props.username,
+      userId: props.userId,
+    })
+
+    if (newUser instanceof Error) {
+      throw newUser
+    }
+
+    await ctx.session.$setPublicData({
+      name: newUser.name?.value ?? null,
+      username: newUser.username.value,
+      iconImageId: newUser.iconImageId?.value ?? null,
     })
 
     return null

@@ -1,15 +1,13 @@
-import * as z from "zod"
+import { z } from "zod"
 
-export const zUrl = z.string().url()
-
-export type UrlValue = z.infer<typeof zUrl>
+const zValue = z.string().url()
 
 /**
  * URL
  */
 export class Url {
-  constructor(public value: UrlValue) {
-    zUrl.parse(value)
+  constructor(public value: z.infer<typeof zValue>) {
+    zValue.parse(value)
     Object.freeze(this)
   }
 }

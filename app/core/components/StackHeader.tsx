@@ -1,10 +1,10 @@
 import { Heading, Stack } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { FC } from "react"
 
-export const StackHeader: FunctionComponent = ({ children }) => {
+export const StackHeader: FC = (props) => {
   return (
     <Stack px={4}>
-      <Heading letterSpacing={"wider"}>{children}</Heading>
+      <Heading letterSpacing={"wider"}>{props.children}</Heading>
     </Stack>
   )
 }

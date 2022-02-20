@@ -1,17 +1,21 @@
 {
-  "deno.enable": false,
-  "typescript.preferences.importModuleSpecifier": "non-relative",
-  "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "jest.autoRun": "off",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.tsdk": "node_modules/typescript/lib",
   "files.exclude": {
     "**/node_modules": true,
     ".blitz": true,
-    ".idea": true,
+    ".blitz.config.compiled.js": true,
+    ".husky": true,
     ".next": true,
     ".tsbuildinfo": true,
+    ".vercel": true,
+    "docker-error.log": true,
     "yarn-error.log": true,
     "yarn.lock": true
   },

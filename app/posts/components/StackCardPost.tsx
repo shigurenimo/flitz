@@ -11,11 +11,11 @@ import { StackPostReply } from "app/posts/components/StackPostReply"
 import { StackPostText } from "app/posts/components/StackPostText"
 import { useRouter } from "blitz"
 import { AppFeedPost } from "integrations/interface/types/appFeedPost"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackCardPost: FunctionComponent<
-  AppFeedPost & { isDisabled: boolean }
-> = (props) => {
+export const StackCardPost: VFC<AppFeedPost & { isDisabled: boolean }> = (
+  props
+) => {
   const router = useRouter()
 
   const onPushRouter = () => {

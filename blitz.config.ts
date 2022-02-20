@@ -1,7 +1,6 @@
-import { sessionMiddleware, simpleRolesIsAuthorized } from "blitz"
+import { BlitzConfig, sessionMiddleware, simpleRolesIsAuthorized } from "blitz"
 
-module.exports = {
-  log: { level: "error" },
+const config: BlitzConfig = {
   middleware: [
     sessionMiddleware({
       cookiePrefix: "flitz",
@@ -9,3 +8,5 @@ module.exports = {
     }),
   ],
 }
+
+module.exports = config

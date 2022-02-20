@@ -15,10 +15,10 @@ export class ConvertFile {
     return new Promise((resolve) => {
       reader.addEventListener(
         "loadend",
-        () => resolve(reader.result as string),
-        {
-          once: true,
-        }
+        () => {
+          return resolve(reader.result as string)
+        },
+        { once: true }
       )
       reader.readAsDataURL(file)
     })

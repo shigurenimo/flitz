@@ -1,11 +1,11 @@
 import { HStack, Link as LinkText, Stack, Text } from "@chakra-ui/react"
 import { Link } from "blitz"
 import { AppProfile } from "integrations/interface/types/appProfile"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackUserFriendship: FunctionComponent<AppProfile> = (props) => {
+export const StackUserFriendship: VFC<AppProfile> = (props) => {
   return (
-    <Stack pacing={2} px={4}>
+    <Stack spacing={2} px={4}>
       <Stack>
         <Text fontWeight={"bold"}>{props.biography}</Text>
       </Stack>

@@ -1,8 +1,7 @@
 import db from "db"
-import { Count, Id, PostEntity, PostText } from "integrations/domain"
-import { PostRepository as Repository } from "integrations/domain/repositories"
+import { Id, PostEntity, PostText } from "integrations/domain"
 
-export class PostRepository implements Repository {
+export class PostRepository {
   async find(id: Id) {
     const post = await db.post.findUnique({
       where: { id: id.value },
@@ -16,8 +15,8 @@ export class PostRepository implements Repository {
     return new PostEntity({
       id: new Id(post.id),
       quotationId: post.quotationId ? new Id(post.quotationId) : null,
-      quotationsCount: new Count(post.quotationsCount),
-      repliesCount: new Count(post.repliesCount),
+      quotationsCount: post.quotationsCount,
+      repliesCount: post.repliesCount,
       replyId: post.replyId ? new Id(post.replyId) : null,
       text: post.text ? new PostText(post.text) : null,
       userId: new Id(post.userId),

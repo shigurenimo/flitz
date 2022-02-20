@@ -3,15 +3,15 @@ import { StackList } from "app/core/components/StackList"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import getUserRepliesInfinite from "app/users/queries/getUserRepliesInfinite"
 import { useInfiniteQuery, useParam } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const ShowUserPageListReplies: FunctionComponent = () => {
+export const ShowUserPageListReplies: VFC = () => {
   const { t } = useTranslation()
 
   const username = useParam("username", "string")
 
-  const [groupedPosts] = useInfiniteQuery(
+  const [pages, { isFetching }] = useInfiniteQuery(
     getUserRepliesInfinite,
     (page = { skip: 0, username }) => page,
     {
@@ -20,23 +20,22 @@ export const ShowUserPageListReplies: FunctionComponent = () => {
     }
   )
 
+  const posts = pages.flatMap((page) => page.items)
+
+  const isEmpty = !isFetching && posts.length === 0
+
   return (
     <StackList divider={<StackDivider />}>
-      {groupedPosts.map((group) => {
-        if (group.isEmpty) {
-          return (
-            <Box key={"empty"} px={4}>
-              <Alert key={"alert"} status={"info"}>
-                <AlertIcon />
-                {t("This user hasn't posted yet.")}
-              </Alert>
-            </Box>
-          )
-        }
-        console.log(group.posts)
-        return group.posts.map((post) => {
-          return <StackCardPost key={post.id} {...post} isDisabled={false} />
-        })
+      {isEmpty && (
+        <Box key={"empty"} px={4}>
+          <Alert key={"alert"} status={"info"}>
+            <AlertIcon />
+            {t("This user hasn't posted yet.")}
+          </Alert>
+        </Box>
+      )}
+      {posts.map((post) => {
+        return <StackCardPost key={post.id} {...post} isDisabled={false} />
       })}
     </StackList>
   )

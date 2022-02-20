@@ -1,7 +1,7 @@
 import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
 import checkUnreadMessages from "app/exchanges/queries/checkUnreadMessages"
 import { useQuery } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiMail } from "react-icons/fi"
 
@@ -10,9 +10,7 @@ type Props = {
   onClick?: () => void
 }
 
-export const StackButtonRouteExchanges: FunctionComponent<Props> = ({
-  ...props
-}) => {
+export const StackButtonRouteExchanges: VFC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasUnreadMessages] = useQuery(checkUnreadMessages, null, {

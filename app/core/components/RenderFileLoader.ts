@@ -1,11 +1,13 @@
 import { useObjectURL } from "app/core/hooks/useObjectURL"
-import { FunctionComponent } from "react"
+import { VFC } from "react"
 
-export const RenderFileLoader: FunctionComponent<{
+type Props = {
   file: File
   render(url?: string): React.ReactElement
-}> = ({ file, render }) => {
-  const url = useObjectURL(file)
+}
 
-  return render(url)
+export const RenderFileLoader: VFC<Props> = (props) => {
+  const url = useObjectURL(props.file)
+
+  return props.render(url)
 }

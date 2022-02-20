@@ -3,10 +3,10 @@ import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
 import { Link, useSession } from "blitz"
 import { AppProfile } from "integrations/interface/types/appProfile"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const StackProfileActions: FunctionComponent<AppProfile> = (props) => {
+export const StackProfileActions: VFC<AppProfile> = (props) => {
   const { t } = useTranslation()
 
   const session = useSession()

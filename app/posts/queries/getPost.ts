@@ -1,21 +1,23 @@
 import { NotFoundError, resolver } from "blitz"
-import { Id, zId } from "integrations/domain"
-import { PostQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { PostQuery } from "integrations/application"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetPost = z.object({ id: zId })
+const zGetPost = z.object({ id: z.string() })
 
 const getPost = resolver.pipe(
-  resolver.zod(GetPost),
-  (input, ctx) => ({
-    id: new Id(input.id),
-    userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  resolver.zod(zGetPost),
+  (props, ctx) => {
+    return {
+      id: new Id(props.id),
+      userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const postQuery = container.resolve(PostQuery)
 
-    const post = await app.get(PostQuery).find(input.id, input.userId)
+    const post = await postQuery.find(props.id, props.userId)
 
     if (!post) {
       throw new NotFoundError()

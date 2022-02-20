@@ -1,11 +1,11 @@
 import { Button, ButtonProps, useColorModeValue } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
 type Props = ButtonProps & {
   onClick?: () => void
 }
 
-export const ButtonPostAction: FunctionComponent<Props> = ({
+export const ButtonPostAction: VFC<Props> = ({
   onClick,
   isActive = false,
   ...props

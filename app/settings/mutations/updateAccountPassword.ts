@@ -1,29 +1,33 @@
 import { resolver } from "blitz"
 import { UpdateAccountPasswordService } from "integrations/application"
-import { Id, Password, zPassword } from "integrations/domain"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { Id, Password } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
 const zUpdateAccountPassword = z.object({
-  currentPassword: zPassword,
-  password: zPassword,
+  currentPassword: z.string(),
+  password: z.string(),
 })
 
-const updateAccountPassword =  resolver.pipe(
+const updateAccountPassword = resolver.pipe(
   resolver.zod(zUpdateAccountPassword),
   resolver.authorize(),
-  (input, ctx) => ({
-    currentPassword: new Password(input.currentPassword),
-    password: new Password(input.password),
-    userId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      currentPassword: new Password(props.currentPassword),
+      password: new Password(props.password),
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const updateAccountPasswordService = container.resolve(
+      UpdateAccountPasswordService
+    )
 
-    await app.get(UpdateAccountPasswordService).call({
-      currentPassword: input.currentPassword,
-      password: input.password,
-      userId: input.userId,
+    await updateAccountPasswordService.execute({
+      currentPassword: props.currentPassword,
+      password: props.password,
+      userId: props.userId,
     })
 
     return null

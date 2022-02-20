@@ -1,49 +1,63 @@
-import { resolver } from "blitz"
-import {
-  Id,
-  NotificationRepository,
-  NotificationService,
-  PageService,
-  Skip,
-  Take,
-  zSkip,
-} from "integrations/domain"
-import { UserNotificationQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { paginate, resolver } from "blitz"
+import { UserNotificationQuery } from "integrations/application"
+import { Id } from "integrations/domain"
+import { NotificationRepository } from "integrations/infrastructure"
+import { AppNotification } from "integrations/interface/types/appNotification"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetNotificationsInfinite = z.object({ skip: zSkip })
+const zGetNotificationsInfinite = z.object({ skip: z.number() })
 
 const getNotificationsInfinite = resolver.pipe(
-  resolver.zod(GetNotificationsInfinite),
+  resolver.zod(zGetNotificationsInfinite),
   resolver.authorize(),
-  (input, ctx) => ({
-    skip: new Skip(input.skip),
-    take: new Take(),
-    userId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      skip: props.skip,
+      take: 40,
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const userNotificationQuery = container.resolve(UserNotificationQuery)
 
-    const notifications = await app
-      .get(UserNotificationQuery)
-      .findMany(input.userId, input.skip)
+    const notifications = await userNotificationQuery.findMany(
+      props.userId,
+      props.skip
+    )
 
-    const hasUnread = app.get(NotificationService).hasUnread(notifications)
+    // TODO: BAD
+    const fn = (notifications: (AppNotification | null)[]) => {
+      const unreadNotifications = notifications.filter((notification) => {
+        if (notification === null) return false
 
-    if (hasUnread) {
-      await app.get(NotificationRepository).markAsRead(input.userId)
+        return !notification.isRead
+      })
+
+      return unreadNotifications.length > 0
     }
 
-    const count = await app.get(UserNotificationQuery).count(input.userId)
+    const hasUnread = fn(notifications)
 
-    const hasMore = app.get(PageService).hasMore(input.skip, input.take, count)
+    const notificationRepository = container.resolve(NotificationRepository)
 
-    const nextPage = hasMore
-      ? app.get(PageService).nextPage(input.take, input.skip)
-      : null
+    if (hasUnread) {
+      // TODO: BAD
+      await notificationRepository.markAsRead(props.userId)
+    }
 
-    return { notifications, hasMore, nextPage }
+    const count = await userNotificationQuery.count(props.userId)
+
+    return paginate({
+      skip: props.skip,
+      take: props.take,
+      async count() {
+        return count
+      },
+      async query() {
+        return notifications
+      },
+    })
   }
 )
 

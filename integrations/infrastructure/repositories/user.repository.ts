@@ -1,16 +1,16 @@
+import { captureException } from "@sentry/node"
 import db from "db"
 import {
-  Biography,
   Email,
   HashedPassword,
   Id,
   Name,
+  ShortText,
   UserEntity,
   Username,
 } from "integrations/domain"
-import { UserRepository as Repository } from "integrations/domain/repositories"
 
-export class UserRepository implements Repository {
+export class UserRepository {
   async find(id: Id) {
     const user = await db.user.findUnique({
       where: { id: id.value },
@@ -30,7 +30,7 @@ export class UserRepository implements Repository {
 
     return new UserEntity({
       email: new Email(user.email),
-      biography: new Biography(user.biography),
+      biography: new ShortText(user.biography),
       headerImageId: user.headerImage ? new Id(user.headerImage.id) : null,
       iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
       id: new Id(user.id),
@@ -60,7 +60,7 @@ export class UserRepository implements Repository {
 
     return new UserEntity({
       email: new Email(user.email),
-      biography: new Biography(user.biography),
+      biography: new ShortText(user.biography),
       headerImageId: user.headerImage ? new Id(user.headerImage.id) : null,
       iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
       id: new Id(user.id),
@@ -90,7 +90,7 @@ export class UserRepository implements Repository {
 
     return new UserEntity({
       email: new Email(user.email),
-      biography: new Biography(user.biography),
+      biography: new ShortText(user.biography),
       headerImageId: user.headerImage ? new Id(user.headerImage.id) : null,
       iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
       id: new Id(user.id),
@@ -128,7 +128,13 @@ export class UserRepository implements Repository {
 
       return null
     } catch (error) {
-      return new Error(error.message)
+      captureException(error)
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
     }
   }
 }

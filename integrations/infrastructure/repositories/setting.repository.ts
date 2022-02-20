@@ -1,12 +1,8 @@
+import { captureException } from "@sentry/node"
 import db from "db"
-import {
-  Email,
-  Id,
-  SettingEntity,
-  SettingRepository as Repository,
-} from "integrations/domain"
+import { Email, Id, SettingEntity } from "integrations/domain"
 
-export class SettingRepository implements Repository {
+export class SettingRepository {
   async upsert(setting: SettingEntity) {
     try {
       await db.setting.upsert({
@@ -33,7 +29,13 @@ export class SettingRepository implements Repository {
 
       return null
     } catch (error) {
-      return new Error(error.message)
+      captureException(error)
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
     }
   }
 

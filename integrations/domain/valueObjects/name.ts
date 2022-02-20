@@ -1,19 +1,22 @@
-import * as z from "zod"
+import { z } from "zod"
 
-export const zName = z.string().max(12)
-
-export type NameValue = z.infer<typeof zName>
+const zValue = z.string().max(12)
 
 /**
  * ユーザー名
  */
 export class Name {
-  constructor(public value: NameValue) {
-    zName.parse(value)
+  constructor(public value: z.infer<typeof zValue>) {
+    zValue.parse(value)
     Object.freeze(this)
   }
 
-  static nullable(value: NameValue | null) {
+  /**
+   * @deprecated
+   * @param value
+   * @returns
+   */
+  static nullable(value: z.infer<typeof zValue> | null) {
     return value === null ? null : new Name(value)
   }
 }

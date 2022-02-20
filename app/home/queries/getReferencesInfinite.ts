@@ -1,48 +1,53 @@
-import { resolver } from "blitz"
-import {
-  Id,
-  PageService,
-  ReferenceRepository,
-  ReferenceService,
-  Skip,
-  Take,
-  zSkip,
-} from "integrations/domain"
-import { ReferenceQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { paginate, resolver } from "blitz"
+import { ReferenceQuery } from "integrations/application"
+import { Id } from "integrations/domain"
+import { ReferenceRepository } from "integrations/infrastructure"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-export const GetReferencesInfinite = z.object({ skip: zSkip })
+export const GetReferencesInfinite = z.object({ skip: z.number() })
 
 const getReferencesInfinite = resolver.pipe(
   resolver.zod(GetReferencesInfinite),
   resolver.authorize(),
-  (input, ctx) => ({
-    skip: new Skip(input.skip),
-    userId: new Id(ctx.session.userId),
-  }),
-  async ({ skip, userId }) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      skip: props.skip,
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const referenceQuery = container.resolve(ReferenceQuery)
 
-    const references = await app.get(ReferenceQuery).findMany({ skip, userId })
+    const references = await referenceQuery.findMany({
+      skip: props.skip,
+      userId: props.userId,
+    })
 
-    const hasUnreadReferences = app
-      .get(ReferenceService)
-      .hasUnread({ references })
+    const unreadReferences = references.filter((reference) => {
+      return !reference.isRead
+    })
+
+    const hasUnreadReferences = unreadReferences.length > 0
+
+    const referenceRepository = container.resolve(ReferenceRepository)
 
     if (hasUnreadReferences) {
-      await app.get(ReferenceRepository).markAsRead(userId)
+      await referenceRepository.markAsRead(props.userId)
     }
 
-    const count = await app.get(ReferenceQuery).count(userId)
+    const count = await referenceQuery.count(props.userId)
 
-    const take = new Take()
-
-    const hasMore = app.get(PageService).hasMore(skip, take, count)
-
-    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
-
-    return { hasMore, references, nextPage }
+    return paginate({
+      skip: props.skip,
+      take: 40,
+      async count() {
+        return count
+      },
+      async query() {
+        return references
+      },
+    })
   }
 )
 

@@ -10,21 +10,22 @@ import { StackList } from "app/core/components/StackList"
 import { StackCardExchange } from "app/exchanges/components/StackCardExchange"
 import getExchanges from "app/exchanges/queries/getExchanges"
 import { usePaginatedQuery, useRouter } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 
 const ITEMS_PER_PAGE = 20
 
-export const ExchangesPageList: FunctionComponent = () => {
+export const ExchangesPageList: VFC = () => {
   const { t } = useTranslation()
 
   const router = useRouter()
 
   const page = Number(router.query.page) || 0
 
-  const [{ exchanges, hasMore, isEmpty }] = usePaginatedQuery(getExchanges, {
-    skip: ITEMS_PER_PAGE * page,
-  })
+  const [{ items: exchanges, hasMore, count }] = usePaginatedQuery(
+    getExchanges,
+    { skip: ITEMS_PER_PAGE * page }
+  )
 
   const onPreviousPage = () => {
     router.push({ query: { page: page - 1 } })
@@ -47,34 +48,32 @@ export const ExchangesPageList: FunctionComponent = () => {
   }
 
   return (
-    <>
-      <StackList divider={<StackDivider />}>
-        {isEmpty && (
-          <Box px={4}>
-            <Alert status={"info"}>
-              <AlertIcon />
-              {t("No Exchanges")}
-            </Alert>
-          </Box>
-        )}
-        {exchanges.map((exchange) => (
-          <StackCardExchange
-            {...exchange}
-            key={exchange.id}
-            onClick={() => {
-              onMoveExchangePage(exchange.id, exchange.relatedUser.id)
-            }}
-          />
-        ))}
-        <HStack spacing={4}>
-          <Button isDisabled={isEmpty || page === 0} onClick={onPreviousPage}>
-            {"Previuos"}
-          </Button>
-          <Button isDisabled={isEmpty || !hasMore} onClick={onNextPage}>
-            {"Next"}
-          </Button>
-        </HStack>
-      </StackList>
-    </>
+    <StackList divider={<StackDivider />}>
+      {count === 0 && (
+        <Box px={4}>
+          <Alert status={"info"}>
+            <AlertIcon />
+            {t("No Exchanges")}
+          </Alert>
+        </Box>
+      )}
+      {exchanges.map((exchange) => (
+        <StackCardExchange
+          {...exchange}
+          key={exchange.id}
+          onClick={() => {
+            onMoveExchangePage(exchange.id, exchange.relatedUser.id)
+          }}
+        />
+      ))}
+      <HStack spacing={4}>
+        <Button isDisabled={count === 0 || page === 0} onClick={onPreviousPage}>
+          {"Previuos"}
+        </Button>
+        <Button isDisabled={!hasMore} onClick={onNextPage}>
+          {"Next"}
+        </Button>
+      </HStack>
+    </StackList>
   )
 }

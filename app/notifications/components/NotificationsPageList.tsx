@@ -3,13 +3,14 @@ import { StackList } from "app/core/components/StackList"
 import { StackCardNotification } from "app/notifications/components/StackCardNotification"
 import getNotificationsInfinite from "app/notifications/queries/getNotificationsInfinite"
 import { useInfiniteQuery } from "blitz"
-import React, { FunctionComponent } from "react"
+import { AppNotification } from "integrations/interface/types"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const NotificationsPageList: FunctionComponent = () => {
+export const NotificationsPageList: VFC = () => {
   const { t } = useTranslation()
 
-  const [groupedNotifications] = useInfiniteQuery(
+  const [pages] = useInfiniteQuery(
     getNotificationsInfinite,
     (page = { skip: 0 }) => page,
     {
@@ -18,9 +19,13 @@ export const NotificationsPageList: FunctionComponent = () => {
     }
   )
 
-  const [group] = groupedNotifications
+  const notifications = pages
+    .flatMap((page) => page.items)
+    .filter((notification): notification is AppNotification => {
+      return notification !== null
+    })
 
-  const isEmpty = group.notifications.length === 0
+  const isEmpty = notifications.length === 0
 
   return (
     <StackList divider={<StackDivider />}>
@@ -32,13 +37,9 @@ export const NotificationsPageList: FunctionComponent = () => {
           </Alert>
         </Box>
       )}
-      {groupedNotifications.map((group) => {
-        return group.notifications.map((notification) => {
-          return notification === null ? null : (
-            <StackCardNotification key={notification.id} {...notification} />
-          )
-        })
-      })}
+      {notifications.map((notification) => (
+        <StackCardNotification key={notification.id} {...notification} />
+      ))}
     </StackList>
   )
 }

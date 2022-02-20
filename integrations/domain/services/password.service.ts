@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/node"
 import { SecurePassword } from "blitz"
 import { HashedPassword, Password } from "integrations/domain/valueObjects"
 
@@ -31,7 +32,13 @@ export class PasswordService {
 
       return result
     } catch (error) {
-      return error
+      captureException(error)
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
     }
   }
 

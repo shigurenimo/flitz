@@ -3,12 +3,12 @@ import { StackList } from "app/core/components/StackList"
 import getReferencesInfinite from "app/home/queries/getReferencesInfinite"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import { useInfiniteQuery, useSession } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const HomePageList: FunctionComponent = () => {
+export const HomePageList: VFC = () => {
   const session = useSession()
 
-  const [groupedReferences] = useInfiniteQuery(
+  const [pages] = useInfiniteQuery(
     getReferencesInfinite,
     (page = { skip: 0 }) => page,
     {
@@ -17,20 +17,18 @@ export const HomePageList: FunctionComponent = () => {
     }
   )
 
+  const references = pages.flatMap((page) => page.items)
+
   return (
     <StackList divider={<StackDivider />}>
-      {groupedReferences.map((group) => {
-        return group.references.map((reference) => {
-          return (
-            <StackCardPost
-              isDisabled={
-                session.userId !== null && session.userId === reference.user.id
-              }
-              {...reference}
-            />
-          )
-        })
-      })}
+      {references.map((reference) => (
+        <StackCardPost
+          isDisabled={
+            session.userId !== null && session.userId === reference.user.id
+          }
+          {...reference}
+        />
+      ))}
     </StackList>
   )
 }

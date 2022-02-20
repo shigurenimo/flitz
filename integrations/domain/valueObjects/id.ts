@@ -1,24 +1,22 @@
-import * as z from "zod"
+import { z } from "zod"
 
-export const zId = z.string().min(8).max(40)
-
-export type IdValue = z.infer<typeof zId>
+const zValue = z.string().min(8).max(40)
 
 /**
  * ID
  */
 export class Id {
-  constructor(public value: IdValue) {
-    zId.parse(value)
+  constructor(public value: z.infer<typeof zValue>) {
+    zValue.parse(value)
     Object.freeze(this)
   }
 
   /**
-   * For nullable value
    * @param value
+   * @deprecated
    * @returns
    */
-  static nullable(value: IdValue | null) {
+  static nullable(value: z.infer<typeof zValue>) {
     return value === null ? null : new Id(value)
   }
 }

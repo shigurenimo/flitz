@@ -1,9 +1,7 @@
 import { AspectRatio, HStack, Image } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackPostImage: FunctionComponent<{ fileIds: string[] }> = (
-  props
-) => {
+export const StackPostImage: VFC<{ fileIds: string[] }> = (props) => {
   if (props.fileIds.length === 0) {
     return null
   }

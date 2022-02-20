@@ -3,9 +3,9 @@ import { AvatarUser } from "app/core/components/AvatarUser"
 import { RenderFileLoader } from "app/core/components/RenderFileLoader"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
 import { AppProfile } from "integrations/interface/types/appProfile"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
-export const StackProfileUpdateActions: FunctionComponent<
+export const StackProfileUpdateActions: VFC<
   AppProfile & {
     headerImageFile: File | null
     iconImageFile: File | null

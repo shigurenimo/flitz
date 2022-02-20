@@ -1,4 +1,17 @@
-import type { Count, Id, PostText } from "integrations/domain/valueObjects"
+import { Id, PostText } from "integrations/domain/valueObjects"
+import { z } from "zod"
+
+const zProps = z.object({
+  id: z.instanceof(Id),
+  quotationId: z.instanceof(Id).nullable(),
+  quotationsCount: z.number(),
+  repliesCount: z.number(),
+  replyId: z.instanceof(Id).nullable(),
+  text: z.instanceof(PostText).nullable(),
+  userId: z.instanceof(Id),
+  fileIds: z.array(z.instanceof(Id)),
+  followerIds: z.array(z.instanceof(Id)),
+})
 
 /**
  * 投稿
@@ -17,12 +30,12 @@ export class PostEntity {
   /**
    * 引用された回数
    */
-  readonly quotationsCount!: Count
+  readonly quotationsCount!: number
 
   /**
    * 返信された回数
    */
-  readonly repliesCount!: Count
+  readonly repliesCount!: number
 
   /**
    * 返信先のID
@@ -53,7 +66,8 @@ export class PostEntity {
    */
   readonly followerIds!: Id[]
 
-  constructor(public props: Omit<PostEntity, "props">) {
+  constructor(public props: z.infer<typeof zProps>) {
+    zProps.parse(props)
     Object.assign(this, props)
     Object.freeze(this)
   }

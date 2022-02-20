@@ -1,19 +1,23 @@
 import { resolver } from "blitz"
 import { TestNotificationService } from "integrations/application"
-import { SessionAdapter } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
+
+const zProps = z.null()
 
 const testNotification = resolver.pipe(
-  resolver.zod(z.null()),
+  resolver.zod(zProps),
   resolver.authorize(),
-  (_, ctx) => ({
-    userId: new SessionAdapter().getUserId(ctx.session),
-  }),
+  (_, ctx) => {
+    return {
+      userId: new Id(ctx.session.userId),
+    }
+  },
   async (input) => {
-    const app = await createAppContext()
+    const testNotificationService = container.resolve(TestNotificationService)
 
-    await app.get(TestNotificationService).call({
+    await testNotificationService.execute({
       userId: input.userId,
     })
 

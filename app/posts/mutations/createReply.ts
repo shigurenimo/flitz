@@ -2,23 +2,25 @@ import { zCreateReplyMutation } from "app/posts/validations/createReplyMutation"
 import { resolver } from "blitz"
 import { CreateReplyService } from "integrations/application"
 import { Id, PostText } from "integrations/domain"
-import { createAppContext } from "integrations/registry"
+import { container } from "tsyringe"
 
 const createReply = resolver.pipe(
   resolver.zod(zCreateReplyMutation),
   resolver.authorize(),
-  (input, ctx) => ({
-    postId: new Id(input.postId),
-    text: new PostText(input.text),
-    userId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      postId: new Id(props.postId),
+      text: new PostText(props.text),
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const createReplyService = container.resolve(CreateReplyService)
 
-    await app.get(CreateReplyService).call({
-      postId: input.postId,
-      text: input.text,
-      userId: input.userId,
+    await createReplyService.execute({
+      postId: props.postId,
+      text: props.text,
+      userId: props.userId,
     })
 
     return null

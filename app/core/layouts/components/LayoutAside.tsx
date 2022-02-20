@@ -7,7 +7,7 @@ import { StackButtonRouteNotifications } from "app/core/layouts/components/Stack
 import { StackButtonRouteReferences } from "app/core/layouts/components/StackButtonRouteReferences"
 import { toActiveRoute } from "app/core/layouts/utils/toActiveRoute"
 import { useRouter, useSession } from "blitz"
-import React, { FunctionComponent, Suspense } from "react"
+import React, { Suspense, VFC } from "react"
 import { useTranslation } from "react-i18next"
 import {
   FiBell,
@@ -19,7 +19,7 @@ import {
   FiZap,
 } from "react-icons/fi"
 
-export const LayoutAside: FunctionComponent = () => {
+export const LayoutAside: VFC = () => {
   const session = useSession()
 
   const router = useRouter()

@@ -2,8 +2,8 @@ import { resolver } from "blitz"
 import { UpdateSettingService } from "integrations/application"
 import { Id } from "integrations/domain"
 import { AppSetting } from "integrations/interface/types/appSetting"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { container } from "tsyringe"
+import { z } from "zod"
 
 const zUpdateSettingMutation = z.object({
   fcmToken: z.string().nullable().optional(),
@@ -16,25 +16,25 @@ const zUpdateSettingMutation = z.object({
 const updateSetting = resolver.pipe(
   resolver.zod(zUpdateSettingMutation),
   resolver.authorize(),
-  (input, ctx) => ({
-    fcmToken: input.fcmToken || null,
-    fcmTokenForMobile: input.fcmTokenForMobile || null,
-    subscribeMessage: input.subscribeMessage || false,
-    subscribePostLike: input.subscribePostLike || false,
-    subscribePostQuotation: input.subscribePostQuotation || false,
+  (props, ctx) => ({
+    fcmToken: props.fcmToken || null,
+    fcmTokenForMobile: props.fcmTokenForMobile || null,
+    subscribeMessage: props.subscribeMessage || false,
+    subscribePostLike: props.subscribePostLike || false,
+    subscribePostQuotation: props.subscribePostQuotation || false,
     userId: new Id(ctx.session.userId),
   }),
-  async (input): Promise<AppSetting> => {
-    const app = await createAppContext()
+  async (props): Promise<AppSetting> => {
+    const updateSettingService = container.resolve(UpdateSettingService)
 
-    const settingEntity = await app.get(UpdateSettingService).call({
-      fcmTokenForMobile: input.fcmTokenForMobile,
-      fcmToken: input.fcmToken,
-      userId: input.userId,
+    const settingEntity = await updateSettingService.execute({
+      fcmTokenForMobile: props.fcmTokenForMobile,
+      fcmToken: props.fcmToken,
+      userId: props.userId,
     })
 
     if (settingEntity instanceof Error) {
-      throw new Error()
+      throw settingEntity
     }
 
     return {

@@ -5,12 +5,12 @@ import { StackCardMessageRight } from "app/exchanges/components/StackMessageBloc
 import { useMessageBlocks } from "app/exchanges/hooks/useMessageBlocks"
 import getMessagesInfinite from "app/exchanges/queries/getMessagesInfinite"
 import { useInfiniteQuery, useParam } from "blitz"
-import React, { FunctionComponent, useEffect } from "react"
+import React, { useEffect, VFC } from "react"
 
-export const ShowExchangePageMessages: FunctionComponent = () => {
+export const ShowExchangePageMessages: VFC = () => {
   const recipientId = useParam("recipientId", "string")
 
-  const [groupedMessages, { refetch }] = useInfiniteQuery(
+  const [pages, { refetch }] = useInfiniteQuery(
     getMessagesInfinite,
     (page = { skip: 0, relatedUserId: recipientId }) => page,
     {
@@ -19,20 +19,15 @@ export const ShowExchangePageMessages: FunctionComponent = () => {
     }
   )
 
-  const messages = groupedMessages
-    .map((group) => group.messages)
-    .reduce((a, b) => {
-      return [...a, ...b]
-    }, [])
+  const messages = pages.flatMap((page) => page.items)
 
   const blocks = useMessageBlocks(messages, recipientId + "")
 
   useEffect(() => {
-    window.scroll(
-      0,
+    const y =
       document.documentElement.scrollHeight -
-        document.documentElement.clientHeight
-    )
+      document.documentElement.clientHeight
+    window.scroll(0, y)
   }, [messages.length])
 
   return (

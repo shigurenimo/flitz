@@ -11,10 +11,15 @@ import {
 import createUser from "app/home/mutations/createUser"
 import login from "app/home/mutations/login"
 import { useMutation } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useForm } from "react-hook-form"
 
-export const StackFallbackLogin: FunctionComponent = () => {
+type FormLogin = {
+  email: string
+  password: string
+}
+
+export const StackFallbackLogin: VFC = () => {
   const [loginMutation, { isLoading: isLoadingLogin }] = useMutation(login)
 
   const [createUserMutation, { isLoading: isLoadingCreateUser }] =
@@ -30,33 +35,34 @@ export const StackFallbackLogin: FunctionComponent = () => {
     window.location.reload()
   }
 
-  const { handleSubmit, register, setError, formState } = useForm({
+  const { handleSubmit, register, setError, formState } = useForm<FormLogin>({
     mode: "onBlur",
     reValidateMode: "onBlur",
   })
 
   const toast = useToast()
 
-  const onSubmitCreateUser = async (values: {
-    email: string
-    password: string
-  }) => {
+  const onSubmitCreateUser = async (values: FormLogin) => {
     try {
       await onCreateUser(values.email, values.password)
     } catch (error: any) {
       setError("email", { message: "" })
       setError("password", { message: "" })
-      toast({ description: error?.message, status: "error" })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 
-  const onSubmitLogin = async (values: { email: string; password: string }) => {
+  const onSubmitLogin = async (values: FormLogin) => {
     try {
       await onLogin(values.email, values.password)
     } catch (error: any) {
       setError("email", { message: "" })
       setError("password", { message: "" })
-      toast({ description: error?.message, status: "error" })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 

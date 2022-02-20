@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common"
-import * as z from "zod"
+import { injectable } from "tsyringe"
+import { z } from "zod"
 
-@Injectable()
+@injectable()
 export class EnvAdapter {
   getFirebaseEnv() {
     const result = z
@@ -11,7 +11,7 @@ export class EnvAdapter {
         privateKey: z.string(),
       })
       .safeParse({
-        projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
         privateKey: process.env.FIREBASE_PRIVATE_KEY,
       })

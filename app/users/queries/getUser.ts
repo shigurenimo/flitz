@@ -1,23 +1,25 @@
 import { NotFoundError, resolver } from "blitz"
-import { Id, Username, zUsername } from "integrations/domain"
-import { UserQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { UserQuery } from "integrations/application"
+import { Id, Username } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetUser = z.object({ username: zUsername })
+const zGetUser = z.object({ username: z.string() })
 
 const getUser = resolver.pipe(
-  resolver.zod(GetUser),
-  (input, ctx) => ({
-    userId: Id.nullable(ctx.session.userId),
-    username: new Username(input.username),
-  }),
-  async ({ userId, username }) => {
-    const app = await createAppContext()
+  resolver.zod(zGetUser),
+  (props, ctx) => {
+    return {
+      userId: ctx.session.userId ? new Id(ctx.session.userId) : null,
+      username: new Username(props.username),
+    }
+  },
+  async (props) => {
+    const userQuery = container.resolve(UserQuery)
 
-    const user = await app.get(UserQuery).findByUsername(username, userId)
+    const user = await userQuery.findByUsername(props.username, props.userId)
 
-    if (!user) {
+    if (user === null) {
       throw new NotFoundError()
     }
 

@@ -1,28 +1,32 @@
 import { NotFoundError, resolver } from "blitz"
-import { FollowUserService } from "integrations/application/followUser.service"
-import { Id, zId } from "integrations/domain"
-import { UserQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { UserQuery } from "integrations/application"
+import { FollowUserService } from "integrations/application/user/followUser.service"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const FollowUser = z.object({ userId: zId })
+const zFollowUser = z.object({ userId: z.string() })
 
 const followUser = resolver.pipe(
-  resolver.zod(FollowUser),
+  resolver.zod(zFollowUser),
   resolver.authorize(),
-  (input, ctx) => ({
-    followeeId: new Id(input.userId),
-    followerId: new Id(ctx.session.userId),
-  }),
-  async (input) => {
-    const app = await createAppContext()
+  (props, ctx) => {
+    return {
+      followeeId: new Id(props.userId),
+      followerId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const followUserService = container.resolve(FollowUserService)
 
-    await app.get(FollowUserService).call({
-      followeeId: input.followeeId,
-      followerId: input.followerId,
+    await followUserService.execute({
+      followeeId: props.followeeId,
+      followerId: props.followerId,
     })
 
-    const queryProfile = await app.get(UserQuery).find(input.followerId)
+    const userQuery = container.resolve(UserQuery)
+
+    const queryProfile = await userQuery.find(props.followerId)
 
     if (queryProfile === null) {
       throw new NotFoundError()

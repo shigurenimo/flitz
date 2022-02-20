@@ -5,19 +5,17 @@ import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUserFolloweesInfinite from "app/users/queries/getUserFolloweesInfinite"
 import { useInfiniteQuery, useMutation, useParam } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 
 type Props = { userId: string | null }
 
-export const ShowUserPageListFollowees: FunctionComponent<Props> = ({
-  userId,
-}) => {
+export const ShowUserPageListFollowees: VFC<Props> = ({ userId }) => {
   const { t } = useTranslation()
 
   const username = useParam("username", "string")
 
-  const [groupedFollowees, { setQueryData }] = useInfiniteQuery(
+  const [pages, { setQueryData }] = useInfiniteQuery(
     getUserFolloweesInfinite,
     (page = { take: 80, skip: 0, username }) => page,
     {
@@ -32,45 +30,49 @@ export const ShowUserPageListFollowees: FunctionComponent<Props> = ({
 
   const toast = useToast()
 
+  const friendships = pages.flatMap((page) => page.items)
+
   const onFollow = async (userId: string) => {
     try {
       await followUserMutation({ userId })
-      for (const groupedFriendship of groupedFollowees) {
-        for (const followee of groupedFriendship.friendships) {
+      for (const page of pages) {
+        for (const followee of page.items) {
           if (followee.id !== userId) {
             continue
           }
           followee.isFollower = true
-          await setQueryData(groupedFriendship)
+          await setQueryData(page)
         }
       }
       toast({ status: "success", title: "Success" })
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 
   const onUnfollow = async (userId: string) => {
     try {
       await unfollowUserMutation({ userId })
-      for (const groupedFriendship of groupedFollowees) {
-        for (const friendship of groupedFriendship.friendships) {
+      for (const page of pages) {
+        for (const friendship of page.items) {
           if (friendship.id !== userId) {
             continue
           }
           friendship.isFollower = false
-          await setQueryData(groupedFriendship)
+          await setQueryData(page)
         }
       }
       toast({ status: "success", title: "Success" })
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 
-  const [group] = groupedFollowees
-
-  const isEmpty = group.friendships.length === 0
+  const isEmpty = friendships.length === 0
 
   return (
     <StackList divider={<StackDivider />}>
@@ -82,18 +84,16 @@ export const ShowUserPageListFollowees: FunctionComponent<Props> = ({
           </Alert>
         </Box>
       )}
-      {groupedFollowees.map((group) => {
-        return group.friendships.map((followee) => {
-          return (
-            <StackCardUser
-              {...followee}
-              hasAction={!!userId && userId !== followee.id}
-              onFollow={() => onFollow(followee.id)}
-              onUnfollow={() => onUnfollow(followee.id)}
-              follower={followee}
-            />
-          )
-        })
+      {friendships.map((followee) => {
+        return (
+          <StackCardUser
+            {...followee}
+            hasAction={!!userId && userId !== followee.id}
+            onFollow={() => onFollow(followee.id)}
+            onUnfollow={() => onUnfollow(followee.id)}
+            follower={followee}
+          />
+        )
       })}
     </StackList>
   )

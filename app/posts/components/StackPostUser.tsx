@@ -1,5 +1,5 @@
 import { HStack, Text, Wrap, WrapItem } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
 type Props = {
   id: string
@@ -7,11 +7,7 @@ type Props = {
   username: string | null
 }
 
-export const StackPostUser: FunctionComponent<Props> = ({
-  id,
-  name,
-  username,
-}) => {
+export const StackPostUser: VFC<Props> = ({ id, name, username }) => {
   if (name) {
     return (
       <Wrap align={["flex-start", "center"]}>

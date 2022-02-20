@@ -6,10 +6,10 @@ import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUser from "app/users/queries/getUser"
 import { useMutation, useParam, useQuery, useRouter } from "blitz"
-import React, { FunctionComponent, Suspense } from "react"
+import React, { Suspense, VFC } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 
-export const ShowUserPageDetail: FunctionComponent = () => {
+export const ShowUserPageDetail: VFC = () => {
   const router = useRouter()
 
   const username = useParam("username", "string")
@@ -20,14 +20,11 @@ export const ShowUserPageDetail: FunctionComponent = () => {
     { refetchInterval: 1000 * 2 ** 5 }
   )
 
-  const [followUserMutation, { isLoading: isLoadingFollowUser }] = useMutation(
-    followUser
-  )
+  const [followUserMutation, { isLoading: isLoadingFollowUser }] =
+    useMutation(followUser)
 
-  const [
-    unfollowUserMutation,
-    { isLoading: isLoadingUnfollowUser },
-  ] = useMutation(unfollowUser)
+  const [unfollowUserMutation, { isLoading: isLoadingUnfollowUser }] =
+    useMutation(unfollowUser)
 
   const toast = useToast()
 
@@ -37,7 +34,9 @@ export const ShowUserPageDetail: FunctionComponent = () => {
       await setQueryData(updated)
       toast({ status: "success", title: "Success" })
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 
@@ -47,7 +46,9 @@ export const ShowUserPageDetail: FunctionComponent = () => {
       await setQueryData(updated)
       toast({ status: "success", title: "Success" })
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 

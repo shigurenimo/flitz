@@ -1,7 +1,7 @@
 import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
 import checkUnreadReferences from "app/home/queries/checkUnreadReferences"
 import { useQuery } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiHome } from "react-icons/fi"
 
@@ -10,9 +10,7 @@ type Props = {
   onClick?: () => void
 }
 
-export const StackButtonRouteReferences: FunctionComponent<Props> = ({
-  ...props
-}) => {
+export const StackButtonRouteReferences: VFC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasBadge] = useQuery(checkUnreadReferences, null, {

@@ -1,9 +1,9 @@
 import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiGlobe } from "react-icons/fi"
 
-export const StackButtonRouteLanguage: FunctionComponent = () => {
+export const StackButtonRouteLanguage: VFC = () => {
   const { i18n } = useTranslation()
 
   const onClick = () => {

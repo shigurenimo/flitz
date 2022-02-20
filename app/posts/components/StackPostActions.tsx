@@ -4,7 +4,7 @@ import createPostLike from "app/posts/mutations/createPostLike"
 import createQuotation from "app/posts/mutations/createQuotation"
 import deletePostLike from "app/posts/mutations/deletePostLike"
 import { useMutation, useRouter } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { FiHeart, FiMessageCircle, FiRepeat } from "react-icons/fi"
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
   text: string | null
 }
 
-export const StackPostActions: FunctionComponent<Props> = ({
+export const StackPostActions: VFC<Props> = ({
   hasLike,
   hasQuotation,
   hasReply,
@@ -34,20 +34,14 @@ export const StackPostActions: FunctionComponent<Props> = ({
 
   const toast = useToast()
 
-  const [
-    createPostLikeMutation,
-    { isLoading: isLoadingCreatePostLike },
-  ] = useMutation(createPostLike)
+  const [createPostLikeMutation, { isLoading: isLoadingCreatePostLike }] =
+    useMutation(createPostLike)
 
-  const [
-    deletePostLikeMutation,
-    { isLoading: isLoadingDeletePostLike },
-  ] = useMutation(deletePostLike)
+  const [deletePostLikeMutation, { isLoading: isLoadingDeletePostLike }] =
+    useMutation(deletePostLike)
 
-  const [
-    createQuotationMutation,
-    { isLoading: isLoadingCreateQuotation },
-  ] = useMutation(createQuotation)
+  const [createQuotationMutation, { isLoading: isLoadingCreateQuotation }] =
+    useMutation(createQuotation)
 
   const onCreateReply = () => {
     router.push(`/posts/${postId}`)
@@ -61,7 +55,9 @@ export const StackPostActions: FunctionComponent<Props> = ({
         await createPostLikeMutation({ postId })
       }
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 
@@ -70,7 +66,9 @@ export const StackPostActions: FunctionComponent<Props> = ({
       await createQuotationMutation({ postId })
       toast({ status: "success", title: "Success" })
     } catch (error) {
-      toast({ status: "error", title: error.message })
+      if (error instanceof Error) {
+        toast({ status: "error", title: error.message })
+      }
     }
   }
 

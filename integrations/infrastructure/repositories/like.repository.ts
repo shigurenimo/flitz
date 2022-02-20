@@ -1,7 +1,7 @@
 import db from "db"
-import { Id, LikeEntity, LikeRepository as Repository } from "integrations/domain"
+import { Id, LikeEntity } from "integrations/domain"
 
-export class LikeRepository extends Repository {
+export class LikeRepository {
   async find(userId: Id, postId: Id) {
     await db.like.findUnique({
       where: {

@@ -1,30 +1,42 @@
-import { resolver } from "blitz"
-import { Id, PageService, Skip, Take, zSkip } from "integrations/domain"
-import { LatestPostQuery, PostQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { paginate, resolver } from "blitz"
+import { LatestPostQuery, PostQuery } from "integrations/application"
+import { Id } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetPostsInfinite = z.object({ skip: zSkip })
+const zGetPostsInfinite = z.object({ skip: z.number() })
 
 const getPostsInfinite = resolver.pipe(
-  resolver.zod(GetPostsInfinite),
-  (input, ctx) => ({
-    skip: new Skip(input.skip),
-    take: new Take(),
-    userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
-  }),
-  async ({ skip, take, userId }) => {
-    const app = await createAppContext()
+  resolver.zod(zGetPostsInfinite),
+  (props, ctx) => {
+    return {
+      skip: props.skip,
+      take: 40,
+      userId: ctx.session.userId === null ? null : new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const latestPostQuery = container.resolve(LatestPostQuery)
 
-    const posts = await app.get(LatestPostQuery).findMany({ skip, userId })
+    const posts = await latestPostQuery.findMany({
+      skip: props.skip,
+      userId: props.userId,
+    })
 
-    const count = await app.get(PostQuery).count()
+    const postQuery = container.resolve(PostQuery)
 
-    const hasMore = app.get(PageService).hasMore(skip, take, count)
+    const count = await postQuery.count()
 
-    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
-
-    return { hasMore, posts, nextPage }
+    return paginate({
+      skip: props.skip,
+      take: props.take,
+      async count() {
+        return count
+      },
+      async query() {
+        return posts
+      },
+    })
   }
 )
 

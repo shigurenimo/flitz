@@ -1,19 +1,21 @@
 import { resolver } from "blitz"
+import { UserExchangeQuery } from "integrations/application"
 import { Id } from "integrations/domain"
-import { UserExchangeQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
+import { container } from "tsyringe"
 
 const checkUnreadMessages = resolver.pipe(
   resolver.authorize(),
-  (_: unknown, ctx) => ({
-    userId: new Id(ctx.session.userId),
-  }),
-  async ({ userId }) => {
-    const app = await createAppContext()
+  (_, ctx) => {
+    return {
+      userId: new Id(ctx.session.userId),
+    }
+  },
+  async (props) => {
+    const userExchangeQuery = container.resolve(UserExchangeQuery)
 
-    const existence = await app
-      .get(UserExchangeQuery)
-      .checkExistence({ userId })
+    const existence = await userExchangeQuery.checkExistence({
+      userId: props.userId,
+    })
 
     return existence
   }

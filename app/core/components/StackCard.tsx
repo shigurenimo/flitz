@@ -1,9 +1,9 @@
 import { Stack, StackProps, useColorModeValue } from "@chakra-ui/react"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 
 type Props = StackProps
 
-export const StackCard: FunctionComponent<Props> = ({ children, ...props }) => {
+export const StackCard: VFC<Props> = (props) => {
   const bg = useColorModeValue("gray.50", "gray.700")
 
   return (
@@ -16,8 +16,6 @@ export const StackCard: FunctionComponent<Props> = ({ children, ...props }) => {
       transitionDuration={"250ms"}
       transitionProperty={"background-color"}
       {...props}
-    >
-      {children}
-    </Stack>
+    />
   )
 }

@@ -1,46 +1,46 @@
-import { resolver } from "blitz"
-import {
-  Id,
-  PageService,
-  Skip,
-  Take,
-  Username,
-  zSkip,
-  zUsername,
-} from "integrations/domain"
-import { UserPostQuery } from "integrations/infrastructure"
-import { createAppContext } from "integrations/registry"
-import * as z from "zod"
+import { paginate, resolver } from "blitz"
+import { UserPostQuery } from "integrations/application"
+import { Id, Username } from "integrations/domain"
+import { container } from "tsyringe"
+import { z } from "zod"
 
-const GetUserPostsInfinite = z.object({
-  skip: zSkip,
-  username: zUsername,
+const zGetUserPostsInfinite = z.object({
+  skip: z.number(),
+  username: z.string(),
 })
 
 const getUserPostsInfinite = resolver.pipe(
-  resolver.zod(GetUserPostsInfinite),
-  (input, ctx) => ({
-    skip: new Skip(input.skip),
-    take: new Take(),
-    userId: Id.nullable(ctx.session.userId),
-    username: new Username(input.username),
-  }),
-  async ({ skip, take, userId, username }) => {
-    const app = await createAppContext()
+  resolver.zod(zGetUserPostsInfinite),
+  (props, ctx) => {
+    return {
+      skip: props.skip,
+      take: 40,
+      userId: ctx.session.userId ? new Id(ctx.session.userId) : null,
+      username: new Username(props.username),
+    }
+  },
+  async (props) => {
+    const userPostQuery = container.resolve(UserPostQuery)
 
-    const posts = await app
-      .get(UserPostQuery)
-      .findMany({ skip, take, userId, username })
+    const posts = await userPostQuery.findMany({
+      skip: props.skip,
+      take: props.take,
+      userId: props.userId,
+      username: props.username,
+    })
 
-    const count = await app.get(UserPostQuery).count({ username })
+    const count = await userPostQuery.count({ username: props.username })
 
-    const hasMore = app.get(PageService).hasMore(skip, take, count)
-
-    const nextPage = hasMore ? app.get(PageService).nextPage(take, skip) : null
-
-    const isEmpty = posts.length === 0
-
-    return { count, posts, nextPage, hasMore, isEmpty }
+    return paginate({
+      skip: props.skip,
+      take: props.take,
+      async count() {
+        return count
+      },
+      async query() {
+        return posts
+      },
+    })
   }
 )
 

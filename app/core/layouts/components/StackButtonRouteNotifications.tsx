@@ -1,7 +1,7 @@
 import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
 import checkUnreadNotifications from "app/notifications/queries/checkUnreadNotifications"
 import { useQuery } from "blitz"
-import React, { FunctionComponent } from "react"
+import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiBell } from "react-icons/fi"
 
@@ -10,9 +10,7 @@ type Props = {
   onClick?: () => void
 }
 
-export const StackButtonRouteNotifications: FunctionComponent<Props> = ({
-  ...props
-}) => {
+export const StackButtonRouteNotifications: VFC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasBadge] = useQuery(checkUnreadNotifications, null, {

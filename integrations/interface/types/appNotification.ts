@@ -6,4 +6,3 @@ export type AppNotification =
   | AppNotificationFollow
   | AppNotificationLike
   | AppNotificationPost
-  | null
