@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/core/components/StackList"
-import { StackCardUser } from "app/users/components/StackCardUser"
+import { BoxCardUser } from "app/users/components/BoxCardUser"
 import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUserFollowers from "app/users/queries/getUserFollowers"
@@ -67,7 +67,8 @@ export const ShowUserPageListFollowers: VFC<Props> = ({ userId }) => {
         </Alert>
       )}
       {friendships.map((follower) => (
-        <StackCardUser
+        <BoxCardUser
+          key={follower.id}
           {...follower}
           hasAction={!!userId && userId !== follower.id}
           onFollow={() => onFollow(follower.id)}

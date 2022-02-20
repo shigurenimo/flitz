@@ -1,9 +1,9 @@
 import { StackDivider } from "@chakra-ui/react"
-import { StackHeader } from "app/core/components/StackHeader"
+import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
-import { PostsPageList } from "app/posts/components/PostsPageList"
-import { PostsPageListFallback } from "app/posts/components/PostsPageListFallback"
+import { BoxPostList } from "app/posts/components/BoxPostList"
+import { BoxPostListFallback } from "app/posts/components/BoxPostListFallback"
 import { BlitzPage } from "blitz"
 import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
@@ -13,9 +13,9 @@ const PostsPage: BlitzPage = () => {
 
   return (
     <StackMain divider={<StackDivider />}>
-      <StackHeader>{t("Stream")}</StackHeader>
-      <Suspense fallback={<PostsPageListFallback />}>
-        <PostsPageList />
+      <BoxHeader>{t("Stream")}</BoxHeader>
+      <Suspense fallback={<BoxPostListFallback />}>
+        <BoxPostList />
       </Suspense>
     </StackMain>
   )

@@ -7,7 +7,7 @@ import { FiHome } from "react-icons/fi"
 
 type Props = {
   isActive: boolean
-  onClick?: () => void
+  onClick?(): void
 }
 
 export const StackButtonRouteReferences: VFC<Props> = (props) => {

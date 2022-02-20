@@ -1,8 +1,8 @@
 import { StackDivider } from "@chakra-ui/react"
-import { StackHeader } from "app/core/components/StackHeader"
+import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
-import { ExchangesPageList } from "app/exchanges/components/ExchangesPageList"
+import { BoxExchangeList } from "app/exchanges/components/BoxExchangeList"
 import { BlitzPage } from "blitz"
 import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
@@ -12,9 +12,9 @@ const ExchangesPage: BlitzPage = () => {
 
   return (
     <StackMain divider={<StackDivider />}>
-      <StackHeader>{t("Messages")}</StackHeader>
+      <BoxHeader>{t("Messages")}</BoxHeader>
       <Suspense fallback={<div>{"Loading..."}</div>}>
-        <ExchangesPageList />
+        <BoxExchangeList />
       </Suspense>
     </StackMain>
   )

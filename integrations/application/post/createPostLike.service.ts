@@ -5,7 +5,7 @@ import {
   IdFactory,
   LikeEntity,
   NotificationEntity,
-  NotificationType,
+  NotificationTypeFactory,
 } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import {
@@ -51,7 +51,7 @@ export class CreatePostLikeService {
         likeId: like.id,
         postId: props.postId,
         relatedUserId: props.userId,
-        type: new NotificationType("LIKE"),
+        type: NotificationTypeFactory.like(),
         userId: post.userId,
       })
 

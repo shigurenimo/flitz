@@ -54,7 +54,7 @@
     "@types/react": "17.0.39",
     "@types/sharp": "0.29.5",
     "babel-plugin-transform-typescript-metadata": "0.3.2",
-    "eslint": "8.9.0",
+    "eslint": "7.32.0",
     "husky": "7.0.4",
     "lint-staged": "12.3.4",
     "prettier": "2.5.1",

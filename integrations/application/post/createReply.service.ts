@@ -4,7 +4,7 @@ import {
   Id,
   IdFactory,
   NotificationEntity,
-  NotificationType,
+  NotificationTypeFactory,
   PostEntity,
   PostText,
 } from "integrations/domain"
@@ -65,7 +65,7 @@ export class CreateReplyService {
         likeId: null,
         postId: reply.id,
         relatedUserId: props.userId,
-        type: new NotificationType("REPLY"),
+        type: NotificationTypeFactory.reply(),
         userId: post.userId,
       })
 

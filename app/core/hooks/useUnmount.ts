@@ -5,5 +5,9 @@ export const useUnmount = (callback: () => void) => {
 
   callbackRef.current = callback
 
-  useEffect(() => () => callbackRef.current!(), [])
+  useEffect(() => {
+    return () => {
+      callbackRef.current!()
+    }
+  }, [])
 }

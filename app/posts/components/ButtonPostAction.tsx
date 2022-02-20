@@ -2,7 +2,7 @@ import { Button, ButtonProps, useColorModeValue } from "@chakra-ui/react"
 import React, { VFC } from "react"
 
 type Props = ButtonProps & {
-  onClick?: () => void
+  onClick?(): void
 }
 
 export const ButtonPostAction: VFC<Props> = ({

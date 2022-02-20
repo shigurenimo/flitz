@@ -4,7 +4,7 @@ import {
   Id,
   IdFactory,
   NotificationEntity,
-  NotificationType,
+  NotificationTypeFactory,
   PostEntity,
 } from "integrations/domain"
 import { InternalError } from "integrations/errors"
@@ -61,7 +61,7 @@ export class CreateQuotationService {
         likeId: null,
         postId: quotation.id,
         relatedUserId: props.userId,
-        type: new NotificationType("QUOTATION"),
+        type: NotificationTypeFactory.quotation(),
         userId: post.userId,
       })
 

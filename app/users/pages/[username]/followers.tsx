@@ -1,5 +1,5 @@
 import { StackDivider } from "@chakra-ui/react"
-import { StackHeader } from "app/core/components/StackHeader"
+import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
 import { ShowUserPageListFollowers } from "app/users/components/ShowUserPageListFollowers"
@@ -18,7 +18,7 @@ const ShowUserFollowersPage: BlitzPage = () => {
 
   return (
     <StackMain divider={<StackDivider />}>
-      <StackHeader>{t("Followers")}</StackHeader>
+      <BoxHeader>{t("Followers")}</BoxHeader>
       <Suspense fallback={<div>{"loading..."}</div>}>
         <ShowUserPageListFollowers userId={session.userId} />
       </Suspense>

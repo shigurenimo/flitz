@@ -6,7 +6,7 @@ type Props = {
   src?: string
 }
 
-export const BoxProfileHeader: VFC<Props> = ({ fileId, src }) => {
+export const BoxProfileHeader: VFC<Props> = (props) => {
   return (
     <Box
       w={"full"}
@@ -16,7 +16,8 @@ export const BoxProfileHeader: VFC<Props> = ({ fileId, src }) => {
     >
       <AspectRatio w={"full"} ratio={1 / 0.4}>
         <Image
-          src={fileId ? `/api/images/${fileId}` : src}
+          alt={props.fileId ?? ""}
+          src={props.fileId ? `/api/images/${props.fileId}` : props.src}
           style={{ filter: "brightness(0.5)" }}
           fallbackSrc={"https://via.placeholder.com/400?text=FLITZ"}
         />

@@ -7,7 +7,7 @@ import { FiMail } from "react-icons/fi"
 
 type Props = {
   isActive: boolean
-  onClick?: () => void
+  onClick?(): void
 }
 
 export const StackButtonRouteExchanges: VFC<Props> = (props) => {

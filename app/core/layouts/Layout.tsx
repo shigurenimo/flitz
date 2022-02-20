@@ -12,6 +12,9 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = (props) => {
   useFirebaseCloudMessaging()
 
+  const fontURL =
+    "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
+
   return (
     <>
       <Head>
@@ -22,12 +25,7 @@ const Layout: FC<LayoutProps> = (props) => {
         <link href={"manifest.json"} rel={"manifest"} />
         <meta name={"theme-color"} content={"#ffffff"} />
         <link href={"https://fonts.gstatic.com"} rel="preconnect" />
-        <link
-          href={
-            "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
-          }
-          rel={"stylesheet"}
-        />
+        <link href={fontURL} rel={"stylesheet"} />
       </Head>
       <Suspense fallback={<></>}>
         <LayoutAside />

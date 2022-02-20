@@ -1,13 +1,13 @@
 import { Stack, StackDivider } from "@chakra-ui/react"
-import { StackHeader } from "app/core/components/StackHeader"
+import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
-import { HomePageHero } from "app/home/components/HomePageHero"
-import { HomePageInput } from "app/home/components/HomePageInput"
-import { HomePageList } from "app/home/components/HomePageList"
-import { HomePageLogin } from "app/home/components/HomePageLogin"
-import { PostsPageList } from "app/posts/components/PostsPageList"
-import { PostsPageListFallback } from "app/posts/components/PostsPageListFallback"
+import { BoxHomeHero } from "app/home/components/BoxHomeHero"
+import { BoxHomeInput } from "app/home/components/BoxHomeInput"
+import { BoxHomeList } from "app/home/components/BoxHomeList"
+import { BoxHomeLogin } from "app/home/components/BoxHomeLogin"
+import { BoxPostList } from "app/posts/components/BoxPostList"
+import { BoxPostListFallback } from "app/posts/components/BoxPostListFallback"
 import { BlitzPage, useSession } from "blitz"
 import React, { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary"
@@ -30,11 +30,11 @@ const HomePage: BlitzPage = () => {
           align={"start"}
           spacing={4}
         >
-          <HomePageHero />
-          <HomePageLogin />
+          <BoxHomeHero />
+          <BoxHomeLogin />
         </Stack>
-        <Suspense fallback={<PostsPageListFallback />}>
-          <PostsPageList />
+        <Suspense fallback={<BoxPostListFallback />}>
+          <BoxPostList />
         </Suspense>
       </StackMain>
     )
@@ -42,11 +42,11 @@ const HomePage: BlitzPage = () => {
 
   return (
     <StackMain divider={<StackDivider />}>
-      <StackHeader>{t("Home")}</StackHeader>
-      <HomePageInput />
+      <BoxHeader>{t("Home")}</BoxHeader>
+      <BoxHomeInput />
       <ErrorBoundary FallbackComponent={() => null}>
-        <Suspense fallback={<PostsPageListFallback />}>
-          <HomePageList />
+        <Suspense fallback={<BoxPostListFallback />}>
+          <BoxHomeList />
         </Suspense>
       </ErrorBoundary>
     </StackMain>

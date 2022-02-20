@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/core/components/StackList"
-import { StackCardPost } from "app/posts/components/StackCardPost"
+import { BoxCardPost } from "app/posts/components/BoxCardPost"
 import getUserPosts from "app/users/queries/getUserPosts"
 import { useInfiniteQuery, useParam } from "blitz"
 import React, { VFC } from "react"
@@ -35,7 +35,7 @@ export const ShowUserPageListPosts: VFC = () => {
         </Box>
       )}
       {posts.map((post) => {
-        return <StackCardPost key={post.id} {...post} isDisabled={false} />
+        return <BoxCardPost key={post.id} {...post} isDisabled={false} />
       })}
     </StackList>
   )

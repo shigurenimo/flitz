@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react"
 import { ButtonFile } from "app/core/components/ButtonFile"
 import { ConvertFile } from "app/core/utils/convertFile"
-import { StackProfileUpdateActions } from "app/users/components/StackProfileUpdateActions"
+import { BoxProfileUpdateActions } from "app/users/components/BoxProfileUpdateActions"
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
 import { useMutation, useParam, useQuery } from "blitz"
@@ -80,7 +80,7 @@ export const UpdateUserPageDetail: VFC = () => {
 
   return (
     <Stack spacing={4}>
-      <StackProfileUpdateActions
+      <BoxProfileUpdateActions
         iconImageFile={iconImageFile}
         headerImageFile={headerImageFile}
         {...user}

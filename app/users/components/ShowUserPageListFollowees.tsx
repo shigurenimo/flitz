@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Box, StackDivider, useToast } from "@chakra-ui/react"
 import { StackList } from "app/core/components/StackList"
-import { StackCardUser } from "app/users/components/StackCardUser"
+import { BoxCardUser } from "app/users/components/BoxCardUser"
 import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUserFollowees from "app/users/queries/getUserFollowees"
@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next"
 
 type Props = { userId: string | null }
 
-export const ShowUserPageListFollowees: VFC<Props> = ({ userId }) => {
+export const ShowUserPageListFollowees: VFC<Props> = (props) => {
   const { t } = useTranslation()
 
   const username = useParam("username", "string")
@@ -86,9 +86,10 @@ export const ShowUserPageListFollowees: VFC<Props> = ({ userId }) => {
       )}
       {friendships.map((followee) => {
         return (
-          <StackCardUser
+          <BoxCardUser
+            key={followee.id}
             {...followee}
-            hasAction={!!userId && userId !== followee.id}
+            hasAction={!!props.userId && props.userId !== followee.id}
             onFollow={() => onFollow(followee.id)}
             onUnfollow={() => onUnfollow(followee.id)}
             follower={followee}

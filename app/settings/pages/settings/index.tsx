@@ -1,5 +1,5 @@
 import { StackDivider } from "@chakra-ui/react"
-import { StackHeader } from "app/core/components/StackHeader"
+import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
 import { SettingsPageAccount } from "app/settings/components/SettingsPageAccount"
@@ -15,7 +15,7 @@ const SettingsPage: BlitzPage = () => {
 
   return (
     <StackMain divider={<StackDivider />}>
-      <StackHeader>{t("Settings")}</StackHeader>
+      <BoxHeader>{t("Settings")}</BoxHeader>
       <Suspense fallback={<div>{"Loading..."}</div>}>
         <SettingsPageDetail />
       </Suspense>

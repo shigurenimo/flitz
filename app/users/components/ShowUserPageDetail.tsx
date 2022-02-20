@@ -1,7 +1,7 @@
 import { Stack, useToast } from "@chakra-ui/react"
-import { StackProfileActions } from "app/users/components/StackProfileActions"
-import { StackUserAction } from "app/users/components/StackUserAction"
-import { StackUserFriendship } from "app/users/components/StackUserFriendship"
+import { BoxProfileActions } from "app/users/components/BoxProfileActions"
+import { BoxUserAction } from "app/users/components/BoxUserAction"
+import { BoxUserFriendship } from "app/users/components/BoxUserFriendship"
 import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUser from "app/users/queries/getUser"
@@ -58,11 +58,11 @@ export const ShowUserPageDetail: VFC = () => {
 
   return (
     <Stack spacing={4}>
-      <StackProfileActions {...user} />
-      <StackUserFriendship {...user} />
+      <BoxProfileActions {...user} />
+      <BoxUserFriendship {...user} />
       <ErrorBoundary FallbackComponent={() => null}>
         <Suspense fallback={null}>
-          <StackUserAction
+          <BoxUserAction
             hasRelationship={user.isFollowee}
             isLoading={isLoadingFollowUser || isLoadingUnfollowUser}
             onExchange={onExchange}

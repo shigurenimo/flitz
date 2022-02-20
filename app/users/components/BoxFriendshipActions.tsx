@@ -1,0 +1,42 @@
+import { Button, HStack, Icon } from "@chakra-ui/react"
+import { useSession } from "blitz"
+import React, { VFC } from "react"
+import { FiMail, FiUserPlus } from "react-icons/fi"
+
+type Props = {
+  hasRelationship: boolean
+  isLoading: boolean
+  onExchange(): void
+  onFollow(): void
+  onUnfollow(): void
+  userId: string
+}
+
+export const BoxFriendshipActions: VFC<Props> = (props) => {
+  const session = useSession()
+
+  if (session.userId === props.userId) {
+    return null
+  }
+
+  return (
+    <HStack spacing={4}>
+      <Button
+        leftIcon={<Icon display={"flex"} as={FiUserPlus} />}
+        isLoading={props.isLoading}
+        loadingText={props.hasRelationship ? "Following" : "Follow"}
+        onClick={props.hasRelationship ? props.onUnfollow : props.onFollow}
+      >
+        {"Following"}
+      </Button>
+      <Button
+        isLoading={props.isLoading}
+        leftIcon={<Icon display={"flex"} as={FiMail} />}
+        loadingText={"Following"}
+        onClick={props.onExchange}
+      >
+        {"Message"}
+      </Button>
+    </HStack>
+  )
+}

@@ -1,10 +1,10 @@
 import { StackDivider } from "@chakra-ui/react"
-import { StackHeader } from "app/core/components/StackHeader"
+import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
-import { ShowPostPageDetail } from "app/posts/components/ShowPostPageDetail"
-import { ShowPostPageInput } from "app/posts/components/ShowPostPageInput"
-import { ShowPostPageReplyList } from "app/posts/components/ShowPostPageReplyList"
+import { BoxFormPost } from "app/posts/components/BoxFormPost"
+import { BoxPostDetail } from "app/posts/components/BoxPostDetail"
+import { BoxPostReplyList } from "app/posts/components/BoxPostReplyList"
 import { BlitzPage } from "blitz"
 import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
@@ -14,15 +14,15 @@ const ShowPostPage: BlitzPage = () => {
 
   return (
     <StackMain divider={<StackDivider />}>
-      <StackHeader>{t("Post")}</StackHeader>
+      <BoxHeader>{t("Post")}</BoxHeader>
       <Suspense fallback={<div>{"loading..."}</div>}>
-        <ShowPostPageDetail />
+        <BoxPostDetail />
       </Suspense>
       <Suspense fallback={<div>{"loading..."}</div>}>
-        <ShowPostPageInput />
+        <BoxFormPost />
       </Suspense>
       <Suspense fallback={<div>{"loading..."}</div>}>
-        <ShowPostPageReplyList />
+        <BoxPostReplyList />
       </Suspense>
     </StackMain>
   )

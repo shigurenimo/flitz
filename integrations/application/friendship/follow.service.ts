@@ -4,7 +4,7 @@ import {
   Id,
   IdFactory,
   NotificationEntity,
-  NotificationType,
+  NotificationTypeFactory,
 } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import {
@@ -46,7 +46,7 @@ export class FollowService {
         likeId: null,
         postId: null,
         relatedUserId: props.followerId,
-        type: new NotificationType("FRIENDSHIP"),
+        type: NotificationTypeFactory.friendship(),
         userId: props.followeeId,
       })
 

@@ -9,7 +9,7 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react"
-import { StackHeader } from "app/core/components/StackHeader"
+import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
 import { BlitzPage, Link } from "blitz"
@@ -21,7 +21,7 @@ const AboutPage: BlitzPage = () => {
 
   return (
     <StackMain divider={<StackDivider />}>
-      <StackHeader>{"FLITZ"}</StackHeader>
+      <BoxHeader>{"FLITZ"}</BoxHeader>
       <Stack direction={{ base: "column", md: "row" }} spacing={8} px={4}>
         <Box
           minW={32}
