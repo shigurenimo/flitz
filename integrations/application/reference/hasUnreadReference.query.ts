@@ -2,13 +2,17 @@ import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { injectable } from "tsyringe"
 
+type Props = {
+  userId: Id
+}
+
 @injectable()
 export class HasUnreadReferenceQuery {
-  async execute(userId: Id) {
+  async execute(props: Props) {
     const reference = await db.reference.findFirst({
       where: {
         isRead: false,
-        userId: userId.value,
+        userId: props.userId.value,
       },
     })
 

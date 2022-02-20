@@ -14,7 +14,9 @@ const checkUnreadReferences = resolver.pipe(
   async (props) => {
     const hasUnreadReferenceQuery = container.resolve(HasUnreadReferenceQuery)
 
-    const hasUnread = await hasUnreadReferenceQuery.execute(props.userId)
+    const hasUnread = await hasUnreadReferenceQuery.execute({
+      userId: props.userId,
+    })
 
     return hasUnread
   }
