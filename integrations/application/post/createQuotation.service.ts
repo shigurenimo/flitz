@@ -34,7 +34,7 @@ export class CreateQuotationService {
         throw new NotFoundError()
       }
 
-      const friendShips = await this.friendshipRepository.findManyByFolloweeId(
+      const friendships = await this.friendshipRepository.findManyByFolloweeId(
         props.userId
       )
 
@@ -47,7 +47,7 @@ export class CreateQuotationService {
         replyId: null,
         text: null,
         userId: props.userId,
-        followerIds: friendShips.map((entity) => {
+        followerIds: friendships.map((entity) => {
           return entity.followerId
         }),
       })

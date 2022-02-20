@@ -101,29 +101,29 @@ export class UserRepository {
     })
   }
 
-  async upsert(userEntity: UserEntity) {
+  async upsert(user: UserEntity) {
     try {
       await db.user.upsert({
         create: {
-          biography: userEntity.biography.value,
-          email: userEntity.email.value,
-          hashedPassword: userEntity.hashedPassword.value,
-          id: userEntity.id.value,
-          username: userEntity.username.value,
+          biography: user.biography.value,
+          email: user.email.value,
+          hashedPassword: user.hashedPassword.value,
+          id: user.id.value,
+          username: user.username.value,
         },
         update: {
-          biography: userEntity.biography.value,
-          email: userEntity.email.value,
-          headerImage: userEntity.headerImageId
-            ? { connect: { id: userEntity.headerImageId.value } }
+          biography: user.biography.value,
+          email: user.email.value,
+          headerImage: user.headerImageId
+            ? { connect: { id: user.headerImageId.value } }
             : undefined,
-          iconImage: userEntity.iconImageId
-            ? { connect: { id: userEntity.iconImageId.value } }
+          iconImage: user.iconImageId
+            ? { connect: { id: user.iconImageId.value } }
             : undefined,
-          name: userEntity.name?.value || null,
-          username: userEntity.username.value,
+          name: user.name?.value || null,
+          username: user.username.value,
         },
-        where: { email: userEntity.email.value },
+        where: { email: user.email.value },
       })
 
       return null

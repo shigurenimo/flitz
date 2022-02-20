@@ -3,14 +3,14 @@ import { FileEntity } from "integrations/domain"
 import { FileType, Id, Path, Service } from "integrations/domain/valueObjects"
 
 export class FileRepository {
-  async upsert(fileEntity: FileEntity) {
+  async upsert(file: FileEntity) {
     await db.file.create({
       data: {
-        id: fileEntity.id.value,
-        path: fileEntity.path.value,
+        id: file.id.value,
+        path: file.path.value,
         service: "CLOUD_STORAGE",
         type: "IMAGE_PNG",
-        user: { connect: { id: fileEntity.userId.value } },
+        user: { connect: { id: file.userId.value } },
       },
     })
 

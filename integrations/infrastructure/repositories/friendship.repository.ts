@@ -41,45 +41,45 @@ export class FriendshipRepository {
     return friendshipEntities
   }
 
-  async follow(friendshipEntity: FriendshipEntity) {
+  async follow(friendship: FriendshipEntity) {
     await db.$transaction([
       db.user.update({
         data: {
           followers: {
             create: {
-              id: friendshipEntity.id.value,
-              follower: { connect: { id: friendshipEntity.followerId.value } },
+              id: friendship.id.value,
+              follower: { connect: { id: friendship.followerId.value } },
             },
           },
           followersCount: { increment: 1 },
         },
         include: {
           followers: {
-            where: { followerId: friendshipEntity.followerId.value },
+            where: { followerId: friendship.followerId.value },
           },
           iconImage: true,
           headerImage: true,
         },
-        where: { id: friendshipEntity.followeeId.value },
+        where: { id: friendship.followeeId.value },
       }),
       db.user.update({
         data: { followeesCount: { increment: 1 } },
-        where: { id: friendshipEntity.followerId.value },
+        where: { id: friendship.followerId.value },
       }),
     ])
 
     return null
   }
 
-  async unfollow(friendshipEntity: FriendshipEntity) {
+  async unfollow(friendship: FriendshipEntity) {
     await db.$transaction([
       db.user.update({
         data: {
           followers: {
             delete: {
               followerId_followeeId: {
-                followerId: friendshipEntity.followerId.value,
-                followeeId: friendshipEntity.followeeId.value,
+                followerId: friendship.followerId.value,
+                followeeId: friendship.followeeId.value,
               },
             },
           },
@@ -87,16 +87,16 @@ export class FriendshipRepository {
         },
         include: {
           followers: {
-            where: { followerId: friendshipEntity.followerId.value },
+            where: { followerId: friendship.followerId.value },
           },
           iconImage: true,
           headerImage: true,
         },
-        where: { id: friendshipEntity.followeeId.value },
+        where: { id: friendship.followeeId.value },
       }),
       db.user.update({
         data: { followeesCount: { decrement: 1 } },
-        where: { id: friendshipEntity.followerId.value },
+        where: { id: friendship.followerId.value },
       }),
     ])
 

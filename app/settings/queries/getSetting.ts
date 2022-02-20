@@ -1,5 +1,5 @@
 import { NotFoundError, resolver } from "blitz"
-import { UserSettingQuery } from "integrations/application"
+import { FindUserSettingQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
@@ -15,7 +15,7 @@ const getSetting = resolver.pipe(
     }
   },
   async (props) => {
-    const userSettingQuery = container.resolve(UserSettingQuery)
+    const userSettingQuery = container.resolve(FindUserSettingQuery)
 
     const setting = await userSettingQuery.find({ userId: props.userId })
 

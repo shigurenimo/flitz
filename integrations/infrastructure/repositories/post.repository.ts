@@ -25,22 +25,22 @@ export class PostRepository {
     })
   }
 
-  async upsert(postEntity: PostEntity) {
-    if (postEntity.replyId !== null) {
+  async upsert(post: PostEntity) {
+    if (post.replyId !== null) {
       await db.post.update({
         data: {
           replies: {
             create: {
-              id: postEntity.id.value,
-              text: postEntity.text?.value || null,
-              userId: postEntity.userId.value,
+              id: post.id.value,
+              text: post.text?.value || null,
+              userId: post.userId.value,
               references: {
                 create: [
                   {
                     isRead: true,
-                    userId: postEntity.userId.value,
+                    userId: post.userId.value,
                   },
-                  ...postEntity.followerIds.map((followerId) => {
+                  ...post.followerIds.map((followerId) => {
                     return {
                       isRead: false,
                       userId: followerId.value,
@@ -52,25 +52,25 @@ export class PostRepository {
           },
           repliesCount: { increment: 1 },
         },
-        include: { replies: { where: { userId: postEntity.userId.value } } },
-        where: { id: postEntity.replyId.value },
+        include: { replies: { where: { userId: post.userId.value } } },
+        where: { id: post.replyId.value },
       })
     }
 
-    if (postEntity.quotationId !== null) {
+    if (post.quotationId !== null) {
       await db.post.update({
         data: {
           quotations: {
             create: {
-              id: postEntity.id.value,
-              userId: postEntity.userId.value,
+              id: post.id.value,
+              userId: post.userId.value,
               references: {
                 create: [
                   {
                     isRead: true,
-                    userId: postEntity.userId.value,
+                    userId: post.userId.value,
                   },
-                  ...postEntity.followerIds.map((followerId) => {
+                  ...post.followerIds.map((followerId) => {
                     return {
                       isRead: false,
                       userId: followerId.value,
@@ -82,29 +82,29 @@ export class PostRepository {
           },
           quotationsCount: { increment: 1 },
         },
-        include: { quotations: { where: { userId: postEntity.userId.value } } },
-        where: { id: postEntity.quotationId.value },
+        include: { quotations: { where: { userId: post.userId.value } } },
+        where: { id: post.quotationId.value },
       })
     }
 
-    if (postEntity.replyId === null && postEntity.quotationId === null) {
+    if (post.replyId === null && post.quotationId === null) {
       await db.post.create({
         data: {
-          id: postEntity.id.value,
+          id: post.id.value,
           files: {
-            connect: postEntity.fileIds.map((id) => {
+            connect: post.fileIds.map((id) => {
               return { id: id.value }
             }),
           },
-          text: postEntity.text?.value,
-          userId: postEntity.userId.value,
+          text: post.text?.value,
+          userId: post.userId.value,
           references: {
             create: [
               {
                 isRead: true,
-                userId: postEntity.userId.value,
+                userId: post.userId.value,
               },
-              ...postEntity.followerIds.map((followerId) => {
+              ...post.followerIds.map((followerId) => {
                 return {
                   isRead: false,
                   userId: followerId.value,
@@ -130,8 +130,8 @@ export class PostRepository {
     return null
   }
 
-  async upsertReply(postEntity: PostEntity) {
-    if (postEntity.replyId === null) {
+  async upsertReply(post: PostEntity) {
+    if (post.replyId === null) {
       return null
     }
 
@@ -139,16 +139,16 @@ export class PostRepository {
       data: {
         replies: {
           create: {
-            id: postEntity.id.value,
-            text: postEntity.text?.value,
-            userId: postEntity.userId.value,
+            id: post.id.value,
+            text: post.text?.value,
+            userId: post.userId.value,
             references: {
               create: [
                 {
                   isRead: true,
-                  userId: postEntity.userId.value,
+                  userId: post.userId.value,
                 },
-                ...postEntity.followerIds.map((followerId) => {
+                ...post.followerIds.map((followerId) => {
                   return {
                     isRead: false,
                     userId: followerId.value,
@@ -160,8 +160,8 @@ export class PostRepository {
         },
         repliesCount: { increment: 1 },
       },
-      include: { replies: { where: { userId: postEntity.userId.value } } },
-      where: { id: postEntity.replyId.value },
+      include: { replies: { where: { userId: post.userId.value } } },
+      where: { id: post.replyId.value },
     })
 
     // await db.$transaction([
@@ -178,8 +178,8 @@ export class PostRepository {
     return null
   }
 
-  async upsertQuotation(postEntity: PostEntity) {
-    if (postEntity.quotationId === null) {
+  async upsertQuotation(post: PostEntity) {
+    if (post.quotationId === null) {
       return null
     }
 
@@ -187,15 +187,15 @@ export class PostRepository {
       data: {
         quotations: {
           create: {
-            id: postEntity.id.value,
-            userId: postEntity.userId.value,
+            id: post.id.value,
+            userId: post.userId.value,
             references: {
               create: [
                 {
                   isRead: true,
-                  userId: postEntity.userId.value,
+                  userId: post.userId.value,
                 },
-                ...postEntity.followerIds.map((followerId) => {
+                ...post.followerIds.map((followerId) => {
                   return {
                     isRead: false,
                     userId: followerId.value,
@@ -207,19 +207,19 @@ export class PostRepository {
         },
         quotationsCount: { increment: 1 },
       },
-      include: { quotations: { where: { userId: postEntity.userId.value } } },
-      where: { id: postEntity.quotationId.value },
+      include: { quotations: { where: { userId: post.userId.value } } },
+      where: { id: post.quotationId.value },
     })
 
     return null
   }
 
-  async delete(postEntity: PostEntity) {
+  async delete(post: PostEntity) {
     await db.$transaction([
-      db.post.delete({ where: { id: postEntity.id.value } }),
-      db.bookmark.deleteMany({ where: { postId: postEntity.id.value } }),
-      db.like.deleteMany({ where: { postId: postEntity.id.value } }),
-      db.reference.deleteMany({ where: { postId: postEntity.id.value } }),
+      db.post.delete({ where: { id: post.id.value } }),
+      db.bookmark.deleteMany({ where: { postId: post.id.value } }),
+      db.like.deleteMany({ where: { postId: post.id.value } }),
+      db.reference.deleteMany({ where: { postId: post.id.value } }),
     ])
 
     return null

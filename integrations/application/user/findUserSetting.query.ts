@@ -3,21 +3,17 @@ import { Id } from "integrations/domain/valueObjects"
 import { QueryConverter } from "integrations/infrastructure/converters"
 import { injectable } from "tsyringe"
 
+type Props = {
+  userId: Id
+}
+
 @injectable()
-export class UserSettingQuery {
+export class FindUserSettingQuery {
   constructor(private queryConverter: QueryConverter) {}
 
-  async has(input: { userId: Id }) {
+  async find(props: Props) {
     const setting = await db.setting.findUnique({
-      where: { userId: input.userId.value },
-    })
-
-    return setting === null
-  }
-
-  async find(input: { userId: Id }) {
-    const setting = await db.setting.findUnique({
-      where: { userId: input.userId.value },
+      where: { userId: props.userId.value },
     })
 
     if (setting === null) return null

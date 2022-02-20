@@ -2,25 +2,25 @@ import db from "db"
 import { IdFactory, MessageEntity } from "integrations/domain"
 
 export class MessageRepository {
-  async upsert(messageEntity: MessageEntity) {
+  async upsert(message: MessageEntity) {
     await db.message.create({
       data: {
-        id: messageEntity.id.value,
-        text: messageEntity?.text.value,
-        user: { connect: { id: messageEntity.userId.value } },
+        id: message.id.value,
+        text: message?.text.value,
+        user: { connect: { id: message.userId.value } },
         exchanges: {
           connectOrCreate: [
             {
               create: {
                 id: IdFactory.nanoid().value,
                 isRead: true,
-                relatedUserId: messageEntity.relatedUserId.value,
-                userId: messageEntity.userId.value,
+                relatedUserId: message.relatedUserId.value,
+                userId: message.userId.value,
               },
               where: {
                 userId_relatedUserId: {
-                  relatedUserId: messageEntity.relatedUserId.value,
-                  userId: messageEntity.userId.value,
+                  relatedUserId: message.relatedUserId.value,
+                  userId: message.userId.value,
                 },
               },
             },
@@ -28,13 +28,13 @@ export class MessageRepository {
               create: {
                 id: IdFactory.nanoid().value,
                 isRead: false,
-                relatedUserId: messageEntity.userId.value,
-                userId: messageEntity.relatedUserId.value,
+                relatedUserId: message.userId.value,
+                userId: message.relatedUserId.value,
               },
               where: {
                 userId_relatedUserId: {
-                  relatedUserId: messageEntity.userId.value,
-                  userId: messageEntity.relatedUserId.value,
+                  relatedUserId: message.userId.value,
+                  userId: message.relatedUserId.value,
                 },
               },
             },

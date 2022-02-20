@@ -2,57 +2,55 @@ import db from "db"
 import { NotificationEntity } from "integrations/domain"
 
 export class NotificationRepository {
-  async upsert(notificationEntity: NotificationEntity) {
-    if (notificationEntity.type.value === "QUOTATION") {
-      return this.upsertQuotationNotification(notificationEntity)
+  async upsert(notification: NotificationEntity) {
+    if (notification.type.value === "QUOTATION") {
+      return this.upsertQuotationNotification(notification)
     }
 
-    if (notificationEntity.type.value === "FRIENDSHIP") {
-      return this.upsertFollowNotification(notificationEntity)
+    if (notification.type.value === "FRIENDSHIP") {
+      return this.upsertFollowNotification(notification)
     }
 
-    if (notificationEntity.type.value === "LIKE") {
-      return this.upsertPostLikeNotification(notificationEntity)
+    if (notification.type.value === "LIKE") {
+      return this.upsertPostLikeNotification(notification)
     }
 
-    if (notificationEntity.type.value === "REPLY") {
-      return this.createReplyNotification(notificationEntity)
+    if (notification.type.value === "REPLY") {
+      return this.createReplyNotification(notification)
     }
 
     return null
   }
 
-  private async upsertQuotationNotification(
-    notificationEntity: NotificationEntity
-  ) {
+  private async upsertQuotationNotification(notification: NotificationEntity) {
     if (
-      notificationEntity.userId === null ||
-      notificationEntity.postId === null ||
-      notificationEntity.relatedUserId === null
+      notification.userId === null ||
+      notification.postId === null ||
+      notification.relatedUserId === null
     ) {
       return null
     }
 
     // userId + postId + senderId
     const uniqueId =
-      notificationEntity.postId.value + notificationEntity.relatedUserId.value
+      notification.postId.value + notification.relatedUserId.value
 
     await db.notification.upsert({
       create: {
-        id: notificationEntity.id.value,
-        postId: notificationEntity.postId.value,
+        id: notification.id.value,
+        postId: notification.postId.value,
         type: "QUOTATION",
         uniqueId,
-        userId: notificationEntity.userId.value,
+        userId: notification.userId.value,
       },
       update: {
-        postId: notificationEntity.postId.value,
+        postId: notification.postId.value,
       },
       where: {
         userId_type_uniqueId: {
           type: "QUOTATION",
           uniqueId,
-          userId: notificationEntity.userId.value,
+          userId: notification.userId.value,
         },
       },
     })
@@ -60,38 +58,36 @@ export class NotificationRepository {
     return null
   }
 
-  private async upsertPostLikeNotification(
-    notificationEntity: NotificationEntity
-  ) {
+  private async upsertPostLikeNotification(notification: NotificationEntity) {
     if (
-      notificationEntity.userId === null ||
-      notificationEntity.likeId === null ||
-      notificationEntity.postId === null ||
-      notificationEntity.relatedUserId === null
+      notification.userId === null ||
+      notification.likeId === null ||
+      notification.postId === null ||
+      notification.relatedUserId === null
     ) {
       return null
     }
 
     // userId + postId + senderId
     const uniqueId =
-      notificationEntity.postId.value + notificationEntity.relatedUserId.value
+      notification.postId.value + notification.relatedUserId.value
 
     await db.notification.upsert({
       create: {
-        id: notificationEntity.id.value,
-        likeId: notificationEntity.likeId.value,
+        id: notification.id.value,
+        likeId: notification.likeId.value,
         type: "LIKE",
         uniqueId,
-        userId: notificationEntity.userId.value,
+        userId: notification.userId.value,
       },
       update: {
-        likeId: notificationEntity.likeId.value,
+        likeId: notification.likeId.value,
       },
       where: {
         userId_type_uniqueId: {
           type: "LIKE",
           uniqueId,
-          userId: notificationEntity.userId.value,
+          userId: notification.userId.value,
         },
       },
     })
@@ -99,36 +95,34 @@ export class NotificationRepository {
     return null
   }
 
-  private async upsertFollowNotification(
-    notificationEntity: NotificationEntity
-  ) {
+  private async upsertFollowNotification(notification: NotificationEntity) {
     if (
-      notificationEntity.userId === null ||
-      notificationEntity.friendshipId === null ||
-      notificationEntity.relatedUserId === null
+      notification.userId === null ||
+      notification.friendshipId === null ||
+      notification.relatedUserId === null
     ) {
       return null
     }
 
     // userId + senderId
-    const uniqueId = notificationEntity.relatedUserId.value
+    const uniqueId = notification.relatedUserId.value
 
     await db.notification.upsert({
       create: {
-        id: notificationEntity.id.value,
-        friendshipId: notificationEntity.friendshipId.value,
+        id: notification.id.value,
+        friendshipId: notification.friendshipId.value,
         type: "FRIENDSHIP",
         uniqueId,
-        userId: notificationEntity.userId.value,
+        userId: notification.userId.value,
       },
       update: {
-        friendship: { connect: { id: notificationEntity.friendshipId.value } },
+        friendship: { connect: { id: notification.friendshipId.value } },
       },
       where: {
         userId_type_uniqueId: {
           type: "FRIENDSHIP",
           uniqueId,
-          userId: notificationEntity.userId.value,
+          userId: notification.userId.value,
         },
       },
     })
@@ -136,26 +130,21 @@ export class NotificationRepository {
     return null
   }
 
-  private async createReplyNotification(
-    notificationEntity: NotificationEntity
-  ) {
-    if (
-      notificationEntity.userId === null ||
-      notificationEntity.postId === null
-    ) {
+  private async createReplyNotification(notification: NotificationEntity) {
+    if (notification.userId === null || notification.postId === null) {
       return null
     }
 
     // userId + postId
-    const uniqueId = notificationEntity.postId.value
+    const uniqueId = notification.postId.value
 
     await db.notification.create({
       data: {
-        id: notificationEntity.id.value,
-        post: { connect: { id: notificationEntity.postId.value } },
+        id: notification.id.value,
+        post: { connect: { id: notification.postId.value } },
         type: "REPLY",
         uniqueId,
-        user: { connect: { id: notificationEntity.userId.value } },
+        user: { connect: { id: notification.userId.value } },
       },
     })
 
