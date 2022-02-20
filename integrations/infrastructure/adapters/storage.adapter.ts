@@ -1,5 +1,5 @@
 import admin from "firebase-admin"
-import { Id, Path } from "integrations/domain/valueObjects"
+import { Path } from "integrations/domain"
 import { FirebaseAdapter } from "integrations/infrastructure/adapters/firebase.adapter"
 import { tmpdir } from "os"
 import { join } from "path"
@@ -9,7 +9,7 @@ import { injectable } from "tsyringe"
 export class StorageAdapter {
   constructor(private firebaseRepository: FirebaseAdapter) {}
 
-  async uploadToCloudStorage(filePath: Id) {
+  async uploadToCloudStorage(filePath: Path) {
     this.firebaseRepository.initialize()
 
     const tmpPath = this.getFilePath(filePath)
@@ -24,7 +24,7 @@ export class StorageAdapter {
     return null
   }
 
-  async downloadFileFromCloudStorage(filePath: Id) {
+  async downloadFileFromCloudStorage(filePath: Path) {
     this.firebaseRepository.initialize()
 
     const tmpPath = this.getFilePath(filePath)
@@ -44,10 +44,10 @@ export class StorageAdapter {
       autoId += chars.charAt(Math.floor(Math.random() * chars.length))
     }
 
-    return new Id(autoId)
+    return new Path(autoId)
   }
 
-  private getFilePath(fileId: Id) {
+  private getFilePath(fileId: Path) {
     return new Path(join(tmpdir(), fileId.value))
   }
 }

@@ -12,6 +12,8 @@ const zValue = z.union([
  * 通知の種類
  */
 export class NotificationType {
+  readonly key = "NOTIFICATION_TYPE"
+
   constructor(public value: z.infer<typeof zValue>) {
     zValue.parse(value)
     Object.freeze(this)

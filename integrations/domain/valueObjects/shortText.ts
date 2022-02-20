@@ -16,6 +16,8 @@ const zValue = z.string().max(128)
  * ```
  */
 export class ShortText {
+  readonly key = "SHORT_TEXT"
+
   constructor(public value: z.infer<typeof zValue>) {
     zValue.parse(value)
     Object.freeze(this)

@@ -1,17 +1,30 @@
 import { Id } from "integrations/domain/valueObjects"
-import { customAlphabet, nanoid } from "nanoid"
+import { nanoid } from "nanoid"
 
 export class IdFactory {
+  /**
+   * nanoid
+   * https://www.npmjs.com/package/nanoid
+   * @returns
+   */
   static nanoid() {
     return new Id(nanoid())
   }
 
-  static username() {
-    const customNanoid = customAlphabet(
-      "01234567890abcdefghijklmnopqrstuvwxyz",
-      8
-    )
+  /**
+   * Firebase向けのID
+   * @returns
+   */
+  static autoId() {
+    const seed =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
-    return new Id(customNanoid())
+    let text = ""
+
+    for (var i = 0; i < seed.length; i++) {
+      text += seed[Math.floor(Math.random() * seed.length)]
+    }
+
+    return new Id(text)
   }
 }

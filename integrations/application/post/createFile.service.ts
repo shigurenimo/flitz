@@ -1,7 +1,7 @@
 import { captureException } from "@sentry/node"
 import {
   FileEntity,
-  FileType,
+  FileTypeFactory,
   Id,
   IdFactory,
   Image,
@@ -40,27 +40,13 @@ export class CreateFileService {
 
       await this.imageRepository.writeImage(props.image, filePath)
 
-      if (this.envRepository.isFirebaseProject()) {
-        await this.storageRepository.uploadToCloudStorage(filePath)
-
-        const file = new FileEntity({
-          id: IdFactory.nanoid(),
-          userId: props.userId,
-          type: new FileType("IMAGE_PNG"),
-          service: new Service("CLOUD_STORAGE"),
-          path: filePath,
-        })
-
-        await this.fileRepository.upsert(file)
-
-        return file
-      }
+      await this.storageRepository.uploadToCloudStorage(filePath)
 
       const file = new FileEntity({
         id: IdFactory.nanoid(),
         userId: props.userId,
-        type: new FileType("IMAGE_PNG"),
-        service: null,
+        type: FileTypeFactory.png(),
+        service: new Service("CLOUD_STORAGE"),
         path: filePath,
       })
 

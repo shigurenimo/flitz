@@ -7,6 +7,8 @@ export type EmailValue = z.infer<typeof zValue>
  * メールアドレス
  */
 export class Email {
+  readonly key = "EMAIL"
+
   /**
    * ```
    * const email = new Email("reiwa@outlook.com.vn")

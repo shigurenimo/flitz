@@ -2,7 +2,7 @@ import { withSentry } from "app/core/utils/withSentry"
 import { zLoginMutation } from "app/home/validations/loginMutation"
 import { resolver } from "blitz"
 import { LoginService } from "integrations/application"
-import { Email, Password, UserRole } from "integrations/domain"
+import { Email, Password, UserRoleFactory } from "integrations/domain"
 import { container } from "tsyringe"
 
 const login = resolver.pipe(
@@ -28,7 +28,7 @@ const login = resolver.pipe(
     await ctx.session.$create({
       iconImageId: user.iconImageId?.value || null,
       name: user.name?.value || null,
-      role: new UserRole("USER").value,
+      role: UserRoleFactory.user().value,
       userId: user.id.value,
       username: user.username.value,
     })

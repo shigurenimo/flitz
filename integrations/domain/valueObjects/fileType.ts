@@ -12,6 +12,8 @@ const zValue = z.union([
  * ファイルタイプ
  */
 export class FileType {
+  readonly key = "FILE_TYPE"
+
   constructor(public value: z.infer<typeof zValue>) {
     zValue.parse(value)
     Object.freeze(this)

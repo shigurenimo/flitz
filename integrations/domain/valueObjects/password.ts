@@ -8,6 +8,8 @@ const zValue = z.string().min(5).max(40)
  * パスワード
  */
 export class Password {
+  readonly key = "PASSWORD"
+
   constructor(public value: z.infer<typeof zValue>) {
     zValue.parse(value)
     Object.freeze(this)

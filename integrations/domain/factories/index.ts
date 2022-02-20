@@ -1,5 +1,7 @@
+export * from "./fileType.factory"
 export * from "./hashedPassword.factory"
 export * from "./id.factory"
 export * from "./Image.factory"
 export * from "./name.factory"
 export * from "./username.factory"
+export * from "./userRole.factory"

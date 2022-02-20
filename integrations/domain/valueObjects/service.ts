@@ -9,6 +9,8 @@ const zValue = z
  * サービス
  */
 export class Service {
+  readonly key = "SERVICE"
+
   constructor(public value: z.infer<typeof zValue>) {
     zValue.parse(value)
     Object.freeze(this)
