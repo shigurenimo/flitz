@@ -1,11 +1,11 @@
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
-import { ViewConverter } from "integrations/infrastructure/converters"
+import { QueryConverter } from "integrations/infrastructure/converters"
 import { injectable } from "tsyringe"
 
 @injectable()
 export class UserSettingQuery {
-  constructor(private queryConverter: ViewConverter) {}
+  constructor(private queryConverter: QueryConverter) {}
 
   async has(input: { userId: Id }) {
     const setting = await db.setting.findUnique({

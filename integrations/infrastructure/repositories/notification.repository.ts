@@ -1,5 +1,5 @@
 import db from "db"
-import { Id, NotificationEntity } from "integrations/domain"
+import { NotificationEntity } from "integrations/domain"
 
 export class NotificationRepository {
   async upsert(notificationEntity: NotificationEntity) {
@@ -156,22 +156,6 @@ export class NotificationRepository {
         type: "REPLY",
         uniqueId,
         user: { connect: { id: notificationEntity.userId.value } },
-      },
-    })
-
-    return null
-  }
-
-  async markAsRead(userId: Id) {
-    if (userId === null) {
-      return null
-    }
-
-    await db.notification.updateMany({
-      data: { isRead: true },
-      where: {
-        userId: userId.value,
-        isRead: false,
       },
     })
 

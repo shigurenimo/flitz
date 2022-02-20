@@ -1,13 +1,16 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { NotFoundError, resolver } from "blitz"
-import { PostQuery } from "integrations/application"
+import { FindPostQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
 
-const zGetPost = z.object({ id: z.string() })
+const zProps = z.object({
+  id: z.string(),
+})
 
 const getPost = resolver.pipe(
-  resolver.zod(zGetPost),
+  resolver.zod(zProps),
   (props, ctx) => {
     return {
       id: new Id(props.id),
@@ -15,11 +18,14 @@ const getPost = resolver.pipe(
     }
   },
   async (props) => {
-    const postQuery = container.resolve(PostQuery)
+    const findPostQuery = container.resolve(FindPostQuery)
 
-    const post = await postQuery.find(props.id, props.userId)
+    const post = await findPostQuery.execute({
+      postId: props.id,
+      userId: props.userId,
+    })
 
-    if (!post) {
+    if (post === null) {
       throw new NotFoundError()
     }
 
@@ -27,4 +33,4 @@ const getPost = resolver.pipe(
   }
 )
 
-export default getPost
+export default withSentry(getPost, "getPost")

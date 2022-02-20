@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { zDeletePostLikeMutation } from "app/posts/validations/deletePostLikeMutation"
 import { resolver } from "blitz"
 import { DeletePostLikeService } from "integrations/application/post/deletePostLike.service"
@@ -25,4 +26,4 @@ const deletePostLike = resolver.pipe(
   }
 )
 
-export default deletePostLike
+export default withSentry(deletePostLike, "deletePostLike")

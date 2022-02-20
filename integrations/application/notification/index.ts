@@ -1,1 +1,5 @@
+export * from "./countNotifications.query"
+export * from "./findNotifications.query"
+export * from "./hasUnreadNotification.query"
+export * from "./markNotificationAsRead.service"
 export * from "./testNotification.service"

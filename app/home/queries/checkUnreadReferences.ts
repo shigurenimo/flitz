@@ -1,5 +1,6 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { ReferenceQuery } from "integrations/application"
+import { HasUnreadReferenceQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 
@@ -11,12 +12,12 @@ const checkUnreadReferences = resolver.pipe(
     }
   },
   async (props) => {
-    const referenceQuery = container.resolve(ReferenceQuery)
+    const hasUnreadReferenceQuery = container.resolve(HasUnreadReferenceQuery)
 
-    const hasUnread = await referenceQuery.hasUnread(props.userId)
+    const hasUnread = await hasUnreadReferenceQuery.execute(props.userId)
 
     return hasUnread
   }
 )
 
-export default checkUnreadReferences
+export default withSentry(checkUnreadReferences, "checkUnreadReferences")

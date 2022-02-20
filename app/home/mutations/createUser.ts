@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { zCreateUserMutation } from "app/home/validations/createUserMutation"
 import { resolver } from "blitz"
 import { SignUpService } from "integrations/application"
@@ -37,4 +38,4 @@ const createUser = resolver.pipe(
   }
 )
 
-export default createUser
+export default withSentry(createUser, "createUser")

@@ -1,7 +1,7 @@
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/core/components/StackList"
 import { StackCardPost } from "app/posts/components/StackCardPost"
-import getUserLikesInfinite from "app/users/queries/getUserLikesInfinite"
+import getUserLikes from "app/users/queries/getUserLikes"
 import { useInfiniteQuery, useParam } from "blitz"
 import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
@@ -12,7 +12,7 @@ export const ShowUserPageListLikes: VFC = () => {
   const username = useParam("username", "string")
 
   const [pages, { isFetching }] = useInfiniteQuery(
-    getUserLikesInfinite,
+    getUserLikes,
     (page = { skip: 0, username }) => page,
     {
       getNextPageParam: (lastGroup) => lastGroup.nextPage,

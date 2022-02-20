@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { zCreateReplyMutation } from "app/posts/validations/createReplyMutation"
 import { resolver } from "blitz"
 import { CreateReplyService } from "integrations/application"
@@ -27,4 +28,4 @@ const createReply = resolver.pipe(
   }
 )
 
-export default createReply
+export default withSentry(createReply, "createReply")

@@ -1,13 +1,16 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { NotFoundError, resolver } from "blitz"
-import { UserQuery } from "integrations/application"
+import { FindUserByUsernameQuery } from "integrations/application"
 import { Id, Username } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
 
-const zGetUser = z.object({ username: z.string() })
+const zProps = z.object({
+  username: z.string(),
+})
 
 const getUser = resolver.pipe(
-  resolver.zod(zGetUser),
+  resolver.zod(zProps),
   (props, ctx) => {
     return {
       userId: ctx.session.userId ? new Id(ctx.session.userId) : null,
@@ -15,9 +18,12 @@ const getUser = resolver.pipe(
     }
   },
   async (props) => {
-    const userQuery = container.resolve(UserQuery)
+    const findUserByUsernameQuery = container.resolve(FindUserByUsernameQuery)
 
-    const user = await userQuery.findByUsername(props.username, props.userId)
+    const user = await findUserByUsernameQuery.execute({
+      username: props.username,
+      userId: props.userId,
+    })
 
     if (user === null) {
       throw new NotFoundError()
@@ -27,4 +33,4 @@ const getUser = resolver.pipe(
   }
 )
 
-export default getUser
+export default withSentry(getUser, "getUser")

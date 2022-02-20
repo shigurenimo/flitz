@@ -1,18 +1,19 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
 import { UpdateUsernameService } from "integrations/application"
-import { Id, Name } from "integrations/domain"
+import { Id, Username } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
 
-const zUpdateUsername = z.object({ username: z.string() })
+const zProps = z.object({ username: z.string() })
 
 const updateUsername = resolver.pipe(
-  resolver.zod(zUpdateUsername),
+  resolver.zod(zProps),
   resolver.authorize(),
   (props, ctx) => {
     return {
       userId: new Id(ctx.session.userId),
-      username: new Name(props.username),
+      username: new Username(props.username),
     }
   },
   async (props, ctx) => {
@@ -38,4 +39,4 @@ const updateUsername = resolver.pipe(
   }
 )
 
-export default updateUsername
+export default withSentry(updateUsername, "updateUsername")

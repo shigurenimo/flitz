@@ -3,7 +3,7 @@ import { StackList } from "app/core/components/StackList"
 import { StackCardUser } from "app/users/components/StackCardUser"
 import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
-import getUserFollowersInfinite from "app/users/queries/getUserFollowersInfinite"
+import getUserFollowers from "app/users/queries/getUserFollowers"
 import { useInfiniteQuery, useMutation, useParam } from "blitz"
 import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
@@ -16,7 +16,7 @@ export const ShowUserPageListFollowers: VFC<Props> = ({ userId }) => {
   const username = useParam("username", "string")
 
   const [pages, { setQueryData }] = useInfiniteQuery(
-    getUserFollowersInfinite,
+    getUserFollowers,
     (page = { take: 80, skip: 0, username }) => page,
     {
       getNextPageParam: (lastGroup) => lastGroup.nextPage,

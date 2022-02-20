@@ -1,5 +1,9 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { paginate, resolver } from "blitz"
-import { UserExchangeQuery } from "integrations/application"
+import {
+  CountExchangesQuery,
+  FindExchangesQuery,
+} from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
@@ -17,14 +21,16 @@ const getExchanges = resolver.pipe(
     }
   },
   async (props) => {
-    const userExchangeQuery = container.resolve(UserExchangeQuery)
+    const findExchangesQuery = container.resolve(FindExchangesQuery)
 
-    const exchanges = await userExchangeQuery.findMany({
+    const exchanges = await findExchangesQuery.execute({
       userId: props.userId,
       skip: props.skip,
     })
 
-    const count = await userExchangeQuery.count({ userId: props.userId })
+    const countExchangesQuery = container.resolve(CountExchangesQuery)
+
+    const count = await countExchangesQuery.execute({ userId: props.userId })
 
     return paginate({
       skip: props.skip,
@@ -39,4 +45,4 @@ const getExchanges = resolver.pipe(
   }
 )
 
-export default getExchanges
+export default withSentry(getExchanges, "getExchanges")

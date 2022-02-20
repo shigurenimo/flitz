@@ -1,7 +1,7 @@
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/core/components/StackList"
 import { StackCardNotification } from "app/notifications/components/StackCardNotification"
-import getNotificationsInfinite from "app/notifications/queries/getNotificationsInfinite"
+import getNotifications from "app/notifications/queries/getNotifications"
 import { useInfiniteQuery } from "blitz"
 import { AppNotification } from "integrations/interface/types"
 import React, { VFC } from "react"
@@ -11,7 +11,7 @@ export const NotificationsPageList: VFC = () => {
   const { t } = useTranslation()
 
   const [pages] = useInfiniteQuery(
-    getNotificationsInfinite,
+    getNotifications,
     (page = { skip: 0 }) => page,
     {
       getNextPageParam: (lastGroup) => lastGroup.nextPage,

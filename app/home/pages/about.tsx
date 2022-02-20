@@ -109,7 +109,7 @@ const AboutPage: BlitzPage = () => {
           <Text>{"Migrate PostgreSQL schemas."}</Text>
           <Box>
             <Code p={4} w={"full"} rounded={"md"}>
-              {"% yarn prisma db push"}
+              {"% yarn prisma db push --accept-data-loss"}
             </Code>
           </Box>
         </Stack>

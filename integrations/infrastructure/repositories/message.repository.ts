@@ -1,24 +1,7 @@
 import db from "db"
-import { Id, IdFactory, MessageEntity } from "integrations/domain"
+import { IdFactory, MessageEntity } from "integrations/domain"
 
 export class MessageRepository {
-  async markAsRead(userId: Id, relatedUserId: Id) {
-    await db.message.updateMany({
-      data: { isRead: true },
-      where: {
-        exchanges: {
-          some: {
-            userId: relatedUserId.value,
-            relatedUserId: userId.value,
-            isRead: false,
-          },
-        },
-      },
-    })
-
-    return null
-  }
-
   async upsert(messageEntity: MessageEntity) {
     await db.message.create({
       data: {

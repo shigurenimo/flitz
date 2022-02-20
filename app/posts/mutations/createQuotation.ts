@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { zCreateQuotation } from "app/posts/validations/createQuotationMutation"
 import { resolver } from "blitz"
 import { CreateQuotationService } from "integrations/application"
@@ -25,4 +26,4 @@ const createQuotation = resolver.pipe(
   }
 )
 
-export default createQuotation
+export default withSentry(createQuotation, "createQuotation")

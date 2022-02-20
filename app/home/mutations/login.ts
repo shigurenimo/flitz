@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { zLoginMutation } from "app/home/validations/loginMutation"
 import { resolver } from "blitz"
 import { LoginService } from "integrations/application"
@@ -36,4 +37,4 @@ const login = resolver.pipe(
   }
 )
 
-export default login
+export default withSentry(login, "login")

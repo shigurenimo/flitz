@@ -1,5 +1,6 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { UserExchangeQuery } from "integrations/application"
+import { CheckExchangesQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 
@@ -11,9 +12,9 @@ const checkUnreadMessages = resolver.pipe(
     }
   },
   async (props) => {
-    const userExchangeQuery = container.resolve(UserExchangeQuery)
+    const checkExchangesQuery = container.resolve(CheckExchangesQuery)
 
-    const existence = await userExchangeQuery.checkExistence({
+    const existence = await checkExchangesQuery.execute({
       userId: props.userId,
     })
 
@@ -21,4 +22,4 @@ const checkUnreadMessages = resolver.pipe(
   }
 )
 
-export default checkUnreadMessages
+export default withSentry(checkUnreadMessages, "checkUnreadMessages")

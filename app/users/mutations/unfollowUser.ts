@@ -1,15 +1,16 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { NotFoundError, resolver } from "blitz"
-import { UnfollowUserService, UserQuery } from "integrations/application"
+import { FindUserQuery, UnfollowService } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
 
-const zUnfollowUser = z.object({
+const zProps = z.object({
   userId: z.string(),
 })
 
 const unfollowUser = resolver.pipe(
-  resolver.zod(zUnfollowUser),
+  resolver.zod(zProps),
   resolver.authorize(),
   (props, ctx) => {
     return {
@@ -18,23 +19,25 @@ const unfollowUser = resolver.pipe(
     }
   },
   async (props) => {
-    const unfollowUserService = container.resolve(UnfollowUserService)
+    const unfollowUserService = container.resolve(UnfollowService)
 
     await unfollowUserService.execute({
       followeeId: props.followeeId,
       followerId: props.followerId,
     })
 
-    const userQuery = container.resolve(UserQuery)
+    const findUserQuery = container.resolve(FindUserQuery)
 
-    const queryProfile = await userQuery.find(props.followerId)
+    const profile = await findUserQuery.execute({
+      userId: props.followerId,
+    })
 
-    if (queryProfile === null) {
+    if (profile === null) {
       throw new NotFoundError()
     }
 
-    return queryProfile
+    return profile
   }
 )
 
-export default unfollowUser
+export default withSentry(unfollowUser, "unfollowUser")

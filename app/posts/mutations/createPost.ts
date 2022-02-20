@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { zCreatePostMutation } from "app/posts/validations/createPostMutation"
 import { resolver } from "blitz"
 import { CreateFileService, CreatePostService } from "integrations/application"
@@ -38,4 +39,4 @@ const createPost = resolver.pipe(
   }
 )
 
-export default createPost
+export default withSentry(createPost, "createPost")

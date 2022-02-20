@@ -3,7 +3,7 @@ import { ShowExchangePageTextarea } from "app/exchanges/components/ShowExchangeP
 import { StackCardMessageLeft } from "app/exchanges/components/StackMessageBlockLeft"
 import { StackCardMessageRight } from "app/exchanges/components/StackMessageBlockRight"
 import { useMessageBlocks } from "app/exchanges/hooks/useMessageBlocks"
-import getMessagesInfinite from "app/exchanges/queries/getMessagesInfinite"
+import getMessages from "app/exchanges/queries/getMessages"
 import { useInfiniteQuery, useParam } from "blitz"
 import React, { useEffect, VFC } from "react"
 
@@ -11,7 +11,7 @@ export const ShowExchangePageMessages: VFC = () => {
   const recipientId = useParam("recipientId", "string")
 
   const [pages, { refetch }] = useInfiniteQuery(
-    getMessagesInfinite,
+    getMessages,
     (page = { skip: 0, relatedUserId: recipientId }) => page,
     {
       getNextPageParam: (lastGroup) => lastGroup.nextPage,

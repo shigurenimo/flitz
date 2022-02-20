@@ -1,7 +1,7 @@
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/core/components/StackList"
 import { StackCardPost } from "app/posts/components/StackCardPost"
-import getUserPostsInfinite from "app/users/queries/getUserPostsInfinite"
+import getUserPosts from "app/users/queries/getUserPosts"
 import { useInfiniteQuery, useParam } from "blitz"
 import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
@@ -12,7 +12,7 @@ export const ShowUserPageListPosts: VFC = () => {
   const username = useParam("username", "string")
 
   const [pages, { isFetching }] = useInfiniteQuery(
-    getUserPostsInfinite,
+    getUserPosts,
     (page = { skip: 0, username }) => page,
     {
       getNextPageParam: (lastGroup) => lastGroup.nextPage,

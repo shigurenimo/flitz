@@ -1,6 +1,6 @@
 import { Stack, StackDivider } from "@chakra-ui/react"
 import { StackCardReply } from "app/posts/components/StackCardPostReply"
-import getRepliesInfinite from "app/posts/queries/getRepliesInfinite"
+import getPostReplies from "app/posts/queries/getPostReplies"
 import { useInfiniteQuery, useParam } from "blitz"
 import React, { VFC } from "react"
 
@@ -8,7 +8,7 @@ export const ShowPostPageReplyList: VFC = () => {
   const postId = useParam("postId", "string")
 
   const [pages] = useInfiniteQuery(
-    getRepliesInfinite,
+    getPostReplies,
     (page = { skip: 0, replyId: postId }) => page,
     {
       getNextPageParam: (lastGroup) => lastGroup.nextPage,

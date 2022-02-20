@@ -1,6 +1,6 @@
 import { StackDivider } from "@chakra-ui/react"
 import { StackList } from "app/core/components/StackList"
-import getReferencesInfinite from "app/home/queries/getReferencesInfinite"
+import getReferences from "app/home/queries/getReferences"
 import { StackCardPost } from "app/posts/components/StackCardPost"
 import { useInfiniteQuery, useSession } from "blitz"
 import React, { VFC } from "react"
@@ -9,7 +9,7 @@ export const HomePageList: VFC = () => {
   const session = useSession()
 
   const [pages] = useInfiniteQuery(
-    getReferencesInfinite,
+    getReferences,
     (page = { skip: 0 }) => page,
     {
       getNextPageParam: (lastGroup) => lastGroup.nextPage,

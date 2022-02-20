@@ -1,3 +1,4 @@
+import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
 import {
   CreateFileService,
@@ -72,4 +73,4 @@ const updateUserProfile = resolver.pipe(
   }
 )
 
-export default updateUserProfile
+export default withSentry(updateUserProfile, "updateUserProfile")
