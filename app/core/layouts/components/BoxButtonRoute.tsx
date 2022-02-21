@@ -15,7 +15,7 @@ type Props = ButtonProps & {
   icon: IconType
 }
 
-export const StackButtonRoute: VFC<Props> = ({
+export const BoxButtonRoute: VFC<Props> = ({
   children,
   icon,
   hasBadge,

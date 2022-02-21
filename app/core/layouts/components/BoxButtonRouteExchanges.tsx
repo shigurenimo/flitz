@@ -1,4 +1,4 @@
-import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 import checkUnreadMessages from "app/exchanges/queries/checkUnreadMessages"
 import { useQuery } from "blitz"
 import React, { VFC } from "react"
@@ -10,7 +10,7 @@ type Props = {
   onClick?(): void
 }
 
-export const StackButtonRouteExchanges: VFC<Props> = (props) => {
+export const BoxButtonRouteExchanges: VFC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasUnreadMessages] = useQuery(checkUnreadMessages, null, {
@@ -18,8 +18,8 @@ export const StackButtonRouteExchanges: VFC<Props> = (props) => {
   })
 
   return (
-    <StackButtonRoute icon={FiMail} hasBadge={hasUnreadMessages} {...props}>
+    <BoxButtonRoute icon={FiMail} hasBadge={hasUnreadMessages} {...props}>
       {t("Messages")}
-    </StackButtonRoute>
+    </BoxButtonRoute>
   )
 }

@@ -1,4 +1,4 @@
-import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 import checkUnreadNotifications from "app/notifications/queries/checkUnreadNotifications"
 import { useQuery } from "blitz"
 import React, { VFC } from "react"
@@ -10,7 +10,7 @@ type Props = {
   onClick?(): void
 }
 
-export const StackButtonRouteNotifications: VFC<Props> = (props) => {
+export const BoxButtonRouteNotifications: VFC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasBadge] = useQuery(checkUnreadNotifications, null, {
@@ -18,8 +18,8 @@ export const StackButtonRouteNotifications: VFC<Props> = (props) => {
   })
 
   return (
-    <StackButtonRoute icon={FiBell} hasBadge={hasBadge} {...props}>
+    <BoxButtonRoute icon={FiBell} hasBadge={hasBadge} {...props}>
       {t("Notifications")}
-    </StackButtonRoute>
+    </BoxButtonRoute>
   )
 }

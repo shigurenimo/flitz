@@ -1,9 +1,9 @@
-import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiGlobe } from "react-icons/fi"
 
-export const StackButtonRouteLanguage: VFC = () => {
+export const BoxButtonRouteLanguage: VFC = () => {
   const { i18n } = useTranslation()
 
   const onClick = () => {
@@ -11,8 +11,8 @@ export const StackButtonRouteLanguage: VFC = () => {
   }
 
   return (
-    <StackButtonRoute icon={FiGlobe} onClick={onClick}>
+    <BoxButtonRoute icon={FiGlobe} onClick={onClick}>
       {i18n.language === "en" ? "日本語" : "English"}
-    </StackButtonRoute>
+    </BoxButtonRoute>
   )
 }

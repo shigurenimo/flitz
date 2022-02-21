@@ -18,7 +18,7 @@ import React, { useState, VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend } from "react-icons/fi"
 
-export const BoxHomeInput: VFC = () => {
+export const BoxHomeFormPost: VFC = () => {
   const session = useSession()
 
   const { t } = useTranslation()

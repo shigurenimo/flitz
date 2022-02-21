@@ -18,7 +18,7 @@ type Props = AppFeedPost & { isDisabled: boolean }
 export const BoxCardPost: VFC<Props> = (props) => {
   const router = useRouter()
 
-  const onPushRouter = () => {
+  const onCheckPost = () => {
     router.push(`/posts/${props.id}`)
   }
 
@@ -26,9 +26,13 @@ export const BoxCardPost: VFC<Props> = (props) => {
     router.push(`/posts/${props.quotation?.id}`)
   }
 
+  const onCheckReply = () => {
+    router.push(`/posts/${props.reply?.id}`)
+  }
+
   if (props.quotation && props.text === null) {
     return (
-      <BoxCard onClick={() => onClickQuotation()}>
+      <BoxCard onClick={onClickQuotation}>
         <BoxHeaderRepost name={props.user.name || props.user.username} />
         <HStack align={"start"} spacing={4}>
           <AvatarUser
@@ -59,7 +63,7 @@ export const BoxCardPost: VFC<Props> = (props) => {
 
   if (props.quotation) {
     return (
-      <BoxCard onClick={() => onPushRouter()}>
+      <BoxCard onClick={onCheckPost}>
         <HStack align={"start"} spacing={4}>
           <AvatarUser userId={props.user.id} fileId={props.user.iconImageId} />
           <Stack spacing={2} w={"full"}>
@@ -88,7 +92,7 @@ export const BoxCardPost: VFC<Props> = (props) => {
 
   if (props.reply) {
     return (
-      <BoxCard onClick={() => router.push(`/posts/${props.reply?.id}`)}>
+      <BoxCard onClick={onCheckReply}>
         <HStack align={"start"} spacing={4}>
           <AvatarUser userId={props.user.id} fileId={props.user.iconImageId} />
           <Stack spacing={2} w={"full"}>
@@ -115,7 +119,7 @@ export const BoxCardPost: VFC<Props> = (props) => {
   }
 
   return (
-    <BoxCard onClick={() => onPushRouter()}>
+    <BoxCard onClick={onCheckPost}>
       <HStack align={"start"} spacing={4}>
         <AvatarUser userId={props.user.id} fileId={props.user.iconImageId} />
         <Stack spacing={2} w={"full"}>

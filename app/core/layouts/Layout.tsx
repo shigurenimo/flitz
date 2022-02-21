@@ -1,7 +1,8 @@
 import { Container, Stack } from "@chakra-ui/react"
+import { BoxMainFallback } from "app/core/components/BoxMainFallback"
 import { useFirebaseCloudMessaging } from "app/core/hooks/useFirebaseCloudMessaging"
-import { LayoutAside } from "app/core/layouts/components/LayoutAside"
-import { LayoutHeader } from "app/core/layouts/components/LayoutHeader"
+import { LayoutAside } from "app/core/layouts/components/BoxAside"
+import { LayoutHeader } from "app/core/layouts/components/BoxHeader"
 import { Head } from "blitz"
 import React, { FC, Suspense } from "react"
 
@@ -27,15 +28,15 @@ const Layout: FC<LayoutProps> = (props) => {
         <link href={"https://fonts.gstatic.com"} rel="preconnect" />
         <link href={fontURL} rel={"stylesheet"} />
       </Head>
-      <Suspense fallback={<></>}>
-        <LayoutAside />
-        <Stack pl={{ base: 0, md: 56 }}>
-          <Container maxW={"4xl"} centerContent w={"full"} px={0}>
+      <LayoutAside />
+      <Stack pl={{ base: 0, md: 56 }}>
+        <Container maxW={"4xl"} centerContent w={"full"} px={0}>
+          <Suspense fallback={<BoxMainFallback />}>
             <LayoutHeader />
             {props.children}
-          </Container>
-        </Stack>
-      </Suspense>
+          </Suspense>
+        </Container>
+      </Stack>
     </>
   )
 }

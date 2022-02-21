@@ -1,4 +1,4 @@
-import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 import checkUnreadReferences from "app/home/queries/checkUnreadReferences"
 import { useQuery } from "blitz"
 import React, { VFC } from "react"
@@ -10,7 +10,7 @@ type Props = {
   onClick?(): void
 }
 
-export const StackButtonRouteReferences: VFC<Props> = (props) => {
+export const BoxButtonRouteReferences: VFC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasBadge] = useQuery(checkUnreadReferences, null, {
@@ -18,8 +18,8 @@ export const StackButtonRouteReferences: VFC<Props> = (props) => {
   })
 
   return (
-    <StackButtonRoute icon={FiHome} hasBadge={hasBadge} {...props}>
+    <BoxButtonRoute icon={FiHome} hasBadge={hasBadge} {...props}>
       {t("Home")}
-    </StackButtonRoute>
+    </BoxButtonRoute>
   )
 }

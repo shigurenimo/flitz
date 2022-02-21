@@ -1,20 +1,20 @@
 import { useColorMode } from "@chakra-ui/react"
-import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 import React, { VFC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiMoon, FiSun } from "react-icons/fi"
 
-export const StackButtonRouteDarkMode: VFC = () => {
+export const BoxButtonRouteDarkMode: VFC = () => {
   const { t } = useTranslation()
 
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
-    <StackButtonRoute
+    <BoxButtonRoute
       icon={colorMode === "light" ? FiSun : FiMoon}
       onClick={toggleColorMode}
     >
       {colorMode === "light" ? t("Light Mode") : t("Dark Mode")}
-    </StackButtonRoute>
+    </BoxButtonRoute>
   )
 }

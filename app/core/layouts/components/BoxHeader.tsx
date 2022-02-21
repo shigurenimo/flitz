@@ -6,12 +6,12 @@ import {
   useColorModeValue,
   useMediaQuery,
 } from "@chakra-ui/react"
-import { StackButtonRoute } from "app/core/layouts/components/StackButtonRoute"
-import { StackButtonRouteDarkMode } from "app/core/layouts/components/StackButtonRouteDarkMode"
-import { StackButtonRouteExchanges } from "app/core/layouts/components/StackButtonRouteExchanges"
-import { StackButtonRouteLanguage } from "app/core/layouts/components/StackButtonRouteLanguage"
-import { StackButtonRouteNotifications } from "app/core/layouts/components/StackButtonRouteNotifications"
-import { StackButtonRouteReferences } from "app/core/layouts/components/StackButtonRouteReferences"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
+import { BoxButtonRouteDarkMode } from "app/core/layouts/components/BoxButtonRouteDarkMode"
+import { BoxButtonRouteExchanges } from "app/core/layouts/components/BoxButtonRouteExchanges"
+import { BoxButtonRouteLanguage } from "app/core/layouts/components/BoxButtonRouteLanguage"
+import { BoxButtonRouteNotifications } from "app/core/layouts/components/BoxButtonRouteNotifications"
+import { BoxButtonRouteReferences } from "app/core/layouts/components/BoxButtonRouteReferences"
 import { toActiveRoute } from "app/core/layouts/utils/toActiveRoute"
 import { useRouter, useSession } from "blitz"
 import React, { Suspense, VFC } from "react"
@@ -64,58 +64,58 @@ export const LayoutHeader: VFC = () => {
     >
       <Flex alignSelf={"center"} w={"full"}>
         <HStack alignSelf={"center"} spacing={4} w={"full"} pl={4}>
-          <StackButtonRoute
+          <BoxButtonRoute
             isActive={activeRoute === "about"}
             icon={FiGithub}
             onClick={() => router.push("/about")}
           >
             {t("FLITZ")}
-          </StackButtonRoute>
+          </BoxButtonRoute>
           {session.userId === null && (
-            <StackButtonRoute
+            <BoxButtonRoute
               isActive={activeRoute === "home"}
               icon={FiHome}
               onClick={() => router.push("/")}
             >
               {t("Home")}
-            </StackButtonRoute>
+            </BoxButtonRoute>
           )}
           {session.userId && (
             <Suspense
               fallback={
-                <StackButtonRoute
+                <BoxButtonRoute
                   isActive={activeRoute === "home"}
                   icon={FiHome}
                   onClick={() => router.push("/")}
                 >
                   {t("Home")}
-                </StackButtonRoute>
+                </BoxButtonRoute>
               }
             >
-              <StackButtonRouteReferences
+              <BoxButtonRouteReferences
                 isActive={activeRoute === "home"}
                 onClick={() => router.push("/")}
               />
             </Suspense>
           )}
           {session.userId && (
-            <StackButtonRoute
+            <BoxButtonRoute
               isActive={activeRoute === "posts"}
               icon={FiZap}
               onClick={() => router.push("/posts")}
             >
               {t("Stream")}
-            </StackButtonRoute>
+            </BoxButtonRoute>
           )}
           {session.userId && (
             <Suspense
               fallback={
-                <StackButtonRoute disabled icon={FiBell}>
+                <BoxButtonRoute disabled icon={FiBell}>
                   {t("Notifications")}
-                </StackButtonRoute>
+                </BoxButtonRoute>
               }
             >
-              <StackButtonRouteNotifications
+              <BoxButtonRouteNotifications
                 isActive={activeRoute === "notifications"}
                 onClick={() => router.push("/notifications")}
               />
@@ -124,38 +124,38 @@ export const LayoutHeader: VFC = () => {
           {session.userId && (
             <Suspense
               fallback={
-                <StackButtonRoute disabled icon={FiMail}>
+                <BoxButtonRoute disabled icon={FiMail}>
                   {t("Messages")}
-                </StackButtonRoute>
+                </BoxButtonRoute>
               }
             >
-              <StackButtonRouteExchanges
+              <BoxButtonRouteExchanges
                 isActive={activeRoute === "exchanges"}
                 onClick={() => router.push("/exchanges")}
               />
             </Suspense>
           )}
           {session.userId && (
-            <StackButtonRoute
+            <BoxButtonRoute
               icon={FiUser}
               isActive={activeRoute === "users"}
               onClick={() => router.push(`/${session.username}`)}
             >
               {t("Profile")}
-            </StackButtonRoute>
+            </BoxButtonRoute>
           )}
           {session.userId && (
-            <StackButtonRoute
+            <BoxButtonRoute
               icon={FiSettings}
               isActive={activeRoute === "settings"}
               onClick={() => router.push("/settings")}
             >
               {t("Settings")}
-            </StackButtonRoute>
+            </BoxButtonRoute>
           )}
-          <StackButtonRouteLanguage />
+          <BoxButtonRouteLanguage />
           <Box pr={4}>
-            <StackButtonRouteDarkMode />
+            <BoxButtonRouteDarkMode />
           </Box>
         </HStack>
       </Flex>
