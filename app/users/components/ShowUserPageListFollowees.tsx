@@ -19,7 +19,7 @@ export const ShowUserPageListFollowees: VFC<Props> = (props) => {
     getUserFollowees,
     (page = { take: 80, skip: 0, username }) => page,
     {
-      getNextPageParam: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
       refetchInterval: 1000 * 2 ** 5,
     }
   )

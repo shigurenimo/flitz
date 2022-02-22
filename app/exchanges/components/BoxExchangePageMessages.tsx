@@ -12,9 +12,9 @@ export const BoxExchangeMessages: VFC = () => {
 
   const [pages, { refetch }] = useInfiniteQuery(
     getMessages,
-    (page = { skip: 0, relatedUserId: recipientId }) => page,
+    (page = { skip: 0, recipientId }) => page,
     {
-      getNextPageParam: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
       refetchInterval: 1000 * 2 ** 4,
     }
   )

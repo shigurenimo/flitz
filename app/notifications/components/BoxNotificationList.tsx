@@ -14,7 +14,7 @@ export const BoxNotificationList: VFC = () => {
     getNotifications,
     (page = { skip: 0 }) => page,
     {
-      getNextPageParam: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
       refetchInterval: 1000 * 2 ** 4,
     }
   )

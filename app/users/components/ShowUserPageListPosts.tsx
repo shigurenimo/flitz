@@ -15,7 +15,7 @@ export const ShowUserPageListPosts: VFC = () => {
     getUserPosts,
     (page = { skip: 0, username }) => page,
     {
-      getNextPageParam: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
       refetchInterval: 1000 * 2 ** 5,
     }
   )

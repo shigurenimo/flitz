@@ -1,8 +1,15 @@
 import { ChakraProvider } from "@chakra-ui/react"
+import { init } from "@sentry/browser"
+import { Integrations } from "@sentry/tracing"
 import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
 import { theme } from "app/core/theme/theme"
 import i18n from "app/core/utils/i18n"
 import { AppProps, BlitzPage, useQueryErrorResetBoundary } from "blitz"
+import {
+  getAnalytics,
+  isSupported,
+  setAnalyticsCollectionEnabled,
+} from "firebase/analytics"
 import { getApps, initializeApp } from "firebase/app"
 import React, { useEffect } from "react"
 import { ErrorBoundary } from "react-error-boundary"
@@ -14,8 +21,6 @@ const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const { reset } = useQueryErrorResetBoundary()
 
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) return
-
     if (0 < getApps().length) return
 
     initializeApp({
@@ -27,6 +32,28 @@ const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
       appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
       measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
     })
+
+    isSupported().then((bool) => {
+      if (!bool) return
+
+      if (process.env.NODE_ENV === "production") {
+        setAnalyticsCollectionEnabled(getAnalytics(), true)
+      }
+
+      if (process.env.NODE_ENV !== "production") {
+        setAnalyticsCollectionEnabled(getAnalytics(), false)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    init({
+      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+      integrations: [new Integrations.BrowserTracing()],
+      environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
+      tracesSampleRate: 1.0,
+      debug: false,
+    })
   }, [])
 
   return (
@@ -35,12 +62,6 @@ const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
         <ErrorBoundary FallbackComponent={BoxErrorFallback} onReset={reset}>
           {getLayout(<Component {...pageProps} />)}
         </ErrorBoundary>
-        <style jsx global>{`
-          #__next {
-            max-width: 80rem;
-            margin: 0 auto;
-          }
-        `}</style>
       </ChakraProvider>
     </I18nextProvider>
   )

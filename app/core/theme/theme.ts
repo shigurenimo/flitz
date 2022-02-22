@@ -9,9 +9,9 @@ export const theme = extendTheme({
     primary: defaultTheme.colors.blue,
   },
   fonts: {
-    body: "Noto Sans JP, sans-serif",
-    heading: "Noto Sans JP, sans-serif",
-    mono: "Menlo, monospace",
+    body: ["Noto Sans JP", "system-ui", "sans-serif"].join(","),
+    heading: ["Noto Sans JP", "system-ui", "sans-serif"].join(","),
+    mono: ["Menlo", "monospace"].join(","),
   },
   styles: {
     global: {
@@ -21,6 +21,10 @@ export const theme = extendTheme({
       },
       "*": {
         WebkitTapHighlightColor: "transparent",
+      },
+      "#__next": {
+        maxWidth: "80rem",
+        margin: "0 auto",
       },
     },
   },

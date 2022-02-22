@@ -9,7 +9,7 @@ export const BoxPostList: VFC = () => {
   const session = useSession()
 
   const [pages] = useInfiniteQuery(getPosts, (page = { skip: 0 }) => page, {
-    getNextPageParam: (lastGroup) => lastGroup.nextPage,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
     refetchInterval: 1000 * 2 ** 4,
   })
 

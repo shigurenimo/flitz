@@ -10,7 +10,7 @@ import { container } from "tsyringe"
 import { z } from "zod"
 
 const zProps = z.object({
-  relatedUserId: z.string(),
+  recipientId: z.string(),
   skip: z.number(),
 })
 
@@ -19,7 +19,7 @@ const getMessages = resolver.pipe(
   resolver.authorize(),
   (props, ctx) => {
     return {
-      relatedUserId: new Id(props.relatedUserId),
+      recipientId: new Id(props.recipientId),
       skip: props.skip,
       take: 40,
       userId: new Id(ctx.session.userId),
@@ -29,7 +29,7 @@ const getMessages = resolver.pipe(
     const findUserMessagesQuery = container.resolve(FindUserMessagesQuery)
 
     const messages = await findUserMessagesQuery.execute({
-      relatedUserId: props.relatedUserId,
+      relatedUserId: props.recipientId,
       skip: props.skip,
       userId: props.userId,
     })
@@ -52,7 +52,7 @@ const getMessages = resolver.pipe(
     if (hasUnreadMessages) {
       await markMessagesAsReadService.execute({
         userId: props.userId,
-        relatedUserId: props.relatedUserId,
+        relatedUserId: props.recipientId,
       })
     }
 
@@ -60,7 +60,7 @@ const getMessages = resolver.pipe(
 
     const count = await countGroupMessagesQuery.execute({
       userId: props.userId,
-      relatedUserId: props.relatedUserId,
+      relatedUserId: props.recipientId,
     })
 
     if (count instanceof Error) {

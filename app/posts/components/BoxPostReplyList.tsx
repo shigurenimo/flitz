@@ -11,7 +11,7 @@ export const BoxPostReplyList: VFC = () => {
     getPostReplies,
     (page = { skip: 0, replyId: postId }) => page,
     {
-      getNextPageParam: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
       refetchInterval: 1000 * 2 ** 4,
     }
   )

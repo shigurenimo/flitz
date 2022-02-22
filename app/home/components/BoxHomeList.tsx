@@ -12,7 +12,7 @@ export const BoxHomeList: VFC = () => {
     getReferences,
     (page = { skip: 0 }) => page,
     {
-      getNextPageParam: (lastGroup) => lastGroup.nextPage,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
       refetchInterval: 1000 * 2 ** 3,
     }
   )
