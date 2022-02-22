@@ -2,7 +2,7 @@ import { captureException } from "@sentry/node"
 import db from "db"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
+import { AppUserEmbeddedConverter } from "integrations/infrastructure"
 import { prismaMessageThread } from "integrations/infrastructure/types"
 import { AppMessageThread } from "integrations/interface/types"
 import { injectable } from "tsyringe"
@@ -14,7 +14,7 @@ type Props = {
 
 @injectable()
 export class FindMessageThreadsQuery {
-  constructor(private queryConverter: QueryConverter) {}
+  constructor(private appUserEmbeddedConverter: AppUserEmbeddedConverter) {}
 
   async execute(props: Props): Promise<AppMessageThread[] | Error> {
     try {
@@ -59,7 +59,7 @@ export class FindMessageThreadsQuery {
         text: message.text,
         userId: message.userId,
       },
-      relatedUser: this.queryConverter.toUserEmbedded(
+      relatedUser: this.appUserEmbeddedConverter.fromPrisma(
         prismaMessageThread.relatedUser
       ),
     }

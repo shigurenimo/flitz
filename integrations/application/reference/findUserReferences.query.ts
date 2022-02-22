@@ -2,7 +2,7 @@ import { captureException } from "@sentry/node"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters/query.converter"
+import { AppPostConverter } from "integrations/infrastructure"
 import { PrismaReference } from "integrations/infrastructure/types"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
 import { AppFolloweePost } from "integrations/interface/types"
@@ -15,7 +15,7 @@ type Props = {
 
 @injectable()
 export class FindUserReferenceQuery {
-  constructor(private queryConverter: QueryConverter) {}
+  constructor(private appPostConverter: AppPostConverter) {}
 
   async execute(props: Props) {
     try {
@@ -55,7 +55,7 @@ export class FindUserReferenceQuery {
 
   toFolloweePost(feed: PrismaReference): AppFolloweePost {
     return {
-      ...this.queryConverter.toPost(feed.post),
+      ...this.appPostConverter.fromPrisma(feed.post),
       isRead: feed.isRead,
     }
   }

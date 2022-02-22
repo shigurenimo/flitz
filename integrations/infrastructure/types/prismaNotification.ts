@@ -1,6 +1,6 @@
 import { File, Friendship, Like, Notification, Post } from "db"
-import { PrismaEmbeddedUser } from "integrations/infrastructure/types/prismaEmbeddedUser"
-import { PrismaPost } from "integrations/infrastructure/types/prismaPost"
+import { PrismaQuotation } from "integrations/infrastructure/types/prismaQuotation"
+import { PrismaUserEmbedded } from "integrations/infrastructure/types/prismaUserEmbedded"
 
 export type PrismaNotification = Notification & {
   friendship: PrismaNotificationFriendship | null
@@ -9,7 +9,7 @@ export type PrismaNotification = Notification & {
 }
 
 type PrismaNotificationFriendship = Friendship & {
-  follower: PrismaEmbeddedUser
+  follower: PrismaUserEmbedded
 }
 
 type PrismaNotificationLike = Like & {
@@ -21,15 +21,15 @@ type PrismaNotificationLike = Like & {
     replies: Post[]
     reply: Post | null
   }
-  user: PrismaEmbeddedUser
+  user: PrismaUserEmbedded
 }
 
 type PrismaNotificationPost = Post & {
   files: File[]
   likes: Like[]
-  quotation: PrismaPost | null
+  quotation: PrismaQuotation | null
   quotations: Post[]
   replies: Post[]
-  reply: PrismaPost | null
-  user: PrismaEmbeddedUser
+  reply: PrismaQuotation | null
+  user: PrismaUserEmbedded
 }

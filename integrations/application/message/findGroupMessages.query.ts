@@ -3,7 +3,7 @@ import { NotFoundError } from "blitz"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
+import { AppUserEmbeddedConverter } from "integrations/infrastructure"
 import { PrismaMessage } from "integrations/infrastructure/types/prismaMessage"
 import { AppMessage } from "integrations/interface/types"
 import { injectable } from "tsyringe"
@@ -15,7 +15,7 @@ type Props = {
 
 @injectable()
 export class FindGroupMessagesQuery {
-  constructor(private queryConverter: QueryConverter) {}
+  constructor(private appUserEmbeddedConverter: AppUserEmbeddedConverter) {}
 
   async execute(props: Props) {
     try {
@@ -58,7 +58,7 @@ export class FindGroupMessagesQuery {
       isRead: prismaMessage.isRead,
       text: prismaMessage.text,
       updatedAt: prismaMessage.updatedAt,
-      user: this.queryConverter.toUserEmbedded(prismaMessage.user),
+      user: this.appUserEmbeddedConverter.fromPrisma(prismaMessage.user),
     }
   }
 }

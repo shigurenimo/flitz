@@ -1,9 +1,9 @@
 import { Reference } from "db"
-import { PrismaPost } from "integrations/infrastructure/types/prismaPost"
+import { PrismaQuotation } from "integrations/infrastructure/types/prismaQuotation"
 
 export type PrismaReference = Reference & {
-  post: PrismaPost & {
-    quotation: PrismaPost | null
-    reply: PrismaPost | null
+  post: PrismaQuotation & {
+    quotation: PrismaQuotation | null
+    reply: PrismaQuotation | null
   }
 }

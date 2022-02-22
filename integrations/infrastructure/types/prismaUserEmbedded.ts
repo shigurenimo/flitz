@@ -1,5 +1,5 @@
 import { File, User } from "db"
 
-export type PrismaEmbeddedUser = User & {
+export type PrismaUserEmbedded = User & {
   iconImage: File | null
 }

@@ -2,7 +2,10 @@ import { captureException } from "@sentry/node"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
+import {
+  AppPostConverter,
+  AppUserEmbeddedConverter,
+} from "integrations/infrastructure/converters"
 import { PrismaNotification } from "integrations/infrastructure/types/prismaNotification"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
 import { AppNotification } from "integrations/interface/types"
@@ -15,7 +18,10 @@ type Props = {
 
 @injectable()
 export class FindUserNotificationsQuery {
-  constructor(private queryConverter: QueryConverter) {}
+  constructor(
+    private appPostConverter: AppPostConverter,
+    private appUserEmbeddedConverter: AppUserEmbeddedConverter
+  ) {}
 
   async execute(props: Props) {
     try {
@@ -83,7 +89,7 @@ export class FindUserNotificationsQuery {
         createdAt: prismaNotification.createdAt,
         type: "FOLLOW",
         isRead: prismaNotification.isRead,
-        embedded: this.queryConverter.toUserEmbedded(
+        embedded: this.appUserEmbeddedConverter.fromPrisma(
           prismaNotification.friendship.follower
         ),
       }
@@ -100,7 +106,7 @@ export class FindUserNotificationsQuery {
           id: prismaNotification.like.post.id,
           createdAt: prismaNotification.like.post.createdAt,
           text: prismaNotification.like.post.text || null,
-          user: this.queryConverter.toUserEmbedded(
+          user: this.appUserEmbeddedConverter.fromPrisma(
             prismaNotification.like.user
           ),
         },
@@ -114,7 +120,7 @@ export class FindUserNotificationsQuery {
         createdAt: prismaNotification.createdAt,
         type: "POST",
         isRead: prismaNotification.isRead,
-        embedded: this.queryConverter.toPost(prismaNotification.post),
+        embedded: this.appPostConverter.fromPrisma(prismaNotification.post),
       }
     }
 

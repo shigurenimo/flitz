@@ -3,7 +3,8 @@ import { NotFoundError } from "blitz"
 import db from "db"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
+import { PrismaPost } from "integrations/infrastructure"
+import { AppPostConverter } from "integrations/infrastructure/converters"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
 import { injectable } from "tsyringe"
 
@@ -14,11 +15,11 @@ type Props = {
 
 @injectable()
 export class FindPostQuery {
-  constructor(private queryConverter: QueryConverter) {}
+  constructor(private appPostConverter: AppPostConverter) {}
 
   async execute(props: Props) {
     try {
-      const post = await db.post.findUnique({
+      const post: PrismaPost | null = await db.post.findUnique({
         include: {
           files: true,
           likes: props.userId
@@ -41,7 +42,7 @@ export class FindPostQuery {
         return new NotFoundError()
       }
 
-      return this.queryConverter.toPost(post)
+      return this.appPostConverter.fromPrisma(post)
     } catch (error) {
       captureException(error)
 

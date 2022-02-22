@@ -2,8 +2,8 @@ import { captureException } from "@sentry/node"
 import db from "db"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
-import { PrismaPost } from "integrations/infrastructure/types"
+import { AppUserEmbeddedConverter } from "integrations/infrastructure/converters"
+import { PrismaQuotation } from "integrations/infrastructure/types"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
 import { AppQuotation } from "integrations/interface/types"
 import { injectable } from "tsyringe"
@@ -17,7 +17,7 @@ type Props = {
 
 @injectable()
 export class FindUserRepliesQuery {
-  constructor(private queryConverter: QueryConverter) {}
+  constructor(private appUserEmbeddedConverter: AppUserEmbeddedConverter) {}
 
   async execute(props: Props) {
     try {
@@ -43,7 +43,7 @@ export class FindUserRepliesQuery {
     }
   }
 
-  toQuotation(post: PrismaPost): AppQuotation {
+  toQuotation(post: PrismaQuotation): AppQuotation {
     return {
       id: post.id,
       createdAt: post.createdAt,
@@ -55,7 +55,7 @@ export class FindUserRepliesQuery {
       hasQuotation: (post.quotations || []).length > 0,
       hasReply: (post.replies || []).length > 0,
       text: post.text || null,
-      user: this.queryConverter.toUserEmbedded(post.user),
+      user: this.appUserEmbeddedConverter.fromPrisma(post.user),
     }
   }
 }

@@ -1,7 +1,7 @@
 import "reflect-metadata"
 export * from "./account"
 export * from "./friendship"
-export * from "./likes"
+export * from "./like"
 export * from "./message"
 export * from "./notification"
 export * from "./post"

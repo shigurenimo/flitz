@@ -2,7 +2,7 @@ import { captureException } from "@sentry/node"
 import db from "db"
 import { Id, Username } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
+import { AppPostConverter } from "integrations/infrastructure"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
 import { injectable } from "tsyringe"
 
@@ -15,7 +15,7 @@ type Props = {
 
 @injectable()
 export class FindUserLikeQuery {
-  constructor(private prismaConverter: QueryConverter) {}
+  constructor(private appPostConverter: AppPostConverter) {}
 
   async execute(input: Props) {
     try {
@@ -46,7 +46,7 @@ export class FindUserLikeQuery {
       })
 
       return likes.map((like) => {
-        return this.prismaConverter.toPost(like.post)
+        return this.appPostConverter.fromPrisma(like.post)
       })
     } catch (error) {
       captureException(error)

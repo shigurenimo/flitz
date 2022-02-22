@@ -1,6 +1,6 @@
 import { Message } from "db"
-import { PrismaEmbeddedUser } from "integrations/infrastructure/types/prismaEmbeddedUser"
+import { PrismaUserEmbedded } from "integrations/infrastructure/types/prismaUserEmbedded"
 
 export type PrismaMessage = Message & {
-  user: PrismaEmbeddedUser
+  user: PrismaUserEmbedded
 }

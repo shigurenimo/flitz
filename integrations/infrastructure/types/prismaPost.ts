@@ -1,10 +1,6 @@
-import { File, Like, Post } from "db"
-import { PrismaEmbeddedUser } from "integrations/infrastructure/types/prismaEmbeddedUser"
+import { PrismaQuotation } from "integrations/infrastructure/types"
 
-export type PrismaPost = Post & {
-  files: File[]
-  likes: Like[]
-  quotations: Post[]
-  replies: Post[]
-  user: PrismaEmbeddedUser
+export type PrismaPost = PrismaQuotation & {
+  quotation: PrismaQuotation | null
+  reply: PrismaQuotation | null
 }
