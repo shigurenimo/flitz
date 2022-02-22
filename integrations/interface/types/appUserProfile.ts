@@ -1,4 +1,7 @@
-export type AppProfile = {
+/**
+ * プロフィール
+ */
+export type AppUserProfile = {
   id: string
   createdAt: Date
   username: string

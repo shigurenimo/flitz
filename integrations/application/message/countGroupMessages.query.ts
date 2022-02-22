@@ -1,30 +1,30 @@
 import { captureException } from "@sentry/node"
 import db from "db"
-import { Id } from "integrations/domain"
+import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { injectable } from "tsyringe"
 
 type Props = {
   userId: Id
+  relatedUserId: Id
 }
 
 @injectable()
-export class CheckExchangesQuery {
+export class CountGroupMessagesQuery {
   async execute(props: Props) {
     try {
-      const exchange = await db.exchange.findFirst({
+      const count = await db.message.count({
         where: {
-          messages: {
+          threads: {
             some: {
-              isRead: false,
-              userId: { not: props.userId.value },
+              userId: props.userId.value,
+              relatedUserId: props.relatedUserId.value,
             },
           },
-          userId: props.userId.value,
         },
       })
 
-      return exchange !== null
+      return count
     } catch (error) {
       captureException(error)
 

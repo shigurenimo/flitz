@@ -1,7 +1,12 @@
-import { AppNotificationFollow } from "integrations/interface/types/appNotificationFollow"
-import { AppNotificationLike } from "integrations/interface/types/appNotificationLike"
-import { AppNotificationPost } from "integrations/interface/types/appNotificationPost"
+import {
+  AppNotificationFollow,
+  AppNotificationLike,
+  AppNotificationPost,
+} from "integrations/interface/types"
 
+/**
+ * 通知
+ */
 export type AppNotification =
   | AppNotificationFollow
   | AppNotificationLike

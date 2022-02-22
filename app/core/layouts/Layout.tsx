@@ -28,7 +28,9 @@ const Layout: FC<LayoutProps> = (props) => {
         <link href={"https://fonts.gstatic.com"} rel="preconnect" />
         <link href={fontURL} rel={"stylesheet"} />
       </Head>
-      <LayoutAside />
+      <Suspense fallback={null}>
+        <LayoutAside />
+      </Suspense>
       <Stack pl={{ base: 0, md: 56 }}>
         <Container maxW={"4xl"} centerContent w={"full"} px={0}>
           <Suspense fallback={<BoxMainFallback />}>

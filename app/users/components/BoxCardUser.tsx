@@ -2,7 +2,7 @@ import { Badge, Button, HStack, Stack, Text, useToast } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
 import { useRouter } from "blitz"
-import { AppFollower } from "integrations/interface/types/appFollower"
+import { AppFriendship } from "integrations/interface/types/appFriendship"
 import React, { VFC } from "react"
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
   hasAction: boolean
   onFollow: () => Promise<void>
   onUnfollow: () => Promise<void>
-  follower: AppFollower
+  follower: AppFriendship
 }
 
 export const BoxCardUser: VFC<Props> = (props) => {

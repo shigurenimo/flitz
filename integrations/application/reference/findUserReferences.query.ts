@@ -3,7 +3,9 @@ import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { QueryConverter } from "integrations/infrastructure/converters/query.converter"
-import { includeReplyPost } from "integrations/infrastructure/utils/includeReplyPost"
+import { PrismaReference } from "integrations/infrastructure/types"
+import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
+import { AppFolloweePost } from "integrations/interface/types"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -23,10 +25,10 @@ export class FindUserReferenceQuery {
             include: {
               files: true,
               likes: { where: { userId: props.userId.value } },
-              quotation: { include: includeReplyPost(props.userId) },
+              quotation: { include: includePostEmbedded(props.userId) },
               quotations: { where: { userId: props.userId.value } },
               replies: { where: { userId: props.userId.value } },
-              reply: { include: includeReplyPost(props.userId) },
+              reply: { include: includePostEmbedded(props.userId) },
               user: { include: { iconImage: true } },
             },
           },
@@ -38,7 +40,7 @@ export class FindUserReferenceQuery {
       })
 
       return references.map((reference) => {
-        return this.queryConverter.toFeed(reference)
+        return this.toFolloweePost(reference)
       })
     } catch (error) {
       captureException(error)
@@ -48,6 +50,13 @@ export class FindUserReferenceQuery {
       }
 
       return new InternalError()
+    }
+  }
+
+  toFolloweePost(feed: PrismaReference): AppFolloweePost {
+    return {
+      ...this.queryConverter.toPost(feed.post),
+      isRead: feed.isRead,
     }
   }
 }

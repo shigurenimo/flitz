@@ -13,12 +13,14 @@ import {
   NotificationRepository,
   PostRepository,
 } from "integrations/infrastructure"
+import { injectable } from "tsyringe"
 
 type Props = {
   userId: Id
   postId: Id
 }
 
+@injectable()
 export class CreateQuotationService {
   constructor(
     private postRepository: PostRepository,

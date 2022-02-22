@@ -5,23 +5,15 @@ import { InternalError } from "integrations/errors"
 import { injectable } from "tsyringe"
 
 type Props = {
-  userId: Id
-  relatedUserId: Id
+  messageThreadId: Id
 }
 
 @injectable()
-export class CountGroupMessagesQuery {
+export class CountMessagesQuery {
   async execute(props: Props) {
     try {
       const count = await db.message.count({
-        where: {
-          exchanges: {
-            some: {
-              userId: props.userId.value,
-              relatedUserId: props.relatedUserId.value,
-            },
-          },
-        },
+        where: { id: props.messageThreadId.value },
       })
 
       return count

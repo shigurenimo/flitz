@@ -3,7 +3,7 @@ import { NotFoundError } from "blitz"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
+import { AppSetting } from "integrations/interface/types"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -12,8 +12,6 @@ type Props = {
 
 @injectable()
 export class FindUserSettingQuery {
-  constructor(private queryConverter: QueryConverter) {}
-
   /**
    * @deprecated
    * @param props
@@ -21,15 +19,21 @@ export class FindUserSettingQuery {
    */
   async execute(props: Props) {
     try {
-      const setting = await db.setting.findUnique({
+      const prismaSetting = await db.setting.findUnique({
         where: { userId: props.userId.value },
       })
 
-      if (setting === null) {
+      if (prismaSetting === null) {
         return new NotFoundError()
       }
 
-      return this.queryConverter.toSetting(setting)
+      const setting: AppSetting = {
+        ...prismaSetting,
+        fcmToken: prismaSetting.fcmToken?.slice(0, 4) || null,
+        fcmTokenForMobile: prismaSetting.fcmTokenForMobile?.slice(0, 4) || null,
+      }
+
+      return setting
     } catch (error) {
       captureException(error)
 

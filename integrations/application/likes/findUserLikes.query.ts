@@ -3,7 +3,7 @@ import db from "db"
 import { Id, Username } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { QueryConverter } from "integrations/infrastructure/converters"
-import { includeEmbededPost } from "integrations/infrastructure/utils/includeEmbededPost"
+import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -27,14 +27,14 @@ export class FindUserLikeQuery {
               likes: input.userId
                 ? { where: { userId: input.userId.value } }
                 : false,
-              quotation: { include: includeEmbededPost(input.userId) },
+              quotation: { include: includePostEmbedded(input.userId) },
               quotations: input.userId
                 ? { where: { userId: input.userId.value } }
                 : false,
               replies: input.userId
                 ? { where: { userId: input.userId.value } }
                 : false,
-              reply: { include: includeEmbededPost(input.userId) },
+              reply: { include: includePostEmbedded(input.userId) },
               user: { include: { iconImage: true } },
             },
           },
@@ -46,7 +46,7 @@ export class FindUserLikeQuery {
       })
 
       return likes.map((like) => {
-        return this.prismaConverter.toFeedPost(like.post)
+        return this.prismaConverter.toPost(like.post)
       })
     } catch (error) {
       captureException(error)

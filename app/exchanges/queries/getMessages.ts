@@ -26,9 +26,9 @@ const getMessages = resolver.pipe(
     }
   },
   async (props) => {
-    const exchangeMessageQuery = container.resolve(FindUserMessagesQuery)
+    const findUserMessagesQuery = container.resolve(FindUserMessagesQuery)
 
-    const messages = await exchangeMessageQuery.execute({
+    const messages = await findUserMessagesQuery.execute({
       relatedUserId: props.relatedUserId,
       skip: props.skip,
       userId: props.userId,

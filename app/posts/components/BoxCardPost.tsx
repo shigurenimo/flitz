@@ -10,10 +10,10 @@ import { BoxPostImage } from "app/posts/components/BoxPostImage"
 import { BoxPostReply } from "app/posts/components/BoxPostReply"
 import { TextPost } from "app/posts/components/TextPost"
 import { useRouter } from "blitz"
-import { AppFeedPost } from "integrations/interface/types/appFeedPost"
+import { AppPost } from "integrations/interface/types/appPost"
 import React, { VFC } from "react"
 
-type Props = AppFeedPost & { isDisabled: boolean }
+type Props = AppPost & { isDisabled: boolean }
 
 export const BoxCardPost: VFC<Props> = (props) => {
   const router = useRouter()
@@ -30,6 +30,9 @@ export const BoxCardPost: VFC<Props> = (props) => {
     router.push(`/posts/${props.reply?.id}`)
   }
 
+  /**
+   * リポスト（テキストなし）
+   */
   if (props.quotation && props.text === null) {
     return (
       <BoxCard onClick={onClickQuotation}>
@@ -61,6 +64,9 @@ export const BoxCardPost: VFC<Props> = (props) => {
     )
   }
 
+  /**
+   * リポスト（テキストあり）
+   */
   if (props.quotation) {
     return (
       <BoxCard onClick={onCheckPost}>
@@ -90,6 +96,9 @@ export const BoxCardPost: VFC<Props> = (props) => {
     )
   }
 
+  /**
+   * リプライ
+   */
   if (props.reply) {
     return (
       <BoxCard onClick={onCheckReply}>
@@ -118,6 +127,9 @@ export const BoxCardPost: VFC<Props> = (props) => {
     )
   }
 
+  /**
+   * ポスト
+   */
   return (
     <BoxCard onClick={onCheckPost}>
       <HStack align={"start"} spacing={4}>

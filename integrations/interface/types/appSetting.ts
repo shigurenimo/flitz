@@ -1,3 +1,6 @@
+/**
+ * 設定
+ */
 export type AppSetting = {
   discoverableByEmail: boolean
   fcmToken: string | null

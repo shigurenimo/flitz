@@ -3,6 +3,8 @@ import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { QueryConverter } from "integrations/infrastructure/converters"
+import { PrismaMessage } from "integrations/infrastructure/types/prismaMessage"
+import { AppMessage } from "integrations/interface/types"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -17,7 +19,7 @@ export class FindUserMessagesQuery {
 
   async execute(props: Props) {
     try {
-      const messages = await db.message.findMany({
+      const prismaMessages = await db.message.findMany({
         include: {
           user: { include: { iconImage: true } },
         },
@@ -25,14 +27,14 @@ export class FindUserMessagesQuery {
         skip: props.skip,
         take: 20,
         where: {
-          exchanges: {
+          threads: {
             some: { userId: props.userId.value },
           },
         },
       })
 
-      return messages.map((message) => {
-        return this.queryConverter.toUserMessage(message)
+      return prismaMessages.map((prismaMessage) => {
+        return this.toUserMessage(prismaMessage)
       })
     } catch (error) {
       captureException(error)
@@ -42,6 +44,17 @@ export class FindUserMessagesQuery {
       }
 
       return new InternalError()
+    }
+  }
+
+  toUserMessage(prismaMessage: PrismaMessage): AppMessage {
+    return {
+      id: prismaMessage.id,
+      createdAt: prismaMessage.createdAt,
+      isRead: prismaMessage.isRead,
+      text: prismaMessage.text,
+      updatedAt: prismaMessage.updatedAt,
+      user: this.queryConverter.toUserEmbedded(prismaMessage.user),
     }
   }
 }

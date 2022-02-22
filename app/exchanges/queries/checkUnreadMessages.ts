@@ -1,6 +1,6 @@
 import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { CheckExchangesQuery } from "integrations/application"
+import { CheckUnreadMessageThreadQuery } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 
@@ -12,7 +12,7 @@ const checkUnreadMessages = resolver.pipe(
     }
   },
   async (props) => {
-    const checkExchangesQuery = container.resolve(CheckExchangesQuery)
+    const checkExchangesQuery = container.resolve(CheckUnreadMessageThreadQuery)
 
     const existence = await checkExchangesQuery.execute({
       userId: props.userId,

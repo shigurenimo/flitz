@@ -2,10 +2,10 @@ import { Box, HStack } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { RenderFileLoader } from "app/core/components/RenderFileLoader"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
-import { AppProfile } from "integrations/interface/types/appProfile"
+import { AppUserProfile } from "integrations/interface/types/appUserProfile"
 import React, { VFC } from "react"
 
-type Props = AppProfile & {
+type Props = AppUserProfile & {
   headerImageFile: File | null
   iconImageFile: File | null
 }

@@ -1,10 +1,12 @@
-import { AppEmbeddedUser } from "integrations/interface/types/appEmbeddedUser"
-import { AppLikePost } from "integrations/interface/types/appLikePost"
+import { AppPostEmbedded, AppUserEmbedded } from "integrations/interface/types"
 
+/**
+ * 通知（ライク）
+ */
 export type AppNotificationLike = {
   id: string
   createdAt: Date
   type: "LIKE"
   isRead: boolean
-  embedded: AppLikePost & { user: AppEmbeddedUser }
+  embedded: AppPostEmbedded & { user: AppUserEmbedded }
 }

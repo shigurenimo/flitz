@@ -1,7 +1,7 @@
 import { MessageBlock } from "app/exchanges/types/messageBlock"
-import { AppUserMessage } from "integrations/interface/types/appUserMessage"
+import { AppMessage } from "integrations/interface/types/appMessage"
 
-type MessageWithUser = AppUserMessage
+type MessageWithUser = AppMessage
 
 export const useMessageBlocks = (
   messages: MessageWithUser[],

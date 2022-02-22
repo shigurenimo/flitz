@@ -8,7 +8,7 @@ export class MessageRepository {
         id: message.id.value,
         text: message?.text.value,
         user: { connect: { id: message.userId.value } },
-        exchanges: {
+        threads: {
           connectOrCreate: [
             {
               create: {

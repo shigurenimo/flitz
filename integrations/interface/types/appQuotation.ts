@@ -1,6 +1,18 @@
-import { AppEmbeddedUser } from "integrations/interface/types/appEmbeddedUser"
-import { AppPost } from "integrations/interface/types/appPost"
+import { AppUserEmbedded } from "integrations/interface/types"
 
-export type AppQuotation = AppPost & {
-  user: AppEmbeddedUser
+/**
+ * リポスト
+ */
+export type AppQuotation = {
+  id: string
+  createdAt: Date
+  fileIds: string[]
+  likesCount: number
+  quotationsCount: number
+  repliesCount: number
+  hasLike: boolean
+  hasQuotation: boolean
+  hasReply: boolean
+  text: string | null
+  user: AppUserEmbedded
 }

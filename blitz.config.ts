@@ -1,4 +1,5 @@
 import { BlitzConfig, sessionMiddleware, simpleRolesIsAuthorized } from "blitz"
+import packageJSON from "./package.json"
 
 const config: BlitzConfig = {
   middleware: [
@@ -7,6 +8,10 @@ const config: BlitzConfig = {
       isAuthorized: simpleRolesIsAuthorized,
     }),
   ],
+  log: { level: "info" },
+  env: {
+    SENTRY_RELEASE: `flitz@${packageJSON.version}`,
+  },
 }
 
 module.exports = config

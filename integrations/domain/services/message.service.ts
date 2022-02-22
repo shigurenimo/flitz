@@ -1,11 +1,11 @@
 import type { Id } from "integrations/domain/valueObjects"
-import { AppUserMessage } from "integrations/interface/types/appUserMessage"
+import { AppMessage } from "integrations/interface/types/appMessage"
 
 /**
  * メッセージ
  */
 export class MessageService {
-  hasUnreadMessages(input: { messages: AppUserMessage[]; userId: Id }) {
+  hasUnreadMessages(input: { messages: AppMessage[]; userId: Id }) {
     const unreadMessages = input.messages.filter((message) => {
       if (message.user.id === input.userId.value) return false
       return !message.isRead

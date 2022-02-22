@@ -1,3 +1,8 @@
+import { AppQuotation, AppUserEmbedded } from "integrations/interface/types"
+
+/**
+ * ポスト
+ */
 export type AppPost = {
   id: string
   createdAt: Date
@@ -9,4 +14,7 @@ export type AppPost = {
   hasQuotation: boolean
   hasReply: boolean
   text: string | null
+  user: AppUserEmbedded
+  quotation: AppQuotation | null
+  reply: AppQuotation | null
 }

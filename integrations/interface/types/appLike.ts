@@ -1,10 +1,13 @@
-import { AppEmbeddedUser } from "integrations/interface/types/appEmbeddedUser"
+import { AppUserEmbedded } from "integrations/interface/types"
 
+/**
+ * ライク
+ */
 export type AppLike = {
   id: string
   createdAt: Date
   isRead: boolean
   text: string
   updatedAt: Date
-  user: AppEmbeddedUser
+  user: AppUserEmbedded
 }

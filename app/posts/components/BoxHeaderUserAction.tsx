@@ -3,10 +3,10 @@ import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
 import { BoxPostUser } from "app/posts/components/BoxPostUser"
 import { MenuPost } from "app/posts/components/MenuPost"
 import { useSession } from "blitz"
-import { AppEmbeddedUser } from "integrations/interface/types/appEmbeddedUser"
+import { AppUserEmbedded } from "integrations/interface/types/appUserEmbedded"
 import React, { VFC } from "react"
 
-type Props = AppEmbeddedUser
+type Props = AppUserEmbedded
 
 export const BoxHeaderUserAction: VFC<Props> = (props) => {
   const session = useSession()

@@ -13,7 +13,7 @@ const getUser = resolver.pipe(
   resolver.zod(zProps),
   (props, ctx) => {
     return {
-      userId: ctx.session.userId ? new Id(ctx.session.userId) : null,
+      loginId: ctx.session.userId ? new Id(ctx.session.userId) : null,
       username: new Username(props.username),
     }
   },
@@ -22,7 +22,7 @@ const getUser = resolver.pipe(
 
     const user = await findUserByUsernameQuery.execute({
       username: props.username,
-      userId: props.userId,
+      loginId: props.loginId,
     })
 
     if (user instanceof Error) {

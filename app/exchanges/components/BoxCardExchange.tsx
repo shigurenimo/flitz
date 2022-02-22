@@ -3,10 +3,10 @@ import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
 import { BoxExchangeUser } from "app/exchanges/components/BoxExchangeUser"
 import { BoxPostDate } from "app/posts/components/BoxPostDate"
-import { AppUserExchange } from "integrations/interface/types/appExchangeMessage"
+import { AppMessageThread } from "integrations/interface/types/appMessageThread"
 import React, { VFC } from "react"
 
-type Props = AppUserExchange & {
+type Props = AppMessageThread & {
   onClick(): void
 }
 

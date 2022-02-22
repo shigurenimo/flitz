@@ -1,8 +1,8 @@
 import { withSentry } from "app/core/utils/withSentry"
 import { paginate, resolver } from "blitz"
 import {
-  CountExchangesQuery,
-  FindExchangesQuery,
+  CountMessageThreadsQuery,
+  FindMessageThreadsQuery,
 } from "integrations/application"
 import { Id } from "integrations/domain"
 import { container } from "tsyringe"
@@ -21,18 +21,18 @@ const getExchanges = resolver.pipe(
     }
   },
   async (props) => {
-    const findExchangesQuery = container.resolve(FindExchangesQuery)
+    const findMessageThreadsQuery = container.resolve(FindMessageThreadsQuery)
 
-    const exchanges = await findExchangesQuery.execute({
+    const messageThreads = await findMessageThreadsQuery.execute({
       userId: props.userId,
       skip: props.skip,
     })
 
-    if (exchanges instanceof Error) {
-      throw exchanges
+    if (messageThreads instanceof Error) {
+      throw messageThreads
     }
 
-    const countExchangesQuery = container.resolve(CountExchangesQuery)
+    const countExchangesQuery = container.resolve(CountMessageThreadsQuery)
 
     const count = await countExchangesQuery.execute({ userId: props.userId })
 
@@ -47,7 +47,7 @@ const getExchanges = resolver.pipe(
         return count
       },
       async query() {
-        return exchanges
+        return messageThreads
       },
     })
   }

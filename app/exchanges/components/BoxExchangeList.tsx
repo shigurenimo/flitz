@@ -22,7 +22,7 @@ export const BoxExchangeList: VFC = () => {
 
   const page = Number(router.query.page) || 0
 
-  const [{ items: exchanges, hasMore, count }] = usePaginatedQuery(
+  const [{ items: messageThreads, hasMore, count }] = usePaginatedQuery(
     getExchanges,
     { skip: ITEMS_PER_PAGE * page }
   )
@@ -36,11 +36,11 @@ export const BoxExchangeList: VFC = () => {
   }
 
   const onMoveExchangePage = (
-    exchangeId: string,
+    messageThreadId: string,
     relatedUserId: string | null
   ) => {
     if (relatedUserId === null) {
-      router.push(`/exchanges/${exchangeId}`)
+      router.push(`/exchanges/${messageThreadId}`)
       return
     }
 
@@ -57,12 +57,12 @@ export const BoxExchangeList: VFC = () => {
           </Alert>
         </Box>
       )}
-      {exchanges.map((exchange) => (
+      {messageThreads.map((messageThread) => (
         <BoxCardExchange
-          {...exchange}
-          key={exchange.id}
+          {...messageThread}
+          key={messageThread.id}
           onClick={() => {
-            onMoveExchangePage(exchange.id, exchange.relatedUser.id)
+            onMoveExchangePage(messageThread.id, messageThread.relatedUser.id)
           }}
         />
       ))}

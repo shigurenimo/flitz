@@ -1,3 +1,6 @@
+/**
+ * ユーザ
+ */
 export type AppUser = {
   id: string
   createdAt: Date

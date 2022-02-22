@@ -4,10 +4,12 @@ import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { QueryConverter } from "integrations/infrastructure/converters"
+import { PrismaMessage } from "integrations/infrastructure/types/prismaMessage"
+import { AppMessage } from "integrations/interface/types"
 import { injectable } from "tsyringe"
 
 type Props = {
-  exchangeId: Id
+  messageThreadId: Id
   skip: number
 }
 
@@ -17,9 +19,9 @@ export class FindGroupMessagesQuery {
 
   async execute(props: Props) {
     try {
-      const exchange = await db.exchange.findUnique({
+      const prismaMessageThread = await db.messageThread.findUnique({
+        where: { id: props.messageThreadId.value },
         include: {
-          // user: { include: { iconImage: true } },
           messages: {
             orderBy: { createdAt: "desc" },
             take: 20,
@@ -29,15 +31,14 @@ export class FindGroupMessagesQuery {
             },
           },
         },
-        where: { id: props.exchangeId.value },
       })
 
-      if (exchange === null) {
+      if (prismaMessageThread === null) {
         return new NotFoundError()
       }
 
-      return exchange.messages.map((message) => {
-        return this.queryConverter.toUserMessage(message)
+      return prismaMessageThread.messages.map((prismaMessage) => {
+        return this.toUserMessage(prismaMessage)
       })
     } catch (error) {
       captureException(error)
@@ -47,6 +48,17 @@ export class FindGroupMessagesQuery {
       }
 
       return new InternalError()
+    }
+  }
+
+  toUserMessage(prismaMessage: PrismaMessage): AppMessage {
+    return {
+      id: prismaMessage.id,
+      createdAt: prismaMessage.createdAt,
+      isRead: prismaMessage.isRead,
+      text: prismaMessage.text,
+      updatedAt: prismaMessage.updatedAt,
+      user: this.queryConverter.toUserEmbedded(prismaMessage.user),
     }
   }
 }

@@ -3,7 +3,8 @@ import { NotFoundError } from "blitz"
 import db from "db"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
+import { PrismaProfile } from "integrations/infrastructure/types"
+import { AppUserProfile } from "integrations/interface/types"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -12,15 +13,14 @@ type Props = {
 
 @injectable()
 export class FindUserQuery {
-  constructor(private queryConverter: QueryConverter) {}
-
   /**
    * ユーザを取得する
    * @param props
    */
   async execute(props: Props) {
     try {
-      const user = await db.user.findUnique({
+      const prismaUser = await db.user.findUnique({
+        where: { id: props.userId.value },
         include: {
           followers: props
             ? { where: { followerId: props.userId.value } }
@@ -28,14 +28,13 @@ export class FindUserQuery {
           headerImage: true,
           iconImage: true,
         },
-        where: { id: props.userId.value },
       })
 
-      if (user === null) {
+      if (prismaUser === null) {
         return new NotFoundError()
       }
 
-      return this.queryConverter.toProfile(user)
+      return this.toAppUserProfile(prismaUser)
     } catch (error) {
       captureException(error)
 
@@ -44,6 +43,22 @@ export class FindUserQuery {
       }
 
       return new InternalError()
+    }
+  }
+
+  toAppUserProfile(prismaUser: PrismaProfile): AppUserProfile {
+    return {
+      id: prismaUser.id,
+      createdAt: prismaUser.createdAt,
+      username: prismaUser.username,
+      name: prismaUser.name || null,
+      biography: prismaUser.biography,
+      iconImageId: prismaUser.iconImage?.id || null,
+      headerImageId: prismaUser.headerImage?.id || null,
+      siteURL: prismaUser.siteURL,
+      isFollowee: (prismaUser.followers || []).length > 0,
+      followeesCount: prismaUser.followeesCount,
+      followersCount: prismaUser.followersCount,
     }
   }
 }

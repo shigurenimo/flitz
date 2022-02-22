@@ -1,12 +1,13 @@
 import { AppUserEmbedded } from "integrations/interface/types"
 
 /**
- * 通知（フォロー）
+ * メッセージ
  */
-export type AppNotificationFollow = {
+export type AppMessage = {
   id: string
   createdAt: Date
-  type: "FOLLOW"
   isRead: boolean
-  embedded: AppUserEmbedded
+  text: string
+  updatedAt: Date
+  user: AppUserEmbedded
 }

@@ -1,6 +1,6 @@
 import { Id } from "integrations/domain/valueObjects"
 
-export const includeReplyPost = (userId: Id | null) => {
+export const includePostEmbedded = (userId: Id | null) => {
   return {
     files: true,
     likes: userId ? { where: { userId: userId.value } } : false,

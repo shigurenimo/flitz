@@ -16,7 +16,7 @@ export class MarkMessagesAsReadService {
       await db.message.updateMany({
         data: { isRead: true },
         where: {
-          exchanges: {
+          threads: {
             some: {
               userId: props.relatedUserId.value,
               relatedUserId: props.userId.value,

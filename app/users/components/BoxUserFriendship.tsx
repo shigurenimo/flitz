@@ -1,9 +1,9 @@
 import { HStack, Link as LinkText, Stack, Text } from "@chakra-ui/react"
 import { Link } from "blitz"
-import { AppProfile } from "integrations/interface/types/appProfile"
+import { AppUserProfile } from "integrations/interface/types/appUserProfile"
 import React, { VFC } from "react"
 
-type Props = AppProfile
+type Props = AppUserProfile
 
 export const BoxUserFriendship: VFC<Props> = (props) => {
   return (

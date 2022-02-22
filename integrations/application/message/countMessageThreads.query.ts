@@ -9,10 +9,10 @@ type Props = {
 }
 
 @injectable()
-export class CountExchangesQuery {
+export class CountMessageThreadsQuery {
   async execute(props: Props) {
     try {
-      const count = await db.exchange.count({
+      const count = await db.messageThread.count({
         where: { userId: props.userId.value },
       })
 

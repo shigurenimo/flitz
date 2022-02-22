@@ -9,7 +9,7 @@ import { container } from "tsyringe"
 import { z } from "zod"
 
 const zProps = z.object({
-  exchangeId: z.string(),
+  messageThreadId: z.string(),
   skip: z.number(),
 })
 
@@ -18,7 +18,7 @@ const getGroupMessages = resolver.pipe(
   resolver.authorize(),
   (props) => {
     return {
-      exchangeId: new Id(props.exchangeId),
+      messageThreadId: new Id(props.messageThreadId),
       skip: props.skip,
       take: 16,
     }
@@ -28,7 +28,7 @@ const getGroupMessages = resolver.pipe(
 
     const messages = await findGroupMessagesQuery.execute({
       skip: props.skip,
-      exchangeId: props.exchangeId,
+      messageThreadId: props.messageThreadId,
     })
 
     if (messages instanceof Error) {
@@ -38,7 +38,7 @@ const getGroupMessages = resolver.pipe(
     const countMessagesQuery = container.resolve(CountMessagesQuery)
 
     const count = await countMessagesQuery.execute({
-      exchangeId: props.exchangeId,
+      messageThreadId: props.messageThreadId,
     })
 
     if (count instanceof Error) {

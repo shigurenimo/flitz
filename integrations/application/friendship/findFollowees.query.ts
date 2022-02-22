@@ -2,7 +2,8 @@ import { captureException } from "@sentry/node"
 import db from "db"
 import { Id, Username } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import { QueryConverter } from "integrations/infrastructure/converters"
+import { PrismaFollowee } from "integrations/infrastructure/types/prismaFollowee"
+import { AppFriendship } from "integrations/interface/types"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -14,11 +15,13 @@ type Props = {
 
 @injectable()
 export class FindFolloweesQuery {
-  constructor(private queryConverter: QueryConverter) {}
-
   async execute(props: Props) {
     try {
-      const friendships = await db.friendship.findMany({
+      const prismaFriendships = await db.friendship.findMany({
+        orderBy: { createdAt: "desc" },
+        skip: props.skip,
+        take: props.take,
+        where: { follower: { username: props.username.value } },
         include: {
           followee: {
             include: {
@@ -31,14 +34,10 @@ export class FindFolloweesQuery {
             },
           },
         },
-        orderBy: { createdAt: "desc" },
-        skip: props.skip,
-        take: props.take,
-        where: { follower: { username: props.username.value } },
       })
 
-      return friendships.map((friendship) => {
-        return this.queryConverter.toFollowee(friendship)
+      return prismaFriendships.map((prismaFriendship) => {
+        return this.toAppFriendship(prismaFriendship)
       })
     } catch (error) {
       captureException(error)
@@ -48,6 +47,19 @@ export class FindFolloweesQuery {
       }
 
       return new InternalError()
+    }
+  }
+
+  toAppFriendship(prismaFriendship: PrismaFollowee): AppFriendship {
+    return {
+      id: prismaFriendship.id,
+      createdAt: prismaFriendship.createdAt,
+      userId: prismaFriendship.followee.id,
+      username: prismaFriendship.followee.username || null,
+      name: prismaFriendship.followee.name || null,
+      biography: prismaFriendship.followee.biography,
+      isFollowee: prismaFriendship.followee.followeesCount > 0,
+      isFollower: prismaFriendship.followee.followersCount > 0,
     }
   }
 }
