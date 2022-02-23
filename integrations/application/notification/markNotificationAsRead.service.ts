@@ -12,17 +12,17 @@ type Props = {
 export class MarkNotificationAsReadService {
   async execute(props: Props) {
     try {
-      if (props.userId === null) {
-        return null
-      }
-
-      await db.notification.updateMany({
+      const transaction = await db.notification.updateMany({
         data: { isRead: true },
         where: {
           userId: props.userId.value,
           isRead: false,
         },
       })
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       return null
     } catch (error) {

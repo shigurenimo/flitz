@@ -1,3 +1,4 @@
+import { captureException, Severity } from "@sentry/node"
 import admin from "firebase-admin"
 import { Path } from "integrations/domain"
 import { FirebaseAdapter } from "integrations/infrastructure/adapters/firebase.adapter"
@@ -7,16 +8,28 @@ import { injectable } from "tsyringe"
 
 @injectable()
 export class StorageAdapter {
-  constructor(private firebaseRepository: FirebaseAdapter) {}
+  constructor(private firebaseAdapter: FirebaseAdapter) {}
 
   async downloadFile(filePath: Path) {
-    this.firebaseRepository.initialize()
+    try {
+      this.firebaseAdapter.initialize()
 
-    const tmpPath = this.getFilePath(filePath)
+      const tmpPath = this.getFilePath(filePath)
 
-    const bucket = admin.storage().bucket()
+      const bucket = admin.storage().bucket()
 
-    return bucket.file(filePath.value).download({ destination: tmpPath.value })
+      return bucket
+        .file(filePath.value)
+        .download({ destination: tmpPath.value })
+    } catch (error) {
+      captureException(error, { level: Severity.Fatal })
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
+    }
   }
 
   private getFilePath(fileId: Path) {

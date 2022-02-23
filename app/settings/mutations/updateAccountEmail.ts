@@ -21,10 +21,14 @@ const updateAccountEmail = resolver.pipe(
       UpdateAccountEmailService
     )
 
-    await updateAccountEmailService.execute({
+    const transaction = await updateAccountEmailService.execute({
       email: props.email,
       userId: props.userId,
     })
+
+    if (transaction instanceof Error) {
+      throw transaction
+    }
 
     return null
   }

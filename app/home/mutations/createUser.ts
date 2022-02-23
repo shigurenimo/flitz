@@ -17,7 +17,6 @@ const createUser = resolver.pipe(
     const signUpService = container.resolve(SignUpService)
 
     const user = await signUpService.execute({
-      session: ctx.session,
       password: props.password,
       email: props.email,
     })

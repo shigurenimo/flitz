@@ -20,9 +20,6 @@ export class FindUserMessagesQuery {
   async execute(props: Props) {
     try {
       const prismaMessages = await db.message.findMany({
-        include: {
-          user: { include: { iconImage: true } },
-        },
         orderBy: { createdAt: "desc" },
         skip: props.skip,
         take: 20,
@@ -30,6 +27,9 @@ export class FindUserMessagesQuery {
           threads: {
             some: { userId: props.userId.value },
           },
+        },
+        include: {
+          user: { include: { iconImage: true } },
         },
       })
 

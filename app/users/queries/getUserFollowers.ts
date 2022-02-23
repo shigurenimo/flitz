@@ -15,12 +15,14 @@ const zProps = z.object({
 
 const getUserFollowers = resolver.pipe(
   resolver.zod(zProps),
-  (input, ctx) => ({
-    skip: input.skip,
-    take: 40,
-    userId: ctx.session.userId ? new Id(ctx.session.userId) : null,
-    username: new Username(input.username),
-  }),
+  (input, ctx) => {
+    return {
+      skip: input.skip,
+      take: 40,
+      userId: ctx.session.userId ? new Id(ctx.session.userId) : null,
+      username: new Username(input.username),
+    }
+  },
   async (props) => {
     const findFollowersQuery = container.resolve(FindFollowersQuery)
 
@@ -37,7 +39,9 @@ const getUserFollowers = resolver.pipe(
 
     const countFollowersQuery = container.resolve(CountFollowersQuery)
 
-    const count = await countFollowersQuery.count({ username: props.username })
+    const count = await countFollowersQuery.execute({
+      username: props.username,
+    })
 
     if (count instanceof Error) {
       throw count

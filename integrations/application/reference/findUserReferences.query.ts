@@ -20,6 +20,10 @@ export class FindUserReferenceQuery {
   async execute(props: Props) {
     try {
       const references = await db.reference.findMany({
+        orderBy: { createdAt: "desc" },
+        skip: props.skip,
+        take: 16,
+        where: { userId: props.userId.value },
         include: {
           post: {
             include: {
@@ -33,10 +37,6 @@ export class FindUserReferenceQuery {
             },
           },
         },
-        orderBy: { createdAt: "desc" },
-        skip: props.skip,
-        take: 16,
-        where: { userId: props.userId.value },
       })
 
       return references.map((reference) => {

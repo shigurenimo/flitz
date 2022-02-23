@@ -16,9 +16,9 @@ const getAccount = resolver.pipe(
     }
   },
   async (props) => {
-    const findUserQuery = container.resolve(FindUserSimpleQuery)
+    const findUserSimpleQuery = container.resolve(FindUserSimpleQuery)
 
-    const user = await findUserQuery.execute(props.userId)
+    const user = await findUserSimpleQuery.execute(props.userId)
 
     if (user instanceof Error) {
       throw user

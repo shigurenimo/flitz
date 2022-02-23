@@ -20,6 +20,7 @@ export class FindPostQuery {
   async execute(props: Props) {
     try {
       const post: PrismaPost | null = await db.post.findUnique({
+        where: { id: props.postId.value },
         include: {
           files: true,
           likes: props.userId
@@ -35,10 +36,11 @@ export class FindPostQuery {
           reply: { include: includePostEmbedded(props.userId) },
           user: { include: { iconImage: true } },
         },
-        where: { id: props.postId.value },
       })
 
       if (post === null) {
+        captureException("データが見つからなかった。")
+
         return new NotFoundError()
       }
 

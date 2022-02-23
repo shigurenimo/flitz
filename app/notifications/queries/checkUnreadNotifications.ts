@@ -16,11 +16,11 @@ const checkUnreadNotifications = resolver.pipe(
     }
   },
   async (props) => {
-    const hasUnreadNotificationQuery = container.resolve(
+    const checkUnreadUserNotificationQuery = container.resolve(
       CheckUnreadUserNotificationQuery
     )
 
-    const hasUnread = await hasUnreadNotificationQuery.execute({
+    const hasUnread = await checkUnreadUserNotificationQuery.execute({
       userId: props.userId,
     })
 

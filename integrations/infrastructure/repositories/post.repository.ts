@@ -1,29 +1,39 @@
-import { captureException } from "@sentry/node"
+import { captureException, Severity } from "@sentry/node"
 import db from "db"
 import { Id, PostEntity, PostText } from "integrations/domain"
 
 export class PostRepository {
   async find(id: Id) {
-    const post = await db.post.findUnique({
-      where: { id: id.value },
-      include: { files: true },
-    })
+    try {
+      const post = await db.post.findUnique({
+        where: { id: id.value },
+        include: { files: true },
+      })
 
-    if (post === null) {
-      return null
+      if (post === null) {
+        return null
+      }
+
+      return new PostEntity({
+        id: new Id(post.id),
+        quotationId: post.quotationId ? new Id(post.quotationId) : null,
+        quotationsCount: post.quotationsCount,
+        repliesCount: post.repliesCount,
+        replyId: post.replyId ? new Id(post.replyId) : null,
+        text: post.text ? new PostText(post.text) : null,
+        userId: new Id(post.userId),
+        fileIds: post.files.map((file) => new Id(file.id)),
+        followerIds: [],
+      })
+    } catch (error) {
+      captureException(error, { level: Severity.Fatal })
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
     }
-
-    return new PostEntity({
-      id: new Id(post.id),
-      quotationId: post.quotationId ? new Id(post.quotationId) : null,
-      quotationsCount: post.quotationsCount,
-      repliesCount: post.repliesCount,
-      replyId: post.replyId ? new Id(post.replyId) : null,
-      text: post.text ? new PostText(post.text) : null,
-      userId: new Id(post.userId),
-      fileIds: post.files.map((file) => new Id(file.id)),
-      followerIds: [],
-    })
   }
 
   async upsert(post: PostEntity) {
@@ -90,7 +100,6 @@ export class PostRepository {
       }
 
       if (post.replyId === null && post.quotationId === null) {
-        console.log("OK?")
         await db.post.create({
           data: {
             id: post.id.value,
@@ -132,8 +141,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      console.log("error", error)
-      captureException(error)
+      captureException(error, { level: Severity.Fatal })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -144,97 +152,127 @@ export class PostRepository {
   }
 
   async upsertReply(post: PostEntity) {
-    if (post.replyId === null) {
-      return null
-    }
+    try {
+      if (post.replyId === null) {
+        return new Error("リプライ先が存在しない。")
+      }
 
-    await db.post.update({
-      data: {
-        replies: {
-          create: {
-            id: post.id.value,
-            text: post.text?.value,
-            userId: post.userId.value,
-            references: {
-              create: [
-                {
-                  isRead: true,
-                  userId: post.userId.value,
-                },
-                ...post.followerIds.map((followerId) => {
-                  return {
-                    isRead: false,
-                    userId: followerId.value,
-                  }
-                }),
-              ],
+      await db.post.update({
+        include: { replies: { where: { userId: post.userId.value } } },
+        where: { id: post.replyId.value },
+        data: {
+          replies: {
+            create: {
+              id: post.id.value,
+              text: post.text?.value,
+              userId: post.userId.value,
+              references: {
+                create: [
+                  {
+                    isRead: true,
+                    userId: post.userId.value,
+                  },
+                  ...post.followerIds.map((followerId) => {
+                    return {
+                      isRead: false,
+                      userId: followerId.value,
+                    }
+                  }),
+                ],
+              },
             },
           },
+          repliesCount: { increment: 1 },
         },
-        repliesCount: { increment: 1 },
-      },
-      include: { replies: { where: { userId: post.userId.value } } },
-      where: { id: post.replyId.value },
-    })
+      })
 
-    // await db.$transaction([
-    //   ...friendships.map((friendship) => {
-    //     return db.reference.create({
-    //       data: {
-    //         post: { connect: { id: reply.id } },
-    //         user: { connect: { id: friendship.followerId } },
-    //       },
-    //     })
-    //   }),
-    // ])
+      // await db.$transaction([
+      //   ...friendships.map((friendship) => {
+      //     return db.reference.create({
+      //       data: {
+      //         post: { connect: { id: reply.id } },
+      //         user: { connect: { id: friendship.followerId } },
+      //       },
+      //     })
+      //   }),
+      // ])
 
-    return null
+      return null
+    } catch (error) {
+      captureException(error, { level: Severity.Fatal })
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
+    }
   }
 
   async upsertQuotation(post: PostEntity) {
-    if (post.quotationId === null) {
-      return null
-    }
+    try {
+      if (post.quotationId === null) {
+        return new Error()
+      }
 
-    await db.post.update({
-      data: {
-        quotations: {
-          create: {
-            id: post.id.value,
-            userId: post.userId.value,
-            references: {
-              create: [
-                {
-                  isRead: true,
-                  userId: post.userId.value,
-                },
-                ...post.followerIds.map((followerId) => {
-                  return {
-                    isRead: false,
-                    userId: followerId.value,
-                  }
-                }),
-              ],
+      await db.post.update({
+        where: { id: post.quotationId.value },
+        include: { quotations: { where: { userId: post.userId.value } } },
+        data: {
+          quotations: {
+            create: {
+              id: post.id.value,
+              userId: post.userId.value,
+              references: {
+                create: [
+                  {
+                    isRead: true,
+                    userId: post.userId.value,
+                  },
+                  ...post.followerIds.map((followerId) => {
+                    return {
+                      isRead: false,
+                      userId: followerId.value,
+                    }
+                  }),
+                ],
+              },
             },
           },
+          quotationsCount: { increment: 1 },
         },
-        quotationsCount: { increment: 1 },
-      },
-      include: { quotations: { where: { userId: post.userId.value } } },
-      where: { id: post.quotationId.value },
-    })
+      })
 
-    return null
+      return null
+    } catch (error) {
+      captureException(error, { level: Severity.Fatal })
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
+    }
   }
 
   async delete(post: PostEntity) {
-    await db.$transaction([
-      db.post.delete({ where: { id: post.id.value } }),
-      db.bookmark.deleteMany({ where: { postId: post.id.value } }),
-      db.like.deleteMany({ where: { postId: post.id.value } }),
-      db.reference.deleteMany({ where: { postId: post.id.value } }),
-    ])
+    try {
+      await db.$transaction([
+        db.post.delete({ where: { id: post.id.value } }),
+        db.bookmark.deleteMany({ where: { postId: post.id.value } }),
+        db.like.deleteMany({ where: { postId: post.id.value } }),
+        db.reference.deleteMany({ where: { postId: post.id.value } }),
+      ])
 
-    return null
+      return null
+    } catch (error) {
+      captureException(error, { level: Severity.Fatal })
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
+    }
   }
 }

@@ -20,7 +20,6 @@ const updateUsername = resolver.pipe(
     const updateUsernameService = container.resolve(UpdateUsernameService)
 
     const newUser = await updateUsernameService.execute({
-      session: ctx.session,
       username: props.username,
       userId: props.userId,
     })

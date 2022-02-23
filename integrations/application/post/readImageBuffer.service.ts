@@ -1,4 +1,5 @@
 import { captureException } from "@sentry/node"
+import { NotFoundError } from "blitz"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import {
@@ -24,15 +25,25 @@ export class ReadImageBufferService {
     try {
       const file = await this.fileRepository.find(props.fileId)
 
-      if (file === null) {
-        return new Error("画像が存在しません。")
+      if (file instanceof Error) {
+        return new InternalError()
       }
 
-      const filePath = file.path
+      if (file === null) {
+        return new NotFoundError("画像が存在しません。")
+      }
 
-      await this.storageAdapter.downloadFileFromCloudStorage(filePath)
+      const downloadFile = await this.storageAdapter.downloadFile(file.path)
 
-      const buffer = await this.imageAdapter.readImage(filePath)
+      if (downloadFile instanceof Error) {
+        return new InternalError()
+      }
+
+      const buffer = await this.imageAdapter.readImage(file.path)
+
+      if (buffer instanceof Error) {
+        return new InternalError()
+      }
 
       return buffer
     } catch (error) {

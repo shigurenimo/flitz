@@ -31,6 +31,8 @@ export class FindUserQuery {
       })
 
       if (prismaUser === null) {
+        captureException("データが見つからなかった。")
+
         return new NotFoundError()
       }
 

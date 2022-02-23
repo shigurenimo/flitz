@@ -32,13 +32,23 @@ export class CreateQuotationService {
     try {
       const post = await this.postRepository.find(props.postId)
 
+      if (post instanceof Error) {
+        return new InternalError()
+      }
+
       if (post === null) {
-        throw new NotFoundError()
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
       }
 
       const friendships = await this.friendshipRepository.findManyByFolloweeId(
         props.userId
       )
+
+      if (friendships instanceof Error) {
+        return new InternalError()
+      }
 
       const quotation = new PostEntity({
         fileIds: [],
@@ -54,7 +64,11 @@ export class CreateQuotationService {
         }),
       })
 
-      await this.postRepository.upsert(quotation)
+      const transaction = await this.postRepository.upsert(quotation)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       const notification = new NotificationEntity({
         friendshipId: null,
@@ -67,7 +81,12 @@ export class CreateQuotationService {
         userId: post.userId,
       })
 
+      /**
+       * 失敗しても例外は返さない
+       */
       await this.notificationRepository.upsert(notification)
+
+      return null
     } catch (error) {
       captureException(error)
 

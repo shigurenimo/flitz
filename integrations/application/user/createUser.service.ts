@@ -1,5 +1,4 @@
 import { captureException } from "@sentry/node"
-import { SessionContext } from "blitz"
 import {
   Email,
   HashedPasswordFactory,
@@ -15,7 +14,6 @@ import { SettingRepository, UserRepository } from "integrations/infrastructure"
 import { injectable } from "tsyringe"
 
 type Props = {
-  session: SessionContext
   password: Password
   email: Email
 }
@@ -27,6 +25,11 @@ export class SignUpService {
     private settingRepository: SettingRepository
   ) {}
 
+  /**
+   * ユーザーを作成する
+   * @param props
+   * @returns
+   */
   async execute(props: Props) {
     try {
       const hashedPassword = await HashedPasswordFactory.fromPassword(
@@ -49,10 +52,10 @@ export class SignUpService {
         settingId: settingId,
       })
 
-      const upsertUser = await this.userRepository.upsert(user)
+      const transactionUser = await this.userRepository.upsert(user)
 
-      if (upsertUser instanceof Error) {
-        return upsertUser
+      if (transactionUser instanceof Error) {
+        return new InternalError()
       }
 
       const setting = new SettingEntity({
@@ -68,10 +71,10 @@ export class SignUpService {
         userId: userId,
       })
 
-      const upsertSetting = await this.settingRepository.upsert(setting)
+      const transactionSetting = await this.settingRepository.upsert(setting)
 
-      if (upsertSetting instanceof Error) {
-        return upsertSetting
+      if (transactionSetting instanceof Error) {
+        return new InternalError()
       }
 
       return user

@@ -34,13 +34,21 @@ export class CreateReplyService {
     try {
       const post = await this.postRepository.find(props.postId)
 
+      if (post instanceof Error) {
+        return new InternalError()
+      }
+
       if (post === null) {
-        throw new NotFoundError()
+        return new NotFoundError()
       }
 
       const friendships = await this.friendshipRepository.findManyByFolloweeId(
         props.userId
       )
+
+      if (friendships instanceof Error) {
+        return new InternalError()
+      }
 
       const reply = new PostEntity({
         fileIds: [],
@@ -56,7 +64,11 @@ export class CreateReplyService {
         }),
       })
 
-      await this.postRepository.upsert(reply)
+      const transaction = await this.postRepository.upsert(reply)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       const notification = new NotificationEntity({
         friendshipId: null,
@@ -69,6 +81,9 @@ export class CreateReplyService {
         userId: post.userId,
       })
 
+      /**
+       * 失敗しても例外は返さない
+       */
       await this.notificationRepository.upsert(notification)
     } catch (error) {
       captureException(error)

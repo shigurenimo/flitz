@@ -18,11 +18,23 @@ export class DeletePostLikeService {
     try {
       const like = await this.likeRepository.find(props.userId, props.postId)
 
-      if (like === null) {
-        throw new NotFoundError()
+      if (like instanceof Error) {
+        return new InternalError()
       }
 
-      await this.likeRepository.delete(like)
+      if (like === null) {
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
+      }
+
+      const transaction = await this.likeRepository.delete(like)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
+
+      return null
     } catch (error) {
       captureException(error)
 

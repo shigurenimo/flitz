@@ -1,5 +1,5 @@
 import { captureException } from "@sentry/node"
-import { AuthenticationError, NotFoundError, SecurePassword } from "blitz"
+import { AuthenticationError, SecurePassword } from "blitz"
 import { Email, HashedPassword, Password } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { UserRepository } from "integrations/infrastructure"
@@ -23,8 +23,8 @@ export class LoginService {
     try {
       const user = await this.userRepository.findByEmail(props.email)
 
-      if (user === null) {
-        return new NotFoundError("ユーザーが存在しません")
+      if (user instanceof Error) {
+        return new InternalError()
       }
 
       const result = await SecurePassword.verify(

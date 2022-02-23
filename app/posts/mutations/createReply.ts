@@ -18,11 +18,15 @@ const createReply = resolver.pipe(
   async (props) => {
     const createReplyService = container.resolve(CreateReplyService)
 
-    await createReplyService.execute({
+    const transaction = await createReplyService.execute({
       postId: props.postId,
       text: props.text,
       userId: props.userId,
     })
+
+    if (transaction instanceof Error) {
+      throw transaction
+    }
 
     return null
   }

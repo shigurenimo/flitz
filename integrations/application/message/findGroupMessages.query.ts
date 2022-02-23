@@ -34,6 +34,8 @@ export class FindGroupMessagesQuery {
       })
 
       if (prismaMessageThread === null) {
+        captureException("データが見つからなかった。")
+
         return new NotFoundError()
       }
 

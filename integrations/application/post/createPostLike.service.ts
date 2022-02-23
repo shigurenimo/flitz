@@ -32,8 +32,14 @@ export class CreatePostLikeService {
     try {
       const post = await this.postRepository.find(props.postId)
 
+      if (post instanceof Error) {
+        return new InternalError()
+      }
+
       if (post === null) {
-        throw new NotFoundError()
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
       }
 
       const like = new LikeEntity({
@@ -42,7 +48,11 @@ export class CreatePostLikeService {
         userId: props.userId,
       })
 
-      await this.likeRepository.upsert(like)
+      const transaction = await this.likeRepository.upsert(like)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       const notification = new NotificationEntity({
         friendshipId: null,
@@ -55,6 +65,9 @@ export class CreatePostLikeService {
         userId: post.userId,
       })
 
+      /**
+       * 失敗しても例外は返さない
+       */
       await this.notificationRepository.upsert(notification)
 
       return null

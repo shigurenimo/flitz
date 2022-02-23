@@ -14,22 +14,28 @@ type Props = {
 export class TestNotificationService {
   constructor(
     private settingRepository: SettingRepository,
-    private firebaseAdapterService: FirebaseAdapter
+    private firebaseAdapter: FirebaseAdapter
   ) {}
 
   async execute(props: Props) {
     try {
       const setting = await this.settingRepository.findByUserId(props.userId)
 
+      if (setting instanceof Error) {
+        return new InternalError()
+      }
+
       if (setting === null) {
-        throw new NotFoundError()
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
       }
 
       if (setting === null || setting.fcmToken === null) {
-        throw new Error("")
+        return new InternalError("FCMトークンが存在しないので送信できない")
       }
 
-      this.firebaseAdapterService.initialize()
+      this.firebaseAdapter.initialize()
 
       await admin.messaging().sendToDevice(setting.fcmToken, {
         notification: {

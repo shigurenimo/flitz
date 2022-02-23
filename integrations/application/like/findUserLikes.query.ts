@@ -20,6 +20,10 @@ export class FindUserLikeQuery {
   async execute(input: Props) {
     try {
       const likes = await db.like.findMany({
+        orderBy: { createdAt: "desc" },
+        skip: input.skip,
+        take: input.take,
+        where: { user: { username: input.username.value } },
         include: {
           post: {
             include: {
@@ -39,10 +43,6 @@ export class FindUserLikeQuery {
             },
           },
         },
-        orderBy: { createdAt: "desc" },
-        skip: input.skip,
-        take: input.take,
-        where: { user: { username: input.username.value } },
       })
 
       return likes.map((like) => {

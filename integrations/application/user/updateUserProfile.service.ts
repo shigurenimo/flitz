@@ -1,5 +1,5 @@
 import { captureException } from "@sentry/node"
-import { NotFoundError, SessionContext } from "blitz"
+import { NotFoundError } from "blitz"
 import { Id, Name, ShortText } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { UserRepository } from "integrations/infrastructure"
@@ -11,19 +11,29 @@ type Props = {
   userId: Id
   biography: ShortText
   name: Name
-  session: SessionContext
 }
 
 @injectable()
 export class UpdateUserProfileService {
   constructor(private userRepository: UserRepository) {}
 
+  /**
+   * ユーザのプロフィールを更新する
+   * @param props
+   * @returns
+   */
   async execute(props: Props) {
     try {
       const user = await this.userRepository.find(props.userId)
 
+      if (user instanceof Error) {
+        return new InternalError()
+      }
+
       if (user === null) {
-        throw new NotFoundError()
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
       }
 
       const newUser = user
@@ -32,7 +42,11 @@ export class UpdateUserProfileService {
         .updateName(props.name)
         .updateBiography(props.biography)
 
-      await this.userRepository.upsert(newUser)
+      const transaction = await this.userRepository.upsert(newUser)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       return newUser
     } catch (error) {

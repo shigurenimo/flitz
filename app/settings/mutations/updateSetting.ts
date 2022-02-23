@@ -16,14 +16,16 @@ const zUpdateSettingMutation = z.object({
 const updateSetting = resolver.pipe(
   resolver.zod(zUpdateSettingMutation),
   resolver.authorize(),
-  (props, ctx) => ({
-    fcmToken: props.fcmToken || null,
-    fcmTokenForMobile: props.fcmTokenForMobile || null,
-    subscribeMessage: props.subscribeMessage || false,
-    subscribePostLike: props.subscribePostLike || false,
-    subscribePostQuotation: props.subscribePostQuotation || false,
-    userId: new Id(ctx.session.userId),
-  }),
+  (props, ctx) => {
+    return {
+      fcmToken: props.fcmToken || null,
+      fcmTokenForMobile: props.fcmTokenForMobile || null,
+      subscribeMessage: props.subscribeMessage || false,
+      subscribePostLike: props.subscribePostLike || false,
+      subscribePostQuotation: props.subscribePostQuotation || false,
+      userId: new Id(ctx.session.userId),
+    }
+  },
   async (props) => {
     const updateSettingService = container.resolve(UpdateSettingService)
 

@@ -34,7 +34,11 @@ export class CreateFileService {
         path: new Path(props.fileId.value),
       })
 
-      await this.fileRepository.upsert(file)
+      const transaction = await this.fileRepository.upsert(file)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       return null
     } catch (error) {

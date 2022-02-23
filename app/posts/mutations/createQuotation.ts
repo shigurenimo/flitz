@@ -17,10 +17,14 @@ const createQuotation = resolver.pipe(
   async (props) => {
     const createQuotationService = container.resolve(CreateQuotationService)
 
-    await createQuotationService.execute({
+    const transaction = await createQuotationService.execute({
       postId: props.postId,
       userId: props.userId,
     })
+
+    if (transaction instanceof Error) {
+      throw transaction
+    }
 
     return null
   }

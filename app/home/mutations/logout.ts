@@ -4,10 +4,6 @@ import { resolver } from "blitz"
 const logout = resolver.pipe(resolver.authorize(), async (_, ctx) => {
   await ctx.session.$revoke()
 
-  if (logout instanceof Error) {
-    throw logout
-  }
-
   return null
 })
 

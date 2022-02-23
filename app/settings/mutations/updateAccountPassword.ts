@@ -25,11 +25,15 @@ const updateAccountPassword = resolver.pipe(
       UpdateAccountPasswordService
     )
 
-    await updateAccountPasswordService.execute({
+    const transaction = await updateAccountPasswordService.execute({
       currentPassword: props.currentPassword,
       password: props.password,
       userId: props.userId,
     })
+
+    if (transaction instanceof Error) {
+      throw transaction
+    }
 
     return null
   }

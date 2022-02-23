@@ -17,7 +17,7 @@ export class UnfollowService {
   async execute(props: Props) {
     try {
       if (props.followerId.value === props.followeeId.value) {
-        throw new Error("Unexpected error")
+        return new InternalError("自分自身をフォローすることは出来ません。")
       }
 
       const friendship = await this.friendshipRepository.find(
@@ -25,11 +25,23 @@ export class UnfollowService {
         props.followeeId
       )
 
-      if (friendship === null) {
-        throw new NotFoundError()
+      if (friendship instanceof Error) {
+        return new InternalError()
       }
 
-      await this.friendshipRepository.unfollow(friendship)
+      if (friendship === null) {
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
+      }
+
+      const transaction = await this.friendshipRepository.unfollow(friendship)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
+
+      return null
     } catch (error) {
       captureException(error)
 

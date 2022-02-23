@@ -37,9 +37,11 @@ const getUserReplies = resolver.pipe(
       throw posts
     }
 
-    const countRepliesQuery = container.resolve(CountRepliesByUsernameQuery)
+    const countRepliesByUsernameQuery = container.resolve(
+      CountRepliesByUsernameQuery
+    )
 
-    const count = await countRepliesQuery.count({
+    const count = await countRepliesByUsernameQuery.count({
       username: props.username,
     })
 

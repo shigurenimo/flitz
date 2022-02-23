@@ -24,13 +24,26 @@ export class UpdateSettingService {
     try {
       const setting = await this.settingRepository.findByUserId(props.userId)
 
-      if (setting === null) {
-        throw new NotFoundError()
+      if (setting instanceof Error) {
+        return new InternalError()
       }
 
-      await this.settingRepository.upsert(
-        setting.updateFcmToken(props.fcmToken, props.fcmTokenForMobile)
+      if (setting === null) {
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
+      }
+
+      const newSetting = setting.updateFcmToken(
+        props.fcmToken,
+        props.fcmTokenForMobile
       )
+
+      const transaction = await this.settingRepository.upsert(newSetting)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       return setting
     } catch (error) {

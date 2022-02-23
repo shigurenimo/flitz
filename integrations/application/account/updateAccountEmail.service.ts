@@ -18,11 +18,23 @@ export class UpdateAccountEmailService {
     try {
       const user = await this.userRepository.find(props.userId)
 
-      if (user === null) {
-        throw new NotFoundError()
+      if (user instanceof Error) {
+        return new InternalError()
       }
 
-      await this.userRepository.upsert(user.updateEmail(props.email))
+      if (user === null) {
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
+      }
+
+      const newUser = user.updateEmail(props.email)
+
+      const transaction = await this.userRepository.upsert(newUser)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       return null
     } catch (error) {

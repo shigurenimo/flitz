@@ -59,7 +59,6 @@ const updateUserProfile = resolver.pipe(
       biography: props.biography,
       name: props.name,
       userId: props.userId,
-      session: ctx.session,
     })
 
     if (newUser instanceof Error) {

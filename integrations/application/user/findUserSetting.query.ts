@@ -24,6 +24,8 @@ export class FindUserSettingQuery {
       })
 
       if (prismaSetting === null) {
+        captureException("データが見つからなかった。")
+
         return new NotFoundError()
       }
 

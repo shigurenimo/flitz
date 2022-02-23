@@ -31,7 +31,9 @@ export class CreatePostService {
         props.userId
       )
 
-      console.log(friendships)
+      if (friendships instanceof Error) {
+        return new InternalError()
+      }
 
       const post = new PostEntity({
         fileIds: props.fileIds,
@@ -46,8 +48,6 @@ export class CreatePostService {
           return friendship.followerId
         }),
       })
-
-      console.log(post)
 
       const transaction = await this.postRepository.upsert(post)
 

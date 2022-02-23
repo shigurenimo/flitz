@@ -25,7 +25,13 @@ export class SendMessageService {
         createdAt: new Date(),
       })
 
-      await this.messageRepository.upsert(message)
+      const transaction = await this.messageRepository.upsert(message)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
+
+      return null
     } catch (error) {
       captureException(error)
 

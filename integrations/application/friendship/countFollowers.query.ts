@@ -10,7 +10,7 @@ type Props = {
 
 @injectable()
 export class CountFollowersQuery {
-  async count(props: Props) {
+  async execute(props: Props) {
     try {
       const count = await db.friendship.count({
         where: { followee: { username: props.username.value } },

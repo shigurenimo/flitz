@@ -17,10 +17,14 @@ const createPostLike = resolver.pipe(
   async (props) => {
     const createPostLikeService = container.resolve(CreatePostLikeService)
 
-    await createPostLikeService.execute({
+    const transaction = await createPostLikeService.execute({
       postId: props.postId,
       userId: props.userId,
     })
+
+    if (transaction instanceof Error) {
+      throw transaction
+    }
 
     return null
   }

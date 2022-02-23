@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/node"
 import { AuthenticationError, NotFoundError, SecurePassword } from "blitz"
 import { HashedPassword, Id, Password } from "integrations/domain"
 import { InternalError } from "integrations/errors"
@@ -18,8 +19,14 @@ export class UpdateAccountPasswordService {
     try {
       const user = await this.userRepository.find(props.userId)
 
+      if (user instanceof Error) {
+        return new InternalError()
+      }
+
       if (user === null) {
-        throw new NotFoundError()
+        captureException("データが見つからなかった。")
+
+        return new NotFoundError()
       }
 
       const result = await SecurePassword.verify(
@@ -40,10 +47,16 @@ export class UpdateAccountPasswordService {
 
       const newUser = user.updateHashedPassword(newHashPassword)
 
-      await this.userRepository.upsert(newUser)
+      const transaction = await this.userRepository.upsert(newUser)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       return null
     } catch (error) {
+      captureException(error)
+
       if (error instanceof Error) {
         return new InternalError(error.message)
       }

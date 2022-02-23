@@ -28,7 +28,7 @@ export class FollowService {
   async execute(props: Props) {
     try {
       if (props.followerId.value === props.followeeId.value) {
-        throw new Error("Unexpected error")
+        return new InternalError("自分自身をフォローすることは出来ません。")
       }
 
       const friendship = new FriendshipEntity({
@@ -37,7 +37,11 @@ export class FollowService {
         id: IdFactory.nanoid(),
       })
 
-      await this.friendshipRepository.follow(friendship)
+      const transaction = await this.friendshipRepository.follow(friendship)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       const notification = new NotificationEntity({
         friendshipId: friendship.id,
@@ -50,6 +54,9 @@ export class FollowService {
         userId: props.followeeId,
       })
 
+      /**
+       * 失敗しても例外は返さない
+       */
       await this.notificationRepository.upsert(notification)
 
       return null
