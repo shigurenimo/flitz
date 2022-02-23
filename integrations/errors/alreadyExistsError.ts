@@ -1,6 +1,5 @@
 import SuperJson from "superjson"
 
-
 export class AlreadyExistsError extends Error {
   readonly name = "AlreadyExistsError"
 

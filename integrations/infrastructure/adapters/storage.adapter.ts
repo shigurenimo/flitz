@@ -9,22 +9,7 @@ import { injectable } from "tsyringe"
 export class StorageAdapter {
   constructor(private firebaseRepository: FirebaseAdapter) {}
 
-  async uploadToCloudStorage(filePath: Path) {
-    this.firebaseRepository.initialize()
-
-    const tmpPath = this.getFilePath(filePath)
-
-    const bucket = admin.storage().bucket()
-
-    await bucket.upload(tmpPath.value, {
-      destination: filePath.value,
-      metadata: { contentType: "image/png" },
-    })
-
-    return null
-  }
-
-  async downloadFileFromCloudStorage(filePath: Path) {
+  async downloadFile(filePath: Path) {
     this.firebaseRepository.initialize()
 
     const tmpPath = this.getFilePath(filePath)

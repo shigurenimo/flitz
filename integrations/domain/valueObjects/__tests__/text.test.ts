@@ -1,4 +1,4 @@
-import { PostText } from "integrations/domain/valueObjects"
+import { PostText } from "integrations/domain"
 
 describe("text", () => {
   it("minLength=1", () => {

@@ -1,33 +1,28 @@
 import admin from "firebase-admin"
+import { EnvAdapter } from "integrations/infrastructure/adapters/env.adapter"
 import { injectable } from "tsyringe"
-import { z } from "zod"
 
 @injectable()
 export class FirebaseAdapter {
-  initialize() {
-    if (admin.apps.length > 0) return null
+  constructor(private envAdapter: EnvAdapter) {}
 
-    // TODO: エミュレーターに対応する
-    const { projectId, clientEmail, privateKey } = z
-      .object({
-        projectId: z.string(),
-        clientEmail: z.string().email(),
-        privateKey: z.string(),
-      })
-      .parse({
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY,
-      })
+  initialize() {
+    if (0 < admin.apps.length) return null
+
+    if (this.envAdapter.useFirebaseEmulator) {
+      admin.initializeApp({})
+
+      return null
+    }
 
     admin.initializeApp({
       credential: admin.credential.cert({
-        clientEmail,
-        privateKey: privateKey.replace(/\\n/g, "\n").replace(/\\/g, ""),
-        projectId,
+        clientEmail: this.envAdapter.firebase.clientEmail,
+        privateKey: this.envAdapter.firebase.privateKey,
+        projectId: this.envAdapter.firebase.projectId,
       }),
-      databaseURL: `https://${projectId}.firebaseio.com`,
-      storageBucket: `${projectId}.appspot.com`,
+      databaseURL: this.envAdapter.firebase.databaseURL,
+      storageBucket: this.envAdapter.firebase.storageBucket,
     })
 
     return null
