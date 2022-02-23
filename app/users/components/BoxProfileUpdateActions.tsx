@@ -1,46 +1,47 @@
 import { Box, HStack } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
-import { RenderFileLoader } from "app/core/components/RenderFileLoader"
+import { useFileURL } from "app/core/hooks/useFileURL"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
-import { AppUserProfile } from "integrations/interface/types/appUserProfile"
 import React, { VFC } from "react"
 
-type Props = AppUserProfile & {
-  headerImageFile: File | null
-  iconImageFile: File | null
+type Props = {
+  headerFile: File | null
+  iconFile: File | null
+  iconImageId: string | null
+  headerImageId: string | null
+  userId: string | null
 }
 
 export const BoxProfileUpdateActions: VFC<Props> = (props) => {
+  const [headerFileURL] = useFileURL(props.headerFile)
+
+  const [iconFileURL] = useFileURL(props.iconFile)
+
   return (
     <Box>
       <HStack w={"full"}>
-        {props.headerImageFile && (
-          <RenderFileLoader
-            key={`${props.headerImageFile.name}-${props.headerImageFile.lastModified}`}
-            file={props.headerImageFile}
-            render={(src) => <BoxProfileHeader src={src} />}
+        {props.headerFile !== null && headerFileURL !== null && (
+          <BoxProfileHeader
+            key={`${props.headerFile.name}-${props.headerFile.lastModified}`}
+            src={headerFileURL}
           />
         )}
-        {props.headerImageFile === null && (
-          <BoxProfileHeader
-            fileId={props.headerImageId}
-            src={"https://via.placeholder.com/400?text=FLITZ"}
-          />
+        {headerFileURL === null && (
+          <BoxProfileHeader fileId={props.headerImageId} />
         )}
       </HStack>
       <HStack spacing={4} align={"center"} mt={-10} px={4}>
-        {props.iconImageFile && (
-          <RenderFileLoader
-            key={`${props.iconImageFile.name}-${props.iconImageFile.lastModified}`}
-            file={props.iconImageFile}
-            render={(url) => (
-              <AvatarUser userId={props.id} src={url} size={"xl"} />
-            )}
+        {props.iconFile !== null && iconFileURL !== null && (
+          <AvatarUser
+            key={`${props.iconFile.name}-${props.iconFile.lastModified}`}
+            userId={props.userId}
+            src={iconFileURL}
+            size={"xl"}
           />
         )}
-        {props.iconImageFile === null && (
+        {props.iconFile === null && (
           <AvatarUser
-            userId={props.id}
+            userId={props.userId}
             fileId={props.iconImageId}
             size={"xl"}
           />

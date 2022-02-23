@@ -34,19 +34,6 @@ export class StorageAdapter {
     return bucket.file(filePath.value).download({ destination: tmpPath.value })
   }
 
-  createPath() {
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-
-    let autoId = ""
-
-    for (let i = 0; i < 20; i++) {
-      autoId += chars.charAt(Math.floor(Math.random() * chars.length))
-    }
-
-    return new Path(autoId)
-  }
-
   private getFilePath(fileId: Path) {
     return new Path(join(tmpdir(), fileId.value))
   }

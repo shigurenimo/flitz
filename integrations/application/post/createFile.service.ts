@@ -3,56 +3,40 @@ import {
   FileEntity,
   FileTypeFactory,
   Id,
-  IdFactory,
-  Image,
+  Path,
   Service,
 } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import {
-  EnvAdapter,
-  FileRepository,
-  ImageAdapter,
-  StorageAdapter,
-} from "integrations/infrastructure"
+import { FileRepository } from "integrations/infrastructure"
 import { injectable } from "tsyringe"
 
 type Props = {
   userId: Id
-  image: Image | null
+  fileId: Id
 }
 
 @injectable()
 export class CreateFileService {
-  constructor(
-    private envRepository: EnvAdapter,
-    private fileRepository: FileRepository,
-    private imageRepository: ImageAdapter,
-    private storageRepository: StorageAdapter
-  ) {}
+  constructor(private fileRepository: FileRepository) {}
 
+  /**
+   * 新しいファイルを作成する
+   * @param props
+   * @returns
+   */
   async execute(props: Props) {
     try {
-      if (props.image === null) {
-        return null
-      }
-
-      const filePath = this.storageRepository.createPath()
-
-      await this.imageRepository.writeImage(props.image, filePath)
-
-      await this.storageRepository.uploadToCloudStorage(filePath)
-
       const file = new FileEntity({
-        id: IdFactory.nanoid(),
+        id: props.fileId,
         userId: props.userId,
         type: FileTypeFactory.png(),
         service: new Service("CLOUD_STORAGE"),
-        path: filePath,
+        path: new Path(props.fileId.value),
       })
 
       await this.fileRepository.upsert(file)
 
-      return file
+      return null
     } catch (error) {
       captureException(error)
 

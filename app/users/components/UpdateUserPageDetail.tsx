@@ -11,7 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react"
 import { ButtonFile } from "app/core/components/ButtonFile"
-import { ConvertFile } from "app/core/utils/convertFile"
+import { useFileUploader } from "app/core/hooks/useFileUploader"
 import { BoxProfileUpdateActions } from "app/users/components/BoxProfileUpdateActions"
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
@@ -32,6 +32,10 @@ export const UpdateUserPageDetail: VFC = () => {
   const [iconImageFile, setIconImage] = useState<File | null>(null)
 
   const [headerImageFile, setHeaderImage] = useState<File | null>(null)
+
+  const [uploadHeaderFileMutation] = useFileUploader()
+
+  const [uploadIconFileMutation] = useFileUploader()
 
   const username = useParam("username", "string")
 
@@ -58,11 +62,11 @@ export const UpdateUserPageDetail: VFC = () => {
 
   const onSubmit = async (values: Form) => {
     try {
-      const convertFileService = new ConvertFile()
-
+      const headerImage = await uploadHeaderFileMutation(headerImageFile)
+      const iconImage = await uploadIconFileMutation(iconImageFile)
       await updateUserProfileMutation({
-        headerImage: await convertFileService.execute(headerImageFile),
-        iconImage: await convertFileService.execute(iconImageFile),
+        headerFileId: headerImage.fileId,
+        iconFileId: iconImage.fileId,
         biography: values.biography,
         name: values.name,
       })
@@ -81,9 +85,11 @@ export const UpdateUserPageDetail: VFC = () => {
   return (
     <Stack spacing={4}>
       <BoxProfileUpdateActions
-        iconImageFile={iconImageFile}
-        headerImageFile={headerImageFile}
-        {...user}
+        iconFile={iconImageFile}
+        headerFile={headerImageFile}
+        iconImageId={user.iconImageId}
+        headerImageId={user.headerImageId}
+        userId={user.id}
       />
       <Stack spacing={4} px={4}>
         <FormControl isInvalid={!!formState.errors.name}>
@@ -92,14 +98,14 @@ export const UpdateUserPageDetail: VFC = () => {
             <ButtonFile
               aria-label={"Icon Image"}
               isDisabled={isLoading}
-              onChange={(file) => setIconImage(file)}
+              onChange={setIconImage}
             >
               {t`Icon Image`}
             </ButtonFile>
             <ButtonFile
               aria-label={"Header Image"}
               isDisabled={isLoading}
-              onChange={(file) => setHeaderImage(file)}
+              onChange={setHeaderImage}
             >
               {t`Header Image`}
             </ButtonFile>

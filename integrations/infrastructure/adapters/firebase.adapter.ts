@@ -7,6 +7,7 @@ export class FirebaseAdapter {
   initialize() {
     if (admin.apps.length > 0) return null
 
+    // TODO: エミュレーターに対応する
     const { projectId, clientEmail, privateKey } = z
       .object({
         projectId: z.string(),

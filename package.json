@@ -7,7 +7,7 @@
     "dev": "prisma generate && blitz dev",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "start": "blitz start",
-    "studio": "blitz db studio",
+    "studio": "blitz prisma studio --browser none",
     "test": "jest",
     "test:watch": "jest --watch",
     "prepare": "husky install"

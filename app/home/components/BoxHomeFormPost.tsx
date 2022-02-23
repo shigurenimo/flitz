@@ -9,9 +9,9 @@ import {
 } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { ButtonFile } from "app/core/components/ButtonFile"
-import { RenderFileLoader } from "app/core/components/RenderFileLoader"
 import { TextareaAutosize } from "app/core/components/TextareaAutosize"
-import { ConvertFile } from "app/core/utils/convertFile"
+import { useFileUploader } from "app/core/hooks/useFileUploader"
+import { useFileURL } from "app/core/hooks/useFileURL"
 import createPost from "app/posts/mutations/createPost"
 import { useMutation, useSession } from "blitz"
 import React, { useState, VFC } from "react"
@@ -27,16 +27,24 @@ export const BoxHomeFormPost: VFC = () => {
 
   const [file, setFile] = useState<File | null>(null)
 
-  const [createPostMutation, { isLoading }] = useMutation(createPost)
+  const [createPostMutation, { isLoading: isLoadingPost }] =
+    useMutation(createPost)
+
+  const [uploadFileMutation, { isLoading: isLoadingFile }] = useFileUploader()
 
   const toast = useToast()
 
-  const onCreatePost = async () => {
-    const convertFileService = new ConvertFile()
+  const [headerImageFileURL] = useFileURL(file)
 
+  const onCreatePost = async () => {
     try {
-      const encodedImage = await convertFileService.execute(file)
-      await createPostMutation({ text, image: encodedImage })
+      if (file !== null) {
+        const { fileId } = await uploadFileMutation(file)
+        await createPostMutation({ text, fileId })
+      }
+      if (file === null) {
+        await createPostMutation({ text, fileId: null })
+      }
       setText("")
       setFile(null)
       toast({ status: "success", title: "Success" })
@@ -48,6 +56,8 @@ export const BoxHomeFormPost: VFC = () => {
   }
 
   const isDisabled = text.trim().length === 0 && !file
+
+  const isLoading = isLoadingPost || isLoadingFile
 
   return (
     <Stack spacing={4} px={4}>
@@ -62,20 +72,14 @@ export const BoxHomeFormPost: VFC = () => {
             value={text}
             w={"full"}
           />
-          {file && (
+          {headerImageFileURL && (
             <HStack w={"full"} bg={"white"} rounded={"md"} overflow={"hidden"}>
               <AspectRatio w={"full"} ratio={1 / 0.5625}>
-                <RenderFileLoader
-                  key={`${file.name}-${file.lastModified}`}
-                  file={file}
-                  render={(url) => (
-                    <Image
-                      alt={url}
-                      src={url}
-                      borderRadius={"md"}
-                      style={{ filter: "brightness(0.5)" }}
-                    />
-                  )}
+                <Image
+                  alt={headerImageFileURL}
+                  src={headerImageFileURL}
+                  borderRadius={"md"}
+                  style={{ filter: "brightness(0.5)" }}
                 />
               </AspectRatio>
             </HStack>
@@ -96,7 +100,7 @@ export const BoxHomeFormPost: VFC = () => {
           isLoading={isLoading}
           leftIcon={<Icon as={FiSend} />}
           loadingText={t`Submit`}
-          onClick={() => onCreatePost()}
+          onClick={onCreatePost}
           variant={"outline"}
         >
           {t`Submit`}

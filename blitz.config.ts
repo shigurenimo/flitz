@@ -8,7 +8,7 @@ const config: BlitzConfig = {
       isAuthorized: simpleRolesIsAuthorized,
     }),
   ],
-  log: { level: "info" },
+  log: { level: "error" },
   env: {
     SENTRY_RELEASE: `flitz@${packageJSON.version}`,
   },

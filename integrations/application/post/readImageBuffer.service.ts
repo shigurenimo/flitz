@@ -2,7 +2,6 @@ import { captureException } from "@sentry/node"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import {
-  EnvAdapter,
   FileRepository,
   ImageAdapter,
   StorageAdapter,
@@ -16,7 +15,6 @@ type Props = {
 @injectable()
 export class ReadImageBufferService {
   constructor(
-    private envAdapter: EnvAdapter,
     private fileRepository: FileRepository,
     private imageAdapter: ImageAdapter,
     private storageAdapter: StorageAdapter
@@ -32,17 +30,7 @@ export class ReadImageBufferService {
 
       const filePath = file.path
 
-      if (this.envAdapter.isLocalProject()) {
-        const hasImage = this.imageAdapter.hasImage(filePath)
-
-        if (!hasImage) {
-          return new Error("ローカルに画像が存在しません。")
-        }
-      }
-
-      if (this.envAdapter.isFirebaseProject()) {
-        await this.storageAdapter.downloadFileFromCloudStorage(filePath)
-      }
+      await this.storageAdapter.downloadFileFromCloudStorage(filePath)
 
       const buffer = await this.imageAdapter.readImage(filePath)
 

@@ -1,14 +1,15 @@
+import { BlitzApiHandler } from "blitz"
 import { ReadImageBufferService } from "integrations/application/post/readImageBuffer.service"
 import { Id } from "integrations/domain"
-import { NextApiRequest, NextApiResponse } from "next"
 import { container } from "tsyringe"
 
-const icon = async (req: NextApiRequest, resp: NextApiResponse) => {
+const icon: BlitzApiHandler = async (req, resp) => {
+  console.log(req.query.id)
+
   if (Array.isArray(req.query.id)) {
     return resp.status(500).end()
   }
 
-  // TODO: BAD
   const readImageBufferService = container.resolve(ReadImageBufferService)
 
   const buffer = await readImageBufferService.execute({

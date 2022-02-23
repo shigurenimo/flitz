@@ -20,11 +20,18 @@ export class CreatePostService {
     private friendshipRepository: FriendshipRepository
   ) {}
 
+  /**
+   * 新しいポストを作成する
+   * @param props
+   * @returns
+   */
   async execute(props: Props) {
     try {
       const friendships = await this.friendshipRepository.findManyByFolloweeId(
         props.userId
       )
+
+      console.log(friendships)
 
       const post = new PostEntity({
         fileIds: props.fileIds,
@@ -35,12 +42,18 @@ export class CreatePostService {
         replyId: null,
         text: props.text,
         userId: props.userId,
-        followerIds: friendships.map((friendshipEntity) => {
-          return friendshipEntity.followerId
+        followerIds: friendships.map((friendship) => {
+          return friendship.followerId
         }),
       })
 
-      await this.postRepository.upsert(post)
+      console.log(post)
+
+      const transaction = await this.postRepository.upsert(post)
+
+      if (transaction instanceof Error) {
+        return new InternalError()
+      }
 
       return null
     } catch (error) {

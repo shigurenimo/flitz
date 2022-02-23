@@ -6,8 +6,8 @@ import { UserRepository } from "integrations/infrastructure"
 import { injectable } from "tsyringe"
 
 type Props = {
-  headerImageId?: Id
-  iconImageId?: Id
+  headerImageId: Id | null
+  iconImageId: Id | null
   userId: Id
   biography: ShortText
   name: Name

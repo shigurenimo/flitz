@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/node"
 import db from "db"
 import { Id, PostEntity, PostText } from "integrations/domain"
 
@@ -26,108 +27,120 @@ export class PostRepository {
   }
 
   async upsert(post: PostEntity) {
-    if (post.replyId !== null) {
-      await db.post.update({
-        data: {
-          replies: {
-            create: {
-              id: post.id.value,
-              text: post.text?.value || null,
-              userId: post.userId.value,
-              references: {
-                create: [
-                  {
-                    isRead: true,
-                    userId: post.userId.value,
-                  },
-                  ...post.followerIds.map((followerId) => {
-                    return {
-                      isRead: false,
-                      userId: followerId.value,
-                    }
-                  }),
-                ],
-              },
-            },
-          },
-          repliesCount: { increment: 1 },
-        },
-        include: { replies: { where: { userId: post.userId.value } } },
-        where: { id: post.replyId.value },
-      })
-    }
-
-    if (post.quotationId !== null) {
-      await db.post.update({
-        data: {
-          quotations: {
-            create: {
-              id: post.id.value,
-              userId: post.userId.value,
-              references: {
-                create: [
-                  {
-                    isRead: true,
-                    userId: post.userId.value,
-                  },
-                  ...post.followerIds.map((followerId) => {
-                    return {
-                      isRead: false,
-                      userId: followerId.value,
-                    }
-                  }),
-                ],
-              },
-            },
-          },
-          quotationsCount: { increment: 1 },
-        },
-        include: { quotations: { where: { userId: post.userId.value } } },
-        where: { id: post.quotationId.value },
-      })
-    }
-
-    if (post.replyId === null && post.quotationId === null) {
-      await db.post.create({
-        data: {
-          id: post.id.value,
-          files: {
-            connect: post.fileIds.map((id) => {
-              return { id: id.value }
-            }),
-          },
-          text: post.text?.value,
-          userId: post.userId.value,
-          references: {
-            create: [
-              {
-                isRead: true,
+    try {
+      if (post.replyId !== null) {
+        await db.post.update({
+          data: {
+            replies: {
+              create: {
+                id: post.id.value,
+                text: post.text?.value || null,
                 userId: post.userId.value,
+                references: {
+                  create: [
+                    {
+                      isRead: true,
+                      userId: post.userId.value,
+                    },
+                    ...post.followerIds.map((followerId) => {
+                      return {
+                        isRead: false,
+                        userId: followerId.value,
+                      }
+                    }),
+                  ],
+                },
               },
-              ...post.followerIds.map((followerId) => {
-                return {
-                  isRead: false,
-                  userId: followerId.value,
-                }
-              }),
-            ],
+            },
+            repliesCount: { increment: 1 },
           },
-        },
-      })
+          include: { replies: { where: { userId: post.userId.value } } },
+          where: { id: post.replyId.value },
+        })
+      }
+
+      if (post.quotationId !== null) {
+        await db.post.update({
+          data: {
+            quotations: {
+              create: {
+                id: post.id.value,
+                userId: post.userId.value,
+                references: {
+                  create: [
+                    {
+                      isRead: true,
+                      userId: post.userId.value,
+                    },
+                    ...post.followerIds.map((followerId) => {
+                      return {
+                        isRead: false,
+                        userId: followerId.value,
+                      }
+                    }),
+                  ],
+                },
+              },
+            },
+            quotationsCount: { increment: 1 },
+          },
+          include: { quotations: { where: { userId: post.userId.value } } },
+          where: { id: post.quotationId.value },
+        })
+      }
+
+      if (post.replyId === null && post.quotationId === null) {
+        console.log("OK?")
+        await db.post.create({
+          data: {
+            id: post.id.value,
+            files: {
+              connect: post.fileIds.map((id) => {
+                return { id: id.value }
+              }),
+            },
+            text: post.text?.value,
+            userId: post.userId.value,
+            references: {
+              create: [
+                {
+                  isRead: true,
+                  userId: post.userId.value,
+                },
+                ...post.followerIds.map((followerId) => {
+                  return {
+                    isRead: false,
+                    userId: followerId.value,
+                  }
+                }),
+              ],
+            },
+          },
+        })
+      }
+
+      // await db.$transaction([
+      //   ...friendships.map((friendship) => {
+      //     return db.reference.create({
+      //       data: {
+      //         post: { connect: { id: post.id } },
+      //         user: { connect: { id: friendship.followerId } },
+      //       },
+      //     })
+      //   }),
+      // ])
+
+      return null
+    } catch (error) {
+      console.log("error", error)
+      captureException(error)
+
+      if (error instanceof Error) {
+        return new Error(error.message)
+      }
+
+      return new Error()
     }
-
-    // await db.$transaction([
-    //   ...friendships.map((friendship) => {
-    //     return db.reference.create({
-    //       data: {
-    //         post: { connect: { id: post.id } },
-    //         user: { connect: { id: friendship.followerId } },
-    //       },
-    //     })
-    //   }),
-    // ])
-
-    return null
   }
 
   async upsertReply(post: PostEntity) {
