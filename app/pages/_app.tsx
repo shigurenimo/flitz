@@ -3,7 +3,6 @@ import { init } from "@sentry/browser"
 import { Integrations } from "@sentry/tracing"
 import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
 import { theme } from "app/core/theme/theme"
-import i18n from "app/core/utils/i18n"
 import { AppProps, BlitzPage, useQueryErrorResetBoundary } from "blitz"
 import {
   getAnalytics,
@@ -11,9 +10,12 @@ import {
   setAnalyticsCollectionEnabled,
 } from "firebase/analytics"
 import { getApps, initializeApp } from "firebase/app"
+import i18n from "i18next"
+import LanguageDetector from "i18next-browser-languagedetector"
 import React, { useEffect } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { I18nextProvider } from "react-i18next"
+import { I18nextProvider, initReactI18next } from "react-i18next"
+import resources from "../i18n.json"
 
 const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page)
@@ -21,8 +23,16 @@ const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const { reset } = useQueryErrorResetBoundary()
 
   useEffect(() => {
-    if (0 < getApps().length) return
+    i18n.use(LanguageDetector).use(initReactI18next).init({
+      fallbackLng: false,
+      keySeparator: false,
+      nsSeparator: false,
+      resources,
+    })
+  }, [])
 
+  useEffect(() => {
+    if (0 < getApps().length) return
     initializeApp({
       apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
       authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -32,27 +42,30 @@ const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
       appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
       measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
     })
-
     isSupported().then((bool) => {
       if (!bool) return
-
-      if (process.env.NODE_ENV === "production") {
-        setAnalyticsCollectionEnabled(getAnalytics(), true)
-      }
-
-      if (process.env.NODE_ENV !== "production") {
-        setAnalyticsCollectionEnabled(getAnalytics(), false)
-      }
+      setAnalyticsCollectionEnabled(
+        getAnalytics(),
+        process.env.NODE_ENV === "production"
+      )
     })
   }, [])
 
   useEffect(() => {
     init({
-      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
       integrations: [new Integrations.BrowserTracing()],
+      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
       environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
+      release: process.env.NEXT_PUBLIC_SENTRY_RELEASE,
+      normalizeDepth: 5,
       tracesSampleRate: 1.0,
       debug: false,
+      beforeSend(event) {
+        if (process.env.NEXT_PUBLIC_USE_SENTRY !== "true") {
+          return null
+        }
+        return event
+      },
     })
   }, [])
 

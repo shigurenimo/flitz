@@ -10,7 +10,7 @@ const config: BlitzConfig = {
   ],
   log: { level: "error" },
   env: {
-    SENTRY_RELEASE: `flitz@${packageJSON.version}`,
+    NEXT_PUBLIC_SENTRY_RELEASE: `flitz@${packageJSON.version}`,
   },
 }
 

@@ -10,7 +10,8 @@
     "studio": "blitz prisma studio --browser none",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "kill": "killall node -9"
   },
   "dependencies": {
     "@chakra-ui/react": "1.8.3",

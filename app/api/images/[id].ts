@@ -4,8 +4,6 @@ import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 
 const icon: BlitzApiHandler = async (req, resp) => {
-  console.log(req.query.id)
-
   if (Array.isArray(req.query.id)) {
     return resp.status(500).end()
   }
