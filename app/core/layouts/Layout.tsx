@@ -1,6 +1,6 @@
 import { Container, Stack } from "@chakra-ui/react"
 import { BoxMainFallback } from "app/core/components/BoxMainFallback"
-import { useFirebaseCloudMessaging } from "app/core/hooks/useFirebaseCloudMessaging"
+import { useCloudMessaging } from "app/core/hooks/useCloudMessaging"
 import { LayoutAside } from "app/core/layouts/components/BoxAside"
 import { LayoutHeader } from "app/core/layouts/components/BoxHeader"
 import { Head } from "blitz"
@@ -11,7 +11,7 @@ type LayoutProps = {
 }
 
 const Layout: FC<LayoutProps> = (props) => {
-  useFirebaseCloudMessaging()
+  useCloudMessaging()
 
   const fontURL =
     "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"

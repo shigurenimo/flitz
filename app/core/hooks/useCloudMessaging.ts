@@ -8,7 +8,7 @@ import {
 } from "firebase/messaging"
 import { useEffect } from "react"
 
-export const useFirebaseCloudMessaging = () => {
+export const useCloudMessaging = () => {
   const toast = useToast()
 
   useEffect(() => {

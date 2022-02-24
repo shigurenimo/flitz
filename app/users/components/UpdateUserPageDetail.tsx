@@ -11,7 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react"
 import { ButtonFile } from "app/core/components/ButtonFile"
-import { useFileUploader } from "app/core/hooks/useFileUploader"
+import { useCloudStorage } from "app/core/hooks/useCloudStorage"
 import { BoxProfileUpdateActions } from "app/users/components/BoxProfileUpdateActions"
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
@@ -33,9 +33,9 @@ export const UpdateUserPageDetail: VFC = () => {
 
   const [headerImageFile, setHeaderImage] = useState<File | null>(null)
 
-  const [uploadHeaderFileMutation] = useFileUploader()
+  const [uploadHeaderFileMutation] = useCloudStorage()
 
-  const [uploadIconFileMutation] = useFileUploader()
+  const [uploadIconFileMutation] = useCloudStorage()
 
   const username = useParam("username", "string")
 

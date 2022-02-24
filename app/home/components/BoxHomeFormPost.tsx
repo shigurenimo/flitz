@@ -10,7 +10,7 @@ import {
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { ButtonFile } from "app/core/components/ButtonFile"
 import { TextareaAutosize } from "app/core/components/TextareaAutosize"
-import { useFileUploader } from "app/core/hooks/useFileUploader"
+import { useCloudStorage } from "app/core/hooks/useCloudStorage"
 import { useFileURL } from "app/core/hooks/useFileURL"
 import createPost from "app/posts/mutations/createPost"
 import { useMutation, useSession } from "blitz"
@@ -30,7 +30,7 @@ export const BoxHomeFormPost: VFC = () => {
   const [createPostMutation, { isLoading: isLoadingPost }] =
     useMutation(createPost)
 
-  const [uploadFileMutation, { isLoading: isLoadingFile }] = useFileUploader()
+  const [uploadFileMutation, { isLoading: isLoadingFile }] = useCloudStorage()
 
   const toast = useToast()
 

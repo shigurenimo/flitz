@@ -1,7 +1,7 @@
 import { getStorage, ref, uploadBytes } from "firebase/storage"
 import { useMutation } from "react-query"
 
-export const useFileUploader = () => {
+export const useCloudStorage = () => {
   const createId = () => {
     const chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
