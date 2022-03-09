@@ -9,15 +9,13 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "files.exclude": {
     "**/node_modules": true,
-    ".blitz": true,
-    ".blitz.config.compiled.js": true,
+    "*.lock": true,
+    "*.log": true,
+    "*.tsbuildinfo": true,
+    ".blitz**": true,
     ".husky": true,
     ".next": true,
-    ".tsbuildinfo": true,
-    ".vercel": true,
-    "docker-error.log": true,
-    "yarn-error.log": true,
-    "yarn.lock": true
+    ".vercel": true
   },
   "search.exclude": {
     "yarn.lock": true
