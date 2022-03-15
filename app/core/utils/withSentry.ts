@@ -25,6 +25,10 @@ export const withSentry = <T, U>(resolver: Resolver<T, U>, name: string) => {
         release: process.env.NEXT_PUBLIC_SENTRY_RELEASE,
         debug: false,
         beforeSend(event) {
+          console.log(
+            "process.env.NEXT_PUBLIC_USE_SENTRY",
+            process.env.NEXT_PUBLIC_USE_SENTRY
+          )
           if (process.env.NEXT_PUBLIC_USE_SENTRY !== "true") {
             return null
           }
