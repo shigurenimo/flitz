@@ -4213,6 +4213,13 @@ available-typed-arrays@^1.0.4:
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.4.tgz#9e0ae84ecff20caae6a94a1c3bc39b955649b7a9"
   integrity sha512-SA5mXJWrId1TaQjfxUYghbqQ/hYioKmLJvPJyDuYRtXXenFNMjj4hSSt1Cf1xsuXSXrtxrVC5Ot4eU6cOtBDdA==
 
+avvvatars-react@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/avvvatars-react/-/avvvatars-react-0.3.1.tgz#fec7cb62fafffdf41c5fb266a36ab7a3bef0011b"
+  integrity sha512-fk8LI9GUA/+0lRAmrBEYkgNZAVsyv23RZNy1Im8MbLrXv8onJd4zLwOImgEXLVmqIn0SF2Km1mI3kiaDjQSvlQ==
+  dependencies:
+    goober "^2.1.8"
+
 aws-sign2@~0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
@@ -7106,6 +7113,11 @@ globby@11.1.0, globby@^11.0.4:
     ignore "^5.2.0"
     merge2 "^1.4.1"
     slash "^3.0.0"
+
+goober@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.1.8.tgz#e592c04d093cb38f77b38cfcb012b7811c85765e"
+  integrity sha512-S0C85gCzcfFCMSdjD/CxyQMt1rbf2qEg6hmDzxk2FfD7+7Ogk55m8ZFUMtqNaZM4VVX/qaU9AzSORG+Gf4ZpAQ==
 
 google-auth-library@^6.1.1:
   version "6.1.6"

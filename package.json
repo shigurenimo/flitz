@@ -22,6 +22,7 @@
     "@sentry/browser": "6.18.2",
     "@sentry/node": "6.18.2",
     "@sentry/tracing": "6.18.2",
+    "avvvatars-react": "0.3.1",
     "blitz": "0.45.3",
     "chakra-ui": "0.3.9",
     "firebase": "9.6.8",
