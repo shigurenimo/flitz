@@ -1,5 +1,4 @@
 import "reflect-metadata"
-export * from "./account"
 export * from "./friendship"
 export * from "./like"
 export * from "./message"

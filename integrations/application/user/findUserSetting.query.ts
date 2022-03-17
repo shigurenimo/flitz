@@ -12,30 +12,31 @@ type Props = {
 
 @injectable()
 export class FindUserSettingQuery {
-  /**
-   * @deprecated
-   * @param props
-   * @returns
-   */
   async execute(props: Props) {
     try {
-      const prismaSetting = await db.setting.findUnique({
-        where: { userId: props.userId.value },
+      const prismaUser = await db.user.findUnique({
+        where: { id: props.userId.value },
       })
 
-      if (prismaSetting === null) {
+      if (prismaUser === null) {
         captureException("データが見つからなかった。")
 
         return new NotFoundError()
       }
 
-      const setting: AppSetting = {
-        ...prismaSetting,
-        fcmToken: prismaSetting.fcmToken?.slice(0, 4) || null,
-        fcmTokenForMobile: prismaSetting.fcmTokenForMobile?.slice(0, 4) || null,
+      const appSetting: AppSetting = {
+        fcmToken: prismaUser.fcmToken?.slice(0, 4) || null,
+        fcmTokenForMobile: prismaUser.fcmTokenForMobile?.slice(0, 4) || null,
+        isProtected: prismaUser.isProtected,
+        isPublicEmail: prismaUser.isPublicEmail,
+        isEnabledNotificationEmail: prismaUser.isEnabledNotificationEmail,
+        isEnabledNotificationMessage: prismaUser.isEnabledNotificationMessage,
+        isEnabledNotificationPostLike: prismaUser.isEnabledNotificationPostLike,
+        isEnabledNotificationPostQuotation:
+          prismaUser.isEnabledNotificationPostQuotation,
       }
 
-      return setting
+      return appSetting
     } catch (error) {
       captureException(error)
 

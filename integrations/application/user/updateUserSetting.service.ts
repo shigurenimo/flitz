@@ -2,7 +2,7 @@ import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import { SettingRepository } from "integrations/infrastructure"
+import { UserRepository } from "integrations/infrastructure"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -12,40 +12,35 @@ type Props = {
 }
 
 @injectable()
-export class UpdateSettingService {
-  constructor(private settingRepository: SettingRepository) {}
+export class UpdateUserSettingService {
+  constructor(private userRepository: UserRepository) {}
 
-  /**
-   * @deprecated
-   * @param props
-   * @returns
-   */
   async execute(props: Props) {
     try {
-      const setting = await this.settingRepository.findByUserId(props.userId)
+      const user = await this.userRepository.find(props.userId)
 
-      if (setting instanceof Error) {
+      if (user instanceof Error) {
         return new InternalError()
       }
 
-      if (setting === null) {
+      if (user === null) {
         captureException("データが見つからなかった。")
 
         return new NotFoundError()
       }
 
-      const newSetting = setting.updateFcmToken(
+      const nextUser = user.updateFcmToken(
         props.fcmToken,
         props.fcmTokenForMobile
       )
 
-      const transaction = await this.settingRepository.upsert(newSetting)
+      const transaction = await this.userRepository.upsert(nextUser)
 
       if (transaction instanceof Error) {
         return new InternalError()
       }
 
-      return setting
+      return user
     } catch (error) {
       captureException(error)
 

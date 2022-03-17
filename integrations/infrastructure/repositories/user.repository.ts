@@ -14,7 +14,7 @@ import {
 export class UserRepository {
   async find(id: Id) {
     try {
-      const user = await db.user.findUnique({
+      const prismaUser = await db.user.findUnique({
         where: { id: id.value },
         include: {
           headerImage: {
@@ -26,20 +26,32 @@ export class UserRepository {
         },
       })
 
-      if (user === null) {
+      if (prismaUser === null) {
         return null
       }
 
       return new UserEntity({
-        email: new Email(user.email),
-        biography: new ShortText(user.biography),
-        headerImageId: user.headerImage ? new Id(user.headerImage.id) : null,
-        iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
-        id: new Id(user.id),
-        name: user.name ? new Name(user.name) : null,
-        username: new Username(user.username),
-        hashedPassword: new HashedPassword(user.hashedPassword),
-        settingId: null,
+        email: new Email(prismaUser.email),
+        biography: new ShortText(prismaUser.biography),
+        headerImageId: prismaUser.headerImage
+          ? new Id(prismaUser.headerImage.id)
+          : null,
+        iconImageId: prismaUser.iconImage
+          ? new Id(prismaUser.iconImage.id)
+          : null,
+        id: new Id(prismaUser.id),
+        name: prismaUser.name ? new Name(prismaUser.name) : null,
+        username: new Username(prismaUser.username),
+        hashedPassword: new HashedPassword(prismaUser.hashedPassword),
+        fcmToken: prismaUser.fcmToken,
+        fcmTokenForMobile: prismaUser.fcmTokenForMobile,
+        isPublicEmail: prismaUser.isPublicEmail,
+        isEnabledNotificationEmail: prismaUser.isEnabledNotificationEmail,
+        isProtected: prismaUser.isProtected,
+        isEnabledNotificationMessage: prismaUser.isEnabledNotificationMessage,
+        isEnabledNotificationPostLike: prismaUser.isEnabledNotificationPostLike,
+        isEnabledNotificationPostQuotation:
+          prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
       captureException(error, { level: Severity.Fatal })
@@ -54,7 +66,7 @@ export class UserRepository {
 
   async findByUsername(username: Username) {
     try {
-      const user = await db.user.findUnique({
+      const prismaUser = await db.user.findUnique({
         where: { username: username.value },
         include: {
           headerImage: {
@@ -66,20 +78,32 @@ export class UserRepository {
         },
       })
 
-      if (user === null) {
+      if (prismaUser === null) {
         return null
       }
 
       return new UserEntity({
-        email: new Email(user.email),
-        biography: new ShortText(user.biography),
-        headerImageId: user.headerImage ? new Id(user.headerImage.id) : null,
-        iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
-        id: new Id(user.id),
-        name: user.name ? new Name(user.name) : null,
-        username: new Username(user.username),
-        hashedPassword: new HashedPassword(user.hashedPassword),
-        settingId: null,
+        email: new Email(prismaUser.email),
+        biography: new ShortText(prismaUser.biography),
+        headerImageId: prismaUser.headerImage
+          ? new Id(prismaUser.headerImage.id)
+          : null,
+        iconImageId: prismaUser.iconImage
+          ? new Id(prismaUser.iconImage.id)
+          : null,
+        id: new Id(prismaUser.id),
+        name: prismaUser.name ? new Name(prismaUser.name) : null,
+        username: new Username(prismaUser.username),
+        hashedPassword: new HashedPassword(prismaUser.hashedPassword),
+        fcmToken: prismaUser.fcmToken,
+        fcmTokenForMobile: prismaUser.fcmTokenForMobile,
+        isPublicEmail: prismaUser.isPublicEmail,
+        isEnabledNotificationEmail: prismaUser.isEnabledNotificationEmail,
+        isProtected: prismaUser.isProtected,
+        isEnabledNotificationMessage: prismaUser.isEnabledNotificationMessage,
+        isEnabledNotificationPostLike: prismaUser.isEnabledNotificationPostLike,
+        isEnabledNotificationPostQuotation:
+          prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
       captureException(error, { level: Severity.Fatal })
@@ -94,7 +118,7 @@ export class UserRepository {
 
   async findByEmail(email: Email) {
     try {
-      const user = await db.user.findUnique({
+      const prismaUser = await db.user.findUnique({
         where: { email: email.value },
         include: {
           headerImage: {
@@ -106,20 +130,32 @@ export class UserRepository {
         },
       })
 
-      if (user === null) {
+      if (prismaUser === null) {
         return new NotFoundError()
       }
 
       return new UserEntity({
-        email: new Email(user.email),
-        biography: new ShortText(user.biography),
-        headerImageId: user.headerImage ? new Id(user.headerImage.id) : null,
-        iconImageId: user.iconImage ? new Id(user.iconImage.id) : null,
-        id: new Id(user.id),
-        name: user.name ? new Name(user.name) : null,
-        username: new Username(user.username),
-        hashedPassword: new HashedPassword(user.hashedPassword),
-        settingId: null,
+        email: new Email(prismaUser.email),
+        biography: new ShortText(prismaUser.biography),
+        headerImageId: prismaUser.headerImage
+          ? new Id(prismaUser.headerImage.id)
+          : null,
+        iconImageId: prismaUser.iconImage
+          ? new Id(prismaUser.iconImage.id)
+          : null,
+        id: new Id(prismaUser.id),
+        name: prismaUser.name ? new Name(prismaUser.name) : null,
+        username: new Username(prismaUser.username),
+        hashedPassword: new HashedPassword(prismaUser.hashedPassword),
+        fcmToken: prismaUser.fcmToken,
+        fcmTokenForMobile: prismaUser.fcmTokenForMobile,
+        isPublicEmail: prismaUser.isPublicEmail,
+        isEnabledNotificationEmail: prismaUser.isEnabledNotificationEmail,
+        isProtected: prismaUser.isProtected,
+        isEnabledNotificationMessage: prismaUser.isEnabledNotificationMessage,
+        isEnabledNotificationPostLike: prismaUser.isEnabledNotificationPostLike,
+        isEnabledNotificationPostQuotation:
+          prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
       captureException(error, { level: Severity.Fatal })
@@ -141,6 +177,15 @@ export class UserRepository {
           hashedPassword: user.hashedPassword.value,
           id: user.id.value,
           username: user.username.value,
+          fcmToken: user.fcmToken,
+          fcmTokenForMobile: user.fcmTokenForMobile,
+          isPublicEmail: user.isPublicEmail,
+          isEnabledNotificationEmail: user.isEnabledNotificationEmail,
+          isProtected: user.isProtected,
+          isEnabledNotificationMessage: user.isEnabledNotificationMessage,
+          isEnabledNotificationPostLike: user.isEnabledNotificationPostLike,
+          isEnabledNotificationPostQuotation:
+            user.isEnabledNotificationPostQuotation,
         },
         update: {
           biography: user.biography.value,
@@ -153,6 +198,15 @@ export class UserRepository {
             : undefined,
           name: user.name?.value || null,
           username: user.username.value,
+          fcmToken: user.fcmToken,
+          fcmTokenForMobile: user.fcmTokenForMobile,
+          isPublicEmail: user.isPublicEmail,
+          isEnabledNotificationEmail: user.isEnabledNotificationEmail,
+          isProtected: user.isProtected,
+          isEnabledNotificationMessage: user.isEnabledNotificationMessage,
+          isEnabledNotificationPostLike: user.isEnabledNotificationPostLike,
+          isEnabledNotificationPostQuotation:
+            user.isEnabledNotificationPostQuotation,
         },
         where: { email: user.email.value },
       })

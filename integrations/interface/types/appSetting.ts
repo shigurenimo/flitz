@@ -2,13 +2,12 @@
  * 設定
  */
 export type AppSetting = {
-  discoverableByEmail: boolean
   fcmToken: string | null
   fcmTokenForMobile: string | null
-  id: string
-  notificationEmail: string | null
-  protected: boolean
-  subscribeMessage: boolean
-  subscribePostLike: boolean
-  subscribePostQuotation: boolean
+  isProtected: boolean
+  isPublicEmail: boolean
+  isEnabledNotificationEmail: boolean
+  isEnabledNotificationMessage: boolean
+  isEnabledNotificationPostLike: boolean
+  isEnabledNotificationPostQuotation: boolean
 }

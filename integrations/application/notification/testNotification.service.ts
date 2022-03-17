@@ -3,7 +3,7 @@ import { NotFoundError } from "blitz"
 import admin from "firebase-admin"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import { FirebaseAdapter, SettingRepository } from "integrations/infrastructure"
+import { FirebaseAdapter, UserRepository } from "integrations/infrastructure"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -13,31 +13,31 @@ type Props = {
 @injectable()
 export class TestNotificationService {
   constructor(
-    private settingRepository: SettingRepository,
+    private userRepository: UserRepository,
     private firebaseAdapter: FirebaseAdapter
   ) {}
 
   async execute(props: Props) {
     try {
-      const setting = await this.settingRepository.findByUserId(props.userId)
+      const user = await this.userRepository.find(props.userId)
 
-      if (setting instanceof Error) {
+      if (user instanceof Error) {
         return new InternalError()
       }
 
-      if (setting === null) {
+      if (user === null) {
         captureException("データが見つからなかった。")
 
         return new NotFoundError()
       }
 
-      if (setting === null || setting.fcmToken === null) {
+      if (user === null || user.fcmToken === null) {
         return new InternalError("FCMトークンが存在しないので送信できない")
       }
 
       this.firebaseAdapter.initialize()
 
-      await admin.messaging().sendToDevice(setting.fcmToken, {
+      await admin.messaging().sendToDevice(user.fcmToken, {
         notification: {
           title: "TEST Notification",
           body: "This is a test Notification.",

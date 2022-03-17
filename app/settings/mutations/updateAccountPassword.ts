@@ -1,6 +1,6 @@
 import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { UpdateAccountPasswordService } from "integrations/application"
+import { UpdateUserPasswordService } from "integrations/application"
 import { Id, Password } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
@@ -22,7 +22,7 @@ const updateAccountPassword = resolver.pipe(
   },
   async (props) => {
     const updateAccountPasswordService = container.resolve(
-      UpdateAccountPasswordService
+      UpdateUserPasswordService
     )
 
     const transaction = await updateAccountPasswordService.execute({

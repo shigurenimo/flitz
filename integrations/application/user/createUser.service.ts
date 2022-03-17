@@ -4,13 +4,12 @@ import {
   HashedPasswordFactory,
   IdFactory,
   Password,
-  SettingEntity,
   ShortText,
   UserEntity,
   UsernameFactory,
 } from "integrations/domain"
 import { InternalError } from "integrations/errors"
-import { SettingRepository, UserRepository } from "integrations/infrastructure"
+import { UserRepository } from "integrations/infrastructure"
 import { injectable } from "tsyringe"
 
 type Props = {
@@ -20,10 +19,7 @@ type Props = {
 
 @injectable()
 export class SignUpService {
-  constructor(
-    private userRepository: UserRepository,
-    private settingRepository: SettingRepository
-  ) {}
+  constructor(private userRepository: UserRepository) {}
 
   /**
    * ユーザーを作成する
@@ -36,8 +32,6 @@ export class SignUpService {
         props.password
       )
 
-      const settingId = IdFactory.nanoid()
-
       const userId = IdFactory.nanoid()
 
       const user = new UserEntity({
@@ -49,31 +43,19 @@ export class SignUpService {
         name: null,
         username: UsernameFactory.random(),
         email: props.email,
-        settingId: settingId,
-      })
-
-      const transactionUser = await this.userRepository.upsert(user)
-
-      if (transactionUser instanceof Error) {
-        return new InternalError()
-      }
-
-      const setting = new SettingEntity({
-        id: settingId,
-        discoverableByEmail: false,
         fcmToken: null,
         fcmTokenForMobile: null,
-        notificationEmail: null,
-        protected: false,
-        subscribeMessage: false,
-        subscribePostLike: false,
-        subscribePostQuotation: false,
-        userId: userId,
+        isProtected: false,
+        isPublicEmail: false,
+        isEnabledNotificationEmail: true,
+        isEnabledNotificationMessage: true,
+        isEnabledNotificationPostLike: true,
+        isEnabledNotificationPostQuotation: true,
       })
 
-      const transactionSetting = await this.settingRepository.upsert(setting)
+      const upsertUser = await this.userRepository.upsert(user)
 
-      if (transactionSetting instanceof Error) {
+      if (upsertUser instanceof Error) {
         return new InternalError()
       }
 

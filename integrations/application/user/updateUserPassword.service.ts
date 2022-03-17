@@ -12,7 +12,7 @@ type Props = {
 }
 
 @injectable()
-export class UpdateAccountPasswordService {
+export class UpdateUserPasswordService {
   constructor(private userRepository: UserRepository) {}
 
   async execute(props: Props) {
