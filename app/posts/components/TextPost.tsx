@@ -1,11 +1,11 @@
 import { Text } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = {
   text?: string | null
 }
 
-export const TextPost: VFC<Props> = (props) => {
+export const TextPost: FC<Props> = (props) => {
   if (!props.text) {
     return null
   }

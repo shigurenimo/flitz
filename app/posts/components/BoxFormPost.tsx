@@ -9,10 +9,10 @@ import {
 import { AvatarUser } from "app/core/components/AvatarUser"
 import createReply from "app/posts/mutations/createReply"
 import { useMutation, useParam, useSession } from "blitz"
-import React, { useState, VFC } from "react"
+import { FC, useState } from "react"
 import { FiImage, FiSend } from "react-icons/fi"
 
-export const BoxFormPost: VFC = () => {
+export const BoxFormPost: FC = () => {
   const session = useSession()
 
   const postId = useParam("postId", "string")

@@ -4,7 +4,7 @@ import createPostLike from "app/posts/mutations/createPostLike"
 import createQuotation from "app/posts/mutations/createQuotation"
 import deletePostLike from "app/posts/mutations/deletePostLike"
 import { useMutation, useRouter } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { FiHeart, FiMessageCircle, FiRepeat } from "react-icons/fi"
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
   text: string | null
 }
 
-export const BoxPostActions: VFC<Props> = (props) => {
+export const BoxPostActions: FC<Props> = (props) => {
   const router = useRouter()
 
   const toast = useToast()

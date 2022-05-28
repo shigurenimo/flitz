@@ -1,10 +1,10 @@
 import { HStack, Icon, Text, useColorModeValue } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { FiRepeat } from "react-icons/fi"
 
 type Props = { name: string }
 
-export const BoxHeaderRepost: VFC<Props> = (props) => {
+export const BoxHeaderRepost: FC<Props> = (props) => {
   const bg = useColorModeValue("purple.50", "gray.600")
 
   return (

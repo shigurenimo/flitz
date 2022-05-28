@@ -1,5 +1,5 @@
 import { Stack, Text } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = {
   id: string
@@ -7,7 +7,7 @@ type Props = {
   username: string
 }
 
-export const BoxPostReply: VFC<Props> = (props) => {
+export const BoxPostReply: FC<Props> = (props) => {
   return (
     <Stack>
       <Text

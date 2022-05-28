@@ -1,11 +1,11 @@
 import { StackDivider, StackProps } from "@chakra-ui/react"
 import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = StackProps
 
-export const BoxMainFallback: VFC<Props> = (props) => {
+export const BoxMainFallback: FC<Props> = (props) => {
   return (
     <StackMain divider={<StackDivider />}>
       <BoxHeader>{"Loading..."}</BoxHeader>

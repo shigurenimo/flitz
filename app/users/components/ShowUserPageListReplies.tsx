@@ -3,10 +3,10 @@ import { StackList } from "app/core/components/StackList"
 import { BoxCardPost } from "app/posts/components/BoxCardPost"
 import getUserReplies from "app/users/queries/getUserReplies"
 import { useInfiniteQuery, useParam } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const ShowUserPageListReplies: VFC = () => {
+export const ShowUserPageListReplies: FC = () => {
   const { t } = useTranslation()
 
   const username = useParam("username", "string")

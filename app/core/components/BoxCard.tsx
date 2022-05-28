@@ -1,9 +1,9 @@
 import { Stack, StackProps, useColorModeValue } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = StackProps
 
-export const BoxCard: VFC<Props> = (props) => {
+export const BoxCard: FC<Props> = (props) => {
   const bg = useColorModeValue("gray.50", "gray.700")
 
   return (

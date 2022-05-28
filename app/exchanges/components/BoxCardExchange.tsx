@@ -4,13 +4,13 @@ import { BoxCard } from "app/core/components/BoxCard"
 import { BoxExchangeUser } from "app/exchanges/components/BoxExchangeUser"
 import { BoxPostDate } from "app/posts/components/BoxPostDate"
 import { AppMessageThread } from "integrations/interface/types/appMessageThread"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = AppMessageThread & {
   onClick(): void
 }
 
-export const BoxCardExchange: VFC<Props> = (props) => {
+export const BoxCardExchange: FC<Props> = (props) => {
   if (props.relatedUser === null) {
     return null
   }

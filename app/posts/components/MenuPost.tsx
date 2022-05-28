@@ -6,7 +6,7 @@ import {
   MenuList,
 } from "@chakra-ui/react"
 import { useClipboardAndToast } from "app/posts/hooks/useClipboardAndToast"
-import React, { VFC } from "react"
+import { FC } from "react"
 import {
   FiClipboard,
   FiMoreHorizontal,
@@ -19,7 +19,7 @@ type Props = {
   onOpenDialog(): void
 }
 
-export const MenuPost: VFC<Props> = ({ isOwnPost, onOpenDialog }) => {
+export const MenuPost: FC<Props> = ({ isOwnPost, onOpenDialog }) => {
   const hasShareAPI = typeof navigator.share !== "undefined"
 
   const onShare = () => {

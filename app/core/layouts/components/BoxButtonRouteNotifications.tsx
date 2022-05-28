@@ -1,7 +1,7 @@
 import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 import checkUnreadNotifications from "app/notifications/queries/checkUnreadNotifications"
 import { useQuery } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiBell } from "react-icons/fi"
 
@@ -10,7 +10,7 @@ type Props = {
   onClick?(): void
 }
 
-export const BoxButtonRouteNotifications: VFC<Props> = (props) => {
+export const BoxButtonRouteNotifications: FC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasBadge] = useQuery(checkUnreadNotifications, null, {

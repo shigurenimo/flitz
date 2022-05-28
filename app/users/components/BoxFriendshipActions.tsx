@@ -1,6 +1,6 @@
 import { Button, HStack, Icon } from "@chakra-ui/react"
 import { useSession } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { FiMail, FiUserPlus } from "react-icons/fi"
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
   userId: string
 }
 
-export const BoxFriendshipActions: VFC<Props> = (props) => {
+export const BoxFriendshipActions: FC<Props> = (props) => {
   const session = useSession()
 
   if (session.userId === props.userId) {

@@ -3,13 +3,17 @@ import { init } from "@sentry/browser"
 import { Integrations } from "@sentry/tracing"
 import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
 import { theme } from "app/core/theme/theme"
-import { AppProps, BlitzPage, useQueryErrorResetBoundary } from "blitz"
+import {
+  AppProps,
+  BlitzPage,
+  ErrorBoundary,
+  useQueryErrorResetBoundary,
+} from "blitz"
 import { getAnalytics, setAnalyticsCollectionEnabled } from "firebase/analytics"
 import { getApps, initializeApp } from "firebase/app"
 import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
-import React, { useEffect } from "react"
-import { ErrorBoundary } from "react-error-boundary"
+import { useEffect } from "react"
 import { I18nextProvider, initReactI18next } from "react-i18next"
 import resources from "../i18n.json"
 

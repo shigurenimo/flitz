@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react"
 import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
 import { useClipboardAndToast } from "app/posts/hooks/useClipboardAndToast"
-import React, { VFC } from "react"
+import { FC } from "react"
 import {
   FiClipboard,
   FiMoreHorizontal,
@@ -21,7 +21,7 @@ type Props = {
   isOwnPost: boolean
 }
 
-export const BoxPostMenu: VFC<Props> = (props) => {
+export const BoxPostMenu: FC<Props> = (props) => {
   const deleteDialogDisclosure = useDisclosure()
 
   const hasShareAPI = typeof navigator.share !== "undefined"

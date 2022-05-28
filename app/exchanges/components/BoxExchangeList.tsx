@@ -10,12 +10,12 @@ import { StackList } from "app/core/components/StackList"
 import { BoxCardExchange } from "app/exchanges/components/BoxCardExchange"
 import getExchanges from "app/exchanges/queries/getExchanges"
 import { usePaginatedQuery, useRouter } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 
 const ITEMS_PER_PAGE = 20
 
-export const BoxExchangeList: VFC = () => {
+export const BoxExchangeList: FC = () => {
   const { t } = useTranslation()
 
   const router = useRouter()

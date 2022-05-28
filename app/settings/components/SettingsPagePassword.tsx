@@ -11,11 +11,11 @@ import {
 } from "@chakra-ui/react"
 import updateAccountPassword from "app/settings/mutations/updateAccountPassword"
 import { useMutation } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-export const SettingsPagePassword: VFC = () => {
+export const SettingsPagePassword: FC = () => {
   const { t } = useTranslation()
 
   const toast = useToast()

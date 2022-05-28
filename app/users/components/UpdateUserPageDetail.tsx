@@ -16,7 +16,7 @@ import { BoxProfileUpdateActions } from "app/users/components/BoxProfileUpdateAc
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
 import { useMutation, useParam, useQuery } from "blitz"
-import React, { useState, VFC } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
@@ -26,7 +26,7 @@ type Form = {
   siteURL: string
 }
 
-export const UpdateUserPageDetail: VFC = () => {
+export const UpdateUserPageDetail: FC = () => {
   const { t } = useTranslation()
 
   const [iconImageFile, setIconImage] = useState<File | null>(null)

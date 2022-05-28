@@ -3,9 +3,9 @@ import { StackList } from "app/core/components/StackList"
 import { BoxCardPost } from "app/posts/components/BoxCardPost"
 import getPosts from "app/posts/queries/getPosts"
 import { useInfiniteQuery, useSession } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 
-export const BoxPostList: VFC = () => {
+export const BoxPostList: FC = () => {
   const session = useSession()
 
   const [pages] = useInfiniteQuery(getPosts, (page = { skip: 0 }) => page, {

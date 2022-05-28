@@ -3,11 +3,11 @@ import { BoxCardNotificationLike } from "app/notifications/components/BoxCardNot
 import { BoxCardPost } from "app/posts/components/BoxCardPost"
 import { Link } from "blitz"
 import { AppNotification } from "integrations/interface/types/appNotification"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = AppNotification
 
-export const BoxCardNotification: VFC<Props> = (props) => {
+export const BoxCardNotification: FC<Props> = (props) => {
   if (props.type === "FOLLOW") {
     return (
       <Link href={`/${props.embedded.username}`} passHref>

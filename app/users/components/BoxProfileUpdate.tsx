@@ -1,12 +1,12 @@
 import { Heading, HStack, Stack, Text } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = {
   name: string | null
   username: string
 }
 
-export const BoxProfileUpdate: VFC<Props> = (props) => {
+export const BoxProfileUpdate: FC<Props> = (props) => {
   return (
     <Stack>
       <HStack spacing={4} align={"center"}>

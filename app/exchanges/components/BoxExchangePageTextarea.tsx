@@ -2,11 +2,11 @@ import { Button, HStack, Stack, useColorModeValue } from "@chakra-ui/react"
 import { TextareaAutosize } from "app/core/components/TextareaAutosize"
 import createMessage from "app/exchanges/mutations/createMessage"
 import { useMutation, useParam } from "blitz"
-import React, { useState, VFC } from "react"
+import { FC, useState } from "react"
 
 type Props = { refetch(): void }
 
-export const BoxExchangeTextarea: VFC<Props> = ({ refetch }) => {
+export const BoxExchangeTextarea: FC<Props> = ({ refetch }) => {
   const recipientId = useParam("recipientId", "string")
 
   const bg = useColorModeValue("white", "gray.800")

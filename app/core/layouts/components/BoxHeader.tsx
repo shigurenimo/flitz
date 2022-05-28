@@ -14,7 +14,7 @@ import { BoxButtonRouteNotifications } from "app/core/layouts/components/BoxButt
 import { BoxButtonRouteReferences } from "app/core/layouts/components/BoxButtonRouteReferences"
 import { toActiveRoute } from "app/core/layouts/utils/toActiveRoute"
 import { useRouter, useSession } from "blitz"
-import React, { Suspense, VFC } from "react"
+import { FC, Suspense } from "react"
 import { useTranslation } from "react-i18next"
 import {
   FiBell,
@@ -26,7 +26,7 @@ import {
   FiZap,
 } from "react-icons/fi"
 
-export const LayoutHeader: VFC = () => {
+export const LayoutHeader: FC = () => {
   const bg = useColorModeValue("white", "gray.800")
 
   const { t } = useTranslation()

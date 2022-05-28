@@ -4,9 +4,9 @@ import { BoxHeaderUserAction } from "app/posts/components/BoxHeaderUserAction"
 import { BoxPostImage } from "app/posts/components/BoxPostImage"
 import getPost from "app/posts/queries/getPost"
 import { useParam, useQuery } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 
-export const BoxPostDetail: VFC = () => {
+export const BoxPostDetail: FC = () => {
   const postId = useParam("postId", "string")
 
   const [post] = useQuery(getPost, { id: postId + "" })

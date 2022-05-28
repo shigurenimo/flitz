@@ -5,12 +5,12 @@ import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUserFollowers from "app/users/queries/getUserFollowers"
 import { useInfiniteQuery, useMutation, useParam } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 
 type Props = { userId: string | null }
 
-export const ShowUserPageListFollowers: VFC<Props> = ({ userId }) => {
+export const ShowUserPageListFollowers: FC<Props> = ({ userId }) => {
   const { t } = useTranslation()
 
   const username = useParam("username", "string")

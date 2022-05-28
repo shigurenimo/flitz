@@ -1,8 +1,8 @@
 import { Box, Heading, Image, Stack, Text } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const BoxHomeHero: VFC = () => {
+export const BoxHomeHero: FC = () => {
   const { t } = useTranslation()
 
   return (

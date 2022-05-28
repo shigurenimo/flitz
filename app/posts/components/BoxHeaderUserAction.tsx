@@ -4,11 +4,11 @@ import { BoxPostUser } from "app/posts/components/BoxPostUser"
 import { MenuPost } from "app/posts/components/MenuPost"
 import { useSession } from "blitz"
 import { AppUserEmbedded } from "integrations/interface/types/appUserEmbedded"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = AppUserEmbedded
 
-export const BoxHeaderUserAction: VFC<Props> = (props) => {
+export const BoxHeaderUserAction: FC<Props> = (props) => {
   const session = useSession()
 
   const deleteDialogDisclosure = useDisclosure()

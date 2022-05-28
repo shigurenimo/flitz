@@ -1,5 +1,5 @@
 import { HStack, Text } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = {
   user: {
@@ -9,7 +9,7 @@ type Props = {
   }
 }
 
-export const BoxExchangeUser: VFC<Props> = (props) => {
+export const BoxExchangeUser: FC<Props> = (props) => {
   if (props.user.name) {
     return (
       <HStack align={"center"} pt={1}>

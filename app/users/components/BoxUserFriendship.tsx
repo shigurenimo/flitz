@@ -1,11 +1,11 @@
 import { HStack, Link as LinkText, Stack, Text } from "@chakra-ui/react"
 import { Link } from "blitz"
 import { AppUserProfile } from "integrations/interface/types/appUserProfile"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = AppUserProfile
 
-export const BoxUserFriendship: VFC<Props> = (props) => {
+export const BoxUserFriendship: FC<Props> = (props) => {
   return (
     <Stack spacing={2} px={4}>
       <Stack>

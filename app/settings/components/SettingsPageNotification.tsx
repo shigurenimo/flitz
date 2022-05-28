@@ -16,7 +16,7 @@ import {
   WrapItem,
 } from "@chakra-ui/react"
 import { AppSetting } from "integrations/interface/types/appSetting"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend, FiZap, FiZapOff } from "react-icons/fi"
 
@@ -29,7 +29,7 @@ type Props = {
   isLoadingUpdateSettingMutation: boolean
 }
 
-export const SettingsPageNotification: VFC<Props> = ({
+export const SettingsPageNotification: FC<Props> = ({
   setting,
   onTurnOnNotification,
   onTurnOffNotification,

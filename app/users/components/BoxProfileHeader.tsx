@@ -1,12 +1,12 @@
 import { AspectRatio, Box, Image } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = {
   fileId?: string | null
   src?: string
 }
 
-export const BoxProfileHeader: VFC<Props> = (props) => {
+export const BoxProfileHeader: FC<Props> = (props) => {
   return (
     <Box
       w={"full"}

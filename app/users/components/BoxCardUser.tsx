@@ -3,7 +3,7 @@ import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
 import { useRouter } from "blitz"
 import { AppFriendship } from "integrations/interface/types/appFriendship"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = {
   createdAt: Date
@@ -13,7 +13,7 @@ type Props = {
   follower: AppFriendship
 }
 
-export const BoxCardUser: VFC<Props> = (props) => {
+export const BoxCardUser: FC<Props> = (props) => {
   const router = useRouter()
 
   const toast = useToast()

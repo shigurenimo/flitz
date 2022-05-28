@@ -5,9 +5,9 @@ import { BoxCardMessageRight } from "app/exchanges/components/BoxMessageBlockRig
 import { useMessageBlocks } from "app/exchanges/hooks/useMessageBlocks"
 import getMessages from "app/exchanges/queries/getMessages"
 import { useInfiniteQuery, useParam } from "blitz"
-import React, { useEffect, VFC } from "react"
+import { FC, useEffect } from "react"
 
-export const BoxExchangeMessages: VFC = () => {
+export const BoxExchangeMessages: FC = () => {
   const recipientId = useParam("recipientId", "string")
 
   const [pages, { refetch }] = useInfiniteQuery(

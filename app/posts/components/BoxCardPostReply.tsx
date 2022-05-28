@@ -7,11 +7,11 @@ import { BoxPostDate } from "app/posts/components/BoxPostDate"
 import { BoxPostImage } from "app/posts/components/BoxPostImage"
 import { TextPost } from "app/posts/components/TextPost"
 import { AppQuotation } from "integrations/interface/types/appQuotation"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = AppQuotation
 
-export const BoxCardPostReply: VFC<Props> = (props) => {
+export const BoxCardPostReply: FC<Props> = (props) => {
   return (
     <BoxCard>
       <HStack align={"start"} spacing={4}>

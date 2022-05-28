@@ -1,5 +1,5 @@
 import { Heading, Stack, Text } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = {
   id: string
@@ -7,7 +7,7 @@ type Props = {
   username: string
 }
 
-export const BoxUserName: VFC<Props> = (props) => {
+export const BoxUserName: FC<Props> = (props) => {
   return (
     <Stack flex={1} h={"full"}>
       <Heading size={"lg"}>{props.name}</Heading>

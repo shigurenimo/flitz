@@ -3,11 +3,11 @@ import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
 import { BoxMessageDate } from "app/exchanges/components/BoxMessageDate"
 import { MessageBlock } from "app/exchanges/types/messageBlock"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = MessageBlock
 
-export const BoxCardMessageLeft: VFC<Props> = (props) => {
+export const BoxCardMessageLeft: FC<Props> = (props) => {
   return (
     <BoxCard py={props.userId ? 2 : 2}>
       <HStack align={"start"} spacing={4}>

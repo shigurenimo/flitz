@@ -2,7 +2,7 @@ import { Box, HStack } from "@chakra-ui/react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { useFileURL } from "app/core/hooks/useFileURL"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = {
   headerFile: File | null
@@ -12,7 +12,7 @@ type Props = {
   userId: string | null
 }
 
-export const BoxProfileUpdateActions: VFC<Props> = (props) => {
+export const BoxProfileUpdateActions: FC<Props> = (props) => {
   const [headerFileURL] = useFileURL(props.headerFile)
 
   const [iconFileURL] = useFileURL(props.iconFile)

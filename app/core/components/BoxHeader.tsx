@@ -1,7 +1,11 @@
 import { Heading, Stack } from "@chakra-ui/react"
-import React, { FC } from "react"
+import { FC, ReactNode } from "react"
 
-export const BoxHeader: FC = (props) => {
+type Props = {
+  children: ReactNode
+}
+
+export const BoxHeader: FC<Props> = (props) => {
   return (
     <Stack px={4}>
       <Heading letterSpacing={"wider"}>{props.children}</Heading>

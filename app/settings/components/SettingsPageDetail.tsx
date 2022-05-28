@@ -5,10 +5,10 @@ import updateSetting from "app/settings/mutations/updateSetting"
 import getSetting from "app/settings/queries/getSetting"
 import { useMutation, useQuery } from "blitz"
 import { getMessaging, getToken, isSupported } from "firebase/messaging"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 
-export const SettingsPageDetail: VFC = () => {
+export const SettingsPageDetail: FC = () => {
   const { t } = useTranslation()
 
   const [setting, { setQueryData }] = useQuery(getSetting, null, {

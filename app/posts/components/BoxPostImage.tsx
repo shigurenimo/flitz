@@ -1,9 +1,9 @@
 import { AspectRatio, HStack, Image } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = { fileIds: string[] }
 
-export const BoxPostImage: VFC<Props> = (props) => {
+export const BoxPostImage: FC<Props> = (props) => {
   if (props.fileIds.length === 0) {
     return null
   }

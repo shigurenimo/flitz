@@ -1,9 +1,9 @@
 import { Stack, StackProps } from "@chakra-ui/react"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = StackProps
 
-export const StackMain: VFC<Props> = (props) => {
+export const StackMain: FC<Props> = (props) => {
   return (
     <Stack
       as={"main"}

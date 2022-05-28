@@ -1,9 +1,9 @@
 import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiGlobe } from "react-icons/fi"
 
-export const BoxButtonRouteLanguage: VFC = () => {
+export const BoxButtonRouteLanguage: FC = () => {
   const { i18n } = useTranslation()
 
   const onClick = () => {

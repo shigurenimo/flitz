@@ -11,11 +11,11 @@ import { BoxPostReply } from "app/posts/components/BoxPostReply"
 import { TextPost } from "app/posts/components/TextPost"
 import { useRouter } from "blitz"
 import { AppPost } from "integrations/interface/types/appPost"
-import React, { VFC } from "react"
+import { FC } from "react"
 
 type Props = AppPost & { isDisabled: boolean }
 
-export const BoxCardPost: VFC<Props> = (props) => {
+export const BoxCardPost: FC<Props> = (props) => {
   const router = useRouter()
 
   const onCheckPost = () => {

@@ -3,12 +3,12 @@ import {
   AuthorizationError,
   CSRFTokenMismatchError,
   ErrorComponent,
+  ErrorFallbackProps,
   NotFoundError,
 } from "blitz"
-import React, { VFC } from "react"
-import { FallbackProps } from "react-error-boundary"
+import { FC } from "react"
 
-export const BoxErrorFallback: VFC<FallbackProps> = ({ error }) => {
+export const BoxErrorFallback: FC<ErrorFallbackProps> = ({ error }) => {
   if (error instanceof AuthenticationError) {
     return (
       <ErrorComponent

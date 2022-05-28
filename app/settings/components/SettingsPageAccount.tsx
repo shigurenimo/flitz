@@ -14,11 +14,11 @@ import updateAccountEmail from "app/settings/mutations/updateAccountEmail"
 import getAccount from "app/settings/queries/getAccount"
 import updateUsername from "app/users/mutations/updateUsername"
 import { useMutation, useQuery, useSession } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-export const SettingsPageAccount: VFC = () => {
+export const SettingsPageAccount: FC = () => {
   const { t } = useTranslation()
 
   const toast = useToast()

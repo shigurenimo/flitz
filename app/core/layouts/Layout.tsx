@@ -4,9 +4,10 @@ import { useCloudMessaging } from "app/core/hooks/useCloudMessaging"
 import { LayoutAside } from "app/core/layouts/components/BoxAside"
 import { LayoutHeader } from "app/core/layouts/components/BoxHeader"
 import { Head } from "blitz"
-import React, { FC, Suspense } from "react"
+import { FC, ReactNode, Suspense } from "react"
 
 type LayoutProps = {
+  children: ReactNode
   title?: string
 }
 

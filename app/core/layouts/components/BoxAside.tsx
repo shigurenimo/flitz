@@ -8,7 +8,7 @@ import { BoxButtonRouteNotifications } from "app/core/layouts/components/BoxButt
 import { BoxButtonRouteReferences } from "app/core/layouts/components/BoxButtonRouteReferences"
 import { toActiveRoute } from "app/core/layouts/utils/toActiveRoute"
 import { useRouter, useSession } from "blitz"
-import React, { Suspense, VFC } from "react"
+import { FC, Suspense } from "react"
 import { useTranslation } from "react-i18next"
 import {
   FiBell,
@@ -20,7 +20,7 @@ import {
   FiZap,
 } from "react-icons/fi"
 
-export const LayoutAside: VFC = () => {
+export const LayoutAside: FC = () => {
   const session = useSession()
 
   const router = useRouter()

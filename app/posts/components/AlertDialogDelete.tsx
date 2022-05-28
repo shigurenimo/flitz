@@ -8,14 +8,14 @@ import {
   Button,
   UseDisclosureReturn,
 } from "@chakra-ui/react"
-import React, { useRef, VFC } from "react"
+import { FC, useRef } from "react"
 
 type Props = {
   disclosure: UseDisclosureReturn
   onDelete(): void
 }
 
-export const AlertDialogDelete: VFC<Props> = (props) => {
+export const AlertDialogDelete: FC<Props> = (props) => {
   const cancelRef = useRef<HTMLButtonElement>(null)
 
   return (

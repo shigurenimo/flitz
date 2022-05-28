@@ -5,11 +5,16 @@ import { BoxUserFriendship } from "app/users/components/BoxUserFriendship"
 import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUser from "app/users/queries/getUser"
-import { useMutation, useParam, useQuery, useRouter } from "blitz"
-import React, { Suspense, VFC } from "react"
-import { ErrorBoundary } from "react-error-boundary"
+import {
+  ErrorBoundary,
+  useMutation,
+  useParam,
+  useQuery,
+  useRouter,
+} from "blitz"
+import { FC, Suspense } from "react"
 
-export const ShowUserPageDetail: VFC = () => {
+export const ShowUserPageDetail: FC = () => {
   const router = useRouter()
 
   const username = useParam("username", "string")

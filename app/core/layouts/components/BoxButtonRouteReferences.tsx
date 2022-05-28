@@ -1,7 +1,7 @@
 import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 import checkUnreadReferences from "app/home/queries/checkUnreadReferences"
 import { useQuery } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiHome } from "react-icons/fi"
 
@@ -10,7 +10,7 @@ type Props = {
   onClick?(): void
 }
 
-export const BoxButtonRouteReferences: VFC<Props> = (props) => {
+export const BoxButtonRouteReferences: FC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasBadge] = useQuery(checkUnreadReferences, null, {

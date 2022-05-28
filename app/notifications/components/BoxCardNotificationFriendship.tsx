@@ -9,12 +9,12 @@ import {
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
 import { AppNotificationFollow } from "integrations/interface/types/appNotificationFollow"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { FiUserPlus } from "react-icons/fi"
 
 type Props = AppNotificationFollow
 
-export const BoxCardNotificationFriendship: VFC<Props> = (props) => {
+export const BoxCardNotificationFriendship: FC<Props> = (props) => {
   return (
     <BoxCard>
       <HStack spacing={4}>

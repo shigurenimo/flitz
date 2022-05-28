@@ -14,11 +14,11 @@ import { useCloudStorage } from "app/core/hooks/useCloudStorage"
 import { useFileURL } from "app/core/hooks/useFileURL"
 import createPost from "app/posts/mutations/createPost"
 import { useMutation, useSession } from "blitz"
-import React, { useState, VFC } from "react"
+import { FC, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend } from "react-icons/fi"
 
-export const BoxHomeFormPost: VFC = () => {
+export const BoxHomeFormPost: FC = () => {
   const session = useSession()
 
   const { t } = useTranslation()

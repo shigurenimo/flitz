@@ -11,7 +11,7 @@ import {
 import createUser from "app/home/mutations/createUser"
 import login from "app/home/mutations/login"
 import { useMutation } from "blitz"
-import React, { VFC } from "react"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
 
 type FormLogin = {
@@ -19,7 +19,7 @@ type FormLogin = {
   password: string
 }
 
-export const BoxErrorFallbackLogin: VFC = () => {
+export const BoxErrorFallbackLogin: FC = () => {
   const [loginMutation, { isLoading: isLoadingLogin }] = useMutation(login)
 
   const [createUserMutation, { isLoading: isLoadingCreateUser }] =
