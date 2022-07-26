@@ -15,7 +15,7 @@ import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import { useEffect } from "react"
 import { I18nextProvider, initReactI18next } from "react-i18next"
-import resources from "../i18n.json"
+import resources from "../app/i18n.json"
 
 const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page)
