@@ -1,5 +1,5 @@
-import { captureException, Severity } from "@sentry/node"
-import admin from "firebase-admin"
+import { captureException } from "@sentry/node"
+import { cert, getApps, initializeApp } from "firebase-admin/app"
 import { EnvAdapter } from "integrations/infrastructure/adapters/env.adapter"
 import { injectable } from "tsyringe"
 
@@ -9,16 +9,15 @@ export class FirebaseAdapter {
 
   initialize() {
     try {
-      if (0 < admin.apps.length) return null
+      if (0 < getApps().length) return null
 
       if (this.envAdapter.useFirebaseEmulator) {
-        admin.initializeApp({})
+        initializeApp({})
 
         return null
       }
-
-      admin.initializeApp({
-        credential: admin.credential.cert({
+      initializeApp({
+        credential: cert({
           clientEmail: this.envAdapter.firebase.clientEmail,
           privateKey: this.envAdapter.firebase.privateKey,
           projectId: this.envAdapter.firebase.projectId,
@@ -29,7 +28,7 @@ export class FirebaseAdapter {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)

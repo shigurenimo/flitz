@@ -1,4 +1,4 @@
-import { captureException, Severity } from "@sentry/node"
+import { captureException } from "@sentry/node"
 import db from "db"
 import { Id, PostEntity, PostText } from "integrations/domain"
 
@@ -26,7 +26,7 @@ export class PostRepository {
         followerIds: [],
       })
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -141,7 +141,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -199,7 +199,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -245,7 +245,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -266,7 +266,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)

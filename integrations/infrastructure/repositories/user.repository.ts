@@ -1,4 +1,4 @@
-import { captureException, Severity } from "@sentry/node"
+import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
 import db from "db"
 import {
@@ -54,7 +54,7 @@ export class UserRepository {
           prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -106,7 +106,7 @@ export class UserRepository {
           prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -158,7 +158,7 @@ export class UserRepository {
           prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -213,7 +213,7 @@ export class UserRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)

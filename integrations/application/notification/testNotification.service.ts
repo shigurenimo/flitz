@@ -1,6 +1,6 @@
 import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
-import admin from "firebase-admin"
+import { getMessaging } from "firebase-admin/messaging"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { FirebaseAdapter, UserRepository } from "integrations/infrastructure"
@@ -37,7 +37,7 @@ export class TestNotificationService {
 
       this.firebaseAdapter.initialize()
 
-      await admin.messaging().sendToDevice(user.fcmToken, {
+      await getMessaging().sendToDevice(user.fcmToken, {
         notification: {
           title: "TEST Notification",
           body: "This is a test Notification.",

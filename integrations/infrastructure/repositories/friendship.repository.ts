@@ -1,4 +1,4 @@
-import { captureException, Severity } from "@sentry/node"
+import { captureException } from "@sentry/node"
 import db from "db"
 import { FriendshipEntity } from "integrations/domain"
 import { Id } from "integrations/domain/valueObjects"
@@ -25,7 +25,7 @@ export class FriendshipRepository {
         followerId: new Id(friendship.followerId),
       })
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -52,7 +52,7 @@ export class FriendshipRepository {
 
       return friendships
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -92,7 +92,7 @@ export class FriendshipRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -134,7 +134,7 @@ export class FriendshipRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)

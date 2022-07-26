@@ -1,4 +1,4 @@
-import { captureException, Severity } from "@sentry/node"
+import { captureException } from "@sentry/node"
 import db from "db"
 import { FileEntity } from "integrations/domain"
 import { FileType, Id, Path, Service } from "integrations/domain/valueObjects"
@@ -18,7 +18,7 @@ export class FileRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
@@ -46,7 +46,7 @@ export class FileRepository {
         service: new Service(file.service),
       })
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)

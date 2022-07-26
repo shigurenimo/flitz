@@ -1,5 +1,5 @@
-import { captureException, Severity } from "@sentry/node"
-import admin from "firebase-admin"
+import { captureException } from "@sentry/node"
+import { getStorage } from "firebase-admin/storage"
 import { Path } from "integrations/domain"
 import { FirebaseAdapter } from "integrations/infrastructure/adapters/firebase.adapter"
 import { tmpdir } from "os"
@@ -16,13 +16,13 @@ export class StorageAdapter {
 
       const tmpPath = this.getFilePath(filePath)
 
-      const bucket = admin.storage().bucket()
+      const bucket = getStorage().bucket()
 
       return bucket
         .file(filePath.value)
         .download({ destination: tmpPath.value })
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)

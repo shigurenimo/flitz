@@ -1,4 +1,4 @@
-import { captureException, Severity } from "@sentry/node"
+import { captureException } from "@sentry/node"
 import db from "db"
 import { IdFactory, MessageEntity } from "integrations/domain"
 
@@ -47,7 +47,7 @@ export class MessageRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: Severity.Fatal })
+      captureException(error, { level: "fatal" })
 
       if (error instanceof Error) {
         return new Error(error.message)
