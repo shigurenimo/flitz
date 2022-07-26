@@ -4,7 +4,7 @@ import db from "db"
 import { Id, Username } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { PrismaFollowee } from "integrations/infrastructure/types/prismaFollowee"
-import { AppFriendship } from "integrations/interface/types"
+import { AppFriendship } from "integrations/types"
 
 type Props = {
   skip: number

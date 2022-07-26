@@ -9,7 +9,7 @@ import {
 } from "integrations/infrastructure/converters"
 import { PrismaNotification } from "integrations/infrastructure/types/prismaNotification"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
-import { AppNotification } from "integrations/interface/types"
+import { AppNotification } from "integrations/types"
 
 type Props = {
   userId: Id

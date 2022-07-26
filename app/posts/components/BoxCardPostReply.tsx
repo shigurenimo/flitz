@@ -7,7 +7,7 @@ import { BoxPostActions } from "app/posts/components/BoxPostActions"
 import { BoxPostDate } from "app/posts/components/BoxPostDate"
 import { BoxPostImage } from "app/posts/components/BoxPostImage"
 import { TextPost } from "app/posts/components/TextPost"
-import { AppQuotation } from "integrations/interface/types/appQuotation"
+import { AppQuotation } from "integrations/types/appQuotation"
 
 type Props = AppQuotation
 

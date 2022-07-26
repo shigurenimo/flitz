@@ -1,7 +1,4 @@
-import {
-  AppMessageEmbedded,
-  AppUserEmbedded,
-} from "integrations/interface/types"
+import { AppMessageEmbedded, AppUserEmbedded } from "integrations/types"
 
 /**
  * メッセージのスレッド

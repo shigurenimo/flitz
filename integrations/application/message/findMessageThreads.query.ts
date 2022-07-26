@@ -5,7 +5,7 @@ import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { AppUserEmbeddedConverter } from "integrations/infrastructure"
 import { prismaMessageThread } from "integrations/infrastructure/types"
-import { AppMessageThread } from "integrations/interface/types"
+import { AppMessageThread } from "integrations/types"
 
 type Props = {
   skip: number

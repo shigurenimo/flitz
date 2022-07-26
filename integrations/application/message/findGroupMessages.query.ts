@@ -6,7 +6,7 @@ import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { AppUserEmbeddedConverter } from "integrations/infrastructure"
 import { PrismaMessage } from "integrations/infrastructure/types/prismaMessage"
-import { AppMessage } from "integrations/interface/types"
+import { AppMessage } from "integrations/types"
 
 type Props = {
   messageThreadId: Id

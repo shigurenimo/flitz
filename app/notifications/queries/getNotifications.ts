@@ -8,7 +8,7 @@ import {
   MarkNotificationAsReadService,
 } from "integrations/application"
 import { Id } from "integrations/domain"
-import { AppNotification } from "integrations/interface/types/appNotification"
+import { AppNotification } from "integrations/types/appNotification"
 
 const zProps = z.object({
   skip: z.number(),

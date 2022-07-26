@@ -5,7 +5,7 @@ import db from "db"
 import { Id, Username } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { PrismaProfile } from "integrations/infrastructure/types"
-import { AppUserProfile } from "integrations/interface/types"
+import { AppUserProfile } from "integrations/types"
 
 type Props = {
   username: Username

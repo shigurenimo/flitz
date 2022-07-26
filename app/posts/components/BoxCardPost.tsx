@@ -11,7 +11,7 @@ import { BoxPostDate } from "app/posts/components/BoxPostDate"
 import { BoxPostImage } from "app/posts/components/BoxPostImage"
 import { BoxPostReply } from "app/posts/components/BoxPostReply"
 import { TextPost } from "app/posts/components/TextPost"
-import { AppPost } from "integrations/interface/types/appPost"
+import { AppPost } from "integrations/types/appPost"
 
 type Props = AppPost & { isDisabled: boolean }
 

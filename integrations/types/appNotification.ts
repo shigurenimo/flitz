@@ -2,7 +2,7 @@ import {
   AppNotificationFollow,
   AppNotificationLike,
   AppNotificationPost,
-} from "integrations/interface/types"
+} from "integrations/types"
 
 /**
  * 通知

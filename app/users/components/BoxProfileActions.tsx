@@ -4,7 +4,7 @@ import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
-import { AppUserProfile } from "integrations/interface/types/appUserProfile"
+import { AppUserProfile } from "integrations/types/appUserProfile"
 
 type Props = AppUserProfile
 

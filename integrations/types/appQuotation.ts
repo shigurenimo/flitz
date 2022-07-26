@@ -1,9 +1,9 @@
-import { AppQuotation, AppUserEmbedded } from "integrations/interface/types"
+import { AppUserEmbedded } from "integrations/types"
 
 /**
- * ポスト
+ * リポスト
  */
-export type AppPost = {
+export type AppQuotation = {
   id: string
   createdAt: Date
   fileIds: string[]
@@ -15,6 +15,4 @@ export type AppPost = {
   hasReply: boolean
   text: string | null
   user: AppUserEmbedded
-  quotation: AppQuotation | null
-  reply: AppQuotation | null
 }

@@ -6,7 +6,7 @@ import { InternalError } from "integrations/errors"
 import { AppPostConverter } from "integrations/infrastructure"
 import { PrismaReference } from "integrations/infrastructure/types"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
-import { AppFolloweePost } from "integrations/interface/types"
+import { AppFolloweePost } from "integrations/types"
 
 type Props = {
   skip: number

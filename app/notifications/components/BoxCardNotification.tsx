@@ -3,7 +3,7 @@ import { FC } from "react"
 import { BoxCardNotificationFriendship } from "app/notifications/components/BoxCardNotificationFriendship"
 import { BoxCardNotificationLike } from "app/notifications/components/BoxCardNotificationLike"
 import { BoxCardPost } from "app/posts/components/BoxCardPost"
-import { AppNotification } from "integrations/interface/types/appNotification"
+import { AppNotification } from "integrations/types/appNotification"
 
 type Props = AppNotification
 

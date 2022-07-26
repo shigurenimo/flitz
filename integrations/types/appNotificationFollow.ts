@@ -1,4 +1,4 @@
-import { AppUserEmbedded } from "integrations/interface/types"
+import { AppUserEmbedded } from "integrations/types"
 
 /**
  * 通知（フォロー）

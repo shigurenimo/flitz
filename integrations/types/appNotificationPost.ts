@@ -1,4 +1,4 @@
-import { AppPost } from "integrations/interface/types"
+import { AppPost } from "integrations/types"
 
 /**
  * 通知（ポスト）

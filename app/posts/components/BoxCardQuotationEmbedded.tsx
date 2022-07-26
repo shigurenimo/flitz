@@ -2,7 +2,7 @@ import { HStack, Stack, Text, useColorModeValue } from "@chakra-ui/react"
 import { useRouter } from "blitz"
 import { FC } from "react"
 import { AvatarUser } from "app/core/components/AvatarUser"
-import { AppQuotation } from "integrations/interface/types/appQuotation"
+import { AppQuotation } from "integrations/types/appQuotation"
 
 type Props = AppQuotation
 

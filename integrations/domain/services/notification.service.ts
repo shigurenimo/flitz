@@ -1,4 +1,4 @@
-import { AppNotification } from "integrations/interface/types/appNotification"
+import { AppNotification } from "integrations/types/appNotification"
 
 /**
  * 通知

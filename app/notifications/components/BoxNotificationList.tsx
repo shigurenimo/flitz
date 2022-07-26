@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { StackList } from "app/core/components/StackList"
 import { BoxCardNotification } from "app/notifications/components/BoxCardNotification"
 import getNotifications from "app/notifications/queries/getNotifications"
-import { AppNotification } from "integrations/interface/types"
+import { AppNotification } from "integrations/types"
 
 export const BoxNotificationList: FC = () => {
   const { t } = useTranslation()

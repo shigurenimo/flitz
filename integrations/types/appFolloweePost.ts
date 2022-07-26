@@ -1,4 +1,4 @@
-import { AppPost } from "integrations/interface/types/appPost"
+import { AppPost } from "integrations/types/appPost"
 
 /**
  * フォローしているユーザのポスト

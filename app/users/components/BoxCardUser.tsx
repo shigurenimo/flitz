@@ -3,7 +3,7 @@ import { useRouter } from "blitz"
 import { FC } from "react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
-import { AppFriendship } from "integrations/interface/types/appFriendship"
+import { AppFriendship } from "integrations/types/appFriendship"
 
 type Props = {
   createdAt: Date

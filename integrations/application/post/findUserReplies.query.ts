@@ -6,7 +6,7 @@ import { InternalError } from "integrations/errors"
 import { AppUserEmbeddedConverter } from "integrations/infrastructure/converters"
 import { PrismaQuotation } from "integrations/infrastructure/types"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
-import { AppQuotation } from "integrations/interface/types"
+import { AppQuotation } from "integrations/types"
 
 type Props = {
   skip: number

@@ -1,5 +1,5 @@
 import { MessageBlock } from "app/exchanges/types/messageBlock"
-import { AppMessage } from "integrations/interface/types/appMessage"
+import { AppMessage } from "integrations/types/appMessage"
 
 type MessageWithUser = AppMessage
 

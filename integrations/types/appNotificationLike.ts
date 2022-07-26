@@ -1,4 +1,4 @@
-import { AppPostEmbedded, AppUserEmbedded } from "integrations/interface/types"
+import { AppPostEmbedded, AppUserEmbedded } from "integrations/types"
 
 /**
  * 通知（ライク）

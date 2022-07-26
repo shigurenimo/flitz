@@ -4,7 +4,7 @@ import { FC } from "react"
 import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
 import { BoxPostUser } from "app/posts/components/BoxPostUser"
 import { MenuPost } from "app/posts/components/MenuPost"
-import { AppUserEmbedded } from "integrations/interface/types/appUserEmbedded"
+import { AppUserEmbedded } from "integrations/types/appUserEmbedded"
 
 type Props = AppUserEmbedded
 

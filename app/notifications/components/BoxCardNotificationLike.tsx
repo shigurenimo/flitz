@@ -10,7 +10,7 @@ import { FC } from "react"
 import { FiHeart } from "react-icons/fi"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
-import { AppNotificationLike } from "integrations/interface/types/appNotificationLike"
+import { AppNotificationLike } from "integrations/types/appNotificationLike"
 
 type Props = AppNotificationLike
 
