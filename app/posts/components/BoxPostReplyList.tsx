@@ -1,8 +1,8 @@
 import { Stack, StackDivider } from "@chakra-ui/react"
-import { BoxCardPostReply } from "app/posts/components/BoxCardPostReply"
-import getPostReplies from "app/posts/queries/getPostReplies"
 import { useInfiniteQuery, useParam } from "blitz"
 import { FC } from "react"
+import { BoxCardPostReply } from "app/posts/components/BoxCardPostReply"
+import getPostReplies from "app/posts/queries/getPostReplies"
 
 export const BoxPostReplyList: FC = () => {
   const postId = useParam("postId", "string")

@@ -1,10 +1,10 @@
 import { captureException } from "@sentry/node"
+import { injectable } from "tsyringe"
 import db from "db"
 import { Id, Username } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { PrismaFollower } from "integrations/infrastructure/types/prismaFollower"
 import { AppFriendship } from "integrations/interface/types"
-import { injectable } from "tsyringe"
 
 type Props = {
   skip: number

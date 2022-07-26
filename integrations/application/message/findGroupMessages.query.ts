@@ -1,12 +1,12 @@
 import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
+import { injectable } from "tsyringe"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { AppUserEmbeddedConverter } from "integrations/infrastructure"
 import { PrismaMessage } from "integrations/infrastructure/types/prismaMessage"
 import { AppMessage } from "integrations/interface/types"
-import { injectable } from "tsyringe"
 
 type Props = {
   messageThreadId: Id

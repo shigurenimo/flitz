@@ -1,9 +1,9 @@
-import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
-import checkUnreadNotifications from "app/notifications/queries/checkUnreadNotifications"
 import { useQuery } from "blitz"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiBell } from "react-icons/fi"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
+import checkUnreadNotifications from "app/notifications/queries/checkUnreadNotifications"
 
 type Props = {
   isActive: boolean

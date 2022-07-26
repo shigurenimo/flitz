@@ -1,5 +1,5 @@
-import { FileType as Enum } from "db"
 import { z } from "zod"
+import { FileType as Enum } from "db"
 
 const zValue = z.union([
   z.literal(Enum.IMAGE_GIF),

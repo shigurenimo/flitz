@@ -1,8 +1,8 @@
-import { captureException } from "@sentry/node"
-import { Image, Path } from "integrations/domain/valueObjects"
 import { tmpdir } from "os"
 import { join } from "path"
+import { captureException } from "@sentry/node"
 import sharp from "sharp"
+import { Image, Path } from "integrations/domain/valueObjects"
 
 export class ImageAdapter {
   private getTmpPath(fileName: Path) {

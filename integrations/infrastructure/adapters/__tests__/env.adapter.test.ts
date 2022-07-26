@@ -1,5 +1,5 @@
-import { EnvAdapter } from "integrations/infrastructure"
 import { container } from "tsyringe"
+import { EnvAdapter } from "integrations/infrastructure"
 
 describe("EnvAdapter", () => {
   it("sentry", () => {

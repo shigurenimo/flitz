@@ -1,10 +1,10 @@
 import { HStack, Stack, useDisclosure } from "@chakra-ui/react"
+import { useSession } from "blitz"
+import { FC } from "react"
 import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
 import { BoxPostUser } from "app/posts/components/BoxPostUser"
 import { MenuPost } from "app/posts/components/MenuPost"
-import { useSession } from "blitz"
 import { AppUserEmbedded } from "integrations/interface/types/appUserEmbedded"
-import { FC } from "react"
 
 type Props = AppUserEmbedded
 

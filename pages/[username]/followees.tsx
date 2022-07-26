@@ -1,11 +1,11 @@
 import { StackDivider } from "@chakra-ui/react"
+import { BlitzPage, useSession } from "blitz"
+import React, { Suspense } from "react"
+import { useTranslation } from "react-i18next"
 import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
 import { ShowUserPageListFollowees } from "app/users/components/ShowUserPageListFollowees"
-import { BlitzPage, useSession } from "blitz"
-import React, { Suspense } from "react"
-import { useTranslation } from "react-i18next"
 
 const ShowUserFolloweesPage: BlitzPage = () => {
   const { t } = useTranslation()

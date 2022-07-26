@@ -1,12 +1,12 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
+import { BlitzPage } from "blitz"
+import React, { Suspense } from "react"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
 import { ShowUserPageDetail } from "app/users/components/ShowUserPageDetail"
 import { ShowUserPageListLikes } from "app/users/components/ShowUserPageListLikes"
 import { ShowUserPageListPosts } from "app/users/components/ShowUserPageListPosts"
 import { ShowUserPageListReplies } from "app/users/components/ShowUserPageListReplies"
-import { BlitzPage } from "blitz"
-import React, { Suspense } from "react"
 
 const ShowUserPage: BlitzPage = () => {
   return (

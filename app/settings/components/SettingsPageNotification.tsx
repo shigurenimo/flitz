@@ -15,10 +15,10 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react"
-import { AppSetting } from "integrations/interface/types/appSetting"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend, FiZap, FiZapOff } from "react-icons/fi"
+import { AppSetting } from "integrations/interface/types/appSetting"
 
 type Props = {
   setting: AppSetting

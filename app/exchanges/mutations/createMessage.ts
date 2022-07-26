@@ -1,9 +1,9 @@
+import { resolver } from "blitz"
+import { container } from "tsyringe"
 import { withSentry } from "app/core/utils/withSentry"
 import { zCreateMessageMutation } from "app/exchanges/validations/createMessageMutation"
-import { resolver } from "blitz"
 import { SendMessageService } from "integrations/application"
 import { Id, PostText } from "integrations/domain"
-import { container } from "tsyringe"
 
 const createMessage = resolver.pipe(
   resolver.zod(zCreateMessageMutation),

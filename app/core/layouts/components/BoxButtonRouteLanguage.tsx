@@ -1,7 +1,7 @@
-import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiGlobe } from "react-icons/fi"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
 
 export const BoxButtonRouteLanguage: FC = () => {
   const { i18n } = useTranslation()

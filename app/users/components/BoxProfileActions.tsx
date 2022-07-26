@@ -1,10 +1,10 @@
 import { Box, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react"
-import { AvatarUser } from "app/core/components/AvatarUser"
-import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
 import { Link, useSession } from "blitz"
-import { AppUserProfile } from "integrations/interface/types/appUserProfile"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
+import { AvatarUser } from "app/core/components/AvatarUser"
+import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
+import { AppUserProfile } from "integrations/interface/types/appUserProfile"
 
 type Props = AppUserProfile
 

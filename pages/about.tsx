@@ -9,12 +9,12 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react"
-import { BoxHeader } from "app/core/components/BoxHeader"
-import { StackMain } from "app/core/components/StackMain"
-import Layout from "app/core/layouts/Layout"
 import { BlitzPage, Link } from "blitz"
 import React from "react"
 import { useTranslation } from "react-i18next"
+import { BoxHeader } from "app/core/components/BoxHeader"
+import { StackMain } from "app/core/components/StackMain"
+import Layout from "app/core/layouts/Layout"
 
 const AboutPage: BlitzPage = () => {
   const { t } = useTranslation()

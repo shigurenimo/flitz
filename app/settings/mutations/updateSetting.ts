@@ -1,12 +1,12 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
+import { container } from "tsyringe"
+import { z } from "zod"
+import { withSentry } from "app/core/utils/withSentry"
 import {
   FindUserSettingQuery,
   UpdateUserSettingService,
 } from "integrations/application"
 import { Id } from "integrations/domain"
-import { container } from "tsyringe"
-import { z } from "zod"
 
 const zUpdateSettingMutation = z.object({
   fcmToken: z.string().nullable().optional(),

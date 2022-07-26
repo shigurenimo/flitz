@@ -10,13 +10,13 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react"
-import updateAccountEmail from "app/settings/mutations/updateAccountEmail"
-import getAccount from "app/settings/queries/getAccount"
-import updateUsername from "app/users/mutations/updateUsername"
 import { useMutation, useQuery, useSession } from "blitz"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import updateAccountEmail from "app/settings/mutations/updateAccountEmail"
+import getAccount from "app/settings/queries/getAccount"
+import updateUsername from "app/users/mutations/updateUsername"
 
 export const SettingsPageAccount: FC = () => {
   const { t } = useTranslation()

@@ -1,9 +1,9 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { FindUserByUsernameQuery } from "integrations/application"
-import { Id, Username } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
+import { withSentry } from "app/core/utils/withSentry"
+import { FindUserByUsernameQuery } from "integrations/application"
+import { Id, Username } from "integrations/domain"
 
 const zProps = z.object({
   username: z.string(),

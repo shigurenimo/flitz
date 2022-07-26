@@ -1,8 +1,8 @@
+import { BlitzPage } from "blitz"
+import React, { Suspense } from "react"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
 import { UpdateUserPageDetail } from "app/users/components/UpdateUserPageDetail"
-import { BlitzPage } from "blitz"
-import React, { Suspense } from "react"
 
 const UpdateUserPage: BlitzPage = () => {
   return (

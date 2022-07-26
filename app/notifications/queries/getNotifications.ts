@@ -1,5 +1,7 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { paginate, resolver } from "blitz"
+import { container } from "tsyringe"
+import { z } from "zod"
+import { withSentry } from "app/core/utils/withSentry"
 import {
   CountUserNotificationsQuery,
   FindUserNotificationsQuery,
@@ -7,8 +9,6 @@ import {
 } from "integrations/application"
 import { Id } from "integrations/domain"
 import { AppNotification } from "integrations/interface/types/appNotification"
-import { container } from "tsyringe"
-import { z } from "zod"
 
 const zProps = z.object({
   skip: z.number(),

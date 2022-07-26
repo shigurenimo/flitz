@@ -1,8 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react"
 import { init } from "@sentry/browser"
 import { Integrations } from "@sentry/tracing"
-import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
-import { theme } from "app/core/theme/theme"
 import {
   AppProps,
   BlitzPage,
@@ -16,6 +14,8 @@ import LanguageDetector from "i18next-browser-languagedetector"
 import { useEffect } from "react"
 import { I18nextProvider, initReactI18next } from "react-i18next"
 import resources from "../app/i18n.json"
+import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
+import { theme } from "app/core/theme/theme"
 
 const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page)

@@ -1,9 +1,9 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { FindUserSimpleQuery } from "integrations/application"
-import { Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
+import { withSentry } from "app/core/utils/withSentry"
+import { FindUserSimpleQuery } from "integrations/application"
+import { Id } from "integrations/domain"
 
 const zProps = z.null()
 

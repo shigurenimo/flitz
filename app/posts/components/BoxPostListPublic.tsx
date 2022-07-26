@@ -1,9 +1,9 @@
 import { StackDivider } from "@chakra-ui/react"
+import { useInfiniteQuery } from "blitz"
+import { FC } from "react"
 import { StackList } from "app/core/components/StackList"
 import { BoxCardPost } from "app/posts/components/BoxCardPost"
 import getPosts from "app/posts/queries/getPosts"
-import { useInfiniteQuery } from "blitz"
-import { FC } from "react"
 
 export const BoxPostListPublic: FC = () => {
   const [pages] = useInfiniteQuery(getPosts, (page = { skip: 0 }) => page, {

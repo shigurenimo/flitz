@@ -1,4 +1,7 @@
 import { Stack, StackDivider } from "@chakra-ui/react"
+import { BlitzPage, useSession } from "blitz"
+import React, { Suspense } from "react"
+import { useTranslation } from "react-i18next"
 import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
@@ -8,9 +11,6 @@ import { BoxHomeList } from "app/home/components/BoxHomeList"
 import { BoxHomeLogin } from "app/home/components/BoxHomeLogin"
 import { BoxPostList } from "app/posts/components/BoxPostList"
 import { BoxPostListFallback } from "app/posts/components/BoxPostListFallback"
-import { BlitzPage, useSession } from "blitz"
-import React, { Suspense } from "react"
-import { useTranslation } from "react-i18next"
 
 const HomePage: BlitzPage = () => {
   const { t } = useTranslation()

@@ -1,3 +1,4 @@
+import { z } from "zod"
 import {
   Email,
   HashedPassword,
@@ -6,7 +7,6 @@ import {
   ShortText,
   Username,
 } from "integrations/domain/valueObjects"
-import { z } from "zod"
 
 const zProps = z.object({
   id: z.instanceof(Id),

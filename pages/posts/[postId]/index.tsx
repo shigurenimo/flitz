@@ -1,13 +1,13 @@
 import { StackDivider } from "@chakra-ui/react"
+import { BlitzPage } from "blitz"
+import React, { Suspense } from "react"
+import { useTranslation } from "react-i18next"
 import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"
 import { BoxFormPost } from "app/posts/components/BoxFormPost"
 import { BoxPostDetail } from "app/posts/components/BoxPostDetail"
 import { BoxPostReplyList } from "app/posts/components/BoxPostReplyList"
-import { BlitzPage } from "blitz"
-import React, { Suspense } from "react"
-import { useTranslation } from "react-i18next"
 
 const ShowPostPage: BlitzPage = () => {
   const { t } = useTranslation()

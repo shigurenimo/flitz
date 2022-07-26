@@ -1,4 +1,5 @@
 import { captureException } from "@sentry/node"
+import { injectable } from "tsyringe"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
@@ -9,7 +10,6 @@ import {
 import { PrismaNotification } from "integrations/infrastructure/types/prismaNotification"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
 import { AppNotification } from "integrations/interface/types"
-import { injectable } from "tsyringe"
 
 type Props = {
   userId: Id

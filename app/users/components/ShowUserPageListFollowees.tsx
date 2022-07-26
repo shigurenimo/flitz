@@ -1,12 +1,12 @@
 import { Alert, AlertIcon, Box, StackDivider, useToast } from "@chakra-ui/react"
+import { useInfiniteQuery, useMutation, useParam } from "blitz"
+import { FC } from "react"
+import { useTranslation } from "react-i18next"
 import { StackList } from "app/core/components/StackList"
 import { BoxCardUser } from "app/users/components/BoxCardUser"
 import followUser from "app/users/mutations/followUser"
 import unfollowUser from "app/users/mutations/unfollowUser"
 import getUserFollowees from "app/users/queries/getUserFollowees"
-import { useInfiniteQuery, useMutation, useParam } from "blitz"
-import { FC } from "react"
-import { useTranslation } from "react-i18next"
 
 type Props = { userId: string | null }
 

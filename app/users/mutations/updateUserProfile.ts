@@ -1,12 +1,12 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
+import { container } from "tsyringe"
+import { z } from "zod"
+import { withSentry } from "app/core/utils/withSentry"
 import {
   CreateFileService,
   UpdateUserProfileService,
 } from "integrations/application"
 import { Id, Name, ShortText } from "integrations/domain"
-import { container } from "tsyringe"
-import { z } from "zod"
 
 const zProps = z.object({
   name: z.string(),

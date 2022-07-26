@@ -1,9 +1,9 @@
+import { resolver } from "blitz"
+import { container } from "tsyringe"
 import { withSentry } from "app/core/utils/withSentry"
 import { zLoginMutation } from "app/home/validations/loginMutation"
-import { resolver } from "blitz"
 import { LoginService } from "integrations/application"
 import { Email, Password, UserRoleFactory } from "integrations/domain"
-import { container } from "tsyringe"
 
 const login = resolver.pipe(
   resolver.zod(zLoginMutation),

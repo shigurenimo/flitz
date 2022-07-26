@@ -1,5 +1,5 @@
-import { Image } from "integrations/domain/valueObjects"
 import { z } from "zod"
+import { Image } from "integrations/domain/valueObjects"
 
 export const dataURLSchema = z.string().regex(/^data:([\w/\-.]+);base64,/)
 

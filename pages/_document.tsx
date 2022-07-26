@@ -1,7 +1,7 @@
 import { ColorModeScript } from "@chakra-ui/react"
-import { theme } from "app/core/theme/theme"
 import { BlitzScript, Document, DocumentHead, Html, Main } from "blitz"
 import React from "react"
+import { theme } from "app/core/theme/theme"
 
 class MyDocument extends Document {
   render() {

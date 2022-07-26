@@ -7,8 +7,6 @@ import {
   Stack,
   useDisclosure,
 } from "@chakra-ui/react"
-import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
-import { useClipboardAndToast } from "app/posts/hooks/useClipboardAndToast"
 import { FC } from "react"
 import {
   FiClipboard,
@@ -16,6 +14,8 @@ import {
   FiShare,
   FiTrash2,
 } from "react-icons/fi"
+import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
+import { useClipboardAndToast } from "app/posts/hooks/useClipboardAndToast"
 
 type Props = {
   isOwnPost: boolean

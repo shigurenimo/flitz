@@ -6,11 +6,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react"
+import { FC } from "react"
+import { FiUserPlus } from "react-icons/fi"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
 import { AppNotificationFollow } from "integrations/interface/types/appNotificationFollow"
-import { FC } from "react"
-import { FiUserPlus } from "react-icons/fi"
 
 type Props = AppNotificationFollow
 

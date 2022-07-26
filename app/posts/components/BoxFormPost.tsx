@@ -6,11 +6,11 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react"
-import { AvatarUser } from "app/core/components/AvatarUser"
-import createReply from "app/posts/mutations/createReply"
 import { useMutation, useParam, useSession } from "blitz"
 import { FC, useState } from "react"
 import { FiImage, FiSend } from "react-icons/fi"
+import { AvatarUser } from "app/core/components/AvatarUser"
+import createReply from "app/posts/mutations/createReply"
 
 export const BoxFormPost: FC = () => {
   const session = useSession()

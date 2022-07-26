@@ -1,5 +1,5 @@
-import { Id, NotificationType } from "integrations/domain/valueObjects"
 import { z } from "zod"
+import { Id, NotificationType } from "integrations/domain/valueObjects"
 
 const zProps = z.object({
   id: z.instanceof(Id),

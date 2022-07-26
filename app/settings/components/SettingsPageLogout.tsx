@@ -1,8 +1,8 @@
 import { Box, Button, Stack, useToast } from "@chakra-ui/react"
-import logout from "app/home/mutations/logout"
 import { useMutation, useRouter } from "blitz"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
+import logout from "app/home/mutations/logout"
 
 export const SettingsPageLogout: FC = () => {
   const router = useRouter()

@@ -1,7 +1,7 @@
 import { captureException } from "@sentry/node"
+import { injectable } from "tsyringe"
 import db from "db"
 import { InternalError } from "integrations/errors"
-import { injectable } from "tsyringe"
 
 @injectable()
 export class CountPostsQuery {

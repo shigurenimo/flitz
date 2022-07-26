@@ -1,7 +1,7 @@
 import { BlitzApiHandler } from "blitz"
+import { container } from "tsyringe"
 import { ReadImageBufferService } from "integrations/application/post/readImageBuffer.service"
 import { Id } from "integrations/domain"
-import { container } from "tsyringe"
 
 const icon: BlitzApiHandler = async (req, resp) => {
   if (Array.isArray(req.query.id)) {

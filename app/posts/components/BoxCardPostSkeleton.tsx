@@ -7,10 +7,10 @@ import {
   SkeletonText,
   Stack,
 } from "@chakra-ui/react"
-import { BoxCard } from "app/core/components/BoxCard"
-import { ButtonPostAction } from "app/posts/components/ButtonPostAction"
 import { FC } from "react"
 import { FiHeart, FiMessageCircle, FiRepeat, FiShare } from "react-icons/fi"
+import { BoxCard } from "app/core/components/BoxCard"
+import { ButtonPostAction } from "app/posts/components/ButtonPostAction"
 
 export const BoxCardPostSkeleton: FC = () => {
   return (

@@ -1,12 +1,12 @@
 import { Stack, useToast } from "@chakra-ui/react"
-import { SettingsPageNotification } from "app/settings/components/SettingsPageNotification"
-import testNotification from "app/settings/mutations/testNotification"
-import updateSetting from "app/settings/mutations/updateSetting"
-import getSetting from "app/settings/queries/getSetting"
 import { useMutation, useQuery } from "blitz"
 import { getMessaging, getToken, isSupported } from "firebase/messaging"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
+import { SettingsPageNotification } from "app/settings/components/SettingsPageNotification"
+import testNotification from "app/settings/mutations/testNotification"
+import updateSetting from "app/settings/mutations/updateSetting"
+import getSetting from "app/settings/queries/getSetting"
 
 export const SettingsPageDetail: FC = () => {
   const { t } = useTranslation()

@@ -6,12 +6,12 @@ import {
   HStack,
   StackDivider,
 } from "@chakra-ui/react"
-import { StackList } from "app/core/components/StackList"
-import { BoxCardExchange } from "app/exchanges/components/BoxCardExchange"
-import getExchanges from "app/exchanges/queries/getExchanges"
 import { usePaginatedQuery, useRouter } from "blitz"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
+import { StackList } from "app/core/components/StackList"
+import { BoxCardExchange } from "app/exchanges/components/BoxCardExchange"
+import getExchanges from "app/exchanges/queries/getExchanges"
 
 const ITEMS_PER_PAGE = 20
 

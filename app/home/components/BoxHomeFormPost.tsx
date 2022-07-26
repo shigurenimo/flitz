@@ -7,16 +7,16 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react"
+import { useMutation, useSession } from "blitz"
+import { FC, useState } from "react"
+import { useTranslation } from "react-i18next"
+import { FiSend } from "react-icons/fi"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { ButtonFile } from "app/core/components/ButtonFile"
 import { TextareaAutosize } from "app/core/components/TextareaAutosize"
 import { useCloudStorage } from "app/core/hooks/useCloudStorage"
 import { useFileURL } from "app/core/hooks/useFileURL"
 import createPost from "app/posts/mutations/createPost"
-import { useMutation, useSession } from "blitz"
-import { FC, useState } from "react"
-import { useTranslation } from "react-i18next"
-import { FiSend } from "react-icons/fi"
 
 export const BoxHomeFormPost: FC = () => {
   const session = useSession()
@@ -65,7 +65,12 @@ export const BoxHomeFormPost: FC = () => {
         <AvatarUser userId={session.userId} fileId={session.iconImageId} />
         <Stack w={"full"} spacing={4} align={"flex-start"}>
           <TextareaAutosize
-            isDisabled={isLoading}
+            maxRows={8}
+            minH={"unset"}
+            overflow={"hidden"}
+            resize={"none"}
+            style={{ transition: "none" }}
+            disabled={isLoading}
             onChange={(event) => setText(event.target.value)}
             placeholder={t`What's happening?`}
             minRows={2}

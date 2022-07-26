@@ -1,3 +1,10 @@
 {
-  "extends": ["blitz"]
+  "extends": ["next", "prettier"],
+  "plugins": ["unused-imports"],
+  "rules": {
+    "import/no-anonymous-default-export": 0,
+    "import/order": [1, { "alphabetize": { "order": "asc" } }],
+    "no-empty": 0,
+    "unused-imports/no-unused-imports": 1
+  }
 }

@@ -5,7 +5,6 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react"
-import { useClipboardAndToast } from "app/posts/hooks/useClipboardAndToast"
 import { FC } from "react"
 import {
   FiClipboard,
@@ -13,6 +12,7 @@ import {
   FiShare,
   FiTrash2,
 } from "react-icons/fi"
+import { useClipboardAndToast } from "app/posts/hooks/useClipboardAndToast"
 
 type Props = {
   isOwnPost: boolean

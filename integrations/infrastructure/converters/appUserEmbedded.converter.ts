@@ -1,6 +1,6 @@
+import { injectable } from "tsyringe"
 import { PrismaUserEmbedded } from "integrations/infrastructure/types"
 import { AppUserEmbedded } from "integrations/interface/types"
-import { injectable } from "tsyringe"
 
 @injectable()
 export class AppUserEmbeddedConverter {

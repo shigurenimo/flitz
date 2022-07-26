@@ -1,10 +1,4 @@
 import { Stack, useToast } from "@chakra-ui/react"
-import { BoxProfileActions } from "app/users/components/BoxProfileActions"
-import { BoxUserAction } from "app/users/components/BoxUserAction"
-import { BoxUserFriendship } from "app/users/components/BoxUserFriendship"
-import followUser from "app/users/mutations/followUser"
-import unfollowUser from "app/users/mutations/unfollowUser"
-import getUser from "app/users/queries/getUser"
 import {
   ErrorBoundary,
   useMutation,
@@ -13,6 +7,12 @@ import {
   useRouter,
 } from "blitz"
 import { FC, Suspense } from "react"
+import { BoxProfileActions } from "app/users/components/BoxProfileActions"
+import { BoxUserAction } from "app/users/components/BoxUserAction"
+import { BoxUserFriendship } from "app/users/components/BoxUserFriendship"
+import followUser from "app/users/mutations/followUser"
+import unfollowUser from "app/users/mutations/unfollowUser"
+import getUser from "app/users/queries/getUser"
 
 export const ShowUserPageDetail: FC = () => {
   const router = useRouter()

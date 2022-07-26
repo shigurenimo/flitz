@@ -1,9 +1,9 @@
 import { StackDivider } from "@chakra-ui/react"
+import { useInfiniteQuery, useSession } from "blitz"
+import { FC } from "react"
 import { StackList } from "app/core/components/StackList"
 import getReferences from "app/home/queries/getReferences"
 import { BoxCardPost } from "app/posts/components/BoxCardPost"
-import { useInfiniteQuery, useSession } from "blitz"
-import { FC } from "react"
 
 export const BoxHomeList: FC = () => {
   const session = useSession()

@@ -1,5 +1,5 @@
-import { FileType, Id, Path, Service } from "integrations/domain/valueObjects"
 import { z } from "zod"
+import { FileType, Id, Path, Service } from "integrations/domain/valueObjects"
 
 const zProps = z.object({
   id: z.instanceof(Id),

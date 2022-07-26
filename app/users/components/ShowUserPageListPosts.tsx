@@ -1,10 +1,10 @@
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
-import { StackList } from "app/core/components/StackList"
-import { BoxCardPost } from "app/posts/components/BoxCardPost"
-import getUserPosts from "app/users/queries/getUserPosts"
 import { useInfiniteQuery, useParam } from "blitz"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
+import { StackList } from "app/core/components/StackList"
+import { BoxCardPost } from "app/posts/components/BoxCardPost"
+import getUserPosts from "app/users/queries/getUserPosts"
 
 export const ShowUserPageListPosts: FC = () => {
   const { t } = useTranslation()

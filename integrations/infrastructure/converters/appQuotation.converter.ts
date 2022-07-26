@@ -1,7 +1,7 @@
+import { injectable } from "tsyringe"
 import { AppUserEmbeddedConverter } from "integrations/infrastructure/converters/appUserEmbedded.converter"
 import { PrismaQuotation } from "integrations/infrastructure/types"
 import { AppQuotation } from "integrations/interface/types"
-import { injectable } from "tsyringe"
 
 @injectable()
 export class AppQuotationConverter {

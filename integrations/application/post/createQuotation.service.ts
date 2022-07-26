@@ -1,5 +1,6 @@
 import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
+import { injectable } from "tsyringe"
 import {
   Id,
   IdFactory,
@@ -13,7 +14,6 @@ import {
   NotificationRepository,
   PostRepository,
 } from "integrations/infrastructure"
-import { injectable } from "tsyringe"
 
 type Props = {
   userId: Id

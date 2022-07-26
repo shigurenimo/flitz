@@ -1,8 +1,8 @@
 import { Button, HStack, Stack, useColorModeValue } from "@chakra-ui/react"
-import { TextareaAutosize } from "app/core/components/TextareaAutosize"
-import createMessage from "app/exchanges/mutations/createMessage"
 import { useMutation, useParam } from "blitz"
 import { FC, useState } from "react"
+import { TextareaAutosize } from "app/core/components/TextareaAutosize"
+import createMessage from "app/exchanges/mutations/createMessage"
 
 type Props = { refetch(): void }
 
@@ -36,7 +36,13 @@ export const BoxExchangeTextarea: FC<Props> = ({ refetch }) => {
     >
       <HStack spacing={4}>
         <TextareaAutosize
-          isDisabled={isLoading}
+          maxRows={8}
+          minH={"unset"}
+          minRows={1}
+          overflow={"hidden"}
+          resize={"none"}
+          style={{ transition: "none" }}
+          disabled={isLoading}
           onChange={(event) => setText(event.target.value)}
           placeholder={"Message"}
           value={text}

@@ -1,7 +1,7 @@
 import { HStack, Link as LinkText, Stack, Text } from "@chakra-ui/react"
 import { Link } from "blitz"
-import { AppUserProfile } from "integrations/interface/types/appUserProfile"
 import { FC } from "react"
+import { AppUserProfile } from "integrations/interface/types/appUserProfile"
 
 type Props = AppUserProfile
 

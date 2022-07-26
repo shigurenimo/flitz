@@ -1,10 +1,10 @@
 import { Container, Stack } from "@chakra-ui/react"
+import { Head } from "blitz"
+import { FC, ReactNode, Suspense } from "react"
 import { BoxMainFallback } from "app/core/components/BoxMainFallback"
 import { useCloudMessaging } from "app/core/hooks/useCloudMessaging"
 import { LayoutAside } from "app/core/layouts/components/BoxAside"
 import { LayoutHeader } from "app/core/layouts/components/BoxHeader"
-import { Head } from "blitz"
-import { FC, ReactNode, Suspense } from "react"
 
 type LayoutProps = {
   children: ReactNode

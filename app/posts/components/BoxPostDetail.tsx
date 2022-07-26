@@ -1,10 +1,10 @@
 import { HStack, Stack, Text } from "@chakra-ui/react"
+import { useParam, useQuery } from "blitz"
+import { FC } from "react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxHeaderUserAction } from "app/posts/components/BoxHeaderUserAction"
 import { BoxPostImage } from "app/posts/components/BoxPostImage"
 import getPost from "app/posts/queries/getPost"
-import { useParam, useQuery } from "blitz"
-import { FC } from "react"
 
 export const BoxPostDetail: FC = () => {
   const postId = useParam("postId", "string")

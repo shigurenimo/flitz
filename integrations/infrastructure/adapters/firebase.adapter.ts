@@ -1,7 +1,7 @@
 import { captureException } from "@sentry/node"
 import { cert, getApps, initializeApp } from "firebase-admin/app"
-import { EnvAdapter } from "integrations/infrastructure/adapters/env.adapter"
 import { injectable } from "tsyringe"
+import { EnvAdapter } from "integrations/infrastructure/adapters/env.adapter"
 
 @injectable()
 export class FirebaseAdapter {

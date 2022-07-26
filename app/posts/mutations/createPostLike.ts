@@ -1,9 +1,9 @@
+import { resolver } from "blitz"
+import { container } from "tsyringe"
 import { withSentry } from "app/core/utils/withSentry"
 import { zCreatePostLikeMutation } from "app/posts/validations/createPostLikeMutation"
-import { resolver } from "blitz"
 import { CreatePostLikeService } from "integrations/application"
 import { Id } from "integrations/domain"
-import { container } from "tsyringe"
 
 const createPostLike = resolver.pipe(
   resolver.zod(zCreatePostLikeMutation),

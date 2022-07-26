@@ -1,8 +1,8 @@
 import { Box, HStack } from "@chakra-ui/react"
+import { FC } from "react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { useFileURL } from "app/core/hooks/useFileURL"
 import { BoxProfileHeader } from "app/users/components/BoxProfileHeader"
-import { FC } from "react"
 
 type Props = {
   headerFile: File | null

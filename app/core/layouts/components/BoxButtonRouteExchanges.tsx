@@ -1,9 +1,9 @@
-import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
-import checkUnreadMessages from "app/exchanges/queries/checkUnreadMessages"
 import { useQuery } from "blitz"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiMail } from "react-icons/fi"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
+import checkUnreadMessages from "app/exchanges/queries/checkUnreadMessages"
 
 type Props = {
   isActive: boolean

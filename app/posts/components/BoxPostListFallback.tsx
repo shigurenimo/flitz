@@ -1,7 +1,7 @@
 import { StackDivider } from "@chakra-ui/react"
+import { FC } from "react"
 import { StackList } from "app/core/components/StackList"
 import { BoxCardPostSkeleton } from "app/posts/components/BoxCardPostSkeleton"
-import { FC } from "react"
 
 export const BoxPostListFallback: FC = () => {
   const skeletons = Array(8)

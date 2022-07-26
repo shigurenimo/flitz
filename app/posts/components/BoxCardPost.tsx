@@ -1,4 +1,6 @@
 import { HStack, Stack } from "@chakra-ui/react"
+import { useRouter } from "blitz"
+import { FC } from "react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
 import { BoxCardQuotationEmbedded } from "app/posts/components/BoxCardQuotationEmbedded"
@@ -9,9 +11,7 @@ import { BoxPostDate } from "app/posts/components/BoxPostDate"
 import { BoxPostImage } from "app/posts/components/BoxPostImage"
 import { BoxPostReply } from "app/posts/components/BoxPostReply"
 import { TextPost } from "app/posts/components/TextPost"
-import { useRouter } from "blitz"
 import { AppPost } from "integrations/interface/types/appPost"
-import { FC } from "react"
 
 type Props = AppPost & { isDisabled: boolean }
 

@@ -1,9 +1,9 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { UpdateUserPasswordService } from "integrations/application"
-import { Id, Password } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
+import { withSentry } from "app/core/utils/withSentry"
+import { UpdateUserPasswordService } from "integrations/application"
+import { Id, Password } from "integrations/domain"
 
 const zUpdateAccountPassword = z.object({
   currentPassword: z.string(),

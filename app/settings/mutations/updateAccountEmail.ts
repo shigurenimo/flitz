@@ -1,9 +1,9 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
-import { UpdateUserEmailService } from "integrations/application"
-import { Email, Id } from "integrations/domain"
 import { container } from "tsyringe"
 import { z } from "zod"
+import { withSentry } from "app/core/utils/withSentry"
+import { UpdateUserEmailService } from "integrations/application"
+import { Email, Id } from "integrations/domain"
 
 const zUpdateAccountEmailMutation = z.object({ email: z.string() })
 

@@ -1,4 +1,5 @@
 import { captureException } from "@sentry/node"
+import { injectable } from "tsyringe"
 import {
   Email,
   HashedPasswordFactory,
@@ -10,7 +11,6 @@ import {
 } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { UserRepository } from "integrations/infrastructure"
-import { injectable } from "tsyringe"
 
 type Props = {
   password: Password

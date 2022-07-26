@@ -1,12 +1,4 @@
 import { useMediaQuery } from "@chakra-ui/react"
-import { StackAside } from "app/core/components/StackAside"
-import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
-import { BoxButtonRouteDarkMode } from "app/core/layouts/components/BoxButtonRouteDarkMode"
-import { BoxButtonRouteExchanges } from "app/core/layouts/components/BoxButtonRouteExchanges"
-import { BoxButtonRouteLanguage } from "app/core/layouts/components/BoxButtonRouteLanguage"
-import { BoxButtonRouteNotifications } from "app/core/layouts/components/BoxButtonRouteNotifications"
-import { BoxButtonRouteReferences } from "app/core/layouts/components/BoxButtonRouteReferences"
-import { toActiveRoute } from "app/core/layouts/utils/toActiveRoute"
 import { useRouter, useSession } from "blitz"
 import { FC, Suspense } from "react"
 import { useTranslation } from "react-i18next"
@@ -19,6 +11,14 @@ import {
   FiUser,
   FiZap,
 } from "react-icons/fi"
+import { StackAside } from "app/core/components/StackAside"
+import { BoxButtonRoute } from "app/core/layouts/components/BoxButtonRoute"
+import { BoxButtonRouteDarkMode } from "app/core/layouts/components/BoxButtonRouteDarkMode"
+import { BoxButtonRouteExchanges } from "app/core/layouts/components/BoxButtonRouteExchanges"
+import { BoxButtonRouteLanguage } from "app/core/layouts/components/BoxButtonRouteLanguage"
+import { BoxButtonRouteNotifications } from "app/core/layouts/components/BoxButtonRouteNotifications"
+import { BoxButtonRouteReferences } from "app/core/layouts/components/BoxButtonRouteReferences"
+import { toActiveRoute } from "app/core/layouts/utils/toActiveRoute"
 
 export const LayoutAside: FC = () => {
   const session = useSession()

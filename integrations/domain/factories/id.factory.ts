@@ -1,5 +1,5 @@
-import { Id } from "integrations/domain/valueObjects"
 import { nanoid } from "nanoid"
+import { Id } from "integrations/domain/valueObjects"
 
 export class IdFactory {
   /**

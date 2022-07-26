@@ -1,11 +1,11 @@
 import { captureException } from "@sentry/node"
+import { injectable } from "tsyringe"
 import { Id, IdFactory, PostEntity, PostText } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import {
   FriendshipRepository,
   PostRepository,
 } from "integrations/infrastructure"
-import { injectable } from "tsyringe"
 
 type Props = {
   fileIds: Id[]

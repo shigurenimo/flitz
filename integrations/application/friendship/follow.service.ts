@@ -1,4 +1,5 @@
 import { captureException } from "@sentry/node"
+import { injectable } from "tsyringe"
 import {
   FriendshipEntity,
   Id,
@@ -11,7 +12,6 @@ import {
   FriendshipRepository,
   NotificationRepository,
 } from "integrations/infrastructure"
-import { injectable } from "tsyringe"
 
 type Props = {
   followeeId: Id

@@ -1,10 +1,10 @@
 import { HStack, Stack, Text } from "@chakra-ui/react"
+import { FC } from "react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"
 import { BoxExchangeUser } from "app/exchanges/components/BoxExchangeUser"
 import { BoxPostDate } from "app/posts/components/BoxPostDate"
 import { AppMessageThread } from "integrations/interface/types/appMessageThread"
-import { FC } from "react"
 
 type Props = AppMessageThread & {
   onClick(): void

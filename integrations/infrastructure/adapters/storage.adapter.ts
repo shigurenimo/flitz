@@ -1,10 +1,10 @@
-import { captureException } from "@sentry/node"
-import { getStorage } from "firebase-admin/storage"
-import { Path } from "integrations/domain"
-import { FirebaseAdapter } from "integrations/infrastructure/adapters/firebase.adapter"
 import { tmpdir } from "os"
 import { join } from "path"
+import { captureException } from "@sentry/node"
+import { getStorage } from "firebase-admin/storage"
 import { injectable } from "tsyringe"
+import { Path } from "integrations/domain"
+import { FirebaseAdapter } from "integrations/infrastructure/adapters/firebase.adapter"
 
 @injectable()
 export class StorageAdapter {

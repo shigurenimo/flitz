@@ -1,10 +1,10 @@
 import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
+import { injectable } from "tsyringe"
 import db from "db"
 import { Id } from "integrations/domain/valueObjects"
 import { InternalError } from "integrations/errors"
 import { AppSetting } from "integrations/interface/types"
-import { injectable } from "tsyringe"
 
 type Props = {
   userId: Id

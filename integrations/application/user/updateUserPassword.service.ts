@@ -1,9 +1,9 @@
 import { captureException } from "@sentry/node"
 import { AuthenticationError, NotFoundError, SecurePassword } from "blitz"
+import { injectable } from "tsyringe"
 import { HashedPassword, Id, Password } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { UserRepository } from "integrations/infrastructure"
-import { injectable } from "tsyringe"
 
 type Props = {
   userId: Id

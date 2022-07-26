@@ -1,7 +1,7 @@
 import { StackDivider, StackProps } from "@chakra-ui/react"
+import { FC } from "react"
 import { BoxHeader } from "app/core/components/BoxHeader"
 import { StackMain } from "app/core/components/StackMain"
-import { FC } from "react"
 
 type Props = StackProps
 

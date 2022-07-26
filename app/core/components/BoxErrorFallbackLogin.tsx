@@ -8,11 +8,11 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react"
-import createUser from "app/home/mutations/createUser"
-import login from "app/home/mutations/login"
 import { useMutation } from "blitz"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
+import createUser from "app/home/mutations/createUser"
+import login from "app/home/mutations/login"
 
 type FormLogin = {
   email: string

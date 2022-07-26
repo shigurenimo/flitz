@@ -1,10 +1,10 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
+import { container } from "tsyringe"
+import { z } from "zod"
+import { withSentry } from "app/core/utils/withSentry"
 import { FindUserQuery } from "integrations/application"
 import { FollowService } from "integrations/application/friendship/follow.service"
 import { Id } from "integrations/domain"
-import { container } from "tsyringe"
-import { z } from "zod"
 
 const zProps = z.object({ userId: z.string() })
 

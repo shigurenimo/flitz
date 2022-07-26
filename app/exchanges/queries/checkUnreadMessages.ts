@@ -1,8 +1,8 @@
-import { withSentry } from "app/core/utils/withSentry"
 import { resolver } from "blitz"
+import { container } from "tsyringe"
+import { withSentry } from "app/core/utils/withSentry"
 import { CheckUnreadMessageThreadQuery } from "integrations/application"
 import { Id } from "integrations/domain"
-import { container } from "tsyringe"
 
 const checkUnreadMessages = resolver.pipe(
   resolver.authorize(),

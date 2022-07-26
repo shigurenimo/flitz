@@ -1,9 +1,9 @@
+import { Link } from "blitz"
+import { FC } from "react"
 import { BoxCardNotificationFriendship } from "app/notifications/components/BoxCardNotificationFriendship"
 import { BoxCardNotificationLike } from "app/notifications/components/BoxCardNotificationLike"
 import { BoxCardPost } from "app/posts/components/BoxCardPost"
-import { Link } from "blitz"
 import { AppNotification } from "integrations/interface/types/appNotification"
-import { FC } from "react"
 
 type Props = AppNotification
 

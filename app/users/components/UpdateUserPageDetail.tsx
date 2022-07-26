@@ -10,15 +10,15 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react"
+import { useMutation, useParam, useQuery } from "blitz"
+import { FC, useState } from "react"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { ButtonFile } from "app/core/components/ButtonFile"
 import { useCloudStorage } from "app/core/hooks/useCloudStorage"
 import { BoxProfileUpdateActions } from "app/users/components/BoxProfileUpdateActions"
 import updateUserProfile from "app/users/mutations/updateUserProfile"
 import getUser from "app/users/queries/getUser"
-import { useMutation, useParam, useQuery } from "blitz"
-import { FC, useState } from "react"
-import { useForm } from "react-hook-form"
-import { useTranslation } from "react-i18next"
 
 type Form = {
   biography: string

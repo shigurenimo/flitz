@@ -1,5 +1,5 @@
-import { Username } from "integrations/domain/valueObjects"
 import { customAlphabet } from "nanoid"
+import { Username } from "integrations/domain/valueObjects"
 
 export class UsernameFactory {
   static random() {

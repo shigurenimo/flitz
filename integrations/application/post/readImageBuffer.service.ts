@@ -1,5 +1,6 @@
 import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
+import { injectable } from "tsyringe"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import {
@@ -7,7 +8,6 @@ import {
   ImageAdapter,
   StorageAdapter,
 } from "integrations/infrastructure"
-import { injectable } from "tsyringe"
 
 type Props = {
   fileId: Id

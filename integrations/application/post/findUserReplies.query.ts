@@ -1,4 +1,5 @@
 import { captureException } from "@sentry/node"
+import { injectable } from "tsyringe"
 import db from "db"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
@@ -6,7 +7,6 @@ import { AppUserEmbeddedConverter } from "integrations/infrastructure/converters
 import { PrismaQuotation } from "integrations/infrastructure/types"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
 import { AppQuotation } from "integrations/interface/types"
-import { injectable } from "tsyringe"
 
 type Props = {
   skip: number

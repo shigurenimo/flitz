@@ -1,12 +1,12 @@
 import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
+import { injectable } from "tsyringe"
 import db from "db"
 import { Id } from "integrations/domain"
 import { InternalError } from "integrations/errors"
 import { PrismaPost } from "integrations/infrastructure"
 import { AppPostConverter } from "integrations/infrastructure/converters"
 import { includePostEmbedded } from "integrations/infrastructure/utils/includePostEmbedded"
-import { injectable } from "tsyringe"
 
 type Props = {
   postId: Id
