@@ -1,5 +1,6 @@
 import { BlitzConfig, sessionMiddleware, simpleRolesIsAuthorized } from "blitz"
 import packageJSON from "./package.json"
+import "reflect-metadata"
 
 const config: BlitzConfig = {
   middleware: [

@@ -13,7 +13,7 @@ import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import { useEffect } from "react"
 import { I18nextProvider, initReactI18next } from "react-i18next"
-import resources from "../integrations/i18n.json"
+import translationJa from "../integrations/ja.i18n.json"
 import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
 import { theme } from "app/core/theme/theme"
 
@@ -23,12 +23,15 @@ const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const { reset } = useQueryErrorResetBoundary()
 
   useEffect(() => {
-    i18n.use(LanguageDetector).use(initReactI18next).init({
-      fallbackLng: false,
-      keySeparator: false,
-      nsSeparator: false,
-      resources,
-    })
+    i18n
+      .use(LanguageDetector)
+      .use(initReactI18next)
+      .init({
+        fallbackLng: false,
+        keySeparator: false,
+        nsSeparator: false,
+        resources: { ja: { translation: translationJa } },
+      })
   }, [])
 
   return (
