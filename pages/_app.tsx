@@ -8,13 +8,10 @@ import { getApps, initializeApp } from "firebase/app"
 import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import { I18nextProvider, initReactI18next } from "react-i18next"
-import { QueryClient, QueryClientProvider } from "react-query"
 import translationJa from "../integrations/ja.i18n.json"
 import { withBlitz } from "app/blitz-client"
 import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
 import { theme } from "app/core/theme/theme"
-
-const queryClient = new QueryClient()
 
 const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page)
@@ -22,15 +19,13 @@ const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const { reset } = useQueryErrorResetBoundary()
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18nextProvider i18n={i18n}>
-        <ChakraProvider theme={theme}>
-          <ErrorBoundary FallbackComponent={BoxErrorFallback} onReset={reset}>
-            {getLayout(<Component {...pageProps} />)}
-          </ErrorBoundary>
-        </ChakraProvider>
-      </I18nextProvider>
-    </QueryClientProvider>
+    <I18nextProvider i18n={i18n}>
+      <ChakraProvider theme={theme}>
+        <ErrorBoundary FallbackComponent={BoxErrorFallback} onReset={reset}>
+          {getLayout(<Component {...pageProps} />)}
+        </ErrorBoundary>
+      </ChakraProvider>
+    </I18nextProvider>
   )
 }
 

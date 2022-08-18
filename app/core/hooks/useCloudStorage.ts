@@ -1,5 +1,5 @@
+import { useMutation } from "@tanstack/react-query"
 import { getStorage, ref, uploadBytes } from "firebase/storage"
-import { useMutation } from "react-query"
 
 export const useCloudStorage = () => {
   const createId = () => {
