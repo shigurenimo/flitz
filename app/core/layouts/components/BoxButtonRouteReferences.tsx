@@ -1,4 +1,4 @@
-import { useQuery } from "blitz"
+import { useQuery } from "@blitzjs/rpc"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiHome } from "react-icons/fi"

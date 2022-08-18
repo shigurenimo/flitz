@@ -1,5 +1,5 @@
+import { useSession } from "@blitzjs/auth"
 import { HStack, Stack, useDisclosure } from "@chakra-ui/react"
-import { useSession } from "blitz"
 import { FC } from "react"
 import { AlertDialogDelete } from "app/posts/components/AlertDialogDelete"
 import { BoxPostUser } from "app/posts/components/BoxPostUser"

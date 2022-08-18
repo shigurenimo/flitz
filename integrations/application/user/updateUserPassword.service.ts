@@ -1,5 +1,6 @@
+import { SecurePassword } from "@blitzjs/auth"
 import { captureException } from "@sentry/node"
-import { AuthenticationError, NotFoundError, SecurePassword } from "blitz"
+import { AuthenticationError, NotFoundError } from "blitz"
 import { injectable } from "tsyringe"
 import { HashedPassword, Id, Password } from "integrations/domain"
 import { InternalError } from "integrations/errors"

@@ -1,4 +1,4 @@
-import { SecurePassword } from "blitz"
+import { SecurePassword } from "@blitzjs/auth"
 import { z } from "zod"
 import { HashedPassword } from "integrations/domain/valueObjects/hashedPassword"
 

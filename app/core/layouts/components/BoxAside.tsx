@@ -1,5 +1,6 @@
+import { useSession } from "@blitzjs/auth"
 import { useMediaQuery } from "@chakra-ui/react"
-import { useRouter, useSession } from "blitz"
+import { useRouter } from "next/router"
 import { FC, Suspense } from "react"
 import { useTranslation } from "react-i18next"
 import {

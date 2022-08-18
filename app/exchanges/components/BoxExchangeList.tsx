@@ -1,3 +1,4 @@
+import { usePaginatedQuery } from "@blitzjs/rpc"
 import {
   Alert,
   AlertIcon,
@@ -6,7 +7,7 @@ import {
   HStack,
   StackDivider,
 } from "@chakra-ui/react"
-import { usePaginatedQuery, useRouter } from "blitz"
+import { useRouter } from "next/router"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { StackList } from "app/core/components/StackList"

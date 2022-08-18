@@ -1,5 +1,5 @@
+import { BlitzPage } from "@blitzjs/next"
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
-import { BlitzPage } from "blitz"
 import React, { Suspense } from "react"
 import { StackMain } from "app/core/components/StackMain"
 import Layout from "app/core/layouts/Layout"

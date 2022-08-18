@@ -1,5 +1,6 @@
+import { useParam } from "@blitzjs/next"
+import { useInfiniteQuery, useMutation } from "@blitzjs/rpc"
 import { Alert, AlertIcon, StackDivider } from "@chakra-ui/react"
-import { useInfiniteQuery, useMutation, useParam } from "blitz"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { StackList } from "app/core/components/StackList"

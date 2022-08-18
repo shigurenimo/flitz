@@ -1,4 +1,5 @@
-import { paginate, resolver } from "blitz"
+import { resolver } from "@blitzjs/rpc"
+import { paginate } from "blitz"
 import { container } from "tsyringe"
 import { z } from "zod"
 import { withSentry } from "app/core/utils/withSentry"

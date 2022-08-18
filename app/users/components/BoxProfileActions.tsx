@@ -1,5 +1,6 @@
+import { useSession } from "@blitzjs/auth"
 import { Box, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react"
-import { Link, useSession } from "blitz"
+import Link from "next/link"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { AvatarUser } from "app/core/components/AvatarUser"

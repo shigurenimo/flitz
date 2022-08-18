@@ -1,9 +1,10 @@
-import { BlitzApiHandler } from "blitz"
+import { NextApiHandler } from "next"
 import { container } from "tsyringe"
+import { api } from "app/blitz-server"
 import { ReadImageBufferService } from "integrations/application/post/readImageBuffer.service"
 import { Id } from "integrations/domain"
 
-const icon: BlitzApiHandler = async (req, resp) => {
+const icon: NextApiHandler = async (req, resp) => {
   if (Array.isArray(req.query.id)) {
     return resp.status(500).end()
   }
@@ -11,7 +12,7 @@ const icon: BlitzApiHandler = async (req, resp) => {
   const readImageBufferService = container.resolve(ReadImageBufferService)
 
   const buffer = await readImageBufferService.execute({
-    fileId: new Id(req.query.id),
+    fileId: new Id(req.query.id!),
   })
 
   if (buffer instanceof Error) {
@@ -25,4 +26,4 @@ const icon: BlitzApiHandler = async (req, resp) => {
   resp.send(buffer)
 }
 
-export default icon
+export default api(icon)

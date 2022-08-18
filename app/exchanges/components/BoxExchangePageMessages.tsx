@@ -1,5 +1,6 @@
+import { useParam } from "@blitzjs/next"
+import { useInfiniteQuery } from "@blitzjs/rpc"
 import { List, ListItem } from "@chakra-ui/react"
-import { useInfiniteQuery, useParam } from "blitz"
 import { FC, useEffect } from "react"
 import { BoxExchangeTextarea } from "app/exchanges/components/BoxExchangePageTextarea"
 import { BoxCardMessageLeft } from "app/exchanges/components/BoxMessageBlockLeft"

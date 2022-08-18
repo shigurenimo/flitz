@@ -1,3 +1,4 @@
+import { BlitzPage } from "@blitzjs/next"
 import {
   Box,
   Button,
@@ -9,7 +10,7 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react"
-import { BlitzPage, Link } from "blitz"
+import Link from "next/link"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { BoxHeader } from "app/core/components/BoxHeader"

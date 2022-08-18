@@ -1,8 +1,9 @@
+import "reflect-metadata"
+import "integrations/errors"
 import { ColorModeScript } from "@chakra-ui/react"
-import { BlitzScript, Document, DocumentHead, Html, Main } from "blitz"
+import Document, { Html, Head, Main, NextScript } from "next/document"
 import React from "react"
 import { theme } from "app/core/theme/theme"
-import "integrations/errors"
 
 class MyDocument extends Document {
   render() {
@@ -11,14 +12,14 @@ class MyDocument extends Document {
 
     return (
       <Html>
-        <DocumentHead>
+        <Head>
           <link rel={"preconnect"} href={"https://fonts.gstatic.com"} />
           <link href={fontURL} rel={"stylesheet"} />
-        </DocumentHead>
+        </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
-          <BlitzScript />
+          <NextScript />
         </body>
       </Html>
     )

@@ -1,10 +1,12 @@
-import { BlitzApiHandler } from "blitz"
-import jdenticon from "jdenticon"
+import { toPng } from "jdenticon"
 
-const icon: BlitzApiHandler = async (req, resp) => {
+import { NextApiHandler } from "next"
+import { api } from "app/blitz-server"
+
+const icon: NextApiHandler = async (req, resp) => {
   const id = req.query.id + ""
 
-  const buffer = jdenticon.toPng(id, 160)
+  const buffer = toPng(id, 160)
 
   resp.setHeader("Content-Type", "image/png")
 
@@ -13,4 +15,4 @@ const icon: BlitzApiHandler = async (req, resp) => {
   resp.send(buffer)
 }
 
-export default icon
+export default api(icon)

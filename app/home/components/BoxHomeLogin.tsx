@@ -1,3 +1,4 @@
+import { useMutation } from "@blitzjs/rpc"
 import {
   Button,
   FormControl,
@@ -6,7 +7,8 @@ import {
   Input,
   Stack,
 } from "@chakra-ui/react"
-import { AuthenticationError, useMutation, useRouter } from "blitz"
+import { AuthenticationError } from "blitz"
+import { useRouter } from "next/router"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"

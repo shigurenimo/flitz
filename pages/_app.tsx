@@ -1,49 +1,48 @@
+import { AppProps, BlitzPage, ErrorBoundary } from "@blitzjs/next"
+import { useQueryErrorResetBoundary } from "@blitzjs/rpc"
 import { ChakraProvider } from "@chakra-ui/react"
 import { init } from "@sentry/browser"
 import { Integrations } from "@sentry/tracing"
-import {
-  AppProps,
-  BlitzPage,
-  ErrorBoundary,
-  useQueryErrorResetBoundary,
-} from "blitz"
 import { getAnalytics, setAnalyticsCollectionEnabled } from "firebase/analytics"
 import { getApps, initializeApp } from "firebase/app"
 import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
-import { useEffect } from "react"
 import { I18nextProvider, initReactI18next } from "react-i18next"
+import { QueryClient, QueryClientProvider } from "react-query"
 import translationJa from "../integrations/ja.i18n.json"
+import { withBlitz } from "app/blitz-client"
 import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
 import { theme } from "app/core/theme/theme"
+
+const queryClient = new QueryClient()
 
 const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page)
 
   const { reset } = useQueryErrorResetBoundary()
 
-  useEffect(() => {
-    i18n
-      .use(LanguageDetector)
-      .use(initReactI18next)
-      .init({
-        fallbackLng: false,
-        keySeparator: false,
-        nsSeparator: false,
-        resources: { ja: { translation: translationJa } },
-      })
-  }, [])
-
   return (
-    <I18nextProvider i18n={i18n}>
-      <ChakraProvider theme={theme}>
-        <ErrorBoundary FallbackComponent={BoxErrorFallback} onReset={reset}>
-          {getLayout(<Component {...pageProps} />)}
-        </ErrorBoundary>
-      </ChakraProvider>
-    </I18nextProvider>
+    <QueryClientProvider client={queryClient}>
+      <I18nextProvider i18n={i18n}>
+        <ChakraProvider theme={theme}>
+          <ErrorBoundary FallbackComponent={BoxErrorFallback} onReset={reset}>
+            {getLayout(<Component {...pageProps} />)}
+          </ErrorBoundary>
+        </ChakraProvider>
+      </I18nextProvider>
+    </QueryClientProvider>
   )
 }
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: false,
+    keySeparator: false,
+    nsSeparator: false,
+    resources: { ja: { translation: translationJa } },
+  })
 
 if (typeof window !== "undefined") {
   init({
@@ -79,4 +78,4 @@ if (getApps().length === 0) {
   }
 }
 
-export default App
+export default withBlitz(App)

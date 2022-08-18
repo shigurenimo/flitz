@@ -1,5 +1,6 @@
+import { useMutation } from "@blitzjs/rpc"
 import { HStack, Icon, useToast } from "@chakra-ui/react"
-import { useMutation, useRouter } from "blitz"
+import { useRouter } from "next/router"
 import { FC } from "react"
 import { FiHeart, FiMessageCircle, FiRepeat } from "react-icons/fi"
 import { ButtonPostAction } from "app/posts/components/ButtonPostAction"

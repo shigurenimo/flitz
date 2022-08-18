@@ -1,9 +1,8 @@
+import { ErrorComponent, ErrorFallbackProps } from "@blitzjs/next"
 import {
   AuthenticationError,
   AuthorizationError,
   CSRFTokenMismatchError,
-  ErrorComponent,
-  ErrorFallbackProps,
   NotFoundError,
 } from "blitz"
 import { FC } from "react"

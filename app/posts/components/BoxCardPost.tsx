@@ -1,5 +1,5 @@
 import { HStack, Stack } from "@chakra-ui/react"
-import { useRouter } from "blitz"
+import { useRouter } from "next/router"
 import { FC } from "react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxCard } from "app/core/components/BoxCard"

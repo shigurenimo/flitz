@@ -1,5 +1,5 @@
 import { Container, Stack } from "@chakra-ui/react"
-import { Head } from "blitz"
+import Head from "next/head"
 import { FC, ReactNode, Suspense } from "react"
 import { BoxMainFallback } from "app/core/components/BoxMainFallback"
 import { useCloudMessaging } from "app/core/hooks/useCloudMessaging"
@@ -14,9 +14,6 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = (props) => {
   useCloudMessaging()
 
-  const fontURL =
-    "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
-
   return (
     <>
       <Head>
@@ -27,7 +24,6 @@ const Layout: FC<LayoutProps> = (props) => {
         <link href={"manifest.json"} rel={"manifest"} />
         <meta name={"theme-color"} content={"#ffffff"} />
         <link href={"https://fonts.gstatic.com"} rel="preconnect" />
-        <link href={fontURL} rel={"stylesheet"} />
       </Head>
       <Suspense fallback={null}>
         <LayoutAside />

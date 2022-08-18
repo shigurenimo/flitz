@@ -1,4 +1,4 @@
-import { Link } from "blitz"
+import Link from "next/link"
 import { FC } from "react"
 import { BoxCardNotificationFriendship } from "app/notifications/components/BoxCardNotificationFriendship"
 import { BoxCardNotificationLike } from "app/notifications/components/BoxCardNotificationLike"

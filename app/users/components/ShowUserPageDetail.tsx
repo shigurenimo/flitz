@@ -1,11 +1,7 @@
+import { ErrorBoundary, useParam } from "@blitzjs/next"
+import { useMutation, useQuery } from "@blitzjs/rpc"
 import { Stack, useToast } from "@chakra-ui/react"
-import {
-  ErrorBoundary,
-  useMutation,
-  useParam,
-  useQuery,
-  useRouter,
-} from "blitz"
+import { useRouter } from "next/router"
 import { FC, Suspense } from "react"
 import { BoxProfileActions } from "app/users/components/BoxProfileActions"
 import { BoxUserAction } from "app/users/components/BoxUserAction"

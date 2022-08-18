@@ -1,5 +1,6 @@
+import { useParam } from "@blitzjs/next"
+import { useInfiniteQuery } from "@blitzjs/rpc"
 import { Stack, StackDivider } from "@chakra-ui/react"
-import { useInfiniteQuery, useParam } from "blitz"
 import { FC } from "react"
 import { BoxCardPostReply } from "app/posts/components/BoxCardPostReply"
 import getPostReplies from "app/posts/queries/getPostReplies"

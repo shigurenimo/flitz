@@ -1,5 +1,5 @@
+import { useInfiniteQuery } from "@blitzjs/rpc"
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
-import { useInfiniteQuery } from "blitz"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { StackList } from "app/core/components/StackList"

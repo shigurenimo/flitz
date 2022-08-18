@@ -1,5 +1,6 @@
+import { useSession } from "@blitzjs/auth"
+import { useInfiniteQuery } from "@blitzjs/rpc"
 import { StackDivider } from "@chakra-ui/react"
-import { useInfiniteQuery, useSession } from "blitz"
 import { FC } from "react"
 import { StackList } from "app/core/components/StackList"
 import getReferences from "app/home/queries/getReferences"

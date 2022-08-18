@@ -1,4 +1,4 @@
-import { resolver } from "blitz"
+import { resolver } from "@blitzjs/rpc"
 import { container } from "tsyringe"
 import { withSentry } from "app/core/utils/withSentry"
 import { zCreatePostLikeMutation } from "app/posts/validations/createPostLikeMutation"

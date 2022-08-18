@@ -6,10 +6,10 @@ import {
   startTransaction,
 } from "@sentry/node"
 import "@sentry/tracing"
-import { BlitzApiHandler } from "blitz"
+import { NextApiHandler } from "next"
 
-export const withSentryForApi = (handler: BlitzApiHandler, name: string) => {
-  const internalHandler: BlitzApiHandler = async (req, resp) => {
+export const withSentryForApi = (handler: NextApiHandler, name: string) => {
+  const internalHandler: NextApiHandler = async (req, resp) => {
     init({
       dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
       tracesSampleRate: 1.0,

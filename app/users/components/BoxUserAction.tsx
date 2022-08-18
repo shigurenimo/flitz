@@ -1,5 +1,5 @@
+import { useSession } from "@blitzjs/auth"
 import { Button, HStack, Icon } from "@chakra-ui/react"
-import { useSession } from "blitz"
 import { FC } from "react"
 import { FiMail, FiUserCheck, FiUserPlus } from "react-icons/fi"
 

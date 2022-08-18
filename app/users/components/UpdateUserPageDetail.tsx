@@ -1,3 +1,5 @@
+import { useParam } from "@blitzjs/next"
+import { useMutation, useQuery } from "@blitzjs/rpc"
 import {
   Box,
   Button,
@@ -10,7 +12,6 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react"
-import { useMutation, useParam, useQuery } from "blitz"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"

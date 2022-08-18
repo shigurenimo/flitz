@@ -1,5 +1,6 @@
+import { useParam } from "@blitzjs/next"
+import { useQuery } from "@blitzjs/rpc"
 import { HStack, Stack, Text } from "@chakra-ui/react"
-import { useParam, useQuery } from "blitz"
 import { FC } from "react"
 import { AvatarUser } from "app/core/components/AvatarUser"
 import { BoxHeaderUserAction } from "app/posts/components/BoxHeaderUserAction"

@@ -1,5 +1,6 @@
+import { useMutation } from "@blitzjs/rpc"
 import { Box, Button, Stack, useToast } from "@chakra-ui/react"
-import { useMutation, useRouter } from "blitz"
+import { useRouter } from "next/router"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import logout from "app/home/mutations/logout"

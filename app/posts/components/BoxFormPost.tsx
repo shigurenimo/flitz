@@ -1,3 +1,6 @@
+import { useSession } from "@blitzjs/auth"
+import { useParam } from "@blitzjs/next"
+import { useMutation } from "@blitzjs/rpc"
 import {
   Button,
   HStack,
@@ -6,7 +9,6 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react"
-import { useMutation, useParam, useSession } from "blitz"
 import { FC, useState } from "react"
 import { FiImage, FiSend } from "react-icons/fi"
 import { AvatarUser } from "app/core/components/AvatarUser"

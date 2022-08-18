@@ -1,5 +1,6 @@
+import { useSession } from "@blitzjs/auth"
+import { BlitzPage } from "@blitzjs/next"
 import { StackDivider } from "@chakra-ui/react"
-import { BlitzPage, useSession } from "blitz"
 import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
 import { BoxHeader } from "app/core/components/BoxHeader"

@@ -1,5 +1,5 @@
+import { useMutation, useQuery } from "@blitzjs/rpc"
 import { Stack, useToast } from "@chakra-ui/react"
-import { useMutation, useQuery } from "blitz"
 import { getMessaging, getToken, isSupported } from "firebase/messaging"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
