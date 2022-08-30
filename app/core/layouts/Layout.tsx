@@ -6,12 +6,12 @@ import { useCloudMessaging } from "app/core/hooks/useCloudMessaging"
 import { LayoutAside } from "app/core/layouts/components/BoxAside"
 import { LayoutHeader } from "app/core/layouts/components/BoxHeader"
 
-type LayoutProps = {
+type Props = {
   children: ReactNode
   title?: string
 }
 
-const Layout: FC<LayoutProps> = (props) => {
+const Layout: FC<Props> = (props) => {
   useCloudMessaging()
 
   return (
