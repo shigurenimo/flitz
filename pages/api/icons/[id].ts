@@ -1,7 +1,7 @@
 import { toPng } from "jdenticon"
 
 import { NextApiHandler } from "next"
-import { api } from "interface/blitz-server"
+import { api } from "integrations/blitz-server"
 
 const icon: NextApiHandler = async (req, resp) => {
   const id = req.query.id + ""

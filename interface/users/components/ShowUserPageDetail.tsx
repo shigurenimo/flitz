@@ -3,12 +3,12 @@ import { useMutation, useQuery } from "@blitzjs/rpc"
 import { Stack, useToast } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { FC, Suspense } from "react"
+import followUser from "integrations/mutations/followUser"
+import unfollowUser from "integrations/mutations/unfollowUser"
+import getUser from "integrations/queries/getUser"
 import { BoxProfileActions } from "interface/users/components/BoxProfileActions"
 import { BoxUserAction } from "interface/users/components/BoxUserAction"
 import { BoxUserFriendship } from "interface/users/components/BoxUserFriendship"
-import followUser from "interface/users/mutations/followUser"
-import unfollowUser from "interface/users/mutations/unfollowUser"
-import getUser from "interface/users/queries/getUser"
 
 export const ShowUserPageDetail: FC = () => {
   const router = useRouter()

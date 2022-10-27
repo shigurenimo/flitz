@@ -1,3 +1,5 @@
+import "reflect-metadata"
+import "integrations/errors"
 import { AppProps, BlitzPage, ErrorBoundary } from "@blitzjs/next"
 import { useQueryErrorResetBoundary } from "@blitzjs/rpc"
 import { ChakraProvider } from "@chakra-ui/react"
@@ -9,7 +11,7 @@ import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import { I18nextProvider, initReactI18next } from "react-i18next"
 import translationJa from "../integrations/ja.i18n.json"
-import { withBlitz } from "interface/blitz-client"
+import { withBlitz } from "integrations/blitz-client"
 import { BoxErrorFallback } from "interface/core/components/BoxErrorFallback"
 import { theme } from "interface/core/theme/theme"
 
@@ -57,7 +59,7 @@ if (typeof window !== "undefined") {
   })
 }
 
-if (getApps().length === 0) {
+if (typeof window !== "undefined" && getApps().length === 0) {
   initializeApp({
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -67,8 +69,7 @@ if (getApps().length === 0) {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   })
-
-  if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== "production") {
     setAnalyticsCollectionEnabled(getAnalytics(), false)
   }
 }

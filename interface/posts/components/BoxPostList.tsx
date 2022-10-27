@@ -2,9 +2,9 @@ import { useSession } from "@blitzjs/auth"
 import { useInfiniteQuery } from "@blitzjs/rpc"
 import { StackDivider } from "@chakra-ui/react"
 import { FC } from "react"
+import getPosts from "integrations/queries/getPosts"
 import { StackList } from "interface/core/components/StackList"
 import { BoxCardPost } from "interface/posts/components/BoxCardPost"
-import getPosts from "interface/posts/queries/getPosts"
 
 export const BoxPostList: FC = () => {
   const session = useSession()

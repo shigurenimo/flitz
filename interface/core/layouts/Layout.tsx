@@ -25,7 +25,7 @@ const Layout: FC<Props> = (props) => {
         <meta name={"theme-color"} content={"#ffffff"} />
         <link href={"https://fonts.gstatic.com"} rel="preconnect" />
       </Head>
-      <Suspense fallback={null}>
+      <Suspense>
         <LayoutAside />
       </Suspense>
       <Stack pl={{ base: 0, md: 56 }}>

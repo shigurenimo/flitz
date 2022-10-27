@@ -19,5 +19,18 @@
   },
   "search.exclude": {
     "yarn.lock": true
-  }
+  },
+  "cSpell.words": [
+    "Autosize",
+    "blitzjs",
+    "chakra",
+    "flitz",
+    "followee",
+    "Followees",
+    "maxage",
+    "notificaiton",
+    "tsbuildinfo",
+    "tsyringe",
+    "unfollow"
+  ]
 }

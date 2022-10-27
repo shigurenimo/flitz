@@ -3,9 +3,9 @@ import { useInfiniteQuery } from "@blitzjs/rpc"
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
+import getUserPosts from "integrations/queries/getUserPosts"
 import { StackList } from "interface/core/components/StackList"
 import { BoxCardPost } from "interface/posts/components/BoxCardPost"
-import getUserPosts from "interface/users/queries/getUserPosts"
 
 export const ShowUserPageListPosts: FC = () => {
   const { t } = useTranslation()

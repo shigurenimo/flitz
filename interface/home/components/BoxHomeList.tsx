@@ -2,8 +2,8 @@ import { useSession } from "@blitzjs/auth"
 import { useInfiniteQuery } from "@blitzjs/rpc"
 import { StackDivider } from "@chakra-ui/react"
 import { FC } from "react"
+import getReferences from "integrations/queries/getReferences"
 import { StackList } from "interface/core/components/StackList"
-import getReferences from "interface/home/queries/getReferences"
 import { BoxCardPost } from "interface/posts/components/BoxCardPost"
 
 export const BoxHomeList: FC = () => {

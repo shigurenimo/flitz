@@ -12,7 +12,7 @@ import {
 import { FC, useState } from "react"
 import { FiImage, FiSend } from "react-icons/fi"
 import { AvatarUser } from "interface/core/components/AvatarUser"
-import createReply from "interface/posts/mutations/createReply"
+import createReply from "integrations/mutations/createReply"
 
 export const BoxFormPost: FC = () => {
   const session = useSession()

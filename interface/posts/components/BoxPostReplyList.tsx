@@ -2,8 +2,8 @@ import { useParam } from "@blitzjs/next"
 import { useInfiniteQuery } from "@blitzjs/rpc"
 import { Stack, StackDivider } from "@chakra-ui/react"
 import { FC } from "react"
+import getPostReplies from "integrations/queries/getPostReplies"
 import { BoxCardPostReply } from "interface/posts/components/BoxCardPostReply"
-import getPostReplies from "interface/posts/queries/getPostReplies"
 
 export const BoxPostReplyList: FC = () => {
   const postId = useParam("postId", "string")

@@ -2,8 +2,8 @@ import { useQuery } from "@blitzjs/rpc"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiBell } from "react-icons/fi"
+import checkUnreadNotifications from "integrations/queries/checkUnreadNotifications"
 import { BoxButtonRoute } from "interface/core/layouts/components/BoxButtonRoute"
-import checkUnreadNotifications from "interface/notifications/queries/checkUnreadNotifications"
 
 type Props = {
   isActive: boolean

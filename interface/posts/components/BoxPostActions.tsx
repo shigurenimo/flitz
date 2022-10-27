@@ -4,9 +4,9 @@ import { useRouter } from "next/router"
 import { FC } from "react"
 import { FiHeart, FiMessageCircle, FiRepeat } from "react-icons/fi"
 import { ButtonPostAction } from "interface/posts/components/ButtonPostAction"
-import createPostLike from "interface/posts/mutations/createPostLike"
-import createQuotation from "interface/posts/mutations/createQuotation"
-import deletePostLike from "interface/posts/mutations/deletePostLike"
+import createPostLike from "integrations/mutations/createPostLike"
+import createQuotation from "integrations/mutations/createQuotation"
+import deletePostLike from "integrations/mutations/deletePostLike"
 
 type Props = {
   hasLike: boolean

@@ -15,11 +15,11 @@ import {
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import updateUserProfile from "integrations/mutations/updateUserProfile"
+import getUser from "integrations/queries/getUser"
 import { ButtonFile } from "interface/core/components/ButtonFile"
 import { useCloudStorage } from "interface/core/hooks/useCloudStorage"
 import { BoxProfileUpdateActions } from "interface/users/components/BoxProfileUpdateActions"
-import updateUserProfile from "interface/users/mutations/updateUserProfile"
-import getUser from "interface/users/queries/getUser"
 
 type Form = {
   biography: string

@@ -2,8 +2,8 @@ import { useQuery } from "@blitzjs/rpc"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiHome } from "react-icons/fi"
+import checkUnreadReferences from "integrations/queries/checkUnreadReferences"
 import { BoxButtonRoute } from "interface/core/layouts/components/BoxButtonRoute"
-import checkUnreadReferences from "interface/home/queries/checkUnreadReferences"
 
 type Props = {
   isActive: boolean

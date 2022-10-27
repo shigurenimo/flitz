@@ -3,7 +3,7 @@ import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiMail } from "react-icons/fi"
 import { BoxButtonRoute } from "interface/core/layouts/components/BoxButtonRoute"
-import checkUnreadMessages from "interface/exchanges/queries/checkUnreadMessages"
+import checkUnreadMessages from "integrations/queries/checkUnreadMessages"
 
 type Props = {
   isActive: boolean

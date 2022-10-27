@@ -12,7 +12,7 @@ import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { StackList } from "interface/core/components/StackList"
 import { BoxCardExchange } from "interface/exchanges/components/BoxCardExchange"
-import getExchanges from "interface/exchanges/queries/getExchanges"
+import getExchanges from "integrations/queries/getExchanges"
 
 const ITEMS_PER_PAGE = 20
 

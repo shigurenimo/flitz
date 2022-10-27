@@ -3,11 +3,11 @@ import { useInfiniteQuery, useMutation } from "@blitzjs/rpc"
 import { Alert, AlertIcon, Box, StackDivider, useToast } from "@chakra-ui/react"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
+import followUser from "integrations/mutations/followUser"
+import unfollowUser from "integrations/mutations/unfollowUser"
+import getUserFollowees from "integrations/queries/getUserFollowees"
 import { StackList } from "interface/core/components/StackList"
 import { BoxCardUser } from "interface/users/components/BoxCardUser"
-import followUser from "interface/users/mutations/followUser"
-import unfollowUser from "interface/users/mutations/unfollowUser"
-import getUserFollowees from "interface/users/queries/getUserFollowees"
 
 type Props = { userId: string | null }
 

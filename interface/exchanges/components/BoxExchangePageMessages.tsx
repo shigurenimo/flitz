@@ -6,7 +6,7 @@ import { BoxExchangeTextarea } from "interface/exchanges/components/BoxExchangeP
 import { BoxCardMessageLeft } from "interface/exchanges/components/BoxMessageBlockLeft"
 import { BoxCardMessageRight } from "interface/exchanges/components/BoxMessageBlockRight"
 import { useMessageBlocks } from "interface/exchanges/hooks/useMessageBlocks"
-import getMessages from "interface/exchanges/queries/getMessages"
+import getMessages from "integrations/queries/getMessages"
 
 export const BoxExchangeMessages: FC = () => {
   const recipientId = useParam("recipientId", "string")

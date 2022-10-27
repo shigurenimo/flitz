@@ -2,10 +2,10 @@ import { useParam } from "@blitzjs/next"
 import { useQuery } from "@blitzjs/rpc"
 import { HStack, Stack, Text } from "@chakra-ui/react"
 import { FC } from "react"
+import getPost from "integrations/queries/getPost"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxHeaderUserAction } from "interface/posts/components/BoxHeaderUserAction"
 import { BoxPostImage } from "interface/posts/components/BoxPostImage"
-import getPost from "interface/posts/queries/getPost"
 
 export const BoxPostDetail: FC = () => {
   const postId = useParam("postId", "string")

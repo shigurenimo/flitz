@@ -13,7 +13,7 @@ import {
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import updateAccountPassword from "interface/settings/mutations/updateAccountPassword"
+import updateAccountPassword from "integrations/mutations/updateAccountPassword"
 
 export const SettingsPagePassword: FC = () => {
   const { t } = useTranslation()
