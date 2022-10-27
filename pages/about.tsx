@@ -13,9 +13,9 @@ import {
 import Link from "next/link"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { BoxHeader } from "app/core/components/BoxHeader"
-import { StackMain } from "app/core/components/StackMain"
-import Layout from "app/core/layouts/Layout"
+import { BoxHeader } from "interface/core/components/BoxHeader"
+import { StackMain } from "interface/core/components/StackMain"
+import Layout from "interface/core/layouts/Layout"
 
 const AboutPage: BlitzPage = () => {
   const { t } = useTranslation()

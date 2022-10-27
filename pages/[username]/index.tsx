@@ -1,12 +1,12 @@
 import { BlitzPage } from "@blitzjs/next"
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import React, { Suspense } from "react"
-import { StackMain } from "app/core/components/StackMain"
-import Layout from "app/core/layouts/Layout"
-import { ShowUserPageDetail } from "app/users/components/ShowUserPageDetail"
-import { ShowUserPageListLikes } from "app/users/components/ShowUserPageListLikes"
-import { ShowUserPageListPosts } from "app/users/components/ShowUserPageListPosts"
-import { ShowUserPageListReplies } from "app/users/components/ShowUserPageListReplies"
+import { StackMain } from "interface/core/components/StackMain"
+import Layout from "interface/core/layouts/Layout"
+import { ShowUserPageDetail } from "interface/users/components/ShowUserPageDetail"
+import { ShowUserPageListLikes } from "interface/users/components/ShowUserPageListLikes"
+import { ShowUserPageListPosts } from "interface/users/components/ShowUserPageListPosts"
+import { ShowUserPageListReplies } from "interface/users/components/ShowUserPageListReplies"
 
 const ShowUserPage: BlitzPage = () => {
   return (

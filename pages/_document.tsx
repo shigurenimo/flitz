@@ -3,7 +3,7 @@ import "integrations/errors"
 import { ColorModeScript } from "@chakra-ui/react"
 import { Html, Head, Main, NextScript } from "next/document"
 import React, { FC } from "react"
-import { theme } from "app/core/theme/theme"
+import { theme } from "interface/core/theme/theme"
 
 const Document: FC = () => {
   const fontURL =

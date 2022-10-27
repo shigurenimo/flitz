@@ -9,9 +9,9 @@ import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import { I18nextProvider, initReactI18next } from "react-i18next"
 import translationJa from "../integrations/ja.i18n.json"
-import { withBlitz } from "app/blitz-client"
-import { BoxErrorFallback } from "app/core/components/BoxErrorFallback"
-import { theme } from "app/core/theme/theme"
+import { withBlitz } from "interface/blitz-client"
+import { BoxErrorFallback } from "interface/core/components/BoxErrorFallback"
+import { theme } from "interface/core/theme/theme"
 
 const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page)

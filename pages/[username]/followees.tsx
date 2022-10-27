@@ -3,10 +3,10 @@ import { BlitzPage } from "@blitzjs/next"
 import { StackDivider } from "@chakra-ui/react"
 import React, { Suspense } from "react"
 import { useTranslation } from "react-i18next"
-import { BoxHeader } from "app/core/components/BoxHeader"
-import { StackMain } from "app/core/components/StackMain"
-import Layout from "app/core/layouts/Layout"
-import { ShowUserPageListFollowees } from "app/users/components/ShowUserPageListFollowees"
+import { BoxHeader } from "interface/core/components/BoxHeader"
+import { StackMain } from "interface/core/components/StackMain"
+import Layout from "interface/core/layouts/Layout"
+import { ShowUserPageListFollowees } from "interface/users/components/ShowUserPageListFollowees"
 
 const ShowUserFolloweesPage: BlitzPage = () => {
   const { t } = useTranslation()
