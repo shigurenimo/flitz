@@ -19,13 +19,13 @@ Install Node.js modules.
 Migrate PostgreSQL schemas.
 
 ```
-% yarn prisma db push --preview-feature
+% yarn prisma db push
 ```
 
 Run your app in the development mode.
 
 ```
-% yarn start
+% yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
