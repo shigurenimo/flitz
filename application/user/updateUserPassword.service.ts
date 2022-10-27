@@ -26,7 +26,6 @@ export class UpdateUserPasswordService {
 
       if (user === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
@@ -44,11 +43,11 @@ export class UpdateUserPasswordService {
 
       const improvedHash = await SecurePassword.hash(props.password.value)
 
-      const newHashPassword = new HashedPassword(improvedHash)
+      const draftHashPassword = new HashedPassword(improvedHash)
 
-      const newUser = user.updateHashedPassword(newHashPassword)
+      const draftUser = user.updateHashedPassword(draftHashPassword)
 
-      const transaction = await this.userRepository.upsert(newUser)
+      const transaction = await this.userRepository.upsert(draftUser)
 
       if (transaction instanceof Error) {
         return new InternalError()
@@ -57,11 +56,6 @@ export class UpdateUserPasswordService {
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

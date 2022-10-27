@@ -20,7 +20,6 @@ export class FindUserSettingQuery {
 
       if (prismaUser === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
@@ -39,11 +38,6 @@ export class FindUserSettingQuery {
       return appSetting
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

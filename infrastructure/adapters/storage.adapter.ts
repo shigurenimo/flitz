@@ -23,11 +23,9 @@ export class StorageAdapter {
         .download({ destination: tmpPath.value })
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }

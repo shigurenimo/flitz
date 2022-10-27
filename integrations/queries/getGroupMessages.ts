@@ -22,9 +22,9 @@ const getGroupMessages = resolver.pipe(
     }
   },
   async (props) => {
-    const findGroupMessagesQuery = container.resolve(FindGroupMessagesQuery)
+    const query = container.resolve(FindGroupMessagesQuery)
 
-    const messages = await findGroupMessagesQuery.execute({
+    const messages = await query.execute({
       skip: props.skip,
       messageThreadId: props.messageThreadId,
     })
@@ -33,9 +33,9 @@ const getGroupMessages = resolver.pipe(
       throw messages
     }
 
-    const countMessagesQuery = container.resolve(CountMessagesQuery)
+    const countQuery = container.resolve(CountMessagesQuery)
 
-    const count = await countMessagesQuery.execute({
+    const count = await countQuery.execute({
       messageThreadId: props.messageThreadId,
     })
 

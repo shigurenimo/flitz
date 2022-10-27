@@ -40,13 +40,11 @@ export const SettingsPageDetail: FC = () => {
 
   const onTurnOffNotification = async () => {
     const setting = await updateSettingMutation({ fcmToken: null })
-
     setQueryData(setting)
   }
 
   const onTurnOnNotification = async () => {
     const isSupportedSync = await isSupported()
-
     if (!isSupportedSync) {
       toast({
         status: "error",
@@ -54,16 +52,12 @@ export const SettingsPageDetail: FC = () => {
       })
       return
     }
-
     try {
       const fcmToken = await getToken(messaging, {
         vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID,
       })
-
       const setting = await updateSettingMutation({ fcmToken: fcmToken })
-
       setQueryData(setting)
-
       toast({
         status: "success",
         title: t`Changes have bee saved`,

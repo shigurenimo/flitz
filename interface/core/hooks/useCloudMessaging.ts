@@ -13,18 +13,12 @@ export const useCloudMessaging = () => {
 
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_FIREBASE_VAPID) return
-
     if (typeof window === "undefined") return
-
     if (getApps().length < 1) return
-
     let unsubscribe: Unsubscribe | null = null
-
     const messaging = getMessaging()
-
     isSupported().then((isSupportedSync) => {
       if (!isSupportedSync) return
-
       unsubscribe = onMessage(messaging, (payload) => {
         toast({
           status: "info",

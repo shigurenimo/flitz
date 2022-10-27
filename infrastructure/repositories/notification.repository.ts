@@ -70,11 +70,9 @@ export class NotificationRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -117,11 +115,9 @@ export class NotificationRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -162,11 +158,9 @@ export class NotificationRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -193,11 +187,9 @@ export class NotificationRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }

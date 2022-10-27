@@ -29,12 +29,12 @@ export class UpdateUserSettingService {
         return new NotFoundError()
       }
 
-      const nextUser = user.updateFcmToken(
+      const draftUser = user.updateFcmToken(
         props.fcmToken,
         props.fcmTokenForMobile
       )
 
-      const transaction = await this.userRepository.upsert(nextUser)
+      const transaction = await this.userRepository.upsert(draftUser)
 
       if (transaction instanceof Error) {
         return new InternalError()
@@ -43,11 +43,6 @@ export class UpdateUserSettingService {
       return user
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

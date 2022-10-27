@@ -17,16 +17,13 @@ export const useFileSelect = (options?: props) => {
   useEffect(() => {
     const input = inputRef.current
     if (!input) return
-
     input.accept = options?.accept || ""
     input.multiple = options?.multiple || false
   }, [options?.accept, options?.multiple])
 
   const select = useCallback(() => {
     const input = inputRef.current!
-
     input.value = ""
-
     return new Promise<File[]>((resolve) => {
       input.addEventListener(
         "change",

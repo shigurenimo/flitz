@@ -27,9 +27,9 @@ const getMessages = resolver.pipe(
     }
   },
   async (props) => {
-    const findUserMessagesQuery = container.resolve(FindUserMessagesQuery)
+    const query = container.resolve(FindUserMessagesQuery)
 
-    const messages = await findUserMessagesQuery.execute({
+    const messages = await query.execute({
       relatedUserId: props.recipientId,
       skip: props.skip,
       userId: props.userId,
@@ -44,22 +44,20 @@ const getMessages = resolver.pipe(
       return !message.isRead
     })
 
-    const hasUnreadMessages = unreadMessages.length > 0
+    const hasUnreadMessages = 0 < unreadMessages.length
 
-    const markMessagesAsReadService = container.resolve(
-      MarkMessagesAsReadService
-    )
+    const service = container.resolve(MarkMessagesAsReadService)
 
     if (hasUnreadMessages) {
-      await markMessagesAsReadService.execute({
+      await service.execute({
         userId: props.userId,
         relatedUserId: props.recipientId,
       })
     }
 
-    const countGroupMessagesQuery = container.resolve(CountGroupMessagesQuery)
+    const countQuery = container.resolve(CountGroupMessagesQuery)
 
-    const count = await countGroupMessagesQuery.execute({
+    const count = await countQuery.execute({
       userId: props.userId,
       relatedUserId: props.recipientId,
     })

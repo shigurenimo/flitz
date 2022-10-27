@@ -14,9 +14,9 @@ const createUser = resolver.pipe(
     }
   },
   async (props, ctx) => {
-    const signUpService = container.resolve(SignUpService)
+    const service = container.resolve(SignUpService)
 
-    const user = await signUpService.execute({
+    const user = await service.execute({
       password: props.password,
       email: props.email,
     })

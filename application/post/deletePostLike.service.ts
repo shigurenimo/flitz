@@ -24,7 +24,6 @@ export class DeletePostLikeService {
 
       if (like === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
@@ -37,11 +36,6 @@ export class DeletePostLikeService {
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

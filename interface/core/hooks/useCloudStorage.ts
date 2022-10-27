@@ -16,15 +16,10 @@ export const useCloudStorage = () => {
     if (file === null) {
       return { fileId: null }
     }
-
     const fileId = createId()
-
     const storage = getStorage()
-
     const storageRef = ref(storage, fileId)
-
     await uploadBytes(storageRef, file)
-
     return { fileId }
   }
 

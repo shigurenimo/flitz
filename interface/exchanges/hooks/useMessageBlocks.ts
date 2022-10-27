@@ -17,12 +17,9 @@ export const useMessageBlocks = (
 
   sortedMesasges.forEach((message, index) => {
     const isLastIndex = sortedMesasges.length < index + 2
-
     const nextMesasge = isLastIndex ? null : sortedMesasges[index + 1]
-
     const isLastMessage =
       nextMesasge !== null && nextMesasge.user.id !== message.user.id
-
     blocks.push({
       ...message,
       align: recipientId === message.user.id ? "left" : "right",

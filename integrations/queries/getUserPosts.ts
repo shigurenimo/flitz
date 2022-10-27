@@ -22,9 +22,9 @@ const getUserPosts = resolver.pipe(
     }
   },
   async (props) => {
-    const findUserPostsQuery = container.resolve(FindUserPostsQuery)
+    const query = container.resolve(FindUserPostsQuery)
 
-    const posts = await findUserPostsQuery.execute({
+    const posts = await query.execute({
       skip: props.skip,
       take: props.take,
       userId: props.userId,
@@ -35,9 +35,9 @@ const getUserPosts = resolver.pipe(
       throw posts
     }
 
-    const countUserPostsQuery = container.resolve(CountUserPostsQuery)
+    const countQuery = container.resolve(CountUserPostsQuery)
 
-    const count = await countUserPostsQuery.execute({
+    const count = await countQuery.execute({
       username: props.username,
     })
 

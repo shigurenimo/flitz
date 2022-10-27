@@ -10,7 +10,7 @@ type Props = {
 
 @injectable()
 export class CountRepliesByUsernameQuery {
-  async count(props: Props) {
+  async execute(props: Props) {
     try {
       const count = await db.post.count({
         where: {
@@ -22,11 +22,6 @@ export class CountRepliesByUsernameQuery {
       return count
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

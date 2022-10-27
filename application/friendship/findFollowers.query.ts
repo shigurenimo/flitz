@@ -17,7 +17,7 @@ type Props = {
 export class FindFollowersQuery {
   async execute(props: Props) {
     try {
-      const prismaFriendships = await db.friendship.findMany({
+      const friendships = await db.friendship.findMany({
         orderBy: { createdAt: "desc" },
         skip: props.skip,
         take: props.take,
@@ -38,16 +38,11 @@ export class FindFollowersQuery {
         },
       })
 
-      return prismaFriendships.map((prismaFriendship) => {
+      return friendships.map((prismaFriendship) => {
         return this.toFriendship(prismaFriendship)
       })
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }
@@ -60,8 +55,8 @@ export class FindFollowersQuery {
       username: prismaFriendship.follower.username || null,
       name: prismaFriendship.follower.name || null,
       biography: prismaFriendship.follower.biography,
-      isFollowee: prismaFriendship.follower.followersCount > 0,
-      isFollower: prismaFriendship.follower.followeesCount > 0,
+      isFollowee: 0 < prismaFriendship.follower.followersCount,
+      isFollower: 0 < prismaFriendship.follower.followeesCount,
     }
   }
 }

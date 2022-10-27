@@ -17,16 +17,16 @@ const updateSetting = resolver.pipe(
   resolver.zod(zUpdateSettingMutation),
   resolver.authorize(),
   async (props, ctx) => {
-    const updateSettingService = container.resolve(UpdateUserSettingService)
+    const service = container.resolve(UpdateUserSettingService)
 
-    const transaction = await updateSettingService.execute({
+    const result = await service.execute({
       fcmTokenForMobile: props.fcmTokenForMobile ?? null,
       fcmToken: props.fcmToken ?? null,
       userId: new Id(ctx.session.userId),
     })
 
-    if (transaction instanceof Error) {
-      throw transaction
+    if (result instanceof Error) {
+      throw result
     }
 
     const findUserSettingQuery = container.resolve(FindUserSettingQuery)

@@ -14,9 +14,9 @@ const login = resolver.pipe(
     }
   },
   async (props, ctx) => {
-    const loginService = container.resolve(LoginService)
+    const service = container.resolve(LoginService)
 
-    const user = await loginService.execute({
+    const user = await service.execute({
       password: props.password,
       email: props.email,
     })

@@ -55,11 +55,9 @@ export class UserRepository {
       })
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -107,11 +105,9 @@ export class UserRepository {
       })
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -159,11 +155,9 @@ export class UserRepository {
       })
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -214,11 +208,9 @@ export class UserRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }

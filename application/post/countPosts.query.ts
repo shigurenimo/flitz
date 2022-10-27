@@ -5,6 +5,10 @@ import { InternalError } from "integrations/errors"
 
 @injectable()
 export class CountPostsQuery {
+  /**
+   * 投稿数を取得する
+   * @returns
+   */
   async execute() {
     try {
       const count = await db.post.count({})
@@ -12,11 +16,6 @@ export class CountPostsQuery {
       return count
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

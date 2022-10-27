@@ -16,16 +16,16 @@ const createMessage = resolver.pipe(
     }
   },
   async (props) => {
-    const sendMessageService = container.resolve(SendMessageService)
+    const service = container.resolve(SendMessageService)
 
-    const transaction = await sendMessageService.execute({
+    const result = await service.execute({
       text: props.text,
       userId: props.userId,
       relatedUserId: props.relatedUserId,
     })
 
-    if (transaction instanceof Error) {
-      throw transaction
+    if (result instanceof Error) {
+      throw result
     }
 
     return null

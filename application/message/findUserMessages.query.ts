@@ -19,7 +19,7 @@ export class FindUserMessagesQuery {
 
   async execute(props: Props) {
     try {
-      const prismaMessages = await db.message.findMany({
+      const messages = await db.message.findMany({
         orderBy: { createdAt: "desc" },
         skip: props.skip,
         take: 20,
@@ -33,16 +33,11 @@ export class FindUserMessagesQuery {
         },
       })
 
-      return prismaMessages.map((prismaMessage) => {
+      return messages.map((prismaMessage) => {
         return this.toUserMessage(prismaMessage)
       })
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

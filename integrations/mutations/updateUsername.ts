@@ -17,21 +17,21 @@ const updateUsername = resolver.pipe(
     }
   },
   async (props, ctx) => {
-    const updateUsernameService = container.resolve(UpdateUsernameService)
+    const service = container.resolve(UpdateUsernameService)
 
-    const newUser = await updateUsernameService.execute({
+    const user = await service.execute({
       username: props.username,
       userId: props.userId,
     })
 
-    if (newUser instanceof Error) {
-      throw newUser
+    if (user instanceof Error) {
+      throw user
     }
 
     await ctx.session.$setPublicData({
-      name: newUser.name?.value ?? null,
-      username: newUser.username.value,
-      iconImageId: newUser.iconImageId?.value ?? null,
+      name: user.name?.value ?? null,
+      username: user.username.value,
+      iconImageId: user.iconImageId?.value ?? null,
     })
 
     return null

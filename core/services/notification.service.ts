@@ -12,10 +12,9 @@ export class NotificationService {
   hasUnread(notifications: AppNotification[]) {
     const unreadNotifications = notifications.filter((notification) => {
       if (notification === null) return false
-
       return !notification.isRead
     })
 
-    return unreadNotifications.length > 0
+    return 0 < unreadNotifications.length
   }
 }

@@ -27,11 +27,9 @@ export class ImageAdapter {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -48,11 +46,9 @@ export class ImageAdapter {
       return sharp(tmpPath.value).toBuffer()
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }

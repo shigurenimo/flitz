@@ -40,18 +40,12 @@ export class FindPostQuery {
 
       if (post === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
       return this.appPostConverter.fromPrisma(post)
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

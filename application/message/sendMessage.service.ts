@@ -16,7 +16,7 @@ export class SendMessageService {
 
   async execute(props: Props) {
     try {
-      const message = new MessageEntity({
+      const draftMessage = new MessageEntity({
         id: IdFactory.nanoid(),
         text: props.text,
         isRead: false,
@@ -25,7 +25,7 @@ export class SendMessageService {
         createdAt: new Date(),
       })
 
-      const transaction = await this.messageRepository.upsert(message)
+      const transaction = await this.messageRepository.upsert(draftMessage)
 
       if (transaction instanceof Error) {
         return new InternalError()
@@ -34,11 +34,6 @@ export class SendMessageService {
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

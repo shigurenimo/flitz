@@ -19,15 +19,15 @@ const unfollowUser = resolver.pipe(
     }
   },
   async (props) => {
-    const unfollowService = container.resolve(UnfollowService)
+    const service = container.resolve(UnfollowService)
 
-    const transaction = await unfollowService.execute({
+    const result = await service.execute({
       followeeId: props.followeeId,
       followerId: props.followerId,
     })
 
-    if (transaction instanceof Error) {
-      throw transaction
+    if (result instanceof Error) {
+      throw result
     }
 
     const findUserQuery = container.resolve(FindUserQuery)

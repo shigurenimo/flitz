@@ -16,14 +16,14 @@ const testNotification = resolver.pipe(
     }
   },
   async (props) => {
-    const testNotificationService = container.resolve(TestNotificationService)
+    const service = container.resolve(TestNotificationService)
 
-    const transaction = await testNotificationService.execute({
+    const result = await service.execute({
       userId: props.userId,
     })
 
-    if (transaction instanceof Error) {
-      throw transaction
+    if (result instanceof Error) {
+      throw result
     }
 
     return null

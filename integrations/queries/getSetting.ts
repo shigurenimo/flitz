@@ -16,9 +16,9 @@ const getSetting = resolver.pipe(
     }
   },
   async (props) => {
-    const findUserSettingQuery = container.resolve(FindUserSettingQuery)
+    const query = container.resolve(FindUserSettingQuery)
 
-    const setting = await findUserSettingQuery.execute({ userId: props.userId })
+    const setting = await query.execute({ userId: props.userId })
 
     if (setting instanceof Error) {
       throw setting

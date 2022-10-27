@@ -15,15 +15,15 @@ const deletePostLike = resolver.pipe(
     }
   },
   async (props) => {
-    const deletePostLikeService = container.resolve(DeletePostLikeService)
+    const service = container.resolve(DeletePostLikeService)
 
-    const transaction = await deletePostLikeService.execute({
+    const result = await service.execute({
       postId: props.postId,
       userId: props.userId,
     })
 
-    if (transaction instanceof Error) {
-      throw transaction
+    if (result instanceof Error) {
+      throw result
     }
 
     return null

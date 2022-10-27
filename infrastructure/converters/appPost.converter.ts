@@ -19,9 +19,9 @@ export class AppPostConverter {
       likesCount: post.likesCount,
       quotationsCount: post.quotationsCount,
       repliesCount: post.repliesCount,
-      hasLike: (post.likes || []).length > 0,
-      hasQuotation: (post.quotations || []).length > 0,
-      hasReply: (post.replies || []).length > 0,
+      hasLike: 0 < (post.likes || []).length,
+      hasQuotation: 0 < (post.quotations || []).length,
+      hasReply: 0 < (post.replies || []).length,
       text: post.text || null,
       user: this.appUserEmbeddedConverter.fromPrisma(post.user),
       quotation: post.quotation

@@ -50,7 +50,7 @@ export class CreateReplyService {
         return new InternalError()
       }
 
-      const reply = new PostEntity({
+      const draftReply = new PostEntity({
         fileIds: [],
         id: IdFactory.nanoid(),
         quotationId: null,
@@ -64,18 +64,18 @@ export class CreateReplyService {
         }),
       })
 
-      const transaction = await this.postRepository.upsert(reply)
+      const transaction = await this.postRepository.upsert(draftReply)
 
       if (transaction instanceof Error) {
         return new InternalError()
       }
 
-      const notification = new NotificationEntity({
+      const draftNotification = new NotificationEntity({
         friendshipId: null,
         id: IdFactory.nanoid(),
         isRead: false,
         likeId: null,
-        postId: reply.id,
+        postId: draftReply.id,
         relatedUserId: props.userId,
         type: NotificationTypeFactory.reply(),
         userId: post.userId,
@@ -84,14 +84,11 @@ export class CreateReplyService {
       /**
        * 失敗しても例外は返さない
        */
-      await this.notificationRepository.upsert(notification)
+      await this.notificationRepository.upsert(draftNotification)
+
+      return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

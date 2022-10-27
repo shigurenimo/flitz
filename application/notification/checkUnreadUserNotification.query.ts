@@ -22,11 +22,6 @@ export class CheckUnreadUserNotificationQuery {
       return notification !== null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

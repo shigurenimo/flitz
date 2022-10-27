@@ -32,7 +32,7 @@ export class CreatePostService {
         return new InternalError()
       }
 
-      const post = new PostEntity({
+      const draftPost = new PostEntity({
         fileIds: props.fileIds,
         id: IdFactory.nanoid(),
         quotationId: null,
@@ -46,7 +46,7 @@ export class CreatePostService {
         }),
       })
 
-      const transaction = await this.postRepository.upsert(post)
+      const transaction = await this.postRepository.upsert(draftPost)
 
       if (transaction instanceof Error) {
         return new InternalError()
@@ -55,11 +55,6 @@ export class CreatePostService {
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

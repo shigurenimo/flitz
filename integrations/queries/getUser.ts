@@ -18,9 +18,9 @@ const getUser = resolver.pipe(
     }
   },
   async (props) => {
-    const findUserByUsernameQuery = container.resolve(FindUserByUsernameQuery)
+    const query = container.resolve(FindUserByUsernameQuery)
 
-    const user = await findUserByUsernameQuery.execute({
+    const user = await query.execute({
       username: props.username,
       loginId: props.loginId,
     })

@@ -50,7 +50,7 @@ export class CreateQuotationService {
         return new InternalError()
       }
 
-      const quotation = new PostEntity({
+      const draftQuotation = new PostEntity({
         fileIds: [],
         id: IdFactory.nanoid(),
         quotationId: post.id,
@@ -64,18 +64,18 @@ export class CreateQuotationService {
         }),
       })
 
-      const transaction = await this.postRepository.upsert(quotation)
+      const transaction = await this.postRepository.upsert(draftQuotation)
 
       if (transaction instanceof Error) {
         return new InternalError()
       }
 
-      const notification = new NotificationEntity({
+      const draftNotification = new NotificationEntity({
         friendshipId: null,
         id: IdFactory.nanoid(),
         isRead: false,
         likeId: null,
-        postId: quotation.id,
+        postId: draftQuotation.id,
         relatedUserId: props.userId,
         type: NotificationTypeFactory.quotation(),
         userId: post.userId,
@@ -84,16 +84,11 @@ export class CreateQuotationService {
       /**
        * 失敗しても例外は返さない
        */
-      await this.notificationRepository.upsert(notification)
+      await this.notificationRepository.upsert(draftNotification)
 
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

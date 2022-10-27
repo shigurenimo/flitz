@@ -22,9 +22,9 @@ const getUserFollowers = resolver.pipe(
     }
   },
   async (props) => {
-    const findFollowersQuery = container.resolve(FindFollowersQuery)
+    const query = container.resolve(FindFollowersQuery)
 
-    const friendships = await findFollowersQuery.execute({
+    const friendships = await query.execute({
       skip: props.skip,
       take: props.take,
       userId: props.userId,
@@ -35,9 +35,9 @@ const getUserFollowers = resolver.pipe(
       throw friendships
     }
 
-    const countFollowersQuery = container.resolve(CountFollowersQuery)
+    const countQuery = container.resolve(CountFollowersQuery)
 
-    const count = await countFollowersQuery.execute({
+    const count = await countQuery.execute({
       username: props.username,
     })
 

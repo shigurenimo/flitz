@@ -25,7 +25,7 @@ export class FindUserNotificationsQuery {
 
   async execute(props: Props) {
     try {
-      const prismaNotifications = await db.notification.findMany({
+      const notifications = await db.notification.findMany({
         orderBy: { createdAt: "desc" },
         skip: props.skip,
         take: 16,
@@ -63,18 +63,13 @@ export class FindUserNotificationsQuery {
         },
       })
 
-      const appNotifications = prismaNotifications.map((prismaNotification) => {
+      const appNotifications = notifications.map((prismaNotification) => {
         return this.toAppNotification(prismaNotification)
       })
 
       return appNotifications
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

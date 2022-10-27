@@ -32,18 +32,12 @@ export class FindUserQuery {
 
       if (prismaUser === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
       return this.toAppUserProfile(prismaUser)
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }
@@ -58,7 +52,7 @@ export class FindUserQuery {
       iconImageId: prismaUser.iconImage?.id || null,
       headerImageId: prismaUser.headerImage?.id || null,
       siteURL: prismaUser.siteURL,
-      isFollowee: (prismaUser.followers || []).length > 0,
+      isFollowee: 0 < (prismaUser.followers || []).length,
       followeesCount: prismaUser.followeesCount,
       followersCount: prismaUser.followersCount,
     }

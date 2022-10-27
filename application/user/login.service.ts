@@ -43,29 +43,23 @@ export class LoginService {
       // パスワードを更新する
       if (result === SecurePassword.VALID_NEEDS_REHASH) {
         const improvedHash = await SecurePassword.hash(props.password.value)
-
         const newHashPassword = new HashedPassword(improvedHash)
-
         const newUser = user.updateHashedPassword(newHashPassword)
-
         await this.userRepository.upsert(newUser)
       }
 
       return user
     } catch (error) {
       captureException(error)
-
       // SecurePasswordを例外処理を発生させる
       if (error instanceof AuthenticationError) {
         return new AuthenticationError(
           "メールアドレスまたはパスワードが間違っています。"
         )
       }
-
       if (error instanceof Error) {
         return new InternalError(error.message)
       }
-
       return new InternalError()
     }
   }

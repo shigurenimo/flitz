@@ -29,16 +29,16 @@ const createPost = resolver.pipe(
       }
     }
 
-    const createPostService = container.resolve(CreatePostService)
+    const service = container.resolve(CreatePostService)
 
-    const transaction = await createPostService.execute({
+    const result = await service.execute({
       fileIds: props.fileId ? [props.fileId] : [],
       text: props.text,
       userId: props.userId,
     })
 
-    if (transaction instanceof Error) {
-      throw transaction
+    if (result instanceof Error) {
+      throw result
     }
 
     return null

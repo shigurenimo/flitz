@@ -44,7 +44,6 @@ export const BoxExchangeList: FC = () => {
       router.push(`/exchanges/${messageThreadId}`)
       return
     }
-
     router.push(`/exchanges/-/${relatedUserId}`)
   }
 

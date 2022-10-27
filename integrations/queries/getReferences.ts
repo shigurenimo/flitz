@@ -22,9 +22,9 @@ const getReferences = resolver.pipe(
     }
   },
   async (props) => {
-    const findUserReferenceQuery = container.resolve(FindUserReferenceQuery)
+    const query = container.resolve(FindUserReferenceQuery)
 
-    const references = await findUserReferenceQuery.execute({
+    const references = await query.execute({
       skip: props.skip,
       userId: props.userId,
     })
@@ -37,7 +37,7 @@ const getReferences = resolver.pipe(
       return !reference.isRead
     })
 
-    const hasUnreadReferences = unreadReferences.length > 0
+    const hasUnreadReferences = 0 < unreadReferences.length
 
     const markReferenceAsReadService = container.resolve(
       MarkReferenceAsReadService
@@ -47,9 +47,9 @@ const getReferences = resolver.pipe(
       await markReferenceAsReadService.execute({ userId: props.userId })
     }
 
-    const countUserReferencesQuery = container.resolve(CountUserReferencesQuery)
+    const countQuery = container.resolve(CountUserReferencesQuery)
 
-    const count = await countUserReferencesQuery.execute({
+    const count = await countQuery.execute({
       userId: props.userId,
     })
 

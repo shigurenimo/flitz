@@ -27,11 +27,6 @@ export class CheckUnreadMessageThreadQuery {
       return prismaMessageThread !== null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

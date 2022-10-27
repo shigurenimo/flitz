@@ -26,9 +26,9 @@ const getNotifications = resolver.pipe(
     }
   },
   async (props) => {
-    const findNotificationsQuery = container.resolve(FindUserNotificationsQuery)
+    const query = container.resolve(FindUserNotificationsQuery)
 
-    const notifications = await findNotificationsQuery.execute({
+    const notifications = await query.execute({
       userId: props.userId,
       skip: props.skip,
     })
@@ -41,28 +41,22 @@ const getNotifications = resolver.pipe(
     const fn = (notifications: (AppNotification | null)[]) => {
       const unreadNotifications = notifications.filter((notification) => {
         if (notification === null) return false
-
         return !notification.isRead
       })
-
-      return unreadNotifications.length > 0
+      return 0 < unreadNotifications.length
     }
 
     const hasUnread = fn(notifications)
 
-    const markNotificationAsReadService = container.resolve(
-      MarkNotificationAsReadService
-    )
+    const service = container.resolve(MarkNotificationAsReadService)
 
     if (hasUnread) {
-      await markNotificationAsReadService.execute({ userId: props.userId })
+      await service.execute({ userId: props.userId })
     }
 
-    const countNotificationsQuery = container.resolve(
-      CountUserNotificationsQuery
-    )
+    const countQuery = container.resolve(CountUserNotificationsQuery)
 
-    const count = await countNotificationsQuery.execute({
+    const count = await countQuery.execute({
       userId: props.userId,
     })
 

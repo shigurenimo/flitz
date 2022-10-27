@@ -20,7 +20,7 @@ export class CreateFileService {
    */
   async execute(props: Props) {
     try {
-      const file = new FileEntity({
+      const draftFile = new FileEntity({
         id: props.fileId,
         userId: props.userId,
         type: FileTypeFactory.png(),
@@ -28,7 +28,7 @@ export class CreateFileService {
         path: new Path(props.fileId.value),
       })
 
-      const transaction = await this.fileRepository.upsert(file)
+      const transaction = await this.fileRepository.upsert(draftFile)
 
       if (transaction instanceof Error) {
         return new InternalError()
@@ -37,11 +37,6 @@ export class CreateFileService {
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

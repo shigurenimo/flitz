@@ -19,7 +19,6 @@ export class FindUserSimpleQuery {
 
       if (user === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
@@ -29,11 +28,6 @@ export class FindUserSimpleQuery {
       }
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

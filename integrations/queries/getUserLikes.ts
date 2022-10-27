@@ -22,9 +22,9 @@ const getUserLikes = resolver.pipe(
     }
   },
   async (props) => {
-    const findUserLikeQuery = container.resolve(FindUserLikeQuery)
+    const query = container.resolve(FindUserLikeQuery)
 
-    const likes = await findUserLikeQuery.execute({
+    const likes = await query.execute({
       skip: props.skip,
       take: props.take,
       userId: props.userId,
@@ -35,9 +35,9 @@ const getUserLikes = resolver.pipe(
       throw likes
     }
 
-    const countUserLikesQuery = container.resolve(CountUserLikesQuery)
+    const countQuery = container.resolve(CountUserLikesQuery)
 
-    const count = await countUserLikesQuery.execute({
+    const count = await countQuery.execute({
       username: props.username,
     })
 

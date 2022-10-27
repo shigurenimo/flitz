@@ -48,9 +48,9 @@ const updateUserProfile = resolver.pipe(
       }
     }
 
-    const updateUserProfileService = container.resolve(UpdateUserProfileService)
+    const service = container.resolve(UpdateUserProfileService)
 
-    const newUser = await updateUserProfileService.execute({
+    const user = await service.execute({
       headerImageId: props.headerFileId,
       iconImageId: props.iconFileId,
       biography: props.biography,
@@ -58,14 +58,14 @@ const updateUserProfile = resolver.pipe(
       userId: props.userId,
     })
 
-    if (newUser instanceof Error) {
-      throw newUser
+    if (user instanceof Error) {
+      throw user
     }
 
     await ctx.session.$setPublicData({
-      name: newUser.name?.value ?? null,
-      username: newUser.username.value,
-      iconImageId: newUser.iconImageId?.value ?? null,
+      name: user.name?.value ?? null,
+      username: user.username.value,
+      iconImageId: user.iconImageId?.value ?? null,
     })
 
     return null

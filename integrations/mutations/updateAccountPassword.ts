@@ -21,18 +21,16 @@ const updateAccountPassword = resolver.pipe(
     }
   },
   async (props) => {
-    const updateAccountPasswordService = container.resolve(
-      UpdateUserPasswordService
-    )
+    const service = container.resolve(UpdateUserPasswordService)
 
-    const transaction = await updateAccountPasswordService.execute({
+    const result = await service.execute({
       currentPassword: props.currentPassword,
       password: props.password,
       userId: props.userId,
     })
 
-    if (transaction instanceof Error) {
-      throw transaction
+    if (result instanceof Error) {
+      throw result
     }
 
     return null

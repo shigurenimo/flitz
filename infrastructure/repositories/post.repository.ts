@@ -27,11 +27,9 @@ export class PostRepository {
       })
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -142,11 +140,9 @@ export class PostRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -200,11 +196,9 @@ export class PostRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -246,11 +240,9 @@ export class PostRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }
@@ -267,11 +259,9 @@ export class PostRepository {
       return null
     } catch (error) {
       captureException(error, { level: "fatal" })
-
       if (error instanceof Error) {
         return new Error(error.message)
       }
-
       return new Error()
     }
   }

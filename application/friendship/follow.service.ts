@@ -28,20 +28,22 @@ export class FollowService {
         return new InternalError("自分自身をフォローすることは出来ません。")
       }
 
-      const friendship = new FriendshipEntity({
+      const draftFriendship = new FriendshipEntity({
         followeeId: props.followeeId,
         followerId: props.followerId,
         id: IdFactory.nanoid(),
       })
 
-      const transaction = await this.friendshipRepository.follow(friendship)
+      const transaction = await this.friendshipRepository.follow(
+        draftFriendship
+      )
 
       if (transaction instanceof Error) {
         return new InternalError()
       }
 
-      const notification = new NotificationEntity({
-        friendshipId: friendship.id,
+      const draftNotification = new NotificationEntity({
+        friendshipId: draftFriendship.id,
         id: IdFactory.nanoid(),
         isRead: false,
         likeId: null,
@@ -54,16 +56,11 @@ export class FollowService {
       /**
        * 失敗しても例外は返さない
        */
-      await this.notificationRepository.upsert(notification)
+      await this.notificationRepository.upsert(draftNotification)
 
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

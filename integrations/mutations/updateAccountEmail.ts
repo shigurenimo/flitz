@@ -17,15 +17,15 @@ const updateAccountEmail = resolver.pipe(
     }
   },
   async (props) => {
-    const updateAccountEmailService = container.resolve(UpdateUserEmailService)
+    const service = container.resolve(UpdateUserEmailService)
 
-    const transaction = await updateAccountEmailService.execute({
+    const result = await service.execute({
       email: props.email,
       userId: props.userId,
     })
 
-    if (transaction instanceof Error) {
-      throw transaction
+    if (result instanceof Error) {
+      throw result
     }
 
     return null

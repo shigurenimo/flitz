@@ -21,7 +21,7 @@ export class FindUserRepliesQuery {
 
   async execute(props: Props) {
     try {
-      const prismaPosts = await db.post.findMany({
+      const posts = await db.post.findMany({
         include: includePostEmbedded(props.userId),
         orderBy: { createdAt: "desc" },
         skip: props.skip,
@@ -29,16 +29,11 @@ export class FindUserRepliesQuery {
         where: { replyId: props.replyId.value },
       })
 
-      return prismaPosts.map((post) => {
+      return posts.map((post) => {
         return this.toQuotation(post)
       })
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }
@@ -51,9 +46,9 @@ export class FindUserRepliesQuery {
       likesCount: post.likesCount,
       quotationsCount: post.quotationsCount,
       repliesCount: post.repliesCount,
-      hasLike: (post.likes || []).length > 0,
-      hasQuotation: (post.quotations || []).length > 0,
-      hasReply: (post.replies || []).length > 0,
+      hasLike: 0 < (post.likes || []).length,
+      hasQuotation: 0 < (post.quotations || []).length,
+      hasReply: 0 < (post.replies || []).length,
       text: post.text || null,
       user: this.appUserEmbeddedConverter.fromPrisma(post.user),
     }

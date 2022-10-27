@@ -32,30 +32,24 @@ export class UpdateUserProfileService {
 
       if (user === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
-      const newUser = user
+      const draftUser = user
         .updateHeaderImage(props.headerImageId ?? null)
         .updateIconImage(props.iconImageId ?? null)
         .updateName(props.name)
         .updateBiography(props.biography)
 
-      const transaction = await this.userRepository.upsert(newUser)
+      const transaction = await this.userRepository.upsert(draftUser)
 
       if (transaction instanceof Error) {
         return new InternalError()
       }
 
-      return newUser
+      return draftUser
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

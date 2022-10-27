@@ -18,9 +18,9 @@ const getPost = resolver.pipe(
     }
   },
   async (props) => {
-    const findPostQuery = container.resolve(FindPostQuery)
+    const query = container.resolve(FindPostQuery)
 
-    const post = await findPostQuery.execute({
+    const post = await query.execute({
       postId: props.id,
       userId: props.userId,
     })

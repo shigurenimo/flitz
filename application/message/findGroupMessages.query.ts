@@ -19,7 +19,7 @@ export class FindGroupMessagesQuery {
 
   async execute(props: Props) {
     try {
-      const prismaMessageThread = await db.messageThread.findUnique({
+      const messageThread = await db.messageThread.findUnique({
         where: { id: props.messageThreadId.value },
         include: {
           messages: {
@@ -33,22 +33,16 @@ export class FindGroupMessagesQuery {
         },
       })
 
-      if (prismaMessageThread === null) {
+      if (messageThread === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
-      return prismaMessageThread.messages.map((prismaMessage) => {
+      return messageThread.messages.map((prismaMessage) => {
         return this.toUserMessage(prismaMessage)
       })
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

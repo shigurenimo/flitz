@@ -13,11 +13,8 @@ export const useFileURL = (file: File | null) => {
       setFileURL(null)
       return
     }
-
     const fileURL = URL.createObjectURL(file)
-
     setFileURL(fileURL)
-
     return () => {
       URL.revokeObjectURL(fileURL)
     }

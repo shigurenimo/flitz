@@ -12,9 +12,9 @@ const checkUnreadMessages = resolver.pipe(
     }
   },
   async (props) => {
-    const checkExchangesQuery = container.resolve(CheckUnreadMessageThreadQuery)
+    const query = container.resolve(CheckUnreadMessageThreadQuery)
 
-    const existence = await checkExchangesQuery.execute({
+    const existence = await query.execute({
       userId: props.userId,
     })
 

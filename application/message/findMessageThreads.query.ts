@@ -18,7 +18,7 @@ export class FindMessageThreadsQuery {
 
   async execute(props: Props): Promise<AppMessageThread[] | Error> {
     try {
-      const prismaMessageThread = await db.messageThread.findMany({
+      const messageThread = await db.messageThread.findMany({
         orderBy: { updatedAt: "desc" },
         skip: props.skip,
         take: 16,
@@ -32,16 +32,11 @@ export class FindMessageThreadsQuery {
         },
       })
 
-      return prismaMessageThread.map((prismaMessageThread) => {
+      return messageThread.map((prismaMessageThread) => {
         return this.toMessageThread(prismaMessageThread)
       })
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

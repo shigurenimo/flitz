@@ -19,9 +19,9 @@ const getExchanges = resolver.pipe(
     }
   },
   async (props) => {
-    const findMessageThreadsQuery = container.resolve(FindMessageThreadsQuery)
+    const query = container.resolve(FindMessageThreadsQuery)
 
-    const messageThreads = await findMessageThreadsQuery.execute({
+    const messageThreads = await query.execute({
       userId: props.userId,
       skip: props.skip,
     })
@@ -30,9 +30,9 @@ const getExchanges = resolver.pipe(
       throw messageThreads
     }
 
-    const countExchangesQuery = container.resolve(CountMessageThreadsQuery)
+    const countQuery = container.resolve(CountMessageThreadsQuery)
 
-    const count = await countExchangesQuery.execute({ userId: props.userId })
+    const count = await countQuery.execute({ userId: props.userId })
 
     if (count instanceof Error) {
       throw count

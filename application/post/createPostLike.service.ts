@@ -38,27 +38,26 @@ export class CreatePostLikeService {
 
       if (post === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
-      const like = new LikeEntity({
+      const draftLike = new LikeEntity({
         id: IdFactory.nanoid(),
         postId: props.postId,
         userId: props.userId,
       })
 
-      const transaction = await this.likeRepository.upsert(like)
+      const transaction = await this.likeRepository.upsert(draftLike)
 
       if (transaction instanceof Error) {
         return new InternalError()
       }
 
-      const notification = new NotificationEntity({
+      const draftNotification = new NotificationEntity({
         friendshipId: null,
         id: IdFactory.nanoid(),
         isRead: false,
-        likeId: like.id,
+        likeId: draftLike.id,
         postId: props.postId,
         relatedUserId: props.userId,
         type: NotificationTypeFactory.like(),
@@ -68,16 +67,11 @@ export class CreatePostLikeService {
       /**
        * 失敗しても例外は返さない
        */
-      await this.notificationRepository.upsert(notification)
+      await this.notificationRepository.upsert(draftNotification)
 
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

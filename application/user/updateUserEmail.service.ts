@@ -24,13 +24,12 @@ export class UpdateUserEmailService {
 
       if (user === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
-      const newUser = user.updateEmail(props.email)
+      const draftUser = user.updateEmail(props.email)
 
-      const transaction = await this.userRepository.upsert(newUser)
+      const transaction = await this.userRepository.upsert(draftUser)
 
       if (transaction instanceof Error) {
         return new InternalError()
@@ -39,11 +38,6 @@ export class UpdateUserEmailService {
       return null
     } catch (error) {
       captureException(error)
-
-      if (error instanceof Error) {
-        return new InternalError(error.message)
-      }
-
       return new InternalError()
     }
   }

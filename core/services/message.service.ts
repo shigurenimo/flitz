@@ -11,6 +11,6 @@ export class MessageService {
       return !message.isRead
     })
 
-    return unreadMessages.length > 0
+    return 0 < unreadMessages.length
   }
 }
