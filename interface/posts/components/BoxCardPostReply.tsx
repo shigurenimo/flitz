@@ -1,5 +1,6 @@
 import { HStack, Stack } from "@chakra-ui/react"
 import { FC } from "react"
+import { AppQuotation } from "integrations/types/appQuotation"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
 import { BoxHeaderUserAction } from "interface/posts/components/BoxHeaderUserAction"
@@ -7,7 +8,6 @@ import { BoxPostActions } from "interface/posts/components/BoxPostActions"
 import { BoxPostDate } from "interface/posts/components/BoxPostDate"
 import { BoxPostImage } from "interface/posts/components/BoxPostImage"
 import { TextPost } from "interface/posts/components/TextPost"
-import { AppQuotation } from "integrations/types/appQuotation"
 
 type Props = AppQuotation
 

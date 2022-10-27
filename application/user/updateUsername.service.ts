@@ -2,8 +2,8 @@ import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
 import { injectable } from "tsyringe"
 import { Id, Username } from "core"
-import { InternalError } from "integrations/errors"
 import { UserRepository } from "infrastructure"
+import { InternalError } from "integrations/errors"
 
 type Props = {
   username: Username

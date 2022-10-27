@@ -11,8 +11,8 @@ import {
 } from "@chakra-ui/react"
 import { FC, useState } from "react"
 import { FiImage, FiSend } from "react-icons/fi"
-import { AvatarUser } from "interface/core/components/AvatarUser"
 import createReply from "integrations/mutations/createReply"
+import { AvatarUser } from "interface/core/components/AvatarUser"
 
 export const BoxFormPost: FC = () => {
   const session = useSession()

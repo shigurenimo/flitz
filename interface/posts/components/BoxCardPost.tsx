@@ -1,6 +1,7 @@
 import { HStack, Stack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { FC } from "react"
+import { AppPost } from "integrations/types/appPost"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
 import { BoxCardQuotationEmbedded } from "interface/posts/components/BoxCardQuotationEmbedded"
@@ -11,7 +12,6 @@ import { BoxPostDate } from "interface/posts/components/BoxPostDate"
 import { BoxPostImage } from "interface/posts/components/BoxPostImage"
 import { BoxPostReply } from "interface/posts/components/BoxPostReply"
 import { TextPost } from "interface/posts/components/TextPost"
-import { AppPost } from "integrations/types/appPost"
 
 type Props = AppPost & { isDisabled: boolean }
 

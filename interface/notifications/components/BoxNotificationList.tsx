@@ -2,10 +2,10 @@ import { useInfiniteQuery } from "@blitzjs/rpc"
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
+import getNotifications from "integrations/queries/getNotifications"
+import { AppNotification } from "integrations/types"
 import { StackList } from "interface/core/components/StackList"
 import { BoxCardNotification } from "interface/notifications/components/BoxCardNotification"
-import getNotifications from "interface/notifications/queries/getNotifications"
-import { AppNotification } from "integrations/types"
 
 export const BoxNotificationList: FC = () => {
   const { t } = useTranslation()

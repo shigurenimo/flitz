@@ -8,12 +8,12 @@ import {
   NotificationTypeFactory,
   PostEntity,
 } from "core"
-import { InternalError } from "integrations/errors"
 import {
   FriendshipRepository,
   NotificationRepository,
   PostRepository,
 } from "infrastructure"
+import { InternalError } from "integrations/errors"
 
 type Props = {
   userId: Id

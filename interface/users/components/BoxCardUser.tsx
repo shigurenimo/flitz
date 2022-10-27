@@ -1,9 +1,9 @@
 import { Badge, Button, HStack, Stack, Text, useToast } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { FC } from "react"
+import { AppFriendship } from "integrations/types/appFriendship"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
-import { AppFriendship } from "integrations/types/appFriendship"
 
 type Props = {
   createdAt: Date

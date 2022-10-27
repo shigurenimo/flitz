@@ -2,11 +2,11 @@ import { useParam } from "@blitzjs/next"
 import { useInfiniteQuery } from "@blitzjs/rpc"
 import { List, ListItem } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
+import getMessages from "integrations/queries/getMessages"
 import { BoxExchangeTextarea } from "interface/exchanges/components/BoxExchangePageTextarea"
 import { BoxCardMessageLeft } from "interface/exchanges/components/BoxMessageBlockLeft"
 import { BoxCardMessageRight } from "interface/exchanges/components/BoxMessageBlockRight"
 import { useMessageBlocks } from "interface/exchanges/hooks/useMessageBlocks"
-import getMessages from "integrations/queries/getMessages"
 
 export const BoxExchangeMessages: FC = () => {
   const recipientId = useParam("recipientId", "string")

@@ -1,10 +1,10 @@
 import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
 import { injectable } from "tsyringe"
-import db from "db"
 import { Id, Username } from "core"
-import { InternalError } from "integrations/errors"
+import db from "db"
 import { PrismaProfile } from "infrastructure/types"
+import { InternalError } from "integrations/errors"
 import { AppUserProfile } from "integrations/types"
 
 type Props = {
