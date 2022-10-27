@@ -3,7 +3,7 @@ import { FC } from "react"
 import { AppMessageThread } from "integrations/types/appMessageThread"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
-import { BoxExchangeUser } from "interface/exchanges/components/BoxExchangeUser"
+import { BoxExchangeUser } from "interface/message/components/BoxExchangeUser"
 import { BoxPostDate } from "interface/posts/components/BoxPostDate"
 
 type Props = AppMessageThread & {

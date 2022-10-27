@@ -7,7 +7,7 @@ import { TextareaAutosize } from "interface/core/components/TextareaAutosize"
 
 type Props = { refetch(): void }
 
-export const BoxExchangeTextarea: FC<Props> = ({ refetch }) => {
+export const BoxBoxMessageThreadTextarea: FC<Props> = ({ refetch }) => {
   const recipientId = useParam("recipientId", "string")
 
   const bg = useColorModeValue("white", "gray.800")

@@ -3,12 +3,12 @@ import { useInfiniteQuery } from "@blitzjs/rpc"
 import { List, ListItem } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
 import getMessages from "integrations/queries/getMessages"
-import { BoxExchangeTextarea } from "interface/exchanges/components/BoxExchangePageTextarea"
-import { BoxCardMessageLeft } from "interface/exchanges/components/BoxMessageBlockLeft"
-import { BoxCardMessageRight } from "interface/exchanges/components/BoxMessageBlockRight"
-import { useMessageBlocks } from "interface/exchanges/hooks/useMessageBlocks"
+import { BoxBoxMessageThreadTextarea } from "interface/message/components/BoxBoxMessageThreadTextarea"
+import { BoxCardMessageLeft } from "interface/message/components/BoxMessageBlockLeft"
+import { BoxCardMessageRight } from "interface/message/components/BoxMessageBlockRight"
+import { useMessageBlocks } from "interface/message/hooks/useMessageBlocks"
 
-export const BoxExchangeMessages: FC = () => {
+export const BoxMessageThreadMessages: FC = () => {
   const recipientId = useParam("recipientId", "string")
 
   const [pages, { refetch }] = useInfiniteQuery(
@@ -41,7 +41,7 @@ export const BoxExchangeMessages: FC = () => {
           </ListItem>
         ))}
       </List>
-      <BoxExchangeTextarea refetch={refetch} />
+      <BoxBoxMessageThreadTextarea refetch={refetch} />
     </>
   )
 }

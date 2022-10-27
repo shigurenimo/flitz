@@ -10,7 +10,7 @@ type Props = {
   onClick?(): void
 }
 
-export const BoxButtonRouteExchanges: FC<Props> = (props) => {
+export const BoxButtonRouteMessageThreads: FC<Props> = (props) => {
   const { t } = useTranslation()
 
   const [hasUnreadMessages] = useQuery(checkUnreadMessages, null, {

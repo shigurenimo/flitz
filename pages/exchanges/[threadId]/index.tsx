@@ -5,23 +5,23 @@ import { useTranslation } from "react-i18next"
 import { BoxHeader } from "interface/core/components/BoxHeader"
 import { StackMain } from "interface/core/components/StackMain"
 import Layout from "interface/core/layouts/Layout"
-import { BoxExchangeMessages } from "interface/exchanges/components/BoxExchangePageMessages"
+import { BoxMessageThreadMessages } from "interface/message/components/BoxMessageThreadMessages"
 
-const ShowExchangeRecipientPage: BlitzPage = () => {
+const MessageThreadPage: BlitzPage = () => {
   const { t } = useTranslation()
 
   return (
     <StackMain divider={<StackDivider />} pb={0}>
       <BoxHeader>{t("Messages")}</BoxHeader>
       <Suspense fallback={<div>{"Loading..."}</div>}>
-        <BoxExchangeMessages />
+        <BoxMessageThreadMessages />
       </Suspense>
     </StackMain>
   )
 }
 
-ShowExchangeRecipientPage.getLayout = (page) => {
+MessageThreadPage.getLayout = (page) => {
   return <Layout title={"Messages"}>{page}</Layout>
 }
 
-export default ShowExchangeRecipientPage
+export default MessageThreadPage

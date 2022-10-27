@@ -2,8 +2,8 @@ import { Box, HStack, Stack, Text } from "@chakra-ui/react"
 import { FC } from "react"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
-import { BoxMessageDate } from "interface/exchanges/components/BoxMessageDate"
-import { MessageBlock } from "interface/exchanges/types/messageBlock"
+import { BoxMessageDate } from "interface/message/components/BoxMessageDate"
+import { MessageBlock } from "interface/message/types/messageBlock"
 
 type Props = MessageBlock
 

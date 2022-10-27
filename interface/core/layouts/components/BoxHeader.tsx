@@ -21,8 +21,8 @@ import {
 } from "react-icons/fi"
 import { BoxButtonRoute } from "interface/core/layouts/components/BoxButtonRoute"
 import { BoxButtonRouteDarkMode } from "interface/core/layouts/components/BoxButtonRouteDarkMode"
-import { BoxButtonRouteExchanges } from "interface/core/layouts/components/BoxButtonRouteExchanges"
 import { BoxButtonRouteLanguage } from "interface/core/layouts/components/BoxButtonRouteLanguage"
+import { BoxButtonRouteMessageThreads } from "interface/core/layouts/components/BoxButtonRouteMessageThreads"
 import { BoxButtonRouteNotifications } from "interface/core/layouts/components/BoxButtonRouteNotifications"
 import { BoxButtonRouteReferences } from "interface/core/layouts/components/BoxButtonRouteReferences"
 import { toActiveRoute } from "interface/core/layouts/utils/toActiveRoute"
@@ -130,7 +130,7 @@ export const LayoutHeader: FC = () => {
                 </BoxButtonRoute>
               }
             >
-              <BoxButtonRouteExchanges
+              <BoxButtonRouteMessageThreads
                 isActive={activeRoute === "exchanges"}
                 onClick={() => router.push("/exchanges")}
               />

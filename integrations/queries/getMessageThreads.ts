@@ -8,7 +8,7 @@ import { withSentry } from "interface/core/utils/withSentry"
 
 const zProps = z.object({ skip: z.number() })
 
-const getExchanges = resolver.pipe(
+const getMessageThreads = resolver.pipe(
   resolver.zod(zProps),
   resolver.authorize(),
   (props, ctx) => {
@@ -51,4 +51,4 @@ const getExchanges = resolver.pipe(
   }
 )
 
-export default withSentry(getExchanges, "getExchanges")
+export default withSentry(getMessageThreads, "getMessageThreads")

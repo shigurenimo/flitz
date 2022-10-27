@@ -53,7 +53,7 @@ export const ShowUserPageDetail: FC = () => {
     }
   }
 
-  const onExchange = () => {
+  const onSendMessage = () => {
     router.push(`/exchanges/-/${user.id}`)
   }
 
@@ -66,7 +66,7 @@ export const ShowUserPageDetail: FC = () => {
           <BoxUserAction
             hasRelationship={user.isFollowee}
             isLoading={isLoadingFollowUser || isLoadingUnfollowUser}
-            onExchange={onExchange}
+            onSendMessage={onSendMessage}
             onFollow={onFollow}
             onUnfollow={onUnfollow}
             userId={user.id}

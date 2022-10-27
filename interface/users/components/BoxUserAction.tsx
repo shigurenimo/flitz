@@ -6,7 +6,7 @@ import { FiMail, FiUserCheck, FiUserPlus } from "react-icons/fi"
 type Props = {
   hasRelationship: boolean
   isLoading: boolean
-  onExchange(): void
+  onSendMessage(): void
   onFollow(): void
   onUnfollow(): void
   userId: string
@@ -36,7 +36,7 @@ export const BoxUserAction: FC<Props> = (props) => {
       </Button>
       <Button
         leftIcon={<Icon display={"flex"} as={FiMail} />}
-        onClick={props.onExchange}
+        onClick={props.onSendMessage}
       >
         {"Message"}
       </Button>

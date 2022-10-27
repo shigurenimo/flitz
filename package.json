@@ -2,7 +2,7 @@
   "name": "flitz",
   "version": "1.0.0",
   "scripts": {
-    "build": "blitz prisma db push --accept-data-loss && blitz build",
+    "build": "blitz prisma db push && blitz build",
     "start:production": "blitz start --port $PORT",
     "dev": "prisma generate && blitz dev",
     "lint:fix": "eslint --fix application core infrastructure integrations interface pages",

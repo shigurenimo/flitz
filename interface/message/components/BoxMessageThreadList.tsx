@@ -10,13 +10,13 @@ import {
 import { useRouter } from "next/router"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
-import getExchanges from "integrations/queries/getExchanges"
+import getMessageThreads from "integrations/queries/getMessageThreads"
 import { StackList } from "interface/core/components/StackList"
-import { BoxCardExchange } from "interface/exchanges/components/BoxCardExchange"
+import { BoxCardExchange } from "interface/message/components/BoxCardExchange"
 
 const ITEMS_PER_PAGE = 20
 
-export const BoxExchangeList: FC = () => {
+export const BoxMessageThreadList: FC = () => {
   const { t } = useTranslation()
 
   const router = useRouter()
@@ -24,7 +24,7 @@ export const BoxExchangeList: FC = () => {
   const page = Number(router.query.page) || 0
 
   const [{ items: messageThreads, hasMore, count }] = usePaginatedQuery(
-    getExchanges,
+    getMessageThreads,
     { skip: ITEMS_PER_PAGE * page }
   )
 

@@ -3,7 +3,7 @@ import { container } from "tsyringe"
 import { SendMessageService } from "application"
 import { Id, PostText } from "core"
 import { withSentry } from "interface/core/utils/withSentry"
-import { zCreateMessageMutation } from "interface/exchanges/validations/createMessageMutation"
+import { zCreateMessageMutation } from "interface/message/validations/createMessageMutation"
 
 const createMessage = resolver.pipe(
   resolver.zod(zCreateMessageMutation),
