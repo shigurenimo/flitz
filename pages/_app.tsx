@@ -9,6 +9,8 @@ import { getAnalytics, setAnalyticsCollectionEnabled } from "firebase/analytics"
 import { getApps, initializeApp } from "firebase/app"
 import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
+import Head from "next/head"
+import { Suspense } from "react"
 import { I18nextProvider, initReactI18next } from "react-i18next"
 import translationJa from "../integrations/ja.i18n.json"
 import { withBlitz } from "integrations/blitz-client"
@@ -21,25 +23,33 @@ const App: BlitzPage<AppProps> = ({ Component, pageProps }) => {
   const { reset } = useQueryErrorResetBoundary()
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <ChakraProvider theme={theme}>
-        <ErrorBoundary FallbackComponent={BoxErrorFallback} onReset={reset}>
-          {getLayout(<Component {...pageProps} />)}
-        </ErrorBoundary>
-      </ChakraProvider>
-    </I18nextProvider>
+    <Suspense>
+      <Head>
+        {/** https://github.com/vercel/next.js/discussions/13387#discussioncomment-2387429 */}
+        <style>{"nextjs-portal { display: none; }"}</style>
+      </Head>
+      <I18nextProvider i18n={i18n}>
+        <ChakraProvider theme={theme}>
+          <ErrorBoundary FallbackComponent={BoxErrorFallback} onReset={reset}>
+            {getLayout(<Component {...pageProps} />)}
+          </ErrorBoundary>
+        </ChakraProvider>
+      </I18nextProvider>
+    </Suspense>
   )
 }
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    fallbackLng: false,
-    keySeparator: false,
-    nsSeparator: false,
-    resources: { ja: { translation: translationJa } },
-  })
+if (!i18n.isInitialized) {
+  i18n
+    .use(LanguageDetector)
+    .use(initReactI18next)
+    .init({
+      fallbackLng: false,
+      keySeparator: false,
+      nsSeparator: false,
+      resources: { ja: { translation: translationJa } },
+    })
+}
 
 if (typeof window !== "undefined") {
   init({
