@@ -1,4 +1,4 @@
-import { SessionContext, SimpleRolesIsAuthorized } from "@blitzjs/auth";
+import { SessionContext, SimpleRolesIsAuthorized } from "@blitzjs/auth"
 import { File, User, UserRole } from "db"
 
 declare module "@blitzjs/auth" {
