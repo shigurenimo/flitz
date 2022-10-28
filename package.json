@@ -7,7 +7,7 @@
     "dev": "prisma generate && next dev",
     "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx .",
     "lint:fix": "eslint --fix --ignore-path .gitignore --ext .ts,.tsx .",
-    "format": "prettier --write --ignore-path .gitignore --ext .ts,.tsx .",
+    "format": "prettier --write --ignore-path .gitignore */**/*.{ts,tsx}",
     "start": "blitz start",
     "studio": "blitz prisma studio --browser none",
     "test": "jest",
