@@ -1,7 +1,7 @@
-import { captureException } from "@sentry/node"
 import { FileEntity } from "core"
 import { FileType, Id, Path, Service } from "core/valueObjects"
 import db from "db"
+import { throwError } from "infrastructure/utils"
 
 export class FileRepository {
   async upsert(file: FileEntity) {
@@ -18,11 +18,7 @@ export class FileRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -44,11 +40,7 @@ export class FileRepository {
         service: new Service(file.service),
       })
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 }

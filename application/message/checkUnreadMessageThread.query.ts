@@ -12,7 +12,7 @@ type Props = {
 export class CheckUnreadMessageThreadQuery {
   async execute(props: Props) {
     try {
-      const prismaMessageThread = await db.messageThread.findFirst({
+      const messageThread = await db.messageThread.findFirst({
         where: {
           messages: {
             some: {
@@ -24,7 +24,7 @@ export class CheckUnreadMessageThreadQuery {
         },
       })
 
-      return prismaMessageThread !== null
+      return messageThread !== null
     } catch (error) {
       captureException(error)
       return new InternalError()

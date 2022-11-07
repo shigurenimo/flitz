@@ -2,9 +2,8 @@ import { captureException } from "@sentry/node"
 import { injectable } from "tsyringe"
 import { Id, Username } from "core"
 import db from "db"
-import { PrismaFollower } from "infrastructure/types/prismaFollower"
+import { toAppFriendshipFollower } from "infrastructure/utils/toAppFriendship"
 import { InternalError } from "integrations/errors"
-import { AppFriendship } from "integrations/types"
 
 type Props = {
   skip: number
@@ -39,24 +38,11 @@ export class FindFollowersQuery {
       })
 
       return friendships.map((prismaFriendship) => {
-        return this.toFriendship(prismaFriendship)
+        return toAppFriendshipFollower(prismaFriendship)
       })
     } catch (error) {
       captureException(error)
       return new InternalError()
-    }
-  }
-
-  toFriendship(prismaFriendship: PrismaFollower): AppFriendship {
-    return {
-      id: prismaFriendship.id,
-      createdAt: prismaFriendship.createdAt,
-      userId: prismaFriendship.follower.id,
-      username: prismaFriendship.follower.username || null,
-      name: prismaFriendship.follower.name || null,
-      biography: prismaFriendship.follower.biography,
-      isFollowee: 0 < prismaFriendship.follower.followersCount,
-      isFollower: 0 < prismaFriendship.follower.followeesCount,
     }
   }
 }

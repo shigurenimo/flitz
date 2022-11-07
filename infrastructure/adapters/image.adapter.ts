@@ -1,8 +1,8 @@
 import { tmpdir } from "os"
 import { join } from "path"
-import { captureException } from "@sentry/node"
 import sharp from "sharp"
 import { Image, Path } from "core/valueObjects"
+import { throwError } from "infrastructure/utils"
 
 export class ImageAdapter {
   private getTmpPath(fileName: Path) {
@@ -26,11 +26,7 @@ export class ImageAdapter {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -45,11 +41,7 @@ export class ImageAdapter {
 
       return sharp(tmpPath.value).toBuffer()
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 }

@@ -1,6 +1,6 @@
-import { captureException } from "@sentry/node"
 import { Id, PostEntity, PostText } from "core"
 import db from "db"
+import { throwError } from "infrastructure/utils"
 
 export class PostRepository {
   async find(id: Id) {
@@ -26,11 +26,7 @@ export class PostRepository {
         followerIds: [],
       })
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -139,11 +135,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -195,11 +187,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -239,11 +227,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -258,11 +242,7 @@ export class PostRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 }

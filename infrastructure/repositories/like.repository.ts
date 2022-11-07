@@ -1,6 +1,6 @@
-import { captureException } from "@sentry/node"
 import { Id, LikeEntity } from "core"
 import db from "db"
+import { throwError } from "infrastructure/utils"
 
 export class LikeRepository {
   async find(userId: Id, postId: Id) {
@@ -16,11 +16,7 @@ export class LikeRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -41,11 +37,7 @@ export class LikeRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -68,11 +60,7 @@ export class LikeRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 }

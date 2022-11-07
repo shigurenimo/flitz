@@ -14,25 +14,25 @@ type Props = {
 export class FindUserSettingQuery {
   async execute(props: Props) {
     try {
-      const prismaUser = await db.user.findUnique({
+      const user = await db.user.findUnique({
         where: { id: props.userId.value },
       })
 
-      if (prismaUser === null) {
+      if (user === null) {
         captureException("データが見つからなかった。")
         return new NotFoundError()
       }
 
       const appSetting: AppSetting = {
-        fcmToken: prismaUser.fcmToken?.slice(0, 4) || null,
-        fcmTokenForMobile: prismaUser.fcmTokenForMobile?.slice(0, 4) || null,
-        isProtected: prismaUser.isProtected,
-        isPublicEmail: prismaUser.isPublicEmail,
-        isEnabledNotificationEmail: prismaUser.isEnabledNotificationEmail,
-        isEnabledNotificationMessage: prismaUser.isEnabledNotificationMessage,
-        isEnabledNotificationPostLike: prismaUser.isEnabledNotificationPostLike,
+        fcmToken: user.fcmToken?.slice(0, 4) || null,
+        fcmTokenForMobile: user.fcmTokenForMobile?.slice(0, 4) || null,
+        isProtected: user.isProtected,
+        isPublicEmail: user.isPublicEmail,
+        isEnabledNotificationEmail: user.isEnabledNotificationEmail,
+        isEnabledNotificationMessage: user.isEnabledNotificationMessage,
+        isEnabledNotificationPostLike: user.isEnabledNotificationPostLike,
         isEnabledNotificationPostQuotation:
-          prismaUser.isEnabledNotificationPostQuotation,
+          user.isEnabledNotificationPostQuotation,
       }
 
       return appSetting

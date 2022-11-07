@@ -1,7 +1,7 @@
-import { captureException } from "@sentry/node"
 import { FriendshipEntity } from "core"
 import { Id } from "core/valueObjects"
 import db from "db"
+import { throwError } from "infrastructure/utils"
 
 export class FriendshipRepository {
   async find(followerId: Id, followeeId: Id) {
@@ -25,11 +25,7 @@ export class FriendshipRepository {
         followerId: new Id(friendship.followerId),
       })
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -50,13 +46,7 @@ export class FriendshipRepository {
 
       return friendships
     } catch (error) {
-      captureException(error, { level: "fatal" })
-
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -90,11 +80,7 @@ export class FriendshipRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -130,11 +116,7 @@ export class FriendshipRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 }

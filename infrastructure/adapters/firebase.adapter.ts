@@ -1,7 +1,7 @@
-import { captureException } from "@sentry/node"
 import { cert, getApps, initializeApp } from "firebase-admin/app"
 import { injectable } from "tsyringe"
 import { EnvAdapter } from "infrastructure/adapters/env.adapter"
+import { throwError } from "infrastructure/utils"
 
 @injectable()
 export class FirebaseAdapter {
@@ -13,9 +13,9 @@ export class FirebaseAdapter {
 
       if (this.envAdapter.useFirebaseEmulator) {
         initializeApp({})
-
         return null
       }
+
       initializeApp({
         credential: cert({
           clientEmail: this.envAdapter.firebase.clientEmail,
@@ -28,11 +28,7 @@ export class FirebaseAdapter {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 }

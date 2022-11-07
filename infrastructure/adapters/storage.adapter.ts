@@ -1,10 +1,10 @@
 import { tmpdir } from "os"
 import { join } from "path"
-import { captureException } from "@sentry/node"
 import { getStorage } from "firebase-admin/storage"
 import { injectable } from "tsyringe"
 import { Path } from "core"
 import { FirebaseAdapter } from "infrastructure/adapters/firebase.adapter"
+import { throwError } from "infrastructure/utils"
 
 @injectable()
 export class StorageAdapter {
@@ -22,11 +22,7 @@ export class StorageAdapter {
         .file(filePath.value)
         .download({ destination: tmpPath.value })
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 

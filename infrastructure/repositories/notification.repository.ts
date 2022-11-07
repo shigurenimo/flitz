@@ -1,6 +1,6 @@
-import { captureException } from "@sentry/node"
 import { NotificationEntity } from "core"
 import db from "db"
+import { throwError } from "infrastructure/utils"
 
 export class NotificationRepository {
   async upsert(notification: NotificationEntity) {
@@ -23,13 +23,7 @@ export class NotificationRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -69,11 +63,7 @@ export class NotificationRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -114,11 +104,7 @@ export class NotificationRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -157,11 +143,7 @@ export class NotificationRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -186,11 +168,7 @@ export class NotificationRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 }

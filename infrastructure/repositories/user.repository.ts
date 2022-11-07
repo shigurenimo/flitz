@@ -1,4 +1,3 @@
-import { captureException } from "@sentry/node"
 import { NotFoundError } from "blitz"
 import {
   Email,
@@ -10,6 +9,7 @@ import {
   Username,
 } from "core"
 import db from "db"
+import { throwError } from "infrastructure/utils"
 
 export class UserRepository {
   async find(id: Id) {
@@ -54,11 +54,7 @@ export class UserRepository {
           prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -104,11 +100,7 @@ export class UserRepository {
           prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -154,11 +146,7 @@ export class UserRepository {
           prismaUser.isEnabledNotificationPostQuotation,
       })
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 
@@ -207,11 +195,7 @@ export class UserRepository {
 
       return null
     } catch (error) {
-      captureException(error, { level: "fatal" })
-      if (error instanceof Error) {
-        return new Error(error.message)
-      }
-      return new Error()
+      return throwError(error)
     }
   }
 }

@@ -3,9 +3,8 @@ import { NotFoundError } from "blitz"
 import { injectable } from "tsyringe"
 import { Id, Username } from "core"
 import db from "db"
-import { PrismaProfile } from "infrastructure/types"
+import { toAppUserProfile } from "infrastructure/utils/toAppUserProfile"
 import { InternalError } from "integrations/errors"
-import { AppUserProfile } from "integrations/types"
 
 type Props = {
   username: Username
@@ -21,7 +20,7 @@ export class FindUserByUsernameQuery {
    */
   async execute(props: Props) {
     try {
-      const prismaUser = await db.user.findUnique({
+      const user = await db.user.findUnique({
         where: { username: props.username.value },
         include: {
           followers: props.loginId
@@ -32,31 +31,15 @@ export class FindUserByUsernameQuery {
         },
       })
 
-      if (prismaUser === null) {
+      if (user === null) {
         captureException("データが見つからなかった。")
         return new NotFoundError()
       }
 
-      return this.toAppUserProfile(prismaUser)
+      return toAppUserProfile(user)
     } catch (error) {
       captureException(error)
       return new InternalError()
-    }
-  }
-
-  toAppUserProfile(prismaUser: PrismaProfile): AppUserProfile {
-    return {
-      id: prismaUser.id,
-      createdAt: prismaUser.createdAt,
-      username: prismaUser.username,
-      name: prismaUser.name || null,
-      biography: prismaUser.biography,
-      iconImageId: prismaUser.iconImage?.id || null,
-      headerImageId: prismaUser.headerImage?.id || null,
-      siteURL: prismaUser.siteURL,
-      isFollowee: 0 < (prismaUser.followers || []).length,
-      followeesCount: prismaUser.followeesCount,
-      followersCount: prismaUser.followersCount,
     }
   }
 }

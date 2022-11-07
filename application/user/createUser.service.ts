@@ -53,9 +53,9 @@ export class SignUpService {
         isEnabledNotificationPostQuotation: true,
       })
 
-      const upsertUser = await this.userRepository.upsert(user)
+      const transaction = await this.userRepository.upsert(user)
 
-      if (upsertUser instanceof Error) {
+      if (transaction instanceof Error) {
         return new InternalError()
       }
 

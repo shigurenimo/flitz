@@ -25,7 +25,6 @@ export class UpdateUserSettingService {
 
       if (user === null) {
         captureException("データが見つからなかった。")
-
         return new NotFoundError()
       }
 
