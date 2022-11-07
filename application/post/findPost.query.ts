@@ -4,7 +4,7 @@ import { injectable } from "tsyringe"
 import { Id } from "core"
 import db from "db"
 import { PrismaPost } from "infrastructure"
-import { AppPostConverter } from "infrastructure/converters"
+import { toAppPost } from "infrastructure/utils"
 import { includePostEmbedded } from "infrastructure/utils/includePostEmbedded"
 import { InternalError } from "integrations/errors"
 
@@ -15,8 +15,6 @@ type Props = {
 
 @injectable()
 export class FindPostQuery {
-  constructor(private appPostConverter: AppPostConverter) {}
-
   async execute(props: Props) {
     try {
       const post: PrismaPost | null = await db.post.findUnique({
@@ -43,7 +41,7 @@ export class FindPostQuery {
         return new NotFoundError()
       }
 
-      return this.appPostConverter.fromPrisma(post)
+      return toAppPost(post)
     } catch (error) {
       captureException(error)
       return new InternalError()

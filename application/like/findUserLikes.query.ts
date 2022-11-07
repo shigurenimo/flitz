@@ -2,8 +2,8 @@ import { captureException } from "@sentry/node"
 import { injectable } from "tsyringe"
 import { Id, Username } from "core/valueObjects"
 import db from "db"
-import { AppPostConverter } from "infrastructure"
 import { includePostEmbedded } from "infrastructure/utils/includePostEmbedded"
+import { toAppPost } from "infrastructure/utils/toAppPost"
 import { InternalError } from "integrations/errors"
 
 type Props = {
@@ -15,8 +15,6 @@ type Props = {
 
 @injectable()
 export class FindUserLikeQuery {
-  constructor(private appPostConverter: AppPostConverter) {}
-
   async execute(input: Props) {
     try {
       const likes = await db.like.findMany({
@@ -46,7 +44,7 @@ export class FindUserLikeQuery {
       })
 
       return likes.map((like) => {
-        return this.appPostConverter.fromPrisma(like.post)
+        return toAppPost(like.post)
       })
     } catch (error) {
       captureException(error)

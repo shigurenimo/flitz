@@ -15,7 +15,9 @@
     ".blitz**": true,
     ".husky": true,
     ".next": true,
-    ".vercel": true
+    ".vercel": true,
+    ".yarn": true,
+    ".yarnrc.yml": true
   },
   "search.exclude": {
     "yarn.lock": true

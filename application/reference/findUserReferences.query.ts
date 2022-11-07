@@ -2,11 +2,9 @@ import { captureException } from "@sentry/node"
 import { injectable } from "tsyringe"
 import { Id } from "core/valueObjects"
 import db from "db"
-import { AppPostConverter } from "infrastructure"
-import { PrismaReference } from "infrastructure/types"
+import { toAppFolloweePost } from "infrastructure/utils"
 import { includePostEmbedded } from "infrastructure/utils/includePostEmbedded"
 import { InternalError } from "integrations/errors"
-import { AppFolloweePost } from "integrations/types"
 
 type Props = {
   skip: number
@@ -15,8 +13,6 @@ type Props = {
 
 @injectable()
 export class FindUserReferenceQuery {
-  constructor(private appPostConverter: AppPostConverter) {}
-
   async execute(props: Props) {
     try {
       const references = await db.reference.findMany({
@@ -40,18 +36,11 @@ export class FindUserReferenceQuery {
       })
 
       return references.map((reference) => {
-        return this.toFolloweePost(reference)
+        return toAppFolloweePost(reference)
       })
     } catch (error) {
       captureException(error)
       return new InternalError()
-    }
-  }
-
-  toFolloweePost(feed: PrismaReference): AppFolloweePost {
-    return {
-      ...this.appPostConverter.fromPrisma(feed.post),
-      isRead: feed.isRead,
     }
   }
 }

@@ -1,5 +1,4 @@
-import "reflect-metadata"
 export * from "./adapters"
-export * from "./converters"
 export * from "./repositories"
 export * from "./types"
+export * from "./utils"

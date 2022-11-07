@@ -1,3 +1,6 @@
+# Yarn
+.yarn
+
 # Blitz
 .blitz.config.compiled.js
 

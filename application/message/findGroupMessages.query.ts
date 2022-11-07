@@ -3,10 +3,8 @@ import { NotFoundError } from "blitz"
 import { injectable } from "tsyringe"
 import { Id } from "core/valueObjects"
 import db from "db"
-import { AppUserEmbeddedConverter } from "infrastructure"
-import { PrismaMessage } from "infrastructure/types/prismaMessage"
+import { toAppUserMessage } from "infrastructure/utils/toAppUserMessage"
 import { InternalError } from "integrations/errors"
-import { AppMessage } from "integrations/types"
 
 type Props = {
   messageThreadId: Id
@@ -15,8 +13,6 @@ type Props = {
 
 @injectable()
 export class FindGroupMessagesQuery {
-  constructor(private appUserEmbeddedConverter: AppUserEmbeddedConverter) {}
-
   async execute(props: Props) {
     try {
       const messageThread = await db.messageThread.findUnique({
@@ -39,22 +35,11 @@ export class FindGroupMessagesQuery {
       }
 
       return messageThread.messages.map((prismaMessage) => {
-        return this.toUserMessage(prismaMessage)
+        return toAppUserMessage(prismaMessage)
       })
     } catch (error) {
       captureException(error)
       return new InternalError()
-    }
-  }
-
-  toUserMessage(prismaMessage: PrismaMessage): AppMessage {
-    return {
-      id: prismaMessage.id,
-      createdAt: prismaMessage.createdAt,
-      isRead: prismaMessage.isRead,
-      text: prismaMessage.text,
-      updatedAt: prismaMessage.updatedAt,
-      user: this.appUserEmbeddedConverter.fromPrisma(prismaMessage.user),
     }
   }
 }

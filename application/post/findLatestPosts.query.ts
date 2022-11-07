@@ -2,7 +2,7 @@ import { captureException } from "@sentry/node"
 import { injectable } from "tsyringe"
 import { Id } from "core"
 import db from "db"
-import { AppPostConverter } from "infrastructure"
+import { toAppPost } from "infrastructure/utils"
 import { includePostEmbedded } from "infrastructure/utils/includePostEmbedded"
 import { InternalError } from "integrations/errors"
 
@@ -13,8 +13,6 @@ type Props = {
 
 @injectable()
 export class FindLatestPostsQuery {
-  constructor(private appPostConverter: AppPostConverter) {}
-
   async execute(props: Props) {
     try {
       const posts = await db.post.findMany({
@@ -39,7 +37,7 @@ export class FindLatestPostsQuery {
       })
 
       return posts.map((post) => {
-        return this.appPostConverter.fromPrisma(post)
+        return toAppPost(post)
       })
     } catch (error) {
       captureException(error)
