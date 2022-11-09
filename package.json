@@ -53,7 +53,7 @@
     "@jest/types": "29.2.1",
     "@types/formidable": "2.0.5",
     "@types/react": "18.0.24",
-    "@types/sharp": "0.31.0",
+    "@types/sharp": "^0.31.0",
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.0",
     "eslint-config-prettier": "8.5.0",

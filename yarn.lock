@@ -4414,7 +4414,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sharp@npm:0.31.0":
+"@types/sharp@npm:^0.31.0":
   version: 0.31.0
   resolution: "@types/sharp@npm:0.31.0"
   dependencies:
@@ -7281,7 +7281,7 @@ __metadata:
     "@types/formidable": 2.0.5
     "@types/jest": 29.2.0
     "@types/react": 18.0.24
-    "@types/sharp": 0.31.0
+    "@types/sharp": ^0.31.0
     avvvatars-react: 0.4.2
     blitz: 2.0.0-beta.13
     eslint: 8.26.0
