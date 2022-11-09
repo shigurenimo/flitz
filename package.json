@@ -2,7 +2,7 @@
   "name": "flitz",
   "version": "1.0.0",
   "scripts": {
-    "build": "blitz prisma db push && blitz build",
+    "build": "blitz build",
     "start:production": "blitz start --port $PORT",
     "dev": "prisma generate && next dev",
     "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx .",
