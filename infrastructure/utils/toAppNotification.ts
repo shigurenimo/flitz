@@ -1,7 +1,7 @@
+import { AppNotification } from "infrastructure/models"
 import { PrismaNotification } from "infrastructure/types"
 import { toAppPost } from "infrastructure/utils/toAppPost"
 import { toAppUserEmbedded } from "infrastructure/utils/toAppUserEmbedded"
-import { AppNotification } from "integrations/types"
 
 export const toAppNotification = (
   prismaNotification: PrismaNotification

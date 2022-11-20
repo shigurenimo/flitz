@@ -3,9 +3,9 @@ import { HStack, Icon, useToast } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { FC } from "react"
 import { FiHeart, FiMessageCircle, FiRepeat } from "react-icons/fi"
-import createPostLike from "integrations/mutations/createPostLike"
-import createQuotation from "integrations/mutations/createQuotation"
-import deletePostLike from "integrations/mutations/deletePostLike"
+import createPostLike from "app/mutations/createPostLike"
+import createQuotation from "app/mutations/createQuotation"
+import deletePostLike from "app/mutations/deletePostLike"
 import { ButtonPostAction } from "interface/posts/components/ButtonPostAction"
 
 type Props = {

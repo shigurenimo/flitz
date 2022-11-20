@@ -2,7 +2,7 @@ import { useParam } from "@blitzjs/next"
 import { useMutation } from "@blitzjs/rpc"
 import { Button, HStack, Stack, useColorModeValue } from "@chakra-ui/react"
 import { FC, useState } from "react"
-import createMessage from "integrations/mutations/createMessage"
+import createMessage from "app/mutations/createMessage"
 import { TextareaAutosize } from "interface/core/components/TextareaAutosize"
 
 type Props = { refetch(): void }

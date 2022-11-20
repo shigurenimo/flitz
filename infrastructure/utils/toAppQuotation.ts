@@ -1,6 +1,6 @@
+import { AppQuotation } from "infrastructure/models"
 import { PrismaQuotation } from "infrastructure/types"
 import { toAppUserEmbedded } from "infrastructure/utils/toAppUserEmbedded"
-import { AppQuotation } from "integrations/types"
 
 export const toAppQuotation = (post: PrismaQuotation): AppQuotation => {
   return {

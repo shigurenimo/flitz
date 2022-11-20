@@ -1,7 +1,7 @@
 import { HStack, Stack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { FC } from "react"
-import { AppPost } from "integrations/types/appPost"
+import { AppPost } from "infrastructure/models/appPost"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
 import { BoxCardQuotationEmbedded } from "interface/posts/components/BoxCardQuotationEmbedded"

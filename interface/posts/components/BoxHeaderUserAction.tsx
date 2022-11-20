@@ -1,7 +1,7 @@
 import { useSession } from "@blitzjs/auth"
 import { HStack, Stack, useDisclosure } from "@chakra-ui/react"
 import { FC } from "react"
-import { AppUserEmbedded } from "integrations/types/appUserEmbedded"
+import { AppUserEmbedded } from "infrastructure/models/appUserEmbedded"
 import { AlertDialogDelete } from "interface/posts/components/AlertDialogDelete"
 import { BoxPostUser } from "interface/posts/components/BoxPostUser"
 import { MenuPost } from "interface/posts/components/MenuPost"

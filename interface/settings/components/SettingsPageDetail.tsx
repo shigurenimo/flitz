@@ -3,9 +3,9 @@ import { Stack, useToast } from "@chakra-ui/react"
 import { getMessaging, getToken, isSupported } from "firebase/messaging"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
-import testNotification from "integrations/mutations/testNotification"
-import updateSetting from "integrations/mutations/updateSetting"
-import getSetting from "integrations/queries/getSetting"
+import testNotification from "app/mutations/testNotification"
+import updateSetting from "app/mutations/updateSetting"
+import getSetting from "app/queries/getSetting"
 import { SettingsPageNotification } from "interface/settings/components/SettingsPageNotification"
 
 export const SettingsPageDetail: FC = () => {

@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react"
 import { FC, useState } from "react"
 import { FiImage, FiSend } from "react-icons/fi"
-import createReply from "integrations/mutations/createReply"
+import createReply from "app/mutations/createReply"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 
 export const BoxFormPost: FC = () => {

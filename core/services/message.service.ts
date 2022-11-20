@@ -1,5 +1,5 @@
 import type { Id } from "core/valueObjects"
-import { AppMessage } from "integrations/types/appMessage"
+import { AppMessage } from "infrastructure/models/appMessage"
 
 /**
  * メッセージ

@@ -12,7 +12,7 @@ import {
 import { FC, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend } from "react-icons/fi"
-import createPost from "integrations/mutations/createPost"
+import createPost from "app/mutations/createPost"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { ButtonFile } from "interface/core/components/ButtonFile"
 import { TextareaAutosize } from "interface/core/components/TextareaAutosize"

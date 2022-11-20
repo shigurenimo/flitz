@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react"
 import { FC } from "react"
 import { FiHeart } from "react-icons/fi"
-import { AppNotificationLike } from "integrations/types/appNotificationLike"
+import { AppNotificationLike } from "infrastructure/models/appNotificationLike"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
 

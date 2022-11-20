@@ -1,5 +1,5 @@
 import "reflect-metadata"
-import "integrations/errors"
+import "infrastructure/errors"
 import { ColorModeScript } from "@chakra-ui/react"
 import { Html, Head, Main, NextScript } from "next/document"
 import React, { FC } from "react"

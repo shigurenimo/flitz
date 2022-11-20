@@ -1,5 +1,5 @@
+import { AppUserEmbedded } from "infrastructure/models"
 import { PrismaUserEmbedded } from "infrastructure/types"
-import { AppUserEmbedded } from "integrations/types"
 
 export const toAppUserEmbedded = (
   user: PrismaUserEmbedded

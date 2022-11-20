@@ -1,5 +1,5 @@
+import { AppUserProfile } from "infrastructure/models"
 import { PrismaProfile } from "infrastructure/types"
-import { AppUserProfile } from "integrations/types"
 
 export const toAppUserProfile = (data: PrismaProfile): AppUserProfile => {
   return {

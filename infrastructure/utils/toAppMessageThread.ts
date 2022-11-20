@@ -1,6 +1,6 @@
+import { AppMessageThread } from "infrastructure/models"
 import { PrismaMessageThread } from "infrastructure/types"
 import { toAppUserEmbedded } from "infrastructure/utils/toAppUserEmbedded"
-import { AppMessageThread } from "integrations/types"
 
 export const toAppMessageThread = (
   prismaMessageThread: PrismaMessageThread

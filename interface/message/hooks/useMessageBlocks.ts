@@ -1,4 +1,4 @@
-import { AppMessage } from "integrations/types/appMessage"
+import { AppMessage } from "infrastructure/models/appMessage"
 import { MessageBlock } from "interface/message/types/messageBlock"
 
 type MessageWithUser = AppMessage

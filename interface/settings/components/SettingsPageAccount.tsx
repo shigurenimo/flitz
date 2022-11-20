@@ -15,9 +15,9 @@ import {
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import updateAccountEmail from "integrations/mutations/updateAccountEmail"
-import updateUsername from "integrations/mutations/updateUsername"
-import getAccount from "integrations/queries/getAccount"
+import updateAccountEmail from "app/mutations/updateAccountEmail"
+import updateUsername from "app/mutations/updateUsername"
+import getAccount from "app/queries/getAccount"
 
 export const SettingsPageAccount: FC = () => {
   const { t } = useTranslation()

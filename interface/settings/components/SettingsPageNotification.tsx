@@ -18,7 +18,7 @@ import {
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { FiSend, FiZap, FiZapOff } from "react-icons/fi"
-import { AppSetting } from "integrations/types/appSetting"
+import { AppSetting } from "infrastructure/models/appSetting"
 
 type Props = {
   setting: AppSetting

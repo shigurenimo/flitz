@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { FC } from "react"
-import { AppNotification } from "integrations/types/appNotification"
+import { AppNotification } from "infrastructure/models/appNotification"
 import { BoxCardNotificationFriendship } from "interface/notifications/components/BoxCardNotificationFriendship"
 import { BoxCardNotificationLike } from "interface/notifications/components/BoxCardNotificationLike"
 import { BoxCardPost } from "interface/posts/components/BoxCardPost"

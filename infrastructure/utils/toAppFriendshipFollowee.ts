@@ -1,5 +1,5 @@
+import { AppFriendship } from "infrastructure/models"
 import { PrismaFollowee } from "infrastructure/types"
-import { AppFriendship } from "integrations/types"
 
 export const toAppFriendshipFollowee = (
   data: PrismaFollowee

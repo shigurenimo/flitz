@@ -1,6 +1,6 @@
 import { HStack, Stack } from "@chakra-ui/react"
 import { FC } from "react"
-import { AppQuotation } from "integrations/types/appQuotation"
+import { AppQuotation } from "infrastructure/models/appQuotation"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
 import { BoxHeaderUserAction } from "interface/posts/components/BoxHeaderUserAction"

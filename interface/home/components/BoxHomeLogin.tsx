@@ -12,8 +12,8 @@ import { useRouter } from "next/router"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import createUser from "integrations/mutations/createUser"
-import login from "integrations/mutations/login"
+import createUser from "app/mutations/createUser"
+import login from "app/mutations/login"
 
 export const BoxHomeLogin: FC = () => {
   const { t } = useTranslation()

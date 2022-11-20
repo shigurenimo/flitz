@@ -1,7 +1,7 @@
+import { AppPost } from "infrastructure/models"
 import { PrismaPost } from "infrastructure/types"
 import { toAppQuotation } from "infrastructure/utils/toAppQuotation"
 import { toAppUserEmbedded } from "infrastructure/utils/toAppUserEmbedded"
-import { AppPost } from "integrations/types"
 
 export const toAppPost = (post: PrismaPost): AppPost => {
   return {

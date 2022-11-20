@@ -1,4 +1,4 @@
-import { AppFolloweePost } from "integrations/types/appFolloweePost"
+import { AppFolloweePost } from "infrastructure/models/appFolloweePost"
 
 /**
  * タイムライン

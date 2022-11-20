@@ -10,7 +10,7 @@ import {
 import { useRouter } from "next/router"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
-import getMessageThreads from "integrations/queries/getMessageThreads"
+import getMessageThreads from "app/queries/getMessageThreads"
 import { StackList } from "interface/core/components/StackList"
 import { BoxCardExchange } from "interface/message/components/BoxCardExchange"
 

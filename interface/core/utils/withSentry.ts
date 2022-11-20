@@ -8,7 +8,7 @@ import {
 } from "@sentry/node"
 import "@sentry/tracing"
 import { Ctx } from "blitz"
-import { InternalError } from "integrations/errors"
+import { InternalError } from "infrastructure/errors"
 
 type Resolver<T, U> = (t: T, ctx: Ctx) => PromiseLike<U>
 

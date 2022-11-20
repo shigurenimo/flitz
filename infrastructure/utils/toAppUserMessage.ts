@@ -1,6 +1,6 @@
+import { AppMessage } from "infrastructure/models"
 import { PrismaMessage } from "infrastructure/types"
 import { toAppUserEmbedded } from "infrastructure/utils/toAppUserEmbedded"
-import { AppMessage } from "integrations/types"
 
 export const toAppUserMessage = (prismaMessage: PrismaMessage): AppMessage => {
   return {

@@ -1,8 +1,8 @@
 import { NextApiHandler } from "next"
 import { container } from "tsyringe"
-import { ReadImageBufferService } from "application/post/readImageBuffer.service"
 import { Id } from "core"
-import { api } from "integrations/blitz-server"
+import { api } from "interface/blitz-server"
+import { ReadImageBufferService } from "service/post/readImageBuffer.service"
 
 const icon: NextApiHandler = async (req, resp) => {
   if (Array.isArray(req.query.id)) {

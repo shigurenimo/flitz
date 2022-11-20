@@ -11,8 +11,8 @@ import {
 } from "@chakra-ui/react"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
-import createUser from "integrations/mutations/createUser"
-import login from "integrations/mutations/login"
+import createUser from "app/mutations/createUser"
+import login from "app/mutations/login"
 
 type FormLogin = {
   email: string

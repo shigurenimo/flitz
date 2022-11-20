@@ -1,6 +1,6 @@
 import { HStack, Stack, Text } from "@chakra-ui/react"
 import { FC } from "react"
-import { AppMessageThread } from "integrations/types/appMessageThread"
+import { AppMessageThread } from "infrastructure/models/appMessageThread"
 import { AvatarUser } from "interface/core/components/AvatarUser"
 import { BoxCard } from "interface/core/components/BoxCard"
 import { BoxExchangeUser } from "interface/message/components/BoxExchangeUser"

@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@blitzjs/rpc"
 import { Alert, AlertIcon, Box, StackDivider } from "@chakra-ui/react"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
-import getUserReplies from "integrations/queries/getUserReplies"
+import getUserReplies from "app/queries/getUserReplies"
 import { StackList } from "interface/core/components/StackList"
 import { BoxCardPost } from "interface/posts/components/BoxCardPost"
 
