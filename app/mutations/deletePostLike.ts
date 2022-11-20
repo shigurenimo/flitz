@@ -2,7 +2,7 @@ import { resolver } from "@blitzjs/rpc"
 import { container } from "tsyringe"
 import { Id } from "core"
 import { withSentry } from "interface/core/utils/withSentry"
-import { zDeletePostLikeMutation } from "interface/posts/validations/deletePostLikeMutation"
+import { zDeletePostLikeMutation } from "interface/post/validations/deletePostLikeMutation"
 import { DeletePostLikeService } from "service/post/deletePostLike.service"
 
 const deletePostLike = resolver.pipe(

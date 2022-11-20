@@ -2,7 +2,7 @@ import { resolver } from "@blitzjs/rpc"
 import { container } from "tsyringe"
 import { Id } from "core"
 import { withSentry } from "interface/core/utils/withSentry"
-import { zCreateQuotation } from "interface/posts/validations/createQuotationMutation"
+import { zCreateQuotation } from "interface/post/validations/createQuotationMutation"
 import { CreateQuotationService } from "service"
 
 const createQuotation = resolver.pipe(

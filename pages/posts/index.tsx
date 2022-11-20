@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next"
 import { BoxHeader } from "interface/core/components/BoxHeader"
 import { StackMain } from "interface/core/components/StackMain"
 import Layout from "interface/core/layouts/Layout"
-import { BoxPostList } from "interface/posts/components/BoxPostList"
-import { BoxPostListFallback } from "interface/posts/components/BoxPostListFallback"
+import { BoxPostList } from "interface/post/components/BoxPostList"
+import { BoxPostListFallback } from "interface/post/components/BoxPostListFallback"
 
 const PostsPage: BlitzPage = () => {
   const { t } = useTranslation()

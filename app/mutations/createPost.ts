@@ -2,7 +2,7 @@ import { resolver } from "@blitzjs/rpc"
 import { container } from "tsyringe"
 import { Id, PostText } from "core"
 import { withSentry } from "interface/core/utils/withSentry"
-import { zCreatePostMutation } from "interface/posts/validations/createPostMutation"
+import { zCreatePostMutation } from "interface/post/validations/createPostMutation"
 import { CreateFileService, CreatePostService } from "service"
 
 const createPost = resolver.pipe(

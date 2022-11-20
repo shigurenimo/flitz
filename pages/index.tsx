@@ -10,8 +10,8 @@ import { BoxHomeFormPost } from "interface/home/components/BoxHomeFormPost"
 import { BoxHomeHero } from "interface/home/components/BoxHomeHero"
 import { BoxHomeList } from "interface/home/components/BoxHomeList"
 import { BoxHomeLogin } from "interface/home/components/BoxHomeLogin"
-import { BoxPostList } from "interface/posts/components/BoxPostList"
-import { BoxPostListFallback } from "interface/posts/components/BoxPostListFallback"
+import { BoxPostList } from "interface/post/components/BoxPostList"
+import { BoxPostListFallback } from "interface/post/components/BoxPostListFallback"
 
 const HomePage: BlitzPage = () => {
   const { t } = useTranslation()

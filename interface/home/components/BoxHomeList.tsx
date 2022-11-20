@@ -4,7 +4,7 @@ import { StackDivider } from "@chakra-ui/react"
 import { FC } from "react"
 import getReferences from "app/queries/getReferences"
 import { StackList } from "interface/core/components/StackList"
-import { BoxCardPost } from "interface/posts/components/BoxCardPost"
+import { BoxCardPost } from "interface/post/components/BoxCardPost"
 
 export const BoxHomeList: FC = () => {
   const session = useSession()

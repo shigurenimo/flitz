@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next"
 import { BoxHeader } from "interface/core/components/BoxHeader"
 import { StackMain } from "interface/core/components/StackMain"
 import Layout from "interface/core/layouts/Layout"
-import { SettingsPageAccount } from "interface/settings/components/SettingsPageAccount"
-import { SettingsPageDetail } from "interface/settings/components/SettingsPageDetail"
-import { SettingsPageLogout } from "interface/settings/components/SettingsPageLogout"
-import { SettingsPagePassword } from "interface/settings/components/SettingsPagePassword"
+import { SettingsPageAccount } from "interface/setting/components/SettingsPageAccount"
+import { SettingsPageDetail } from "interface/setting/components/SettingsPageDetail"
+import { SettingsPageLogout } from "interface/setting/components/SettingsPageLogout"
+import { SettingsPagePassword } from "interface/setting/components/SettingsPagePassword"
 
 const SettingsPage: BlitzPage = () => {
   const { t } = useTranslation()

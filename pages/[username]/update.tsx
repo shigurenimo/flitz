@@ -2,7 +2,7 @@ import { BlitzPage } from "@blitzjs/next"
 import React, { Suspense } from "react"
 import { StackMain } from "interface/core/components/StackMain"
 import Layout from "interface/core/layouts/Layout"
-import { UpdateUserPageDetail } from "interface/users/components/UpdateUserPageDetail"
+import { UpdateUserPageDetail } from "interface/user/components/UpdateUserPageDetail"
 
 const UpdateUserPage: BlitzPage = () => {
   return (

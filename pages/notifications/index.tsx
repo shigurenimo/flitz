@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { BoxHeader } from "interface/core/components/BoxHeader"
 import { StackMain } from "interface/core/components/StackMain"
 import Layout from "interface/core/layouts/Layout"
-import { BoxNotificationList } from "interface/notifications/components/BoxNotificationList"
+import { BoxNotificationList } from "interface/notification/components/BoxNotificationList"
 
 const NotificationsPage: BlitzPage = () => {
   const { t } = useTranslation()

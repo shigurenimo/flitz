@@ -2,7 +2,7 @@ import { resolver } from "@blitzjs/rpc"
 import { container } from "tsyringe"
 import { Id } from "core"
 import { withSentry } from "interface/core/utils/withSentry"
-import { zCreatePostLikeMutation } from "interface/posts/validations/createPostLikeMutation"
+import { zCreatePostLikeMutation } from "interface/post/validations/createPostLikeMutation"
 import { CreatePostLikeService } from "service"
 
 const createPostLike = resolver.pipe(

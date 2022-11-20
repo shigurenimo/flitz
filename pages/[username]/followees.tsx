@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next"
 import { BoxHeader } from "interface/core/components/BoxHeader"
 import { StackMain } from "interface/core/components/StackMain"
 import Layout from "interface/core/layouts/Layout"
-import { ShowUserPageListFollowees } from "interface/users/components/ShowUserPageListFollowees"
+import { ShowUserPageListFollowees } from "interface/user/components/ShowUserPageListFollowees"
 
 const ShowUserFolloweesPage: BlitzPage = () => {
   const { t } = useTranslation()
