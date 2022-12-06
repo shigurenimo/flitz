@@ -1,6 +1,6 @@
-This is a [Blitz.js](https://github.com/blitz-js/blitz) app.
-
 # **FLITZ**
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/PPiIuo?referralCode=DhboTN)
 
 ## Getting Started
 
@@ -13,7 +13,7 @@ Make env file and run PostgreSQL by using Docker.
 Install Node.js modules.
 
 ```
-% yarn
+% yarn install
 ```
 
 Migrate PostgreSQL schemas.
@@ -43,12 +43,6 @@ Ensure the `.env.test.local` file has required environment variables:
 
 ```
 DATABASE_URL="postgresql://postgres@localhost:5432/test"
-```
-
-## Ngrok
-
-```
-$ ngrok http -hostname=flitz.ngrok.io 3000
 ```
 
 ## Tests

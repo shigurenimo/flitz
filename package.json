@@ -22,6 +22,7 @@
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@hookform/resolvers": "2.9.10",
+    "@nestjs/common": "9.2.0",
     "@nestjs/core": "^9.2.0",
     "@nestjs/platform-express": "^9.2.0",
     "@prisma/client": "4.5.0",
@@ -49,12 +50,14 @@
     "react-icons": "4.6.0",
     "react-textarea-autosize": "^8.3.4",
     "reflect-metadata": "0.1.13",
+    "rxjs": "7.5.7",
     "sharp": "0.31.1",
     "tsyringe": "4.7.0",
     "zod": "3.19.1"
   },
   "devDependencies": {
     "@jest/types": "29.2.1",
+    "@types/cookie-parser": "1.4.3",
     "@types/formidable": "2.0.5",
     "@types/react": "18.0.24",
     "@types/sharp": "^0.31.0",
